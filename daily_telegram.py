@@ -29,7 +29,7 @@ def _cfg(key):
 TG_TOKEN = _cfg('TG_TOKEN')
 TG_CHAT_ID = _cfg('TG_CHAT_ID')
 GEMINI_KEY = _cfg('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-3-flash-preview'
+GEMINI_MODEL = 'gemini-3-flash'
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
 MAX_RETRIES = 5
