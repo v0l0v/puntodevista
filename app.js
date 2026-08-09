@@ -22,14 +22,18 @@ const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download
 const PODCAST_COVER = 'podcast-cover.png';
 
 const CLICK_OPEN = ['assets/mp3/click1.mp3', 'assets/mp3/click2.mp3', 'assets/mp3/click3.mp3', 'assets/mp3/click4.mp3'];
-let _clickAudio = null;
+let _clickLast = -1;
 
 function playClickOpen() {
   try {
-    if (!_clickAudio) _clickAudio = new Audio(CLICK_OPEN[Math.floor(Math.random() * CLICK_OPEN.length)]);
-    _clickAudio.currentTime = 0;
-    _clickAudio.volume = 0.25;
-    _clickAudio.play().catch(() => {});
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * CLICK_OPEN.length);
+    } while (idx === _clickLast && CLICK_OPEN.length > 1);
+    _clickLast = idx;
+    const a = new Audio(CLICK_OPEN[idx]);
+    a.volume = 0.12;
+    a.play().catch(() => {});
   } catch (e) {}
 }
 
