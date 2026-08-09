@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sat, 08 Aug 2026 21:55:11 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 09:23:15 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -21,7 +21,7 @@
     <pubDate>Mon, 03 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Collecting Mailbox Memories: Stories from the Lomographers’ Print Exchange Recupera la nostalgia de enviar y recibir copias físicas de tus fotos analógicas, creando conexiones tangibles entre fotógrafos de distintos continentes. Es una invitación a explorar el soporte físico y la narrativa personal que hay detrás de cada sobre que llega al buzón. Recap: Birmingham Design Festival LomoWalk Explora el lado más experimental de la fotografía callejera con este resumen del paseo fotográfico por el barrio creativo de Digbeth. Con cámaras LomoApparat y lentes de caleidoscopio, los participantes capturaron el vibrante arte urbano de Birmingham a través de exposiciones múltiples y colores irreales.]]></description>
     <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-03.mp3" length="577872" type="audio/mpeg"/>
-    <itunes:image href="https://cdn.assets.lomography.com/43/3335124a65cdb74b7f121fdda63dcaf7e2eaf8/512x341x1.jpg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-03.png"/>
     <itunes:duration>1:36</itunes:duration>
     <itunes:title>Episodio 1 · 3 de agosto de 2026</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -35,7 +35,7 @@
     <pubDate>Tue, 04 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Entre sueños, sombras y recuerdos: El arte de capturar lo invisible --- Night Journey de Susan kae Grant Un viaje fascinante al mundo del inconsciente a través de siluetas y sombras que recrean visiones del ciclo REM. Estas fotografías nos invitan a explorar la delgada línea entre la realidad y el sueño, recordándonos que nuestra mente es la cámara más poderosa que existe. Mario Giovanni y la Diana F+ El reconocido fotógrafo de moda Mario Giovanni nos enseña a abrazar el caos y la imperfección de la fotografía analógica. Al cambiar el control digital por la imprevisibilidad de una cámara de plástico, descubre que los momentos más memorables son aquellos que no se pueden planificar. Las historias de la abuela Kinso y Yan-Han A sus 96 años, esta "influencer" taiwanesa utiliza la fotografía instantánea para rescatar su lengua materna y preservar sus memorias. Un recordatorio conmovedor de que una foto física tiene el poder de despertar recuerdos olvidados y unir a distintas generaciones. Pâle de Gabrielle Duplantier Un recorrido visual inventado por la mente, donde las imágenes y los recuerdos se entrelazan en una atmósfera etérea. Esta obra nos inspira a fotografiar no solo lo que vemos, sino los paisajes internos que habitan nuestra memoria.]]></description>
     <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3" length="721872" type="audio/mpeg"/>
-    <itunes:image href="https://www.thisiscolossal.com/wp-content/uploads/2026/08/night-journey-7.jpg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-04.png"/>
     <itunes:duration>2:00</itunes:duration>
     <itunes:title>Episodio 2 · Entre sueños, sombras y recuerdos: El arte de capturar lo invisible</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -68,7 +68,7 @@ Este fotolibro explora las raíces de la cultura ecuestre en América a través 
 Convocatorias y Formación
 El sector fotográfico se dinamiza con las becas de la Lucie Foundation, el premio UPP para mujeres fotógrafas y talleres exclusivos. Destaca el workshop de Christopher Morris en Trieste, una cita imperdible para perfeccionar la visión documental.]]></description>
     <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3" length="624816" type="audio/mpeg"/>
-    <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-05.png"/>
     <itunes:duration>1:44</itunes:duration>
     <itunes:title>Episodio 3 · Miradas de barrio: de los gatos de Nueva York al orgullo Chicano</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -92,98 +92,6 @@ Este fotolibro explora las raíces de la cultura ecuestre en América a través 
 
 Convocatorias y Formación
 El sector fotográfico se dinamiza con las becas de la Lucie Foundation, el premio UPP para mujeres fotógrafas y talleres exclusivos. Destaca el workshop de Christopher Morris en Trieste, una cita imperdible para perfeccionar la visión documental.]]></itunes:summary>
-    <itunes:explicit>false</itunes:explicit>
-  </item>
-  <item>
-    <title>Episodio 4 · Entre escenarios eléctricos y la magia de lo cotidiano: un viaje por la mirada analógica</title>
-    <link>https://v0l0v.github.io/puntodevista/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-07.mp3</guid>
-    <pubDate>Fri, 07 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[--
-Lomography Community Recap: July 2026
-Un repaso vibrante a lo mejor del mes, desde retratos experimentales hasta paisajes bañados por el sol. Además, se presenta la nueva cámara de medio cuadro "Simple Use", perfecta para capturar hasta 72 momentos inesperados en un solo carrete.
-
-Stage Photographer Martinus Ragita Dives into the World of Lomography
-El fotógrafo indonesio Martinus Ragita nos lleva al corazón de los conciertos usando películas LomoChrome Purple y Berlin Kino. Su trabajo demuestra cómo la energía del directo y los colores psicodélicos pueden inmortalizar momentos que nunca se repetirán.
-
-Holden Luntz Gallery: Photo Spotlight: Jerry Schatzberg
-Una mirada fascinante a la obra de Jerry Schatzberg, donde el cine y la fotografía de moda convergen. Sus retratos capturan una elegancia atemporal y una profundidad psicológica que solo un maestro de la narrativa visual puede lograr.
-
-Château de Gréoux: Hans Silvester: Jean Giono et la Photo
-Hans Silvester une su lente a la prosa de Jean Giono en una exposición que celebra la conexión con la tierra. Una invitación a redescubrir el paisaje a través de una mirada incansable y profundamente literaria.
-
-**The Hulett Collection: Alain Lab]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-07.mp3" length="463536" type="audio/mpeg"/>
-    <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
-    <itunes:duration>1:17</itunes:duration>
-    <itunes:title>Episodio 4 · Entre escenarios eléctricos y la magia de lo cotidiano: un viaje por la mirada analógica</itunes:title>
-    <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[--
-Lomography Community Recap: July 2026
-Un repaso vibrante a lo mejor del mes, desde retratos experimentales hasta paisajes bañados por el sol. Además, se presenta la nueva cámara de medio cuadro "Simple Use", perfecta para capturar hasta 72 momentos inesperados en un solo carrete.
-
-Stage Photographer Martinus Ragita Dives into the World of Lomography
-El fotógrafo indonesio Martinus Ragita nos lleva al corazón de los conciertos usando películas LomoChrome Purple y Berlin Kino. Su trabajo demuestra cómo la energía del directo y los colores psicodélicos pueden inmortalizar momentos que nunca se repetirán.
-
-Holden Luntz Gallery: Photo Spotlight: Jerry Schatzberg
-Una mirada fascinante a la obra de Jerry Schatzberg, donde el cine y la fotografía de moda convergen. Sus retratos capturan una elegancia atemporal y una profundidad psicológica que solo un maestro de la narrativa visual puede lograr.
-
-Château de Gréoux: Hans Silvester: Jean Giono et la Photo
-Hans Silvester une su lente a la prosa de Jean Giono en una exposición que celebra la conexión con la tierra. Una invitación a redescubrir el paisaje a través de una mirada incansable y profundamente literaria.
-
-**The Hulett Collection: Alain Lab]]></itunes:summary>
-    <itunes:explicit>false</itunes:explicit>
-  </item>
-  <item>
-    <title>Episodio 5 · Entre el sueño del Petzval y la memoria de las calles</title>
-    <link>https://v0l0v.github.io/puntodevista/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3</guid>
-    <pubDate>Sat, 08 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Levana Cynthia y la magia del Petzval
-Descubre cómo esta fotógrafa de bodas utiliza la lente Petzval para transformar el caos de la India en escenas oníricas y pausadas. Su enfoque nos invita a bajar el ritmo y capturar la conexión emocional pura a través de un bokeh artístico y único.
-
-Londres: Un viaje entre el ayer y el hoy
-Angelina Tacinelli recorre las calles londinenses con su Lomomatic 110, intentando recrear fotografías de archivo de la ciudad. El resultado es un diario visual que celebra la imperfección y la belleza de capturar la vida tal como sucede, aceptando el caos creativo.
-
-Dagmar Sippel
-Frente a la inmediatez de los selfies digitales, Sippel reivindica el autorretrato en Polaroid como un objeto tangible y pausado. Es una invitación a redescubrir nuestra propia imagen a través de la química y la nostalgia del formato analógico.
-
-Cathy Cohen-Solal
-En su serie "La sombra del duende", la luz y la sombra chocan para revelar la verdad del cuerpo en el flamenco. Cada retrato captura la intensidad y la emoción profunda de un arte donde el movimiento se vuelve pura expresión visual.
-
-Sonia Fattori
-A través de su proyecto "Common Matter", la fotógrafa explora el vínculo ancestral y orgánico que une al ser humano con la naturaleza. Sus imágenes nos proponen una reconexión espiritual con el entorno a través de texturas y paisajes evocadores.
-
-Florent Kopp
-Este trabajo nos sumerge en el fluir constante de las ciudades para rescatar gestos y miradas que suelen pasar desapercibidos. Es una oda a las vidas anónimas que se cruzan en el asfalto, haciendo visible la humanidad que reside en lo cotidiano.
-
-Catherine Gaulmier
-Gaulmier teje una narrativa visual donde la historia y la vida en las islas del estuario de la Gironda se entrelazan. Sus fotografías]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="642240" type="audio/mpeg"/>
-    <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
-    <itunes:duration>1:47</itunes:duration>
-    <itunes:title>Episodio 5 · Entre el sueño del Petzval y la memoria de las calles</itunes:title>
-    <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Levana Cynthia y la magia del Petzval
-Descubre cómo esta fotógrafa de bodas utiliza la lente Petzval para transformar el caos de la India en escenas oníricas y pausadas. Su enfoque nos invita a bajar el ritmo y capturar la conexión emocional pura a través de un bokeh artístico y único.
-
-Londres: Un viaje entre el ayer y el hoy
-Angelina Tacinelli recorre las calles londinenses con su Lomomatic 110, intentando recrear fotografías de archivo de la ciudad. El resultado es un diario visual que celebra la imperfección y la belleza de capturar la vida tal como sucede, aceptando el caos creativo.
-
-Dagmar Sippel
-Frente a la inmediatez de los selfies digitales, Sippel reivindica el autorretrato en Polaroid como un objeto tangible y pausado. Es una invitación a redescubrir nuestra propia imagen a través de la química y la nostalgia del formato analógico.
-
-Cathy Cohen-Solal
-En su serie "La sombra del duende", la luz y la sombra chocan para revelar la verdad del cuerpo en el flamenco. Cada retrato captura la intensidad y la emoción profunda de un arte donde el movimiento se vuelve pura expresión visual.
-
-Sonia Fattori
-A través de su proyecto "Common Matter", la fotógrafa explora el vínculo ancestral y orgánico que une al ser humano con la naturaleza. Sus imágenes nos proponen una reconexión espiritual con el entorno a través de texturas y paisajes evocadores.
-
-Florent Kopp
-Este trabajo nos sumerge en el fluir constante de las ciudades para rescatar gestos y miradas que suelen pasar desapercibidos. Es una oda a las vidas anónimas que se cruzan en el asfalto, haciendo visible la humanidad que reside en lo cotidiano.
-
-Catherine Gaulmier
-Gaulmier teje una narrativa visual donde la historia y la vida en las islas del estuario de la Gironda se entrelazan. Sus fotografías]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
