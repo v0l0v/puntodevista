@@ -270,7 +270,7 @@ REGLAS ESTRICTAS:
 - Títulos de obras, exposiciones, series, libros, películas: TRADÚCELOS al español natural ("Paisajes etéreos", no "Ethereal Landscapes"). Si no tienes traducción oficial, adapta el significado.
 - Nombres propios de personas/lugares: MANTÉN el original.
 - Estructura de programa de radio:
-  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español, ej: 9 de agosto de 2026]."
+  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español del día de hoy según el enunciado, ej: 14 de febrero de 2026]."
   2. BLOQUES POR FUENTE: Para cada fuente que tenga artículos, haz una transición natural → "En Colossal hoy..." / "En Lomography Magazine encontramos..." / "Y en Shoot It With Film..." → narra cada artículo en 2-3 frases con tono cercano, como contándole a un amigo. Une artículos de la misma fuente con fluidez.
   3. TRANSICIONES entre fuentes: "Y siguiendo con...", "También en...", "Cambiamos de tercio hacia...", "Para cerrar esta ronda...".
   4. CIERRE obligatorio: "Y hasta aquí la inspiración de hoy. ¡Nos escuchamos mañana con más fotografía!"
