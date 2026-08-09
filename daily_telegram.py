@@ -247,8 +247,8 @@ MESES_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
 def fmt_fecha_es(d):
     return f'{d.day} de {MESES_ES[d.month - 1]} de {d.year}'
 
-def build_summary_prompt(podcast_content):
-    today = date.today().isoformat()
+def build_summary_prompt(podcast_content, episode_date=None):
+    today = (episode_date or date.today()).isoformat()
     return f"""Hoy es {today}. A continuación tienes el texto completo de varios artículos de fotografía de distintas fuentes.
 
 {podcast_content}
@@ -308,7 +308,7 @@ def main():
     content = clean_for_gemini(content)
 
     print('  Enviando a Gemini...')
-    prompt = build_summary_prompt(content)
+    prompt = build_summary_prompt(content, today)
     summary = gemini_request(prompt)
 
     if not summary:
@@ -402,20 +402,23 @@ def main():
                 print(f'  ⚠️ Error generando portada: {e}')
 
         print('  Enviando audio a Telegram...')
-        audio_caption = f'🎙️ {fmt_fecha_es(today)}'
-        if podcast_title:
-            audio_caption += f'\n{clean_text(podcast_title)}'
-        if resumen:
-            audio_caption += f'\n\n{clean_caption(resumen, clean_text(podcast_title))}'
-        if len(audio_caption) > 1024:
-            audio_caption = audio_caption[:1021] + '...'
-        audio_filename = f'Punto de vista - {today.isoformat()}.mp3'
-        result = send_telegram_audio(audio_path, audio_caption, audio_filename)
-        if result and result.get('ok'):
-            print('  ✅ Audio enviado')
+        if os.environ.get('SKIP_TELEGRAM'):
+            print('  SKIP_TELEGRAM=1, no se envía a Telegram')
         else:
-            err = result.get('description', '?') if result else '?'
-            print(f'  ❌ Error al enviar audio: {err}')
+            audio_caption = f'🎙️ {fmt_fecha_es(today)}'
+            if podcast_title:
+                audio_caption += f'\n{clean_text(podcast_title)}'
+            if resumen:
+                audio_caption += f'\n\n{clean_caption(resumen, clean_text(podcast_title))}'
+            if len(audio_caption) > 1024:
+                audio_caption = audio_caption[:1021] + '...'
+            audio_filename = f'Punto de vista - {today.isoformat()}.mp3'
+            result = send_telegram_audio(audio_path, audio_caption, audio_filename)
+            if result and result.get('ok'):
+                print('  ✅ Audio enviado')
+            else:
+                err = result.get('description', '?') if result else '?'
+                print(f'  ❌ Error al enviar audio: {err}')
     else:
         print('  ❌ Error al generar audio')
 

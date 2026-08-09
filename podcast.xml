@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 10:18:13 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 11:11:35 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -29,17 +29,37 @@
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 2 · Entre sueños, sombras y recuerdos: El arte de capturar lo invisible</title>
+    <title>Episodio 2 · Fotografiar lo invisible: entre el sueño, el azar y la memoria</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3</guid>
     <pubDate>Tue, 04 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Entre sueños, sombras y recuerdos: El arte de capturar lo invisible --- Night Journey de Susan kae Grant Un viaje fascinante al mundo del inconsciente a través de siluetas y sombras que recrean visiones del ciclo REM. Estas fotografías nos invitan a explorar la delgada línea entre la realidad y el sueño, recordándonos que nuestra mente es la cámara más poderosa que existe. Mario Giovanni y la Diana F+ El reconocido fotógrafo de moda Mario Giovanni nos enseña a abrazar el caos y la imperfección de la fotografía analógica. Al cambiar el control digital por la imprevisibilidad de una cámara de plástico, descubre que los momentos más memorables son aquellos que no se pueden planificar. Las historias de la abuela Kinso y Yan-Han A sus 96 años, esta "influencer" taiwanesa utiliza la fotografía instantánea para rescatar su lengua materna y preservar sus memorias. Un recordatorio conmovedor de que una foto física tiene el poder de despertar recuerdos olvidados y unir a distintas generaciones. Pâle de Gabrielle Duplantier Un recorrido visual inventado por la mente, donde las imágenes y los recuerdos se entrelazan en una atmósfera etérea. Esta obra nos inspira a fotografiar no solo lo que vemos, sino los paisajes internos que habitan nuestra memoria.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3" length="721872" type="audio/mpeg"/>
+    <description><![CDATA[Viaje nocturno: la fotografía que emerge de los sueños
+La fotógrafa Susan kae Grant nos invita a explorar el inconsciente en su libro "Viaje nocturno", donde recrea imágenes de su propio ciclo de sueño REM. A través de siluetas borrosas y sombras misteriosas en blanco y negro, la artista demuestra cómo el mundo onírico puede convertirse en una fuente inagotable de inspiración visual. Una obra fascinante que desibuja los límites entre la ciencia, el descanso y el arte.
+
+Abrazar el caos: la magia imperfecta de la Diana F+
+El fotógrafo de moda Mario Giovanni comparte su reveladora experiencia al cambiar la precisión digital por la impredecible cámara analógica Diana F+. Al renunciar al control absoluto, Giovanni descubrió que las imperfecciones y los accidentes de la película aportan una carga emocional única y honesta a sus retratos. Su historia nos inspira a perder el miedo al error y a colaborar con nuestras cámaras en lugar de dominarlas.
+
+Instantes de nostalgia: preservando la memoria familiar con película instantánea
+La entrañable dupla formada por la abuela Kinso, de 96 años, y su nieta Yan-Han utiliza la fotografía instantánea para documentar su día a día y rescatar su lengua materna taiwanesa. Al transformar recuerdos digitales en fotos físicas tangibles, han logrado reavivar conversaciones profundas y rescatar vivencias del pasado casi olvidadas. Un hermoso recordatorio de que la fotografía es, ante todo, un puente de amor y conexión entre generaciones.
+
+Pálido: un viaje fotográfico por los paisajes de la mente
+La fotógrafa Gabrielle Duplantier nos presenta su fotolibro "Pálido", un viaje puramente inventado por la mente a través de imágenes, personas y recuerdos que la habitan. Con una atmósfera etérea y sugerente, Duplantier nos enseña a utilizar la cámara para proyectar nuestro mundo interior y construir realidades poéticas que van más allá de lo meramente visible.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3" length="1266480" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-04.png"/>
-    <itunes:duration>2:00</itunes:duration>
-    <itunes:title>Episodio 2 · Entre sueños, sombras y recuerdos: El arte de capturar lo invisible</itunes:title>
+    <itunes:duration>3:31</itunes:duration>
+    <itunes:title>Episodio 2 · Fotografiar lo invisible: entre el sueño, el azar y la memoria</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Entre sueños, sombras y recuerdos: El arte de capturar lo invisible --- Night Journey de Susan kae Grant Un viaje fascinante al mundo del inconsciente a través de siluetas y sombras que recrean visiones del ciclo REM. Estas fotografías nos invitan a explorar la delgada línea entre la realidad y el sueño, recordándonos que nuestra mente es la cámara más poderosa que existe. Mario Giovanni y la Diana F+ El reconocido fotógrafo de moda Mario Giovanni nos enseña a abrazar el caos y la imperfección de la fotografía analógica. Al cambiar el control digital por la imprevisibilidad de una cámara de plástico, descubre que los momentos más memorables son aquellos que no se pueden planificar. Las historias de la abuela Kinso y Yan-Han A sus 96 años, esta "influencer" taiwanesa utiliza la fotografía instantánea para rescatar su lengua materna y preservar sus memorias. Un recordatorio conmovedor de que una foto física tiene el poder de despertar recuerdos olvidados y unir a distintas generaciones. Pâle de Gabrielle Duplantier Un recorrido visual inventado por la mente, donde las imágenes y los recuerdos se entrelazan en una atmósfera etérea. Esta obra nos inspira a fotografiar no solo lo que vemos, sino los paisajes internos que habitan nuestra memoria.]]></itunes:summary>
+    <itunes:summary><![CDATA[Viaje nocturno: la fotografía que emerge de los sueños
+La fotógrafa Susan kae Grant nos invita a explorar el inconsciente en su libro "Viaje nocturno", donde recrea imágenes de su propio ciclo de sueño REM. A través de siluetas borrosas y sombras misteriosas en blanco y negro, la artista demuestra cómo el mundo onírico puede convertirse en una fuente inagotable de inspiración visual. Una obra fascinante que desibuja los límites entre la ciencia, el descanso y el arte.
+
+Abrazar el caos: la magia imperfecta de la Diana F+
+El fotógrafo de moda Mario Giovanni comparte su reveladora experiencia al cambiar la precisión digital por la impredecible cámara analógica Diana F+. Al renunciar al control absoluto, Giovanni descubrió que las imperfecciones y los accidentes de la película aportan una carga emocional única y honesta a sus retratos. Su historia nos inspira a perder el miedo al error y a colaborar con nuestras cámaras en lugar de dominarlas.
+
+Instantes de nostalgia: preservando la memoria familiar con película instantánea
+La entrañable dupla formada por la abuela Kinso, de 96 años, y su nieta Yan-Han utiliza la fotografía instantánea para documentar su día a día y rescatar su lengua materna taiwanesa. Al transformar recuerdos digitales en fotos físicas tangibles, han logrado reavivar conversaciones profundas y rescatar vivencias del pasado casi olvidadas. Un hermoso recordatorio de que la fotografía es, ante todo, un puente de amor y conexión entre generaciones.
+
+Pálido: un viaje fotográfico por los paisajes de la mente
+La fotógrafa Gabrielle Duplantier nos presenta su fotolibro "Pálido", un viaje puramente inventado por la mente a través de imágenes, personas y recuerdos que la habitan. Con una atmósfera etérea y sugerente, Duplantier nos enseña a utilizar la cámara para proyectar nuestro mundo interior y construir realidades poéticas que van más allá de lo meramente visible.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
