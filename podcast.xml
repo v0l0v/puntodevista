@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 09:43:29 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 10:18:13 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -135,17 +135,67 @@ Hans Silvester une su lente a la prosa de Jean Giono en una exposición que cele
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 5 · Capturando la esencia del tiempo y la luz</title>
+    <title>Episodio 5 · Cámaras lentas, sombras con duende y el caos de la imperfección</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3</guid>
     <pubDate>Sat, 08 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Entre el bokeh de ensueño y la nostalgia de las calles londinenses]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1000224" type="audio/mpeg"/>
+    <description><![CDATA[Levana Cynthia y la magia de la lente Petzval en sus viajes
+La fotógrafa indonesia Levana Cynthia explora las caóticas calles de India y Estados Unidos con la lente Petzval de 55 milímetros. Su experiencia nos invita a bajar el ritmo y abrazar un enfoque manual que transforma el caos urbano en un sueño difuminado y lleno de calma.
+
+Londres en el tiempo: la belleza del error con la Lomomatic 110
+Un viaje nostálgico por Londres que contrasta fotos de archivo con capturas analógicas en formato de bolsillo. Una inspiradora lección sobre cómo la fotografía de película nos enseña a aceptar el caos, los fallos de encuadre y la magia de lo imprevisto.
+
+Dagmar Sippel: Autorretratos en Polaroid frente a la era del selfie
+Frente a la inmediatez y saturación de los retratos digitales en los teléfonos inteligentes, esta artista propone una vuelta a la nostalgia. Sus autorretratos en película instantánea celebran lo tangible y lo único de capturar recuerdos con un toque clásico y pausado.
+
+La sombra del duende por Cathy Cohen-Solal
+Una intensa serie de retratos flamencos donde las luces y las sombras chocan con fuerza sobre los cuerpos de los bailarines. Las imágenes revelan la verdad del movimiento y la pasión descarnada de este arte tradicional con una potencia visual impresionante.
+
+Materia común: el vínculo ancestral con la naturaleza de Sonia Fattori
+Este proyecto fotográfico explora la profunda conexión entre el ser humano y su entorno natural a través de composiciones muy cuidadas. La autora combina la fotografía con elementos de la propia tierra para recordarnos nuestra relación indivisible con el planeta.
+
+Lo invisible al alcance de la mano de Florent Kopp
+Una mirada poética a las calles de la ciudad, donde miles de vidas se cruzan en silencio todos los días. El autor captura gestos, miradas y rostros fugaces, revelando la belleza de las existencias individuales que solemos pasar por alto en el día a día.
+
+Sizigia: colisiones de historia y vida por Catherine Gaulmier
+Un tejido visual bellísimo que entrelaza momentos cotidianos y memorias en las islas del estuario del Gironda. La fotógrafa mezcla pasado y presente para explorar la identidad, la geografía y la poesía visual de estos singulares territorios insulares.
+
+Famagusta: el dolor de la nostalgia por Stefanos Kouratzis
+Una sobrecogedora exploración visual de Varosha, la famosa ciudad fantasma de Chipre. El fotógrafo nos enfrenta a la dolorosa nostalgia y la complejidad histórica de un lugar marcado por el abandono, el conflicto y el paso del tiempo.
+
+Nocturno: la tensión entre ocultar y mostrar de Nikita Dankin
+Una serie de retratos íntimos que juegan en la penumbra y los contrastes profundos del blanco y negro. A través de encuadres muy cerrados y gestos contenidos, el autor evoca el misterio de las emociones que se esconden en la oscuridad.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1137744" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-08.png"/>
-    <itunes:duration>2:46</itunes:duration>
-    <itunes:title>Episodio 5 · Capturando la esencia del tiempo y la luz</itunes:title>
+    <itunes:duration>3:09</itunes:duration>
+    <itunes:title>Episodio 5 · Cámaras lentas, sombras con duende y el caos de la imperfección</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Entre el bokeh de ensueño y la nostalgia de las calles londinenses]]></itunes:summary>
+    <itunes:summary><![CDATA[Levana Cynthia y la magia de la lente Petzval en sus viajes
+La fotógrafa indonesia Levana Cynthia explora las caóticas calles de India y Estados Unidos con la lente Petzval de 55 milímetros. Su experiencia nos invita a bajar el ritmo y abrazar un enfoque manual que transforma el caos urbano en un sueño difuminado y lleno de calma.
+
+Londres en el tiempo: la belleza del error con la Lomomatic 110
+Un viaje nostálgico por Londres que contrasta fotos de archivo con capturas analógicas en formato de bolsillo. Una inspiradora lección sobre cómo la fotografía de película nos enseña a aceptar el caos, los fallos de encuadre y la magia de lo imprevisto.
+
+Dagmar Sippel: Autorretratos en Polaroid frente a la era del selfie
+Frente a la inmediatez y saturación de los retratos digitales en los teléfonos inteligentes, esta artista propone una vuelta a la nostalgia. Sus autorretratos en película instantánea celebran lo tangible y lo único de capturar recuerdos con un toque clásico y pausado.
+
+La sombra del duende por Cathy Cohen-Solal
+Una intensa serie de retratos flamencos donde las luces y las sombras chocan con fuerza sobre los cuerpos de los bailarines. Las imágenes revelan la verdad del movimiento y la pasión descarnada de este arte tradicional con una potencia visual impresionante.
+
+Materia común: el vínculo ancestral con la naturaleza de Sonia Fattori
+Este proyecto fotográfico explora la profunda conexión entre el ser humano y su entorno natural a través de composiciones muy cuidadas. La autora combina la fotografía con elementos de la propia tierra para recordarnos nuestra relación indivisible con el planeta.
+
+Lo invisible al alcance de la mano de Florent Kopp
+Una mirada poética a las calles de la ciudad, donde miles de vidas se cruzan en silencio todos los días. El autor captura gestos, miradas y rostros fugaces, revelando la belleza de las existencias individuales que solemos pasar por alto en el día a día.
+
+Sizigia: colisiones de historia y vida por Catherine Gaulmier
+Un tejido visual bellísimo que entrelaza momentos cotidianos y memorias en las islas del estuario del Gironda. La fotógrafa mezcla pasado y presente para explorar la identidad, la geografía y la poesía visual de estos singulares territorios insulares.
+
+Famagusta: el dolor de la nostalgia por Stefanos Kouratzis
+Una sobrecogedora exploración visual de Varosha, la famosa ciudad fantasma de Chipre. El fotógrafo nos enfrenta a la dolorosa nostalgia y la complejidad histórica de un lugar marcado por el abandono, el conflicto y el paso del tiempo.
+
+Nocturno: la tensión entre ocultar y mostrar de Nikita Dankin
+Una serie de retratos íntimos que juegan en la penumbra y los contrastes profundos del blanco y negro. A través de encuadres muy cerrados y gestos contenidos, el autor evoca el misterio de las emociones que se esconden en la oscuridad.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
