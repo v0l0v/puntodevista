@@ -45,7 +45,7 @@ def download_image(url, cache_dir):
     return path
 
 
-def create_cover(day_image_path, date_str, out_path):
+def create_cover(day_image_path, date_str, out_path, subtitle=None):
     img = Image.new('RGBA', (SIZE, SIZE), BG)
 
     if day_image_path and os.path.exists(day_image_path):
@@ -82,7 +82,8 @@ def create_cover(day_image_path, date_str, out_path):
         font_sub = ImageFont.load_default()
 
     title = 'Punto de vista'
-    subtitle = f'Podcast diario · {date_str}'
+    if not subtitle:
+        subtitle = f'Podcast diario · {date_str}'
 
     title_w = draw.textlength(title, font=font_title)
     sub_w = draw.textlength(subtitle, font=font_sub)
@@ -114,7 +115,8 @@ def main():
     out_name = f'podcast-cover-{date_str}.png'
     out_path = os.path.join(DIR, out_name)
 
-    create_cover(day_image_path, date_str, out_path)
+    subtitle = sys.argv[3] if len(sys.argv) > 3 else None
+    create_cover(day_image_path, date_str, out_path, subtitle)
 
 
 if __name__ == '__main__':
