@@ -108,6 +108,10 @@
 <script>
 const RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
 const COVER = 'podcast-cover.png';
+
+function epCover(date) {
+  return RELEASE + '/podcast-cover-' + date + '.png';
+}
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
 function toggleFullscreen() {
@@ -165,6 +169,11 @@ function epImgLoaded(img) {
 }
 
 function epImgError(img) {
+  if (!img.dataset.fallback) {
+    img.dataset.fallback = '1';
+    img.src = COVER;
+    return;
+  }
   const card = img.closest('.card');
   img.remove();
   if (card) {
@@ -297,7 +306,7 @@ function selectEpisode(card) {
   const r = ensureRadio(url);
   const num = episodes.length - episodes.indexOf(e);
   const heroImg = document.getElementById('podcast-hero-img');
-  if (heroImg) heroImg.src = e.image || COVER;
+  if (heroImg) heroImg.src = epCover(e.date);
   document.getElementById('podcast-hero-title').textContent = e.podcast_title || 'Resumen diario';
   document.getElementById('podcast-hero-meta').textContent = 'episodio ' + num + ' · ' + fmtFecha(e.date) + ' · ' + fmtDur(e.duration);
   const resumen = document.getElementById('podcast-hero-resumen');
@@ -384,7 +393,7 @@ function renderEpisodes(meta) {
   const heroImg = document.getElementById('podcast-hero-img');
   const heroTitle = document.getElementById('podcast-hero-title');
   const heroMeta = document.getElementById('podcast-hero-meta');
-  if (heroImg) heroImg.src = latest.image || COVER;
+  if (heroImg) heroImg.src = epCover(latest.date);
   if (heroTitle) heroTitle.textContent = latest.podcast_title || 'Resumen diario';
   if (heroMeta) heroMeta.textContent = 'episodio ' + episodes.length + ' · ' + fmtFecha(latest.date) + ' · ' + fmtDur(latest.duration);
   const resumen = document.getElementById('podcast-hero-resumen');
@@ -398,7 +407,7 @@ function renderEpisodes(meta) {
     return `<div class="card episode" data-color="1" data-id="${e.date}" role="button" tabindex="0" aria-label="Cargar y reproducir episodio ${num}">
       <div class="card-inner">
         <div class="card-skeleton"></div>
-        <img class="card-image" src="${e.image || COVER}" alt="" loading="lazy" onload="epImgLoaded(this)" onerror="epImgError(this)">
+        <img class="card-image" src="${epCover(e.date)}" alt="" loading="lazy" onload="epImgLoaded(this)" onerror="epImgError(this)">
         <div class="card-overlay color"></div>
       </div>
       <div class="card-info">
