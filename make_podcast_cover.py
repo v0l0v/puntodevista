@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-LOGO = os.path.join(DIR, 'pdv.png')
+LOGO = os.path.join(DIR, 'assets', 'logos', 'logoFpdv.png')
 SIZE = 1400
 BG = '#0a0a0a'
 ACCENT = (255, 1, 0)
