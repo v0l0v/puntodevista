@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 11:11:35 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 11:16:17 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -63,55 +63,43 @@ La fotógrafa Gabrielle Duplantier nos presenta su fotolibro "Pálido", un viaje
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 3 · Miradas de barrio: de los gatos de Nueva York al orgullo Chicano</title>
+    <title>Episodio 3 · El latido de la calle: de felinos neoyorquinos a la mirada chicana</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3</guid>
     <pubDate>Wed, 05 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Bodega Cats of New York
-Un homenaje visual a los felinos que custodian las tiendas de Nueva York, capturados por Gulce Kilkis. Este proyecto no solo celebra su presencia icónica, sino que aboga por su protección legal como parte esencial del alma de la ciudad.
+    <description><![CDATA[Gatos de bodega de Nueva York (Colossal)
+El nuevo fotolibro de Dan Rimada y Gulce Kilkis rinde homenaje a los entrañables felinos que habitan en los comercios de Nueva York, capturando su vida cotidiana entre estanterías. Más allá de las tiernas imágenes, este proyecto busca visibilizar su situación legal y promover reformas que protejan a estos carismáticos guardianes de cuatro patas.
 
-Tom y la Lomo MC-A
-El fotógrafo tailandés Tom nos invita a recuperar el ritmo de la fotografía analógica con la nueva Lomo MC-A. Sus retratos vibrantes demuestran que la espontaneidad y la conexión con el momento son más importantes que cualquier ajuste técnico.
+Al ritmo de la fotografía analógica con Tom y la Lomo MC-A (Lomography Magazine)
+El fotógrafo tailandés Tom comparte su experiencia disparando retratos y escenas cotidianas con la nueva cámara compacta Lomo MC-A. Su enfoque destaca la importancia de dejarse llevar por el ritmo del momento y la calidez nostálgica del carrete, dejando a un lado la obsesión por los ajustes técnicos.
 
-The Calling of The Steppes
-La fotógrafa Alina Bobrova presenta una serie que nos transporta a la inmensidad de las estepas. Una obra que destaca por su capacidad de capturar la atmósfera y el misterio de paisajes remotos.
+La llamada de las estepas por Alina Bobrova (Booooooom)
+La fotógrafa Alina Bobrova nos invita a explorar la inmensidad y la poesía visual de paisajes remotos en su último trabajo. Un recordatorio del poder de la fotografía para transportarnos a horizontes lejanos llenos de misterio, quietud y una profunda conexión con el entorno.
 
-Chicano Camera Culture
-Una exposición histórica en "The Cheech" que recorre seis décadas de fotografía méxico-estadounidense. A través de la "mirada chicana", los artistas documentan su propia resistencia, identidad y vida cotidiana frente a la narrativa externa.
+Orgullo y resistencia en la cultura fotográfica chicana (Huck Magazine)
+Una gran exposición en el Centro Cheech Marin recorre seis décadas de fotografía méxico-americana para reivindicar la mirada chicana frente al relato oficial. A través de 150 obras de cincuenta artistas, la muestra celebra la identidad, la vida familiar y la resistencia comunitaria en Estados Unidos.
 
-URBAN Photo Awards – Finalistas
-Ya se han anunciado los finalistas de la decimoséptima edición de este prestigioso certamen internacional. Una oportunidad única para inspirarse con las mejores capturas de la vida urbana contemporánea alrededor del mundo.
-
-SACA 1504 de Manuel Naranjo Martell
-Este fotolibro explora las raíces de la cultura ecuestre en América a través de rituales ancestrales. Una documentación visual profunda sobre la relación histórica y espiritual entre el ser humano y el caballo.
-
-Convocatorias y Formación
-El sector fotográfico se dinamiza con las becas de la Lucie Foundation, el premio UPP para mujeres fotógrafas y talleres exclusivos. Destaca el workshop de Christopher Morris en Trieste, una cita imperdible para perfeccionar la visión documental.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3" length="624816" type="audio/mpeg"/>
+Novedades y convocatorias en el mundo de la fotografía (L'Œil de la Photographie)
+El panorama fotográfico se llena de oportunidades con los finalistas de los premios de fotografía urbana URBAN, las becas de la Fundación Lucie y el premio de la unión de fotógrafos profesionales para fomentar la diversidad. Además, destacan propuestas como el fotolibro SACA 1504 de Manuel Naranjo Martell y un taller exclusivo con el renombrado Christopher Morris en Trieste.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3" length="1227456" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-05.png"/>
-    <itunes:duration>1:44</itunes:duration>
-    <itunes:title>Episodio 3 · Miradas de barrio: de los gatos de Nueva York al orgullo Chicano</itunes:title>
+    <itunes:duration>3:24</itunes:duration>
+    <itunes:title>Episodio 3 · El latido de la calle: de felinos neoyorquinos a la mirada chicana</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Bodega Cats of New York
-Un homenaje visual a los felinos que custodian las tiendas de Nueva York, capturados por Gulce Kilkis. Este proyecto no solo celebra su presencia icónica, sino que aboga por su protección legal como parte esencial del alma de la ciudad.
+    <itunes:summary><![CDATA[Gatos de bodega de Nueva York (Colossal)
+El nuevo fotolibro de Dan Rimada y Gulce Kilkis rinde homenaje a los entrañables felinos que habitan en los comercios de Nueva York, capturando su vida cotidiana entre estanterías. Más allá de las tiernas imágenes, este proyecto busca visibilizar su situación legal y promover reformas que protejan a estos carismáticos guardianes de cuatro patas.
 
-Tom y la Lomo MC-A
-El fotógrafo tailandés Tom nos invita a recuperar el ritmo de la fotografía analógica con la nueva Lomo MC-A. Sus retratos vibrantes demuestran que la espontaneidad y la conexión con el momento son más importantes que cualquier ajuste técnico.
+Al ritmo de la fotografía analógica con Tom y la Lomo MC-A (Lomography Magazine)
+El fotógrafo tailandés Tom comparte su experiencia disparando retratos y escenas cotidianas con la nueva cámara compacta Lomo MC-A. Su enfoque destaca la importancia de dejarse llevar por el ritmo del momento y la calidez nostálgica del carrete, dejando a un lado la obsesión por los ajustes técnicos.
 
-The Calling of The Steppes
-La fotógrafa Alina Bobrova presenta una serie que nos transporta a la inmensidad de las estepas. Una obra que destaca por su capacidad de capturar la atmósfera y el misterio de paisajes remotos.
+La llamada de las estepas por Alina Bobrova (Booooooom)
+La fotógrafa Alina Bobrova nos invita a explorar la inmensidad y la poesía visual de paisajes remotos en su último trabajo. Un recordatorio del poder de la fotografía para transportarnos a horizontes lejanos llenos de misterio, quietud y una profunda conexión con el entorno.
 
-Chicano Camera Culture
-Una exposición histórica en "The Cheech" que recorre seis décadas de fotografía méxico-estadounidense. A través de la "mirada chicana", los artistas documentan su propia resistencia, identidad y vida cotidiana frente a la narrativa externa.
+Orgullo y resistencia en la cultura fotográfica chicana (Huck Magazine)
+Una gran exposición en el Centro Cheech Marin recorre seis décadas de fotografía méxico-americana para reivindicar la mirada chicana frente al relato oficial. A través de 150 obras de cincuenta artistas, la muestra celebra la identidad, la vida familiar y la resistencia comunitaria en Estados Unidos.
 
-URBAN Photo Awards – Finalistas
-Ya se han anunciado los finalistas de la decimoséptima edición de este prestigioso certamen internacional. Una oportunidad única para inspirarse con las mejores capturas de la vida urbana contemporánea alrededor del mundo.
-
-SACA 1504 de Manuel Naranjo Martell
-Este fotolibro explora las raíces de la cultura ecuestre en América a través de rituales ancestrales. Una documentación visual profunda sobre la relación histórica y espiritual entre el ser humano y el caballo.
-
-Convocatorias y Formación
-El sector fotográfico se dinamiza con las becas de la Lucie Foundation, el premio UPP para mujeres fotógrafas y talleres exclusivos. Destaca el workshop de Christopher Morris en Trieste, una cita imperdible para perfeccionar la visión documental.]]></itunes:summary>
+Novedades y convocatorias en el mundo de la fotografía (L'Œil de la Photographie)
+El panorama fotográfico se llena de oportunidades con los finalistas de los premios de fotografía urbana URBAN, las becas de la Fundación Lucie y el premio de la unión de fotógrafos profesionales para fomentar la diversidad. Además, destacan propuestas como el fotolibro SACA 1504 de Manuel Naranjo Martell y un taller exclusivo con el renombrado Christopher Morris en Trieste.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
@@ -155,67 +143,67 @@ Hans Silvester une su lente a la prosa de Jean Giono en una exposición que cele
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 5 · Cámaras lentas, sombras con duende y el caos de la imperfección</title>
+    <title>Episodio 5 · El arte de ralentizar la mirada y capturar lo invisible</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3</guid>
     <pubDate>Sat, 08 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Levana Cynthia y la magia de la lente Petzval en sus viajes
-La fotógrafa indonesia Levana Cynthia explora las caóticas calles de India y Estados Unidos con la lente Petzval de 55 milímetros. Su experiencia nos invita a bajar el ritmo y abrazar un enfoque manual que transforma el caos urbano en un sueño difuminado y lleno de calma.
+    <description><![CDATA[Levana Cynthia on Travel & Photography with the Petzval Art Lens
+La fotógrafa de bodas Levana Cynthia viaja a la India y a Estados Unidos para probar la lente artística Petzval de 55 milímetros. Su característico efecto de desenfoque y el enfoque manual la invitaron a bajar el ritmo en entornos caóticos, logrando capturas oníricas impregnadas de paz. Una gran inspiración para experimentar con ópticas que transforman nuestra percepción del entorno.
 
-Londres en el tiempo: la belleza del error con la Lomomatic 110
-Un viaje nostálgico por Londres que contrasta fotos de archivo con capturas analógicas en formato de bolsillo. Una inspiradora lección sobre cómo la fotografía de película nos enseña a aceptar el caos, los fallos de encuadre y la magia de lo imprevisto.
+Now & Then in London: To Be (in Frame) or Not To Be
+Un recorrido nostálgico por Londres utilizando la cámara de formato de bolsillo Lomomatic 110 y película de color para recrear fotografías de archivo. Aunque los planes de recreación perfecta fallaron debido al caos urbano, el resultado celebra las imperfecciones y sorpresas mágicas de la fotografía analógica. Nos recuerda que capturar la vida tal como fluye es mucho más valioso que buscar la toma perfecta.
 
-Dagmar Sippel: Autorretratos en Polaroid frente a la era del selfie
-Frente a la inmediatez y saturación de los retratos digitales en los teléfonos inteligentes, esta artista propone una vuelta a la nostalgia. Sus autorretratos en película instantánea celebran lo tangible y lo único de capturar recuerdos con un toque clásico y pausado.
+Dagmar Sippel
+Frente a la inmediatez y masificación de los selfis modernos tomados con teléfonos móviles, la artista Dagmar Sippel reivindica la magia del autorretrato analógico. A través de Polaroids clásicas, nos invita a explorar la intimidad y la nostalgia de un formato físico único. Una propuesta nostálgica que rescata el valor del autodescubrimiento pausado.
 
-La sombra del duende por Cathy Cohen-Solal
-Una intensa serie de retratos flamencos donde las luces y las sombras chocan con fuerza sobre los cuerpos de los bailarines. Las imágenes revelan la verdad del movimiento y la pasión descarnada de este arte tradicional con una potencia visual impresionante.
+Cathy Cohen-Solal
+En su serie "La sombra del duende", la fotógrafa Cathy Cohen-Solal explora el alma del flamenco a través de retratos de gran fuerza expresiva. El violento contraste entre luces y sombras desvela la intensidad y la verdad del cuerpo en movimiento. Una obra visualmente impactante que captura la pasión y el misterio de esta disciplina artística.
 
-Materia común: el vínculo ancestral con la naturaleza de Sonia Fattori
-Este proyecto fotográfico explora la profunda conexión entre el ser humano y su entorno natural a través de composiciones muy cuidadas. La autora combina la fotografía con elementos de la propia tierra para recordarnos nuestra relación indivisible con el planeta.
+Sonia Fattori
+El proyecto fotográfico "Materia común" explora la profunda y ancestral conexión que une al ser humano con el medio ambiente natural. Mediante una cuidada combinación de imágenes, Sonia Fattori nos invita a reflexionar sobre nuestra pertenencia a la Tierra. Una llamada visual a reconectar con la naturaleza desde el respeto y la contemplación.
 
-Lo invisible al alcance de la mano de Florent Kopp
-Una mirada poética a las calles de la ciudad, donde miles de vidas se cruzan en silencio todos los días. El autor captura gestos, miradas y rostros fugaces, revelando la belleza de las existencias individuales que solemos pasar por alto en el día a día.
+Florent Kopp
+En "Lo invisible al alcance", Florent Kopp retrata el latido de las grandes urbes, donde miles de vidas individuales se cruzan a diario sin llegar a mirarse. Sus fotografías congelan gestos, miradas y rostros anónimos en medio del bullicio cotidiano. Una invitación a detenernos y observar la belleza sutil de las conexiones invisibles de la ciudad.
 
-Sizigia: colisiones de historia y vida por Catherine Gaulmier
-Un tejido visual bellísimo que entrelaza momentos cotidianos y memorias en las islas del estuario del Gironda. La fotógrafa mezcla pasado y presente para explorar la identidad, la geografía y la poesía visual de estos singulares territorios insulares.
+Catherine Gaulmier
+Con su serie "Sizigia/Eadem", Catherine Gaulmier entrelaza la historia y la vida cotidiana en las islas del estuario del Gironda. A través de colisiones visuales y texturas superpuestas, teje un relato poético sobre el paso del tiempo y el territorio. Una hermosa muestra de cómo la fotografía puede fusionar memoria e identidad geográfica.
 
-Famagusta: el dolor de la nostalgia por Stefanos Kouratzis
-Una sobrecogedora exploración visual de Varosha, la famosa ciudad fantasma de Chipre. El fotógrafo nos enfrenta a la dolorosa nostalgia y la complejidad histórica de un lugar marcado por el abandono, el conflicto y el paso del tiempo.
+Stefanos Kouratzis
+Su proyecto sobre Varosha, titulado "Famagusta: el dolor de la nostalgia", aborda el peso histórico y emocional de esta ciudad fantasma en Chipre. Kouratzis sostiene que nadie entra en este lugar con inocencia, pues mirar implica convertirse en testigo de su abandono. Una obra conmovedora y necesaria sobre la memoria, el dolor y la pérdida.
 
-Nocturno: la tensión entre ocultar y mostrar de Nikita Dankin
-Una serie de retratos íntimos que juegan en la penumbra y los contrastes profundos del blanco y negro. A través de encuadres muy cerrados y gestos contenidos, el autor evoca el misterio de las emociones que se esconden en la oscuridad.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1137744" type="audio/mpeg"/>
+Nikita Dankin
+La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión latente entre lo que se oculta y lo que se muestra. Utilizando la oscuridad, encuadres muy cerrados y gestos contenidos, el autor crea una atmósfera de misterio e introspección. Una lección magistral sobre cómo usar las sombras para revelar la psicología del sujeto.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1161504" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-08.png"/>
-    <itunes:duration>3:09</itunes:duration>
-    <itunes:title>Episodio 5 · Cámaras lentas, sombras con duende y el caos de la imperfección</itunes:title>
+    <itunes:duration>3:13</itunes:duration>
+    <itunes:title>Episodio 5 · El arte de ralentizar la mirada y capturar lo invisible</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Levana Cynthia y la magia de la lente Petzval en sus viajes
-La fotógrafa indonesia Levana Cynthia explora las caóticas calles de India y Estados Unidos con la lente Petzval de 55 milímetros. Su experiencia nos invita a bajar el ritmo y abrazar un enfoque manual que transforma el caos urbano en un sueño difuminado y lleno de calma.
+    <itunes:summary><![CDATA[Levana Cynthia on Travel & Photography with the Petzval Art Lens
+La fotógrafa de bodas Levana Cynthia viaja a la India y a Estados Unidos para probar la lente artística Petzval de 55 milímetros. Su característico efecto de desenfoque y el enfoque manual la invitaron a bajar el ritmo en entornos caóticos, logrando capturas oníricas impregnadas de paz. Una gran inspiración para experimentar con ópticas que transforman nuestra percepción del entorno.
 
-Londres en el tiempo: la belleza del error con la Lomomatic 110
-Un viaje nostálgico por Londres que contrasta fotos de archivo con capturas analógicas en formato de bolsillo. Una inspiradora lección sobre cómo la fotografía de película nos enseña a aceptar el caos, los fallos de encuadre y la magia de lo imprevisto.
+Now & Then in London: To Be (in Frame) or Not To Be
+Un recorrido nostálgico por Londres utilizando la cámara de formato de bolsillo Lomomatic 110 y película de color para recrear fotografías de archivo. Aunque los planes de recreación perfecta fallaron debido al caos urbano, el resultado celebra las imperfecciones y sorpresas mágicas de la fotografía analógica. Nos recuerda que capturar la vida tal como fluye es mucho más valioso que buscar la toma perfecta.
 
-Dagmar Sippel: Autorretratos en Polaroid frente a la era del selfie
-Frente a la inmediatez y saturación de los retratos digitales en los teléfonos inteligentes, esta artista propone una vuelta a la nostalgia. Sus autorretratos en película instantánea celebran lo tangible y lo único de capturar recuerdos con un toque clásico y pausado.
+Dagmar Sippel
+Frente a la inmediatez y masificación de los selfis modernos tomados con teléfonos móviles, la artista Dagmar Sippel reivindica la magia del autorretrato analógico. A través de Polaroids clásicas, nos invita a explorar la intimidad y la nostalgia de un formato físico único. Una propuesta nostálgica que rescata el valor del autodescubrimiento pausado.
 
-La sombra del duende por Cathy Cohen-Solal
-Una intensa serie de retratos flamencos donde las luces y las sombras chocan con fuerza sobre los cuerpos de los bailarines. Las imágenes revelan la verdad del movimiento y la pasión descarnada de este arte tradicional con una potencia visual impresionante.
+Cathy Cohen-Solal
+En su serie "La sombra del duende", la fotógrafa Cathy Cohen-Solal explora el alma del flamenco a través de retratos de gran fuerza expresiva. El violento contraste entre luces y sombras desvela la intensidad y la verdad del cuerpo en movimiento. Una obra visualmente impactante que captura la pasión y el misterio de esta disciplina artística.
 
-Materia común: el vínculo ancestral con la naturaleza de Sonia Fattori
-Este proyecto fotográfico explora la profunda conexión entre el ser humano y su entorno natural a través de composiciones muy cuidadas. La autora combina la fotografía con elementos de la propia tierra para recordarnos nuestra relación indivisible con el planeta.
+Sonia Fattori
+El proyecto fotográfico "Materia común" explora la profunda y ancestral conexión que une al ser humano con el medio ambiente natural. Mediante una cuidada combinación de imágenes, Sonia Fattori nos invita a reflexionar sobre nuestra pertenencia a la Tierra. Una llamada visual a reconectar con la naturaleza desde el respeto y la contemplación.
 
-Lo invisible al alcance de la mano de Florent Kopp
-Una mirada poética a las calles de la ciudad, donde miles de vidas se cruzan en silencio todos los días. El autor captura gestos, miradas y rostros fugaces, revelando la belleza de las existencias individuales que solemos pasar por alto en el día a día.
+Florent Kopp
+En "Lo invisible al alcance", Florent Kopp retrata el latido de las grandes urbes, donde miles de vidas individuales se cruzan a diario sin llegar a mirarse. Sus fotografías congelan gestos, miradas y rostros anónimos en medio del bullicio cotidiano. Una invitación a detenernos y observar la belleza sutil de las conexiones invisibles de la ciudad.
 
-Sizigia: colisiones de historia y vida por Catherine Gaulmier
-Un tejido visual bellísimo que entrelaza momentos cotidianos y memorias en las islas del estuario del Gironda. La fotógrafa mezcla pasado y presente para explorar la identidad, la geografía y la poesía visual de estos singulares territorios insulares.
+Catherine Gaulmier
+Con su serie "Sizigia/Eadem", Catherine Gaulmier entrelaza la historia y la vida cotidiana en las islas del estuario del Gironda. A través de colisiones visuales y texturas superpuestas, teje un relato poético sobre el paso del tiempo y el territorio. Una hermosa muestra de cómo la fotografía puede fusionar memoria e identidad geográfica.
 
-Famagusta: el dolor de la nostalgia por Stefanos Kouratzis
-Una sobrecogedora exploración visual de Varosha, la famosa ciudad fantasma de Chipre. El fotógrafo nos enfrenta a la dolorosa nostalgia y la complejidad histórica de un lugar marcado por el abandono, el conflicto y el paso del tiempo.
+Stefanos Kouratzis
+Su proyecto sobre Varosha, titulado "Famagusta: el dolor de la nostalgia", aborda el peso histórico y emocional de esta ciudad fantasma en Chipre. Kouratzis sostiene que nadie entra en este lugar con inocencia, pues mirar implica convertirse en testigo de su abandono. Una obra conmovedora y necesaria sobre la memoria, el dolor y la pérdida.
 
-Nocturno: la tensión entre ocultar y mostrar de Nikita Dankin
-Una serie de retratos íntimos que juegan en la penumbra y los contrastes profundos del blanco y negro. A través de encuadres muy cerrados y gestos contenidos, el autor evoca el misterio de las emociones que se esconden en la oscuridad.]]></itunes:summary>
+Nikita Dankin
+La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión latente entre lo que se oculta y lo que se muestra. Utilizando la oscuridad, encuadres muy cerrados y gestos contenidos, el autor crea una atmósfera de misterio e introspección. Una lección magistral sobre cómo usar las sombras para revelar la psicología del sujeto.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
