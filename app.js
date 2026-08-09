@@ -21,6 +21,17 @@ const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
 const PODCAST_COVER = 'podcast-cover.png';
 
+const CLICK_OPEN = 'assets/mp3/click3.mp3';
+let _clickAudio = null;
+
+function playClickOpen() {
+  try {
+    if (!_clickAudio) _clickAudio = new Audio(CLICK_OPEN);
+    _clickAudio.currentTime = 0;
+    _clickAudio.play().catch(() => {});
+  } catch (e) {}
+}
+
 let __podcast = null;
 
 function initPodcastPlayers() {
@@ -1229,6 +1240,8 @@ async function openModal(card) {
     if (entry) playPodcastInBar(entry);
     return;
   }
+
+  playClickOpen();
 
   if (source === 'lomography') {
     const entry = window.__allEntries?.find(e => e._id === id);
