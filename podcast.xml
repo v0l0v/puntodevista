@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 09:25:22 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 09:33:30 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -135,55 +135,17 @@ Hans Silvester une su lente a la prosa de Jean Giono en una exposición que cele
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 5 · Entre el sueño del Petzval y la memoria de las calles</title>
+    <title>Episodio 5 · Capturando la esencia del tiempo y la luz</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3</guid>
     <pubDate>Sat, 08 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Levana Cynthia y la magia del Petzval
-Descubre cómo esta fotógrafa de bodas utiliza la lente Petzval para transformar el caos de la India en escenas oníricas y pausadas. Su enfoque nos invita a bajar el ritmo y capturar la conexión emocional pura a través de un bokeh artístico y único.
-
-Londres: Un viaje entre el ayer y el hoy
-Angelina Tacinelli recorre las calles londinenses con su Lomomatic 110, intentando recrear fotografías de archivo de la ciudad. El resultado es un diario visual que celebra la imperfección y la belleza de capturar la vida tal como sucede, aceptando el caos creativo.
-
-Dagmar Sippel
-Frente a la inmediatez de los selfies digitales, Sippel reivindica el autorretrato en Polaroid como un objeto tangible y pausado. Es una invitación a redescubrir nuestra propia imagen a través de la química y la nostalgia del formato analógico.
-
-Cathy Cohen-Solal
-En su serie "La sombra del duende", la luz y la sombra chocan para revelar la verdad del cuerpo en el flamenco. Cada retrato captura la intensidad y la emoción profunda de un arte donde el movimiento se vuelve pura expresión visual.
-
-Sonia Fattori
-A través de su proyecto "Common Matter", la fotógrafa explora el vínculo ancestral y orgánico que une al ser humano con la naturaleza. Sus imágenes nos proponen una reconexión espiritual con el entorno a través de texturas y paisajes evocadores.
-
-Florent Kopp
-Este trabajo nos sumerge en el fluir constante de las ciudades para rescatar gestos y miradas que suelen pasar desapercibidos. Es una oda a las vidas anónimas que se cruzan en el asfalto, haciendo visible la humanidad que reside en lo cotidiano.
-
-Catherine Gaulmier
-Gaulmier teje una narrativa visual donde la historia y la vida en las islas del estuario de la Gironda se entrelazan. Sus fotografías]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="642240" type="audio/mpeg"/>
+    <description><![CDATA[Entre el bokeh de ensueño y la nostalgia de las calles londinenses]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1000224" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-08.png"/>
-    <itunes:duration>1:47</itunes:duration>
-    <itunes:title>Episodio 5 · Entre el sueño del Petzval y la memoria de las calles</itunes:title>
+    <itunes:duration>2:46</itunes:duration>
+    <itunes:title>Episodio 5 · Capturando la esencia del tiempo y la luz</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Levana Cynthia y la magia del Petzval
-Descubre cómo esta fotógrafa de bodas utiliza la lente Petzval para transformar el caos de la India en escenas oníricas y pausadas. Su enfoque nos invita a bajar el ritmo y capturar la conexión emocional pura a través de un bokeh artístico y único.
-
-Londres: Un viaje entre el ayer y el hoy
-Angelina Tacinelli recorre las calles londinenses con su Lomomatic 110, intentando recrear fotografías de archivo de la ciudad. El resultado es un diario visual que celebra la imperfección y la belleza de capturar la vida tal como sucede, aceptando el caos creativo.
-
-Dagmar Sippel
-Frente a la inmediatez de los selfies digitales, Sippel reivindica el autorretrato en Polaroid como un objeto tangible y pausado. Es una invitación a redescubrir nuestra propia imagen a través de la química y la nostalgia del formato analógico.
-
-Cathy Cohen-Solal
-En su serie "La sombra del duende", la luz y la sombra chocan para revelar la verdad del cuerpo en el flamenco. Cada retrato captura la intensidad y la emoción profunda de un arte donde el movimiento se vuelve pura expresión visual.
-
-Sonia Fattori
-A través de su proyecto "Common Matter", la fotógrafa explora el vínculo ancestral y orgánico que une al ser humano con la naturaleza. Sus imágenes nos proponen una reconexión espiritual con el entorno a través de texturas y paisajes evocadores.
-
-Florent Kopp
-Este trabajo nos sumerge en el fluir constante de las ciudades para rescatar gestos y miradas que suelen pasar desapercibidos. Es una oda a las vidas anónimas que se cruzan en el asfalto, haciendo visible la humanidad que reside en lo cotidiano.
-
-Catherine Gaulmier
-Gaulmier teje una narrativa visual donde la historia y la vida en las islas del estuario de la Gironda se entrelazan. Sus fotografías]]></itunes:summary>
+    <itunes:summary><![CDATA[Entre el bokeh de ensueño y la nostalgia de las calles londinenses]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
