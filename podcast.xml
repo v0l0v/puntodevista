@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 11:16:17 +0000</lastBuildDate>
+<lastBuildDate>Sun, 09 Aug 2026 21:58:16 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -204,6 +204,22 @@ Su proyecto sobre Varosha, titulado "Famagusta: el dolor de la nostalgia", abord
 
 Nikita Dankin
 La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión latente entre lo que se oculta y lo que se muestra. Utilizando la oscuridad, encuadres muy cerrados y gestos contenidos, el autor crea una atmósfera de misterio e introspección. Una lección magistral sobre cómo usar las sombras para revelar la psicología del sujeto.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 6 · Del Grand Tour a la cámara de bolsillo: el viaje que inventó la fotografía de viajes</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-09.mp3</guid>
+    <pubDate>Sun, 09 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[El Grand Tour y los orígenes de la fotografía de viajes
+¿Sabías que antes de las cámaras la única forma de recordar un viaje era pintándolo? Este fascinante recorrido histórico nos lleva desde los aristocráticos viajes del "Grand Tour" europeo en el siglo dieciocho hasta la revolución de las primeras cámaras portátiles de Kodak. Una inspiradora mirada a cómo el deseo de explorar el mundo dio forma al arte de documentar nuestras aventuras.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-09.mp3" length="1059408" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-09.png"/>
+    <itunes:duration>2:56</itunes:duration>
+    <itunes:title>Episodio 6 · Del Grand Tour a la cámara de bolsillo: el viaje que inventó la fotografía de viajes</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[El Grand Tour y los orígenes de la fotografía de viajes
+¿Sabías que antes de las cámaras la única forma de recordar un viaje era pintándolo? Este fascinante recorrido histórico nos lleva desde los aristocráticos viajes del "Grand Tour" europeo en el siglo dieciocho hasta la revolución de las primeras cámaras portátiles de Kodak. Una inspiradora mirada a cómo el deseo de explorar el mundo dio forma al arte de documentar nuestras aventuras.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
