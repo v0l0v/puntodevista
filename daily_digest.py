@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 from server import firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name, trim_lomo_body
 from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_huck,
-                                fetch_lensculture, fetch_odlp, fetch_magnum)
+                                fetch_lensculture, fetch_odlp, fetch_magnum, fetch_shootitwithfilm)
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
@@ -24,6 +24,7 @@ SOURCES = [
     ('lensculture', 'LensCulture'),
     ('odlp', 'L\'Œil de la Photographie'),
     ('magnum', 'Magnum Photos'),
+    ('shootitwithfilm', 'Shoot It With Film'),
 ]
 
 RSS_SOURCES = [
@@ -34,6 +35,7 @@ RSS_SOURCES = [
     ('lensculture', 'LensCulture', fetch_lensculture),
     ('odlp', 'L\'Œil de la Photographie', fetch_odlp),
     ('magnum', 'Magnum Photos', fetch_magnum),
+    ('shootitwithfilm', 'Shoot It With Film', fetch_shootitwithfilm),
 ]
 
 EMOJI_RE = re.compile(

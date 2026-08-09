@@ -2,6 +2,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import time
 import urllib.request
 from datetime import date, datetime
@@ -247,7 +248,7 @@ def fmt_fecha_es(d):
 
 def build_summary_prompt(podcast_content):
     today = date.today().isoformat()
-    return f"""Hoy es {today}. A continuación tienes el texto completo de varios artículos de fotografía.
+    return f"""Hoy es {today}. A continuación tienes el texto completo de varios artículos de fotografía de distintas fuentes.
 
 {podcast_content}
 
@@ -255,23 +256,40 @@ Escribe tu respuesta en TRES secciones separadas por estas líneas exactas:
 {TITLE_MARKER}
 {LOCUTABLE_MARKER}
 
-PRIMERA SECCIÓN - Un título creativo en español para el episodio del podcast, extraído del contexto de los artículos. Solo el título, sin explicaciones ni notas adicionales.
+PRIMERA SECCIÓN - Título creativo en español para el episodio. Solo el título, sin explicaciones ni notas.
 
-SEGUNDA SECCIÓN - Solo los resúmenes para redes sociales, con este formato exacto:
+SEGUNDA SECCIÓN - Resúmenes para redes sociales (formato exacto):
 - Sin introducciones, sin títulos de programa, sin despedidas, sin notas.
-- Por cada artículo: pon el título en negrita **Título** y debajo 2-3 frases de resumen atractivas en español.
-- Los resúmenes deben sonar amenos e inspiradores, como para leerlos en una red social.
+- Por cada artículo: título en negrita **Título** y debajo 2-3 frases de resumen atractivas en español.
+- Tono ameno e inspirador, como para redes sociales.
 
 TERCERA SECCIÓN (solo el texto locutable para el audio del podcast):
-- El guion de radio en español, tono natural y cercano.
-- Debe sonar bien al leerlo en voz alta.
-- Empieza directo con el saludo: "¡Hola, muy buenas!".
-- Termina con "¡Nos escuchamos mañana!".
-- Sin títulos, sin etiquetas, sin resúmenes, solo la locución."""
+REGLAS ESTRICTAS:
+- SOLO TEXTO PARA LEER EN VOZ ALTA. Nada de markdown, asteriscos, corchetes, etiquetas como "Título:", "Fotógrafo:", "Fuente:", viñetas, guiones, etc.
+- Títulos de obras, exposiciones, series, libros, películas: TRADÚCELOS al español natural ("Paisajes etéreos", no "Ethereal Landscapes"). Si no tienes traducción oficial, adapta el significado.
+- Nombres propios de personas/lugares: MANTÉN el original.
+- Estructura de programa de radio:
+  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español, ej: 9 de agosto de 2026]."
+  2. BLOQUES POR FUENTE: Para cada fuente que tenga artículos, haz una transición natural → "En Colossal hoy..." / "En Lomography Magazine encontramos..." / "Y en Shoot It With Film..." → narra cada artículo en 2-3 frases con tono cercano, como contándole a un amigo. Une artículos de la misma fuente con fluidez.
+  3. TRANSICIONES entre fuentes: "Y siguiendo con...", "También en...", "Cambiamos de tercio hacia...", "Para cerrar esta ronda...".
+  4. CIERRE obligatorio: "Y hasta aquí la inspiración de hoy. ¡Nos escuchamos mañana con más fotografía!"
+- Duración objetivo: 3-4 minutos de locución (~400-600 palabras).
+- Ritmo: frases cortas, respiradas, lenguaje oral (contracciones, "vamos a ver", "fíjate", "resulta que")."""
+
+
+def clean_for_gemini(text):
+    """Limpia el texto para Gemini: quita markdown, etiquetas, deja solo contenido legible."""
+    t = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)          # **negrita** → negrita
+    t = re.sub(r'\*([^*]+)\*', r'\1', t)                # *cursiva* → cursiva
+    t = re.sub(r'`([^`]+)`', r'\1', t)                  # `code` → code
+    t = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', t)      # [link](url) → link
+    t = re.sub(r'^#+\s*', '', t, flags=re.M)            # # encabezados
+    t = re.sub(r'^(?:Fotógrafo|Fotógrafos|Fuente|Source):\s*.+$', '', t, flags=re.M)
+    t = re.sub(r'\n{3,}', '\n\n', t)                    # múltiples saltos
+    return t.strip()
 
 
 def main():
-    import sys
     os.makedirs(OUT_DIR, exist_ok=True)
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     today = date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else date.today()
@@ -284,6 +302,9 @@ def main():
 
     print(f'  Leyendo: {podcast_file.name}')
     content = podcast_file.read_text(encoding='utf-8')
+
+    print('  Limpiando contenido para Gemini...')
+    content = clean_for_gemini(content)
 
     print('  Enviando a Gemini...')
     prompt = build_summary_prompt(content)
@@ -362,6 +383,19 @@ def main():
         tag_title = clean_text(podcast_title) if podcast_title else f'Podcast {today.isoformat()}'
         if tag_audio(audio_path, tag_title):
             print('  Audio etiquetado (Punto de vista Podcast)')
+
+        if day_image:
+            print('  Generando portada del episodio...')
+            try:
+                subprocess.run([
+                    sys.executable, os.path.join(DIR, 'make_podcast_cover.py'),
+                    today.isoformat(), day_image
+                ], check=True, capture_output=True, text=True, timeout=60)
+                print('  Portada generada')
+            except subprocess.CalledProcessError as e:
+                print(f'  ⚠️ Error generando portada: {e.stderr[:200]}')
+            except Exception as e:
+                print(f'  ⚠️ Error generando portada: {e}')
 
         print('  Enviando audio a Telegram...')
         audio_caption = f'🎙️ {fmt_fecha_es(today)}'

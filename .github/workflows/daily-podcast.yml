@@ -27,7 +27,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          pip install requests edge-tts
+          pip install requests edge-tts Pillow
 
       - name: Configurar git
         run: |
@@ -47,11 +47,16 @@ jobs:
         run: |
           gh release view episodios >/dev/null 2>&1 || \
             gh release create episodios --title "Punto de vista · podcast" --notes "Episodios diarios del podcast de Punto de vista"
-          MP3="podcast/podcast-$(date +%F).mp3"
+          DATE=$(date +%F)
+          MP3="podcast/podcast-${DATE}.mp3"
+          COVER="podcast-cover-${DATE}.png"
           if [ -f "$MP3" ]; then
             gh release upload episodios "$MP3" --clobber
           else
             echo "Sin episodio hoy"
+          fi
+          if [ -f "$COVER" ]; then
+            gh release upload episodios "$COVER" --clobber
           fi
 
       - name: Regenerar feed RSS del podcast

@@ -56,7 +56,7 @@ def item_lines(entry, num):
     ptitle = (entry.get('podcast_title') or '').strip()
     title = f'Episodio {num} · {ptitle}' if ptitle else f'Episodio {num} · {fmt_es(date_str)}'
     desc = entry.get('description') or ''
-    art = entry.get('image') or COVER
+    ep_cover = f'{RELEASE}/podcast-cover-{date_str}.png'
     dur = fmt_duration(entry.get('duration'))
     url = f'{RELEASE}/podcast-{date_str}.mp3'
     size = int(entry.get('size') or 0)
@@ -68,7 +68,7 @@ def item_lines(entry, num):
         f'    <pubDate>{pub}</pubDate>',
         f'    <description>{cdata(desc)}</description>',
         f'    <enclosure url="{url}" length="{size}" type="audio/mpeg"/>',
-        f'    <itunes:image href="{esc(art)}"/>',
+        f'    <itunes:image href="{esc(ep_cover)}"/>',
     ]
     if dur:
         lines.append(f'    <itunes:duration>{dur}</itunes:duration>')
