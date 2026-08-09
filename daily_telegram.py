@@ -29,7 +29,7 @@ def _cfg(key):
 TG_TOKEN = _cfg('TG_TOKEN')
 TG_CHAT_ID = _cfg('TG_CHAT_ID')
 GEMINI_KEY = _cfg('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-3-flash'
+GEMINI_MODEL = 'gemini-3.5-flash'
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
 MAX_RETRIES = 5
@@ -51,7 +51,7 @@ def gemini_request(prompt):
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
             'temperature': 0.7,
-            'maxOutputTokens': 2048,
+            'maxOutputTokens': 8192,
         }
     }
     data = json.dumps(body).encode()
