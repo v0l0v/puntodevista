@@ -51,6 +51,11 @@ def create_cover(day_image_path, date_str, out_path):
     if day_image_path and os.path.exists(day_image_path):
         try:
             day_img = Image.open(day_image_path).convert('RGBA')
+            w, h = day_img.size
+            s = min(w, h)
+            left = (w - s) // 2
+            top = (h - s) // 2
+            day_img = day_img.crop((left, top, left + s, top + s))
             day_img = day_img.resize((SIZE, SIZE), Image.LANCZOS)
 
             dark_overlay = Image.new('RGBA', (SIZE, SIZE), (0, 0, 0, 180))

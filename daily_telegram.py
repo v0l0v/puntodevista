@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import re
 import subprocess
 import sys
@@ -358,6 +359,9 @@ def main():
             except Exception:
                 images = []
         images = [img for img in images if img != day_image]
+        if not day_image and images:
+            day_image = random.choice(images)
+            print(f'  Sin imagen del día, usando aleatoria de la galería: {day_image[:70]}')
         meta = []
         if os.path.exists(META_PATH):
             try:
