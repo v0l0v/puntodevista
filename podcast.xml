@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 09 Aug 2026 21:58:16 +0000</lastBuildDate>
+<lastBuildDate>Mon, 10 Aug 2026 22:07:13 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -220,6 +220,46 @@ La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión 
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[El Grand Tour y los orígenes de la fotografía de viajes
 ¿Sabías que antes de las cámaras la única forma de recordar un viaje era pintándolo? Este fascinante recorrido histórico nos lleva desde los aristocráticos viajes del "Grand Tour" europeo en el siglo dieciocho hasta la revolución de las primeras cámaras portátiles de Kodak. Una inspiradora mirada a cómo el deseo de explorar el mundo dio forma al arte de documentar nuestras aventuras.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 7 · Miradas del pasado, noches eléctricas y el arte de cuestionar la realidad</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-10.mp3</guid>
+    <pubDate>Mon, 10 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[‘Remember Me’ de la National Gallery of Art
+Esta exposición rescata el autorretrato y la autoexpresión de la comunidad afroamericana en los inicios de la fotografía a través de daguerrotipos y ambrotipos. Una muestra fascinante que nos inspira a entender el retrato no solo como un registro estético, sino como una poderosa herramienta de identidad, dignidad y resistencia histórica.
+
+Un día con Brian Hippern y la Lomo'Instant Automat Glass
+El artista de collage Brian Hippern nos invita a acompañarlo en su proceso creativo de fin de semana utilizando una cámara instantánea en Seattle. Su enfoque nos enseña a buscar la inspiración en los pequeños rituales cotidianos, la naturaleza y la belleza de los materiales antiguos rescatados del olvido.
+
+Nocturne de Igor Brekhov
+Tras trece años como ingeniero, Igor Brekhov dio un salto de fe para dedicarse por completo a la fotografía, dando vida a su íntimo proyecto "Nocturne". Su trabajo nos demuestra que nunca es tarde para cambiar de rumbo y que la noche es un lienzo perfecto para explorar nuestra propia voz artística.
+
+Las noches eléctricas del Japón de los setenta por Keizō Kitajima
+El fotolibro "Tokyo-Koza" de Keizō Kitajima captura la vibrante y caótica vida nocturna de Tokio y Okinawa en una época de intensos cambios sociales. Con un estilo crudo e influenciado por el movimiento Provoke, Kitajima nos inspira a disparar con urgencia, viviendo la fotografía de calle siempre en presente.
+
+Joyas fotográficas en L'Œil de la Photographie
+Desde las reflexiones visuales de Klavdij Sluban y el activismo ecológico de Peter Beard, hasta las provocaciones de Oliviero Toscani y la elegancia minimalista de Noell Oszvald. Esta recopilación de exposiciones y monografías nos recuerda que la fotografía es un medio infinito para cuestionar el mundo, desafiar los límites del formato y capturar la memoria colectiva.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-10.mp3" length="1164240" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-10.png"/>
+    <itunes:duration>3:14</itunes:duration>
+    <itunes:title>Episodio 7 · Miradas del pasado, noches eléctricas y el arte de cuestionar la realidad</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[‘Remember Me’ de la National Gallery of Art
+Esta exposición rescata el autorretrato y la autoexpresión de la comunidad afroamericana en los inicios de la fotografía a través de daguerrotipos y ambrotipos. Una muestra fascinante que nos inspira a entender el retrato no solo como un registro estético, sino como una poderosa herramienta de identidad, dignidad y resistencia histórica.
+
+Un día con Brian Hippern y la Lomo'Instant Automat Glass
+El artista de collage Brian Hippern nos invita a acompañarlo en su proceso creativo de fin de semana utilizando una cámara instantánea en Seattle. Su enfoque nos enseña a buscar la inspiración en los pequeños rituales cotidianos, la naturaleza y la belleza de los materiales antiguos rescatados del olvido.
+
+Nocturne de Igor Brekhov
+Tras trece años como ingeniero, Igor Brekhov dio un salto de fe para dedicarse por completo a la fotografía, dando vida a su íntimo proyecto "Nocturne". Su trabajo nos demuestra que nunca es tarde para cambiar de rumbo y que la noche es un lienzo perfecto para explorar nuestra propia voz artística.
+
+Las noches eléctricas del Japón de los setenta por Keizō Kitajima
+El fotolibro "Tokyo-Koza" de Keizō Kitajima captura la vibrante y caótica vida nocturna de Tokio y Okinawa en una época de intensos cambios sociales. Con un estilo crudo e influenciado por el movimiento Provoke, Kitajima nos inspira a disparar con urgencia, viviendo la fotografía de calle siempre en presente.
+
+Joyas fotográficas en L'Œil de la Photographie
+Desde las reflexiones visuales de Klavdij Sluban y el activismo ecológico de Peter Beard, hasta las provocaciones de Oliviero Toscani y la elegancia minimalista de Noell Oszvald. Esta recopilación de exposiciones y monografías nos recuerda que la fotografía es un medio infinito para cuestionar el mundo, desafiar los límites del formato y capturar la memoria colectiva.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
