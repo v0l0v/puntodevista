@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 10 Aug 2026 22:07:13 +0000</lastBuildDate>
+<lastBuildDate>Tue, 11 Aug 2026 22:11:29 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -260,6 +260,40 @@ El fotolibro "Tokyo-Koza" de Keizō Kitajima captura la vibrante y caótica vida
 
 Joyas fotográficas en L'Œil de la Photographie
 Desde las reflexiones visuales de Klavdij Sluban y el activismo ecológico de Peter Beard, hasta las provocaciones de Oliviero Toscani y la elegancia minimalista de Noell Oszvald. Esta recopilación de exposiciones y monografías nos recuerda que la fotografía es un medio infinito para cuestionar el mundo, desafiar los límites del formato y capturar la memoria colectiva.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 8 · Capturando el alma de la noche y la memoria de las calles</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-11.mp3</guid>
+    <pubDate>Tue, 11 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Joel Byron y la magia imperfecta del Petzval 55 mm en Brighton
+El realizador Joel Byron captura la energía de un concierto de reggae utilizando una lente Petzval de Lomography, abrazando sus destellos y desenfoques únicos. Su experiencia nos invita a soltar el control técnico para dejar que la luz y el ambiente interpreten la escena de forma orgánica. Una gran fuente de inspiración para perderle el miedo a la imperfección.
+
+Roma en analógico: Una mirada a los rincones ocultos de la Ciudad Eterna
+Los fotógrafos Ugo Leonetti y Johannes Beilharz nos guían por una Roma alejada de los tópicos turísticos a través de la fotografía analógica. Utilizando cámaras clásicas y películas experimentales, demuestran cómo la paciencia y la observación transforman lo cotidiano y lo brutalista en pura poesía visual.
+
+Sexo, clubes y disidencia: Medio siglo de resistencia nocturna LGBTQ+
+El nuevo libro de Amelia Abraham recopila cincuenta años de fotografía de la vida nocturna queer como refugio y acto de resistencia. Las imágenes celebran la libertad, la diversidad y el nacimiento de una cultura vibrante que floreció en la clandestinidad de la noche.
+
+Identidad, memoria y homenajes en el ojo de la fotografía
+Esta edición destaca el trabajo de Jeremy Dennis sobre la identidad indígena Shinnecock, las ciudades abandonadas de Jean-Marc Yersin y un emotivo tributo al fotógrafo de Magnum Erich Hartmann. Una variedad de miradas que exploran la memoria histórica, el territorio y la experimentación química en el laboratorio.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-11.mp3" length="1066176" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-11.png"/>
+    <itunes:duration>2:57</itunes:duration>
+    <itunes:title>Episodio 8 · Capturando el alma de la noche y la memoria de las calles</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Joel Byron y la magia imperfecta del Petzval 55 mm en Brighton
+El realizador Joel Byron captura la energía de un concierto de reggae utilizando una lente Petzval de Lomography, abrazando sus destellos y desenfoques únicos. Su experiencia nos invita a soltar el control técnico para dejar que la luz y el ambiente interpreten la escena de forma orgánica. Una gran fuente de inspiración para perderle el miedo a la imperfección.
+
+Roma en analógico: Una mirada a los rincones ocultos de la Ciudad Eterna
+Los fotógrafos Ugo Leonetti y Johannes Beilharz nos guían por una Roma alejada de los tópicos turísticos a través de la fotografía analógica. Utilizando cámaras clásicas y películas experimentales, demuestran cómo la paciencia y la observación transforman lo cotidiano y lo brutalista en pura poesía visual.
+
+Sexo, clubes y disidencia: Medio siglo de resistencia nocturna LGBTQ+
+El nuevo libro de Amelia Abraham recopila cincuenta años de fotografía de la vida nocturna queer como refugio y acto de resistencia. Las imágenes celebran la libertad, la diversidad y el nacimiento de una cultura vibrante que floreció en la clandestinidad de la noche.
+
+Identidad, memoria y homenajes en el ojo de la fotografía
+Esta edición destaca el trabajo de Jeremy Dennis sobre la identidad indígena Shinnecock, las ciudades abandonadas de Jean-Marc Yersin y un emotivo tributo al fotógrafo de Magnum Erich Hartmann. Una variedad de miradas que exploran la memoria histórica, el territorio y la experimentación química en el laboratorio.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
