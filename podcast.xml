@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Tue, 11 Aug 2026 22:11:29 +0000</lastBuildDate>
+<lastBuildDate>Wed, 12 Aug 2026 22:10:26 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -294,6 +294,76 @@ El nuevo libro de Amelia Abraham recopila cincuenta años de fotografía de la v
 
 Identidad, memoria y homenajes en el ojo de la fotografía
 Esta edición destaca el trabajo de Jeremy Dennis sobre la identidad indígena Shinnecock, las ciudades abandonadas de Jean-Marc Yersin y un emotivo tributo al fotógrafo de Magnum Erich Hartmann. Una variedad de miradas que exploran la memoria histórica, el territorio y la experimentación química en el laboratorio.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 9 · De la belleza del desecho a los misterios del Sol</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-12.mp3</guid>
+    <pubDate>Wed, 12 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Retratos renacentistas con materiales cotidianos por Suzanne Jongmans
+La artista Suzanne Jongmans transforma residuos cotidianos como embalajes de plástico y mallas de fruta en majestuosos ropajes de estilo renacentista. Sus fotografías fusionan la estética clásica con debates contemporáneos sobre la feminidad y el consumo, invitándonos a reflexionar sobre el valor que otorgamos a lo que desechamos.
+
+La imagen del Sol con mayor resolución de la historia
+El telescopio solar Daniel K. Inouye ha capturado una imagen sin precedentes de la superficie solar que revela detalles de menos de doce millas de diámetro. Este logro científico muestra estructuras dinámicas que podrían explicar por qué la atmósfera externa del Sol es millones de grados más caliente que su superficie.
+
+Un paseo por el Peak District con Albert Cornelissen y la Lomo MC-A
+El fotógrafo Albert Cornelissen pone a prueba la nueva cámara compacta de 35 milímetros Lomo MC-A en los desafiantes paisajes ingleses de Peak District. Utilizando película en blanco y negro, destaca la versatilidad de este modelo y el contraste único que ofrece su mítica lente Minitar.
+
+"Bajo el Hudson", el nuevo fotolibro de Caleb Stein
+El fotógrafo Caleb Stein presenta un retrato íntimo y poético de la comunidad de Beacon, en Nueva York, a orillas del río Hudson. A través de sus imágenes, explora la vulnerabilidad, la conexión humana y la relación de las personas con el paisaje estadounidense.
+
+El París salvaje de Brassaï en el Moderna Museet
+Esta exposición en Estocolmo revive la mirada de Brassaï sobre el París nocturno y marginal de los años treinta. Sus icónicas imágenes capturan grafitis y realidades sociales efímeras, mostrando el alma de una ciudad en constante transformación.
+
+"Lo no dicho" de Jo Ann Chaus: un viaje hacia el empoderamiento
+El nuevo libro de la editorial Kehrer Verlag recopila autorretratos escenificados de la fotógrafa Jo Ann Chaus. La obra profundiza con gran sensibilidad en la feminidad, la identidad personal y la búsqueda de la autoaceptación.
+
+Spilliaert como inspiración para la fotografía de interiores
+La melancólica y misteriosa obra pictórica de Léon Spilliaert sirve como punto de partida para explorar la fotografía de bodegones e interiores. Una invitación a aprovechar las vacaciones para mirar los espacios cotidianos desde una perspectiva artística y diferente.
+
+La experimentación visual de Yuki Onodera en la JHB Gallery
+La galería neoyorquina presenta una selección de obras de la aclamada fotógrafa japonesa Yuki Onodera. Conocida por sus ingeniosos métodos de manipulación y su enfoque experimental, su trabajo desafía los límites tradicionales del medio fotográfico.
+
+La condesa de Castiglione: la creación de una leyenda
+Una mirada a los archivos históricos para recordar la exposición dedicada a la condesa de Castiglione, pionera del autorretrato teatral en el siglo diecinueve. Sus audaces colaboraciones fotográficas sentaron las bases de la fotografía de moda y la construcción de la identidad visual.
+
+Margaret Bourke-White y Li Osborne: contrastes entre bambalinas
+Esta muestra histórica reúne las fascinantes imágenes de camerinos de bailarinas de cabaret de Margaret Bourke-White junto al expresivo trabajo teatral de Li Osborne. Un diálogo visual que celebra la fuerza y la teatralidad femenina a través de dos miradas pioneras.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-12.mp3" length="1345968" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-12.png"/>
+    <itunes:duration>3:44</itunes:duration>
+    <itunes:title>Episodio 9 · De la belleza del desecho a los misterios del Sol</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Retratos renacentistas con materiales cotidianos por Suzanne Jongmans
+La artista Suzanne Jongmans transforma residuos cotidianos como embalajes de plástico y mallas de fruta en majestuosos ropajes de estilo renacentista. Sus fotografías fusionan la estética clásica con debates contemporáneos sobre la feminidad y el consumo, invitándonos a reflexionar sobre el valor que otorgamos a lo que desechamos.
+
+La imagen del Sol con mayor resolución de la historia
+El telescopio solar Daniel K. Inouye ha capturado una imagen sin precedentes de la superficie solar que revela detalles de menos de doce millas de diámetro. Este logro científico muestra estructuras dinámicas que podrían explicar por qué la atmósfera externa del Sol es millones de grados más caliente que su superficie.
+
+Un paseo por el Peak District con Albert Cornelissen y la Lomo MC-A
+El fotógrafo Albert Cornelissen pone a prueba la nueva cámara compacta de 35 milímetros Lomo MC-A en los desafiantes paisajes ingleses de Peak District. Utilizando película en blanco y negro, destaca la versatilidad de este modelo y el contraste único que ofrece su mítica lente Minitar.
+
+"Bajo el Hudson", el nuevo fotolibro de Caleb Stein
+El fotógrafo Caleb Stein presenta un retrato íntimo y poético de la comunidad de Beacon, en Nueva York, a orillas del río Hudson. A través de sus imágenes, explora la vulnerabilidad, la conexión humana y la relación de las personas con el paisaje estadounidense.
+
+El París salvaje de Brassaï en el Moderna Museet
+Esta exposición en Estocolmo revive la mirada de Brassaï sobre el París nocturno y marginal de los años treinta. Sus icónicas imágenes capturan grafitis y realidades sociales efímeras, mostrando el alma de una ciudad en constante transformación.
+
+"Lo no dicho" de Jo Ann Chaus: un viaje hacia el empoderamiento
+El nuevo libro de la editorial Kehrer Verlag recopila autorretratos escenificados de la fotógrafa Jo Ann Chaus. La obra profundiza con gran sensibilidad en la feminidad, la identidad personal y la búsqueda de la autoaceptación.
+
+Spilliaert como inspiración para la fotografía de interiores
+La melancólica y misteriosa obra pictórica de Léon Spilliaert sirve como punto de partida para explorar la fotografía de bodegones e interiores. Una invitación a aprovechar las vacaciones para mirar los espacios cotidianos desde una perspectiva artística y diferente.
+
+La experimentación visual de Yuki Onodera en la JHB Gallery
+La galería neoyorquina presenta una selección de obras de la aclamada fotógrafa japonesa Yuki Onodera. Conocida por sus ingeniosos métodos de manipulación y su enfoque experimental, su trabajo desafía los límites tradicionales del medio fotográfico.
+
+La condesa de Castiglione: la creación de una leyenda
+Una mirada a los archivos históricos para recordar la exposición dedicada a la condesa de Castiglione, pionera del autorretrato teatral en el siglo diecinueve. Sus audaces colaboraciones fotográficas sentaron las bases de la fotografía de moda y la construcción de la identidad visual.
+
+Margaret Bourke-White y Li Osborne: contrastes entre bambalinas
+Esta muestra histórica reúne las fascinantes imágenes de camerinos de bailarinas de cabaret de Margaret Bourke-White junto al expresivo trabajo teatral de Li Osborne. Un diálogo visual que celebra la fuerza y la teatralidad femenina a través de dos miradas pioneras.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
