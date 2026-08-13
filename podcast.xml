@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Wed, 12 Aug 2026 22:10:26 +0000</lastBuildDate>
+<lastBuildDate>Thu, 13 Aug 2026 22:11:40 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -364,6 +364,46 @@ Una mirada a los archivos históricos para recordar la exposición dedicada a la
 
 Margaret Bourke-White y Li Osborne: contrastes entre bambalinas
 Esta muestra histórica reúne las fascinantes imágenes de camerinos de bailarinas de cabaret de Margaret Bourke-White junto al expresivo trabajo teatral de Li Osborne. Un diálogo visual que celebra la fuerza y la teatralidad femenina a través de dos miradas pioneras.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 10 · La luz del eclipse y el grito de la imagen</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-13.mp3</guid>
+    <pubDate>Thu, 13 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[¡Sube el volumen! El arte como motor de cambio social
+La nueva exposición del Museo de Arte Nasher celebra la democracia y la libertad de expresión a través de poderosas imágenes de activismo en Estados Unidos. Desde las marchas por los derechos civiles de Spider Martin hasta la crudeza urbana de Bruce Davidson, esta muestra nos recuerda que la fotografía es una herramienta indispensable para sacudir conciencias.
+
+El susurro y el grito de los océanos en imágenes
+Los finalistas del prestigioso concurso Fotógrafo del Océano del Año nos regalan una mirada dual que combina la sublime belleza marina con el impacto devastador de la crisis climática. Estas capturas no solo documentan la vida bajo el agua, sino que actúan como un poderoso altavoz para la conservación global.
+
+La magia de ralentizar el tiempo con la Lomomatic 110
+La creadora Aimee France experimenta por primera vez con la fotografía analógica de formato 110 para retratar la cotidianidad de su verano. A través de este pequeño formato, redescubre el placer de detenerse a observar los detalles cotidianos y crear recuerdos tangibles lejos de la inmediatez del móvil.
+
+Comunión dorada bajo el eclipse solar de Londres
+La fotógrafa Ella Glossop retrata la mágica reunión de miles de personas en Primrose Hill para presenciar el histórico eclipse solar de 2026. Con proyectores caseros y cámaras de todo tipo, la multitud compartió un instante de asombro colectivo que nos devuelve la perspectiva frente a la ruidosa era digital.
+
+Arles y la magia cósmica en el ojo de la fotografía
+La prestigiosa revista nos acerca al trabajo de Aman Alam en el festival de Arles con su obra Ozymandias, y a la cobertura del histórico eclipse solar del 12 de agosto por Jacques Revon. Un recorrido visual que conecta la memoria histórica, la astronomía y el arte contemporáneo más vanguardista.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-13.mp3" length="995472" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-13.png"/>
+    <itunes:duration>2:45</itunes:duration>
+    <itunes:title>Episodio 10 · La luz del eclipse y el grito de la imagen</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[¡Sube el volumen! El arte como motor de cambio social
+La nueva exposición del Museo de Arte Nasher celebra la democracia y la libertad de expresión a través de poderosas imágenes de activismo en Estados Unidos. Desde las marchas por los derechos civiles de Spider Martin hasta la crudeza urbana de Bruce Davidson, esta muestra nos recuerda que la fotografía es una herramienta indispensable para sacudir conciencias.
+
+El susurro y el grito de los océanos en imágenes
+Los finalistas del prestigioso concurso Fotógrafo del Océano del Año nos regalan una mirada dual que combina la sublime belleza marina con el impacto devastador de la crisis climática. Estas capturas no solo documentan la vida bajo el agua, sino que actúan como un poderoso altavoz para la conservación global.
+
+La magia de ralentizar el tiempo con la Lomomatic 110
+La creadora Aimee France experimenta por primera vez con la fotografía analógica de formato 110 para retratar la cotidianidad de su verano. A través de este pequeño formato, redescubre el placer de detenerse a observar los detalles cotidianos y crear recuerdos tangibles lejos de la inmediatez del móvil.
+
+Comunión dorada bajo el eclipse solar de Londres
+La fotógrafa Ella Glossop retrata la mágica reunión de miles de personas en Primrose Hill para presenciar el histórico eclipse solar de 2026. Con proyectores caseros y cámaras de todo tipo, la multitud compartió un instante de asombro colectivo que nos devuelve la perspectiva frente a la ruidosa era digital.
+
+Arles y la magia cósmica en el ojo de la fotografía
+La prestigiosa revista nos acerca al trabajo de Aman Alam en el festival de Arles con su obra Ozymandias, y a la cobertura del histórico eclipse solar del 12 de agosto por Jacques Revon. Un recorrido visual que conecta la memoria histórica, la astronomía y el arte contemporáneo más vanguardista.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
