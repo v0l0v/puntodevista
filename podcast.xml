@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Thu, 13 Aug 2026 22:11:40 +0000</lastBuildDate>
+<lastBuildDate>Fri, 14 Aug 2026 21:49:55 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -404,6 +404,28 @@ La fotógrafa Ella Glossop retrata la mágica reunión de miles de personas en P
 
 Arles y la magia cósmica en el ojo de la fotografía
 La prestigiosa revista nos acerca al trabajo de Aman Alam en el festival de Arles con su obra Ozymandias, y a la cobertura del histórico eclipse solar del 12 de agosto por Jacques Revon. Un recorrido visual que conecta la memoria histórica, la astronomía y el arte contemporáneo más vanguardista.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 11 · Destellos nocturnos y la mirada revolucionaria de las mujeres en la fotografía</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-14.mp3</guid>
+    <pubDate>Fri, 14 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Grandes mujeres fotógrafas: dos siglos de historia y revolución visual
+Un nuevo libro de la editorial Phaidon celebra el legado de más de doscientas cincuenta fotógrafas de sesenta y ocho países que han transformado nuestra forma de ver el mundo. A través de retratos, fotoperiodismo y paisajes conceptuales, esta obra es una fuente inagotable de inspiración que reivindica la mirada femenina a lo largo de doscientos años. Una invitación perfecta para redescubrir la historia de la fotografía desde una perspectiva más justa y diversa.
+
+Bajo el brillo del neón: la magia de la fotografía analógica nocturna
+La comunidad de Lomography nos invita a perdernos en la noche y capturar la vibrante energía de las calles iluminadas por carteles de neón. Utilizando técnicas como la doble exposición o el modo de exposición prolongada, este desafío fotográfico nos anima a abrazar las luces de la ciudad sin intentar controlarlas, retratando emociones puras e improvisadas. Es el empujón perfecto para salir con tu cámara analógica cuando el sol se oculta y dejarte llevar por el misterio nocturno.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-14.mp3" length="969120" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-14.png"/>
+    <itunes:duration>2:41</itunes:duration>
+    <itunes:title>Episodio 11 · Destellos nocturnos y la mirada revolucionaria de las mujeres en la fotografía</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Grandes mujeres fotógrafas: dos siglos de historia y revolución visual
+Un nuevo libro de la editorial Phaidon celebra el legado de más de doscientas cincuenta fotógrafas de sesenta y ocho países que han transformado nuestra forma de ver el mundo. A través de retratos, fotoperiodismo y paisajes conceptuales, esta obra es una fuente inagotable de inspiración que reivindica la mirada femenina a lo largo de doscientos años. Una invitación perfecta para redescubrir la historia de la fotografía desde una perspectiva más justa y diversa.
+
+Bajo el brillo del neón: la magia de la fotografía analógica nocturna
+La comunidad de Lomography nos invita a perdernos en la noche y capturar la vibrante energía de las calles iluminadas por carteles de neón. Utilizando técnicas como la doble exposición o el modo de exposición prolongada, este desafío fotográfico nos anima a abrazar las luces de la ciudad sin intentar controlarlas, retratando emociones puras e improvisadas. Es el empujón perfecto para salir con tu cámara analógica cuando el sol se oculta y dejarte llevar por el misterio nocturno.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
