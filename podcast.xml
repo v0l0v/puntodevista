@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 14 Aug 2026 21:49:55 +0000</lastBuildDate>
+<lastBuildDate>Sat, 15 Aug 2026 21:44:48 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -426,6 +426,64 @@ Un nuevo libro de la editorial Phaidon celebra el legado de más de doscientas c
 
 Bajo el brillo del neón: la magia de la fotografía analógica nocturna
 La comunidad de Lomography nos invita a perdernos en la noche y capturar la vibrante energía de las calles iluminadas por carteles de neón. Utilizando técnicas como la doble exposición o el modo de exposición prolongada, este desafío fotográfico nos anima a abrazar las luces de la ciudad sin intentar controlarlas, retratando emociones puras e improvisadas. Es el empujón perfecto para salir con tu cámara analógica cuando el sol se oculta y dejarte llevar por el misterio nocturno.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 12 · El tiempo en un fotograma: de piscinas veraniegas a dimensiones surrealistas</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-15.mp3</guid>
+    <pubDate>Sat, 15 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Lomography Magazine: El verano analógico de Cassie McCoy
+La fotógrafa Cassie McCoy utiliza una cámara de medio fotograma para inmortalizar una tarde de piscina con amigos llena de risas y espontaneidad. Su serie nos enseña a valorar la imperfección y a usar el flash a plena luz del día para capturar la frescura de los momentos cotidianos.
+
+The Eye of Photography: La cuarta dimensión de Beamie Young
+A través de autorretratos surrealistas y cargados de simbolismo, esta serie de arte conceptual explora el tiempo como una emoción profunda en lugar de una simple medida. Una propuesta visual fascinante que nos invita a mirar hacia nuestro interior.
+
+The Eye of Photography: Ficción solar por Mathilde Troussard
+Esta serie fotográfica transforma la conocida costa de Miami Beach y su arquitectura Art Déco en un escenario de ciencia ficción moldeado por la luz del sol. Una obra que desafía nuestra percepción del paisaje urbano y el turismo clásico.
+
+The Eye of Photography: Cielos tumultuosos de Emma Coccioli
+Con una clara influencia del maestro Alfred Stieglitz, la artista convierte las formas y movimientos de las nubes en los protagonistas absolutos de sus imágenes. Un tributo visual a la belleza cambiante y dramática del cielo.
+
+The Eye of Photography: El delta mágico de Micael Lope
+Este proyecto documental utiliza la fotografía analógica para registrar la delicada biodiversidad y la fragilidad de los ecosistemas de los deltas. Una mirada poética y rigurosa que nos conciencia sobre la conservación ambiental.
+
+The Eye of Photography: Esperando palmeras por Peter Ydeen
+Un recorrido visual por paisajes urbanos de Marruecos y Egipto que busca capturar las huellas más silenciosas de la vida cotidiana. Sus fotografías transmiten una profunda sensación de calma y misterio en entornos históricos.
+
+The Eye of Photography: Carruseles en los márgenes por Luca Battaglia
+El fotógrafo retrata los carruseles que habitan las plazas públicas, girando lentamente bajo la luz de bombillas tradicionales. Una serie impregnada de nostalgia que rescata la magia mecánica de la infancia en la vida moderna.
+
+The Eye of Photography: Exposiciones múltiples de Brandy Eve Allen
+La artista crea composiciones únicas exponiendo varias veces el mismo fotograma de película en diferentes lugares y momentos. El resultado es un collage poético de encuentros y paisajes que desafía la linealidad temporal.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-15.mp3" length="1163952" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-15.png"/>
+    <itunes:duration>3:13</itunes:duration>
+    <itunes:title>Episodio 12 · El tiempo en un fotograma: de piscinas veraniegas a dimensiones surrealistas</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Lomography Magazine: El verano analógico de Cassie McCoy
+La fotógrafa Cassie McCoy utiliza una cámara de medio fotograma para inmortalizar una tarde de piscina con amigos llena de risas y espontaneidad. Su serie nos enseña a valorar la imperfección y a usar el flash a plena luz del día para capturar la frescura de los momentos cotidianos.
+
+The Eye of Photography: La cuarta dimensión de Beamie Young
+A través de autorretratos surrealistas y cargados de simbolismo, esta serie de arte conceptual explora el tiempo como una emoción profunda en lugar de una simple medida. Una propuesta visual fascinante que nos invita a mirar hacia nuestro interior.
+
+The Eye of Photography: Ficción solar por Mathilde Troussard
+Esta serie fotográfica transforma la conocida costa de Miami Beach y su arquitectura Art Déco en un escenario de ciencia ficción moldeado por la luz del sol. Una obra que desafía nuestra percepción del paisaje urbano y el turismo clásico.
+
+The Eye of Photography: Cielos tumultuosos de Emma Coccioli
+Con una clara influencia del maestro Alfred Stieglitz, la artista convierte las formas y movimientos de las nubes en los protagonistas absolutos de sus imágenes. Un tributo visual a la belleza cambiante y dramática del cielo.
+
+The Eye of Photography: El delta mágico de Micael Lope
+Este proyecto documental utiliza la fotografía analógica para registrar la delicada biodiversidad y la fragilidad de los ecosistemas de los deltas. Una mirada poética y rigurosa que nos conciencia sobre la conservación ambiental.
+
+The Eye of Photography: Esperando palmeras por Peter Ydeen
+Un recorrido visual por paisajes urbanos de Marruecos y Egipto que busca capturar las huellas más silenciosas de la vida cotidiana. Sus fotografías transmiten una profunda sensación de calma y misterio en entornos históricos.
+
+The Eye of Photography: Carruseles en los márgenes por Luca Battaglia
+El fotógrafo retrata los carruseles que habitan las plazas públicas, girando lentamente bajo la luz de bombillas tradicionales. Una serie impregnada de nostalgia que rescata la magia mecánica de la infancia en la vida moderna.
+
+The Eye of Photography: Exposiciones múltiples de Brandy Eve Allen
+La artista crea composiciones únicas exponiendo varias veces el mismo fotograma de película en diferentes lugares y momentos. El resultado es un collage poético de encuentros y paisajes que desafía la linealidad temporal.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
