@@ -320,6 +320,21 @@ def scrape_magnum():
         return []
 
 def inline_to_html(text):
+    # 1. Procesar imágenes enlazadas: [![alt](img_url)](link_url)
+    text = re.sub(
+        r'\[!\[([^\]]*)\]\((https?://[^)\s]+)\)\]\((https?://[^)\s]+)\)',
+        r'<a href="\3" target="_blank" rel="noopener"><img src="\2" alt="\1" loading="lazy"></a>',
+        text
+    )
+
+    # 2. Procesar imágenes normales de markdown: ![alt](img_url)
+    text = re.sub(
+        r'!\[([^\]]*)\]\((https?://[^)\s]+)\)',
+        r'<img src="\2" alt="\1" loading="lazy">',
+        text
+    )
+
+    # 3. Procesar enlaces y estilos
     urls = []
 
     def _save_url(m):
@@ -329,7 +344,7 @@ def inline_to_html(text):
     def _restore(i):
         return urls[int(i)]
 
-    text = re.sub(r'https?://[^)\s]+', _save_url, text)
+    text = re.sub(r'https?://[^)\s<>"]+', _save_url, text)
     text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
     text = re.sub(r'_\*([^*]+)\*_', r'<em>\1</em>', text)
     text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
@@ -349,13 +364,6 @@ def md_to_html(md):
             if in_list:
                 result.append('</ul>')
                 in_list = False
-            continue
-        img_match = re.match(r'^-?\s*!\[([^\]]*)\]\(([^)]+)\)', s)
-        if img_match:
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            result.append(f'<img src="{html.escape(img_match.group(2))}" alt="{html.escape(img_match.group(1))}">')
             continue
         if re.match(r'^-{3,}$', s) or re.match(r'^\*{3,}$', s):
             if in_list:
@@ -379,7 +387,13 @@ def md_to_html(md):
         if in_list:
             result.append('</ul>')
             in_list = False
-        result.append(f'<p>{inline_to_html(s)}</p>')
+
+        html_line = inline_to_html(s)
+        # Si la línea consiste exclusivamente en etiquetas <img> o <a href><img...>, no meter en <p> redundante
+        if re.match(r'^(?:<(?:img|a|picture|figure)[^>]*>.*</(?:a|picture|figure)>|<img[^>]*>|\s*)+$', html_line):
+            result.append(html_line)
+        else:
+            result.append(f'<p>{html_line}</p>')
     if in_list:
         result.append('</ul>')
     return '\n'.join(result)
@@ -521,7 +535,19 @@ def scrape_lomography_article(url, resolve_profiles=True):
     idx = re.search(r'## (?:One|\d+) Likes?|## No Comments|Please login to leave a comment|More Interesting Articles', md)
     clean_md = md[:idx.start()] if idx else md
     clean_md = trim_lomo_body(clean_md)
-    images = [{'url': m.group(2), 'alt': m.group(1)} for m in re.finditer(r'!\[([^\]]*)\]\(([^)]+)\)', clean_md)]
+    img_list = []
+    seen_urls = set()
+    for m in re.finditer(r'!\[([^\]]*)\]\((https?://[^\s\)]+)\)', clean_md):
+        u = m.group(2)
+        if u not in seen_urls and 'avatar' not in u.lower() and 'icon' not in u.lower():
+            seen_urls.add(u)
+            img_list.append({'url': u, 'alt': m.group(1)})
+    for m in re.finditer(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', clean_md, re.I):
+        u = m.group(1)
+        if u not in seen_urls and 'avatar' not in u.lower() and 'icon' not in u.lower():
+            seen_urls.add(u)
+            img_list.append({'url': u, 'alt': ''})
+    images = img_list
     body_md = re.split(r'\nwritten by\b', clean_md, maxsplit=1)[0] if re.search(r'\nwritten by\b', clean_md) else clean_md
     content = md_to_html(body_md)
     credits = []

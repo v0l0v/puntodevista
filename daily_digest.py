@@ -154,7 +154,18 @@ def fetch_lomo_article_content(url):
         if name and name.lower() not in seen_names:
             seen_names.add(name.lower())
             credits.append({'name': name, 'url': cm.group(2)})
-    images = [m.group(2) for m in re.finditer(r'!\[([^\]]*)\]\(([^)]+)\)', clean_md)]
+    images = []
+    seen_imgs = set()
+    for m in re.finditer(r'!\[([^\]]*)\]\((https?://[^\s\)]+)\)', clean_md):
+        u = m.group(2)
+        if u not in seen_imgs and 'avatar' not in u.lower() and 'icon' not in u.lower():
+            seen_imgs.add(u)
+            images.append(u)
+    for m in re.finditer(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', clean_md, re.I):
+        u = m.group(1)
+        if u not in seen_imgs and 'avatar' not in u.lower() and 'icon' not in u.lower():
+            seen_imgs.add(u)
+            images.append(u)
     return body_md, credits, images
 
 def extract_lomo_summary(md):
