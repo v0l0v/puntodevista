@@ -2,7 +2,7 @@ name: Podcast diario a Telegram
 
 on:
   schedule:
-    - cron: '30 21 * * *'
+    - cron: '5 7 * * *'
   workflow_dispatch:
 
 concurrency:

@@ -2,7 +2,7 @@ name: Digest diario
 
 on:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 7 * * *'
   workflow_dispatch:
 
 concurrency:
@@ -39,7 +39,18 @@ jobs:
         env:
           FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
-        run: python3 daily_digest.py
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: |
+          cat <<EOF > config.json
+          {
+            "email": {
+              "address": "$EMAIL_ADDRESS",
+              "app_password": "$EMAIL_PASSWORD"
+            }
+          }
+          EOF
+          python3 daily_digest.py
 
       - name: Actualizar datos estáticos (caches de artículos)
         env:

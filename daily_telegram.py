@@ -2,6 +2,7 @@ import json
 import os
 import random
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -121,21 +122,145 @@ def send_telegram_audio(audio_path, caption='', filename='podcast.mp3'):
         return None
 
 
-def generate_audio(text, out_path):
+def get_day_music(target_date=None):
+    d = target_date or date.today()
+    weekday = d.weekday()  # 0=Lunes, 6=Domingo
+    day_patterns = [
+        'day_0_lunes.mp3',
+        'day_1_martes.mp3',
+        'day_2_miercoles.mp3',
+        'day_3_jueves.mp3',
+        'day_4_viernes.mp3',
+        'day_5_sabado.mp3',
+        'day_6_domingo.mp3'
+    ]
+    track_name = day_patterns[weekday]
+    track_path = os.path.join(DIR, 'assets', 'mp3', track_name)
+    if os.path.exists(track_path):
+        return track_path
+    # Fallback si no existe la pista del día
+    fallback = os.path.join(DIR, 'assets', 'mp3', 'bg_lofi.mp3')
+    return fallback if os.path.exists(fallback) else None
+
+
+def generate_audio(text, out_path, episode_date=None):
+    bg_music = get_day_music(episode_date)
+    tmp_dir = os.path.join(DIR, 'tmp_audio')
+    os.makedirs(tmp_dir, exist_ok=True)
+
+    # Fonetizar palabras comunes en inglés que suenan mal en el lector español
+    clean = text
+    clean = re.sub(r'\bnewsletters\b', 'niusleters', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\bnewsletter\b', 'niusleter', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\bcolossal\b', 'colosal', clean, flags=re.IGNORECASE)
+
+    # Dividir el texto en bloques usando el marcador ---PAUSA--- o dobles saltos de línea
+    raw_blocks = re.split(r'---PAUSA---|\[PAUSA\]', clean)
+    blocks = [b.strip() for b in raw_blocks if b.strip()]
+
+    if not blocks:
+        blocks = [clean.strip()]
+
+    print(f'  Generando locución en {len(blocks)} bloque(s)...')
+
+    # Si no hay música de fondo disponible, generar en un solo archivo directo
+    if not bg_music or len(blocks) == 1 and not os.path.exists(bg_music):
+        try:
+            subprocess.run([
+                'edge-tts',
+                '--voice', 'es-ES-ElviraNeural',
+                '--text', clean,
+                '--write-media', out_path
+            ], check=True, capture_output=True, text=True, timeout=120)
+            return True
+        except Exception as e:
+            print(f'  Error edge-tts: {e}')
+            return False
+
     try:
+        voice_files = []
+        for i, b in enumerate(blocks):
+            raw_mp3 = os.path.join(tmp_dir, f'v_raw_{i}.mp3')
+            wav_out = os.path.join(tmp_dir, f'v_{i}.wav')
+            subprocess.run([
+                'edge-tts',
+                '--voice', 'es-ES-ElviraNeural',
+                '--text', b,
+                '--write-media', raw_mp3
+            ], check=True, capture_output=True, text=True, timeout=120)
+            subprocess.run([
+                'ffmpeg', '-y', '-i', raw_mp3,
+                '-ar', '44100', '-ac', '2', wav_out
+            ], check=True, capture_output=True, timeout=60)
+            voice_files.append(wav_out)
+
+        # 1. Intro musical de 12 segundos (fade in 1.5s, fade out 2.5s)
+        intro_wav = os.path.join(tmp_dir, 'intro.wav')
         subprocess.run([
-            'edge-tts',
-            '--voice', 'es-ES-ElviraNeural',
-            '--text', text,
-            '--write-media', out_path
-        ], check=True, capture_output=True, text=True, timeout=120)
+            'ffmpeg', '-y', '-ss', '00:00:00', '-i', bg_music, '-t', '12',
+            '-af', 'afade=t=in:ss=0:d=1.5,afade=t=out:st=9.5:d=2.5,volume=0.30',
+            '-ar', '44100', '-ac', '2', intro_wav
+        ], check=True, capture_output=True, timeout=60)
+
+        # 2. Interludio musical de 6 segundos (fade in 1.0s, fade out 1.8s)
+        inter_wav = os.path.join(tmp_dir, 'inter.wav')
+        subprocess.run([
+            'ffmpeg', '-y', '-ss', '00:00:20', '-i', bg_music, '-t', '6',
+            '-af', 'afade=t=in:ss=0:d=1.0,afade=t=out:st=4.2:d=1.8,volume=0.30',
+            '-ar', '44100', '-ac', '2', inter_wav
+        ], check=True, capture_output=True, timeout=60)
+
+        # 3. Outro musical de 12 segundos (fade in 1.5s, fade out 3.5s)
+        outro_wav = os.path.join(tmp_dir, 'outro.wav')
+        subprocess.run([
+            'ffmpeg', '-y', '-ss', '00:00:45', '-i', bg_music, '-t', '12',
+            '-af', 'afade=t=in:ss=0:d=1.5,afade=t=out:st=8.5:d=3.5,volume=0.30',
+            '-ar', '44100', '-ac', '2', outro_wav
+        ], check=True, capture_output=True, timeout=60)
+
+        # Ensamblar secuencia completa
+        sequence = [intro_wav]
+        for i, vf in enumerate(voice_files):
+            sequence.append(vf)
+            if i < len(voice_files) - 1:
+                sequence.append(inter_wav)
+        sequence.append(outro_wav)
+
+        inputs = []
+        filter_inputs = ''
+        for idx, fpath in enumerate(sequence):
+            inputs.extend(['-i', fpath])
+            filter_inputs += f'[{idx}:a]'
+
+        cmd = ['ffmpeg', '-y'] + inputs + [
+            '-filter_complex', f'{filter_inputs}concat=n={len(sequence)}:v=0:a=1[outa]',
+            '-map', '[outa]',
+            '-b:a', '192k',
+            out_path
+        ]
+        subprocess.run(cmd, check=True, capture_output=True, timeout=180)
+
+        # Limpiar temporales
+        try:
+            shutil.rmtree(tmp_dir)
+        except Exception:
+            pass
+
         return True
-    except subprocess.CalledProcessError as e:
-        print(f'  Error edge-tts: {e.stderr[:300]}')
-        return False
-    except FileNotFoundError:
-        print('  edge-tts no instalado')
-        return False
+
+    except Exception as e:
+        print(f'  ⚠️ Error al mezclar cortinillas: {e}. Fallback a audio plano...')
+        try:
+            subprocess.run([
+                'edge-tts',
+                '--voice', 'es-ES-ElviraNeural',
+                '--text', clean,
+                '--write-media', out_path
+            ], check=True, capture_output=True, text=True, timeout=120)
+            return True
+        except Exception as err:
+            print(f'  Error fallback: {err}')
+            return False
 
 
 def tag_audio(audio_path, title):
@@ -267,13 +392,16 @@ SEGUNDA SECCIÓN - Resúmenes para redes sociales (formato exacto):
 TERCERA SECCIÓN (solo el texto locutable para el audio del podcast):
 REGLAS ESTRICTAS:
 - SOLO TEXTO PARA LEER EN VOZ ALTA. Nada de markdown, asteriscos, corchetes, etiquetas como "Título:", "Fotógrafo:", "Fuente:", viñetas, guiones, etc.
+- SEPARADORES MUSICALES: Coloca la línea exacta ---PAUSA--- justo después de la apertura, entre cada bloque de fuente o noticia, antes del bloque de newsletters y antes del cierre final. Así el sistema intercalará las cortinillas musicales de transición.
+- FONÉTICA: Escribe siempre "niusleter" o "niusleters" en lugar de "newsletter/s", y "el Magazine de arte online Colosal" en lugar de "Colossal", para que la voz en español los lea perfectamente natural.
 - Títulos de obras, exposiciones, series, libros, películas: TRADÚCELOS al español natural ("Paisajes etéreos", no "Ethereal Landscapes"). Si no tienes traducción oficial, adapta el significado.
 - Nombres propios de personas/lugares: MANTÉN el original.
 - Estructura de programa de radio:
   1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español del día de hoy según el enunciado, ej: 14 de febrero de 2026]."
-  2. BLOQUES POR FUENTE: Para cada fuente que tenga artículos, haz una transición natural → "En Colossal hoy..." / "En Lomography Magazine encontramos..." / "Y en Shoot It With Film..." → narra cada artículo en 2-3 frases con tono cercano, como contándole a un amigo. Une artículos de la misma fuente con fluidez.
-  3. TRANSICIONES entre fuentes: "Y siguiendo con...", "También en...", "Cambiamos de tercio hacia...", "Para cerrar esta ronda...".
-  4. CIERRE obligatorio: "Y hasta aquí la inspiración de hoy. ¡Nos escuchamos mañana con más fotografía!"
+     ---PAUSA---
+  2. BLOQUES POR FUENTE: Para cada fuente que tenga artículos, narra cada artículo en 2-3 frases con tono cercano, como contándole a un amigo. Une artículos de la misma fuente con fluidez. Separa cada fuente con ---PAUSA---.
+  3. BLOQUE DE NIUSLETERS (si hay correos en Newsletters): Cuéntalos de forma distendida. Separa con ---PAUSA---.
+  4. CIERRE obligatorio: inventa una variante natural de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters. Gracias a todos ellos por hacer el mundo de la fotografía más visible, por revelarnos tanta inspiración cada día y ayudarnos a enfocar mejor nuestra mirada. ¡Nos escuchamos mañana!"
 - Duración objetivo: 3-4 minutos de locución (~400-600 palabras).
 - Ritmo: frases cortas, respiradas, lenguaje oral (contracciones, "vamos a ver", "fíjate", "resulta que")."""
 
@@ -326,7 +454,7 @@ def main():
         return
     os.makedirs(PODCAST_DIR, exist_ok=True)
     audio_path = os.path.join(PODCAST_DIR, f'podcast-{today.isoformat()}.mp3')
-    if generate_audio(clean_text_audio, audio_path):
+    if generate_audio(clean_text_audio, audio_path, today):
         size = os.path.getsize(audio_path)
         print(f'  Audio generado ({size/1024:.0f} KB)')
 

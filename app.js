@@ -983,9 +983,37 @@ function extractSocialLinks(html) {
       if (!seen.has(url)) { seen.add(url); links.push({ platform: 'bluesky', text: text, url }); }
     } else if (h.includes('threads.net')) {
       if (!seen.has(url)) { seen.add(url); links.push({ platform: 'threads', text: text, url }); }
+    } else if (h.includes('smugmug.com')) {
+      const m = href.match(/([a-zA-Z0-9_-]+)\.smugmug\.com/i);
+      const label = m ? m[1] : 'SmugMug';
+      if (!seen.has(url)) { seen.add(url); links.push({ platform: 'web', text: `Portfolio · ${label}`, url }); }
+    } else if (h.includes('behance.net')) {
+      const m = href.match(/behance\.net\/([^/?]+)/i);
+      const label = m ? m[1] : 'Behance';
+      if (!seen.has(url)) { seen.add(url); links.push({ platform: 'web', text: `Behance · ${label}`, url }); }
+    } else if (h.includes('500px.com')) {
+      const m = href.match(/500px\.com\/p\/([^/?]+)/i) || href.match(/500px\.com\/([^/?]+)/i);
+      const label = m ? m[1] : '500px';
+      if (!seen.has(url)) { seen.add(url); links.push({ platform: 'web', text: `500px · ${label}`, url }); }
+    } else if (h.includes('vsco.co')) {
+      const m = href.match(/vsco\.co\/([^/?]+)/i);
+      const label = m ? m[1] : 'VSCO';
+      if (!seen.has(url)) { seen.add(url); links.push({ platform: 'web', text: `VSCO · ${label}`, url }); }
     } else if (WEBSITE_TEXT_RE.test(text) && /^https?:\/\//i.test(href) && !isOwnDomain(href)) {
       try { url = new URL(href).origin + '/'; } catch { return; }
       if (!seen.has(url)) { seen.add(url); links.push({ platform: 'web', text: 'Web', url }); }
+    } else if (/^https?:\/\/[^\s<>"']+/i.test(text.trim()) && !isOwnDomain(href)) {
+      // Si el texto del link es la propia URL cruda, extraer como botón Web
+      if (!seen.has(url)) {
+        try {
+          const uObj = new URL(url);
+          const domainLabel = uObj.hostname.replace(/^www\./, '');
+          links.push({ platform: 'web', text: `Web · ${domainLabel}`, url });
+        } catch {
+          links.push({ platform: 'web', text: 'Web', url });
+        }
+        seen.add(url);
+      }
     }
   });
   const order = ['instagram', 'youtube', 'x', 'vimeo', 'flickr', 'tiktok', 'facebook', 'bluesky', 'threads', 'web'];
@@ -1059,8 +1087,18 @@ function renderLensCultureArticle(body, entry, data) {
 
 function renderOdlpArticle(body, entry, data) {
   const images = data.images || [];
-  const socialLinks = data.content ? extractSocialLinks(data.content) : [];
+  const rawContent = data.content || '';
+  const socialLinks = rawContent ? extractSocialLinks(rawContent) : [];
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+
+  // Limpiar enlaces crudos que ya se muestran en los botones superiores y coletillas
+  const cleanContent = rawContent
+    .replace(/<p>\s*<a[^>]+href="https?:\/\/[^"]+"[^>]*>https?:\/\/[^<]+<\/a>\s*<\/p>/gi, '')
+    .replace(/(?:^|\n)\s*https?:\/\/[^\s<>"']+\s*(?:\n|$)/gi, '\n')
+    .replace(/Cet article [^.]+ est apparu en premier sur The Eye of Photography Magazine\.?/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
   body.innerHTML = `
     <div class="modal-tools">
       ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
@@ -1076,7 +1114,7 @@ function renderOdlpArticle(body, entry, data) {
       </div>
     </div>
     <div class="modal-article">
-      <div class="modal-article-content">${data.content}</div>
+      <div class="modal-article-content">${cleanContent}</div>
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>

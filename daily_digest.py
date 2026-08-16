@@ -8,6 +8,7 @@ from datetime import date, datetime
 from server import firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name, trim_lomo_body
 from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_huck,
                                 fetch_lensculture, fetch_odlp, fetch_magnum, fetch_shootitwithfilm)
+from fetch_email_newsletter import fetch_email_newsletters
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
@@ -25,6 +26,7 @@ SOURCES = [
     ('odlp', 'L\'Œil de la Photographie'),
     ('magnum', 'Magnum Photos'),
     ('shootitwithfilm', 'Shoot It With Film'),
+    ('email', 'Newsletters · Email'),
 ]
 
 RSS_SOURCES = [
@@ -438,6 +440,11 @@ def main():
         for item in items:
             print(f'    → {item["title"][:60]}')
         print(f'    {len(items)} artículos')
+
+    print('  4. Newsletters por email (label: fotopodcast)...')
+    email_items = fetch_email_newsletters(TODAY)
+    items_by_source['email'] = email_items
+    print(f'    {len(email_items)} newsletter(s)')
 
     html = render_html(items_by_source)
     podcast = render_podcast(items_by_source)
