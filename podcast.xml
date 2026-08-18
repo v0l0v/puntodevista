@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 17 Aug 2026 07:55:41 +0000</lastBuildDate>
+<lastBuildDate>Tue, 18 Aug 2026 07:41:53 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -540,6 +540,52 @@ Desde los idílicos paisajes de la Toscana, el festival Cortona en movimiento re
 
 RRB PhotoBooks : David Hurn : Photographs 1955 – 2022
 Este fotolibro recopila casi setenta años de la brillante trayectoria del fotógrafo de Magnum, David Hurn. Una joya documental que nos permite repasar la historia reciente a través de una mirada honesta, tierna y profundamente conectada con la vida cotidiana.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 15 · Miradas que desafían el tiempo y la distancia</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-18.mp3</guid>
+    <pubDate>Tue, 18 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Jeremy Dennis: La fotografía como memoria y reflexión sobre la presencia nativa
+A través de su lente, este fotógrafo de la nación indígena Shinnecock explora la identidad y la memoria de los pueblos originarios. Sus imágenes son un poderoso recordatorio de la persistencia cultural y un llamado a reflexionar sobre la historia que pisamos. Una obra imprescindible para entender el territorio desde la sensibilidad y el respeto.
+
+Galería Staley-Wise: Como la vida misma
+Esta exposición virtual rescata joyas del archivo de la galería para recordarnos la belleza de lo cotidiano y lo espontáneo. A través de una cuidada selección, las imágenes capturan instantes que desbordan vitalidad y frescura. Una dosis perfecta de realismo poético para inspirar tu próximo paseo con la cámara.
+
+Museo de las Confluencias: Stéphan Gladieu y su retrato de Corea del Norte
+El fotógrafo Stéphan Gladieu se adentra en una de las sociedades más herméticas del planeta para ofrecernos una mirada diferente y humana. Sus retratos, meticulosamente encuadrados, desafían la propaganda oficial y nos muestran el día a día de sus habitantes. Una lección magistral de cómo la fotografía documental puede abrir ventanas a mundos casi inaccesibles.
+
+Museo de Arte de la Universidad de Princeton: La fotografía como forma de vida
+Una fascinante muestra que entrelaza las trayectorias de tres gigantes de la fotografía: Minor White, Aaron Siskind y Harry Callahan. La exposición revela cómo sus vidas y búsquedas visuales se cruzaron, convirtiendo la cámara en una herramienta de exploración espiritual y artística. Una invitación a replantearnos nuestra propia relación con el visor.
+
+Archivos: Primer plano de Robert y Shana ParkeHarrison
+El trabajo de esta pareja estadounidense nos sumerge en un universo surrealista donde el ser humano intenta sanar un planeta herido. Mediante metáforas visuales y una estética poética y teatral, sus imágenes plantean preguntas incómodas pero necesarias sobre nuestra relación con el medio ambiente. Pura inspiración para quienes buscan crear narrativas visuales complejas y simbólicas.
+
+Archivos: El cuestionario a Alexandre de Metz
+Una reveladora entrevista que explora el instinto visual de uno de los fundadores de YellowKorner. Alexandre de Metz comparte su agudo sentido de la estética y su pasión por descubrir y democratizar el arte fotográfico. Un soplo de motivación para confiar en nuestra propia intuición a la hora de capturar y valorar imágenes.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-18.mp3" length="5300974" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-18.png"/>
+    <itunes:duration>3:40</itunes:duration>
+    <itunes:title>Episodio 15 · Miradas que desafían el tiempo y la distancia</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Jeremy Dennis: La fotografía como memoria y reflexión sobre la presencia nativa
+A través de su lente, este fotógrafo de la nación indígena Shinnecock explora la identidad y la memoria de los pueblos originarios. Sus imágenes son un poderoso recordatorio de la persistencia cultural y un llamado a reflexionar sobre la historia que pisamos. Una obra imprescindible para entender el territorio desde la sensibilidad y el respeto.
+
+Galería Staley-Wise: Como la vida misma
+Esta exposición virtual rescata joyas del archivo de la galería para recordarnos la belleza de lo cotidiano y lo espontáneo. A través de una cuidada selección, las imágenes capturan instantes que desbordan vitalidad y frescura. Una dosis perfecta de realismo poético para inspirar tu próximo paseo con la cámara.
+
+Museo de las Confluencias: Stéphan Gladieu y su retrato de Corea del Norte
+El fotógrafo Stéphan Gladieu se adentra en una de las sociedades más herméticas del planeta para ofrecernos una mirada diferente y humana. Sus retratos, meticulosamente encuadrados, desafían la propaganda oficial y nos muestran el día a día de sus habitantes. Una lección magistral de cómo la fotografía documental puede abrir ventanas a mundos casi inaccesibles.
+
+Museo de Arte de la Universidad de Princeton: La fotografía como forma de vida
+Una fascinante muestra que entrelaza las trayectorias de tres gigantes de la fotografía: Minor White, Aaron Siskind y Harry Callahan. La exposición revela cómo sus vidas y búsquedas visuales se cruzaron, convirtiendo la cámara en una herramienta de exploración espiritual y artística. Una invitación a replantearnos nuestra propia relación con el visor.
+
+Archivos: Primer plano de Robert y Shana ParkeHarrison
+El trabajo de esta pareja estadounidense nos sumerge en un universo surrealista donde el ser humano intenta sanar un planeta herido. Mediante metáforas visuales y una estética poética y teatral, sus imágenes plantean preguntas incómodas pero necesarias sobre nuestra relación con el medio ambiente. Pura inspiración para quienes buscan crear narrativas visuales complejas y simbólicas.
+
+Archivos: El cuestionario a Alexandre de Metz
+Una reveladora entrevista que explora el instinto visual de uno de los fundadores de YellowKorner. Alexandre de Metz comparte su agudo sentido de la estética y su pasión por descubrir y democratizar el arte fotográfico. Un soplo de motivación para confiar en nuestra propia intuición a la hora de capturar y valorar imágenes.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
