@@ -374,15 +374,39 @@ def parse_summary(summary):
 TITLE_MARKER = '---TITLE---'
 LOCUTABLE_MARKER = '---LOCUTABLE---'
 
+DIAS_SEMANA_ES = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
 MESES_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
             'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
 def fmt_fecha_es(d):
     return f'{d.day} de {MESES_ES[d.month - 1]} de {d.year}'
 
+def fmt_fecha_completa_es(d):
+    dia_sem = DIAS_SEMANA_ES[d.weekday()]
+    return f'{dia_sem}, {d.day} de {MESES_ES[d.month - 1]} de {d.year}'
+
+def get_episode_number(target_date, meta_path=META_PATH):
+    try:
+        if os.path.exists(meta_path):
+            with open(meta_path, encoding='utf-8') as f:
+                meta = json.load(f)
+            dates = sorted(set(m.get('date') for m in meta if m.get('date')))
+            target_iso = target_date.isoformat()
+            if target_iso in dates:
+                return dates.index(target_iso) + 1
+            else:
+                prior_dates = [d for d in dates if d < target_iso]
+                return len(prior_dates) + 1
+    except Exception:
+        pass
+    return 1
+
 def build_summary_prompt(podcast_content, episode_date=None):
-    today = (episode_date or date.today()).isoformat()
-    return f"""Hoy es {today}. A continuación tienes el texto completo de varios artículos de fotografía de distintas fuentes.
+    d = episode_date or date.today()
+    today_iso = d.isoformat()
+    fecha_completa = fmt_fecha_completa_es(d)
+    ep_num = get_episode_number(d)
+    return f"""Hoy es {today_iso}. A continuación tienes el texto completo de varios artículos de fotografía de distintas fuentes (recopilados en las últimas 24 horas).
 
 {podcast_content}
 
@@ -410,8 +434,10 @@ REGLAS ESTRICTAS:
 - FONÉTICA: Escribe siempre "niusleter" o "niusleters" en lugar de "newsletter/s", y "el Magazine de arte online Colosal" en lugar de "Colossal", para que la voz en español los lea perfectamente natural.
 - TRADUCCIÓN: Títulos de obras, exposiciones, series, libros: TRADÚCELOS al español natural y fluido ("Viaje nocturno", no "Night Journey"). Nombres propios de autores/ciudades: MANTÉN el original.
 - ESTRUCTURA DE PROGRAMA DE RADIO FOTOGRÁFICO:
-  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español del día, ej: 14 de febrero de 2026]... y venimos cargados de historias visuales fascinantes."
-     ---PAUSA---
+  1. APERTURA OBLIGATORIA (CON GANCHO Y HYPE INICIAL):
+     - Saluda con calidez y sigue este esquema exacto:
+       "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num} de Punto de vista... y [GANCHO/HYPE: frase breve y sugerente levantando expectación sobre uno de los proyectos o noticias estrella del boletín de hoy, por ejemplo: 'tenemos un proyecto fascinante de X sobre Y que analizaremos en el episodio de hoy / hoy descubrimos la impresionante mirada de X sobre Y que desgranaremos a continuación...']."
+     - Coloca inmediatamente la línea exacta ---PAUSA--- después de la apertura.
   2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales (ej: "Y de la luz del atardecer nos vamos al contraste radical de...", "Cambiando de tercio, en la revista Lomography encontramos...").
      En cada noticia, destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
      Separa cada bloque de fuente con ---PAUSA---.

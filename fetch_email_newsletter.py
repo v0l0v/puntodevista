@@ -18,8 +18,9 @@ import imaplib
 import json
 import os
 import re
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, timedelta
 from email.header import decode_header
+from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 
 GMAIL_IMAP = 'imap.gmail.com'
@@ -155,10 +156,11 @@ def _summary(text: str, max_chars: int = 400) -> str:
 # Función principal pública
 # ---------------------------------------------------------------------------
 
-def fetch_email_newsletters(target_date: date | None = None) -> list[dict]:
+def fetch_email_newsletters(target_date: date | None = None, hours: int = 24) -> list[dict]:
     """
     Devuelve una lista de artículos en formato estándar del podcast,
-    obtenidos de los correos con label 'fotopodcast' en Gmail del día indicado.
+    obtenidos de los correos con label 'fotopodcast' en Gmail de las últimas `hours` horas
+    o del día indicado.
 
     Formato de cada artículo:
       { title, link, photographer, photographers, summary, full_text,
@@ -193,22 +195,41 @@ def fetch_email_newsletters(target_date: date | None = None) -> list[dict]:
             mail.logout()
             return []
 
-        # Buscar mensajes de hoy (IMAP usa formato DD-Mon-YYYY en inglés)
-        date_str = target_date.strftime('%d-%b-%Y')
-        status, data = mail.search(None, f'(ON {date_str})')
+        # Buscar correos desde ayer para cubrir las últimas 24h
+        since_date = target_date - timedelta(days=1)
+        since_str = since_date.strftime('%d-%b-%Y')
+        status, data = mail.search(None, f'(SINCE {since_str})')
         if status != 'OK' or not data or not data[0]:
-            print(f'  [email] Sin correos con label "{GMAIL_LABEL}" para {target_date}.')
-            mail.logout()
-            return []
+            # Fallback a búsqueda del día exacto
+            date_str = target_date.strftime('%d-%b-%Y')
+            status, data = mail.search(None, f'(ON {date_str})')
+            if status != 'OK' or not data or not data[0]:
+                print(f'  [email] Sin correos con label "{GMAIL_LABEL}" para las últimas 24h.')
+                mail.logout()
+                return []
 
         msg_ids = data[0].split()
-        print(f'  [email] {len(msg_ids)} correo(s) con label "{GMAIL_LABEL}" el {target_date}.')
+        print(f'  [email] {len(msg_ids)} correo(s) candidato(s) con label "{GMAIL_LABEL}".')
+
+        cutoff_utc = datetime.now(timezone.utc) - timedelta(hours=hours)
 
         for mid in msg_ids:
             status, raw = mail.fetch(mid, '(RFC822)')
             if status != 'OK':
                 continue
             msg = email.message_from_bytes(raw[0][1])
+
+            # Comprobar si está dentro de las últimas `hours` horas
+            date_header = msg.get('Date')
+            if date_header:
+                try:
+                    msg_dt = parsedate_to_datetime(date_header)
+                    if msg_dt.tzinfo is None:
+                        msg_dt = msg_dt.replace(tzinfo=timezone.utc)
+                    if msg_dt < cutoff_utc:
+                        continue
+                except Exception:
+                    pass
 
             subject = _decode_str(msg.get('Subject', '(sin asunto)'))
             sender = _decode_str(msg.get('From', ''))

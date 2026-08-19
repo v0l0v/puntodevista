@@ -99,14 +99,17 @@ def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
             if link_el is not None and link_el.text:
                 link = link_el.text.strip()
 
+            pub_iso = ''
             pub_el = item.find('pubDate')
             if pub_el is not None and pub_el.text:
                 try:
                     dt = datetime.strptime(pub_el.text.strip(),
                                           '%a, %d %b %Y %H:%M:%S %z')
                     pub_date = dt.strftime('%Y-%m-%d')
+                    pub_iso = dt.isoformat()
                 except:
                     pub_date = pub_el.text.strip()[:10]
+                    pub_iso = pub_el.text.strip()
 
             content_el = item.find('{http://purl.org/rss/1.0/modules/content/}encoded')
             if content_el is None:
@@ -156,6 +159,7 @@ def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
                 'title': title,
                 'link': link,
                 'date': pub_date,
+                '_parsedDate': pub_iso or pub_date,
                 'thumbnail': thumb,
                 'excerpt': excerpt
             }

@@ -2,7 +2,7 @@ name: Podcast diario a Telegram
 
 on:
   schedule:
-    - cron: '5 7 * * *'
+    - cron: '9 7 * * *'
   workflow_dispatch:
 
 concurrency:
@@ -25,8 +25,7 @@ jobs:
 
       - name: Instalar dependencias
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          which ffmpeg || { sudo apt-get update -o Acquire::Retries=3 && sudo apt-get install -y ffmpeg; }
           pip install requests edge-tts Pillow
 
       - name: Configurar git

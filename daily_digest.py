@@ -3,7 +3,8 @@ import os
 import random
 import re
 import urllib.request
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 from server import firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name, trim_lomo_body
@@ -15,6 +16,56 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
 TODAY = date.today()
 WP_API = 'https://www.thisiscolossal.com/wp-json/wp/v2/posts'
+
+
+def is_within_24h(date_val, target_date=None, hours=24):
+    """
+    Comprueba si una fecha/hora está dentro de las últimas `hours` horas.
+    Soporta datetime, date o string (ISO, RFC2822 o YYYY-MM-DD).
+    """
+    now_utc = datetime.now(timezone.utc)
+    if target_date and target_date != date.today():
+        cutoff = datetime(target_date.year, target_date.month, target_date.day, 0, 0, 0, tzinfo=timezone.utc) - timedelta(days=1)
+        end_cutoff = datetime(target_date.year, target_date.month, target_date.day, 23, 59, 59, tzinfo=timezone.utc)
+    else:
+        cutoff = now_utc - timedelta(hours=hours)
+        end_cutoff = now_utc + timedelta(hours=4)
+
+    if isinstance(date_val, datetime):
+        dt = date_val
+    elif isinstance(date_val, date):
+        iso = date_val.isoformat()
+        yesterday_iso = ((target_date or date.today()) - timedelta(days=1)).isoformat()
+        today_iso = (target_date or date.today()).isoformat()
+        return iso in (today_iso, yesterday_iso)
+    elif isinstance(date_val, str):
+        date_str = date_val.strip()
+        dt = None
+        try:
+            if 'T' in date_str:
+                dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            else:
+                dt = parsedate_to_datetime(date_str)
+        except Exception:
+            try:
+                dt = datetime.strptime(date_str[:19], '%Y-%m-%d %H:%M:%S')
+            except Exception:
+                if len(date_str) >= 10 and re.match(r'^\d{4}-\d{2}-\d{2}', date_str):
+                    iso = date_str[:10]
+                    yesterday_iso = ((target_date or date.today()) - timedelta(days=1)).isoformat()
+                    today_iso = (target_date or date.today()).isoformat()
+                    return iso in (today_iso, yesterday_iso)
+                return False
+    else:
+        return False
+
+    if dt:
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return cutoff <= dt <= end_cutoff
+
+    return False
+
 
 SOURCES = [
     ('colossal', 'Colossal · Fotografía'),
@@ -61,18 +112,18 @@ def fetch_colossal_articles():
             all_posts.extend(data)
         except:
             break
-    posts = [p for p in all_posts if p['date'][:10] == TODAY.isoformat()]
+    posts = [p for p in all_posts if is_within_24h(p.get('date_gmt') or p.get('date'), TODAY)]
     if not posts:
         try:
             with open(os.path.join(DIR, 'feeds.json'), encoding='utf-8') as f:
                 feeds = json.load(f).get('items', [])
             for a in feeds:
-                if a.get('_source') == 'colossal' and (a.get('_parsedDate') or '')[:10] == TODAY.isoformat():
+                if a.get('_source') == 'colossal' and is_within_24h(a.get('_parsedDate') or a.get('date'), TODAY):
                     posts.append({
                         'title': {'rendered': a['title']},
                         'content': {'rendered': a['content']},
                         'link': a['link'],
-                        'date': a['_parsedDate'],
+                        'date': a.get('_parsedDate') or a.get('date'),
                     })
         except Exception:
             pass
@@ -138,7 +189,7 @@ def fetch_lomography_articles():
     md = firecrawl_scrape('https://www.lomography.com/magazine/', timeout=60)
     if not md:
         return []
-    return [a for a in parse_magazine_list(md) if a.get('date') == TODAY.isoformat()]
+    return [a for a in parse_magazine_list(md) if is_within_24h(a.get('date'), TODAY)]
 
 def fetch_lomo_article_content(url):
     md = firecrawl_scrape(url, timeout=45)
@@ -464,7 +515,7 @@ def main():
 
     print('  3. Booooooom, TPJ, Swann, Huck, LensCulture, L\'Œil de la Photographie (RSS)...')
     for key, label, fn in RSS_SOURCES:
-        articles = [a for a in fn() if a.get('date') == TODAY.isoformat()]
+        articles = [a for a in fn() if is_within_24h(a.get('_parsedDate') or a.get('pubDate') or a.get('date'), TODAY)]
         if key == 'odlp':
             filtered = []
             for a in articles:
@@ -481,7 +532,7 @@ def main():
         print(f'    {len(items)} artículos')
 
     print('  4. Newsletters por email (label: fotopodcast)...')
-    email_items = fetch_email_newsletters(TODAY)
+    email_items = fetch_email_newsletters(TODAY, hours=24)
     items_by_source['email'] = email_items
     print(f'    {len(email_items)} newsletter(s)')
 
