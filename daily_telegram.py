@@ -143,6 +143,10 @@ def get_day_music(target_date=None):
     return fallback if os.path.exists(fallback) else None
 
 
+TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-ElviraNeural')
+TTS_RATE = os.environ.get('TTS_RATE', '-4%')
+
+
 def generate_audio(text, out_path, episode_date=None):
     bg_music = get_day_music(episode_date)
     tmp_dir = os.path.join(DIR, 'tmp_audio')
@@ -161,14 +165,15 @@ def generate_audio(text, out_path, episode_date=None):
     if not blocks:
         blocks = [clean.strip()]
 
-    print(f'  Generando locución en {len(blocks)} bloque(s)...')
+    print(f'  Generando locución ({TTS_VOICE}, rate={TTS_RATE}) en {len(blocks)} bloque(s)...')
 
     # Si no hay música de fondo disponible, generar en un solo archivo directo
     if not bg_music or len(blocks) == 1 and not os.path.exists(bg_music):
         try:
             subprocess.run([
                 'edge-tts',
-                '--voice', 'es-ES-ElviraNeural',
+                '--voice', TTS_VOICE,
+                '--rate', TTS_RATE,
                 '--text', clean,
                 '--write-media', out_path
             ], check=True, capture_output=True, text=True, timeout=120)
@@ -184,7 +189,8 @@ def generate_audio(text, out_path, episode_date=None):
             wav_out = os.path.join(tmp_dir, f'v_{i}.wav')
             subprocess.run([
                 'edge-tts',
-                '--voice', 'es-ES-ElviraNeural',
+                '--voice', TTS_VOICE,
+                '--rate', TTS_RATE,
                 '--text', b,
                 '--write-media', raw_mp3
             ], check=True, capture_output=True, text=True, timeout=120)
@@ -253,7 +259,8 @@ def generate_audio(text, out_path, episode_date=None):
         try:
             subprocess.run([
                 'edge-tts',
-                '--voice', 'es-ES-ElviraNeural',
+                '--voice', TTS_VOICE,
+                '--rate', TTS_RATE,
                 '--text', clean,
                 '--write-media', out_path
             ], check=True, capture_output=True, text=True, timeout=120)
@@ -261,6 +268,7 @@ def generate_audio(text, out_path, episode_date=None):
         except Exception as err:
             print(f'  Error fallback: {err}')
             return False
+
 
 
 def tag_audio(audio_path, title):
@@ -382,28 +390,34 @@ Escribe tu respuesta en TRES secciones separadas por estas líneas exactas:
 {TITLE_MARKER}
 {LOCUTABLE_MARKER}
 
-PRIMERA SECCIÓN - Título creativo en español para el episodio. Solo el título, sin explicaciones ni notas.
+PRIMERA SECCIÓN - Título creativo, sugerente y periodístico en español para el episodio (ej: "Entre el misterio de la noche y la magia del colodión húmedo"). Solo el título, sin explicaciones ni notas.
 
-SEGUNDA SECCIÓN - Resúmenes para redes sociales (formato exacto):
+SEGUNDA SECCIÓN - Resúmenes completos y atractivos para la web y redes sociales (formato exacto):
 - Sin introducciones, sin títulos de programa, sin despedidas, sin notas.
-- Por cada artículo: título en negrita **Título** y debajo 2-3 frases de resumen atractivas en español.
-- Tono ameno e inspirador, como para redes sociales.
+- Por cada artículo:
+  **Título del artículo**
+  Resumen de 3-4 frases bien estructuradas:
+  1. ¿Qué historia, tema o concepto visual aborda el proyecto?
+  2. ¿Qué técnica, estética o proceso fotográfico se utiliza (medio formato, analógico, blanco y negro contrastado, luz natural, etc.)?
+  3. ¿Cuál es el valor o reflexión artística que aporta al espectador/fotógrafo?
 
 TERCERA SECCIÓN (solo el texto locutable para el audio del podcast):
 REGLAS ESTRICTAS:
-- SOLO TEXTO PARA LEER EN VOZ ALTA. Nada de markdown, asteriscos, corchetes, etiquetas como "Título:", "Fotógrafo:", "Fuente:", viñetas, guiones, etc.
-- SEPARADORES MUSICALES: Coloca la línea exacta ---PAUSA--- justo después de la apertura, entre cada bloque de fuente o noticia, antes del bloque de newsletters y antes del cierre final. Así el sistema intercalará las cortinillas musicales de transición.
+- SOLO TEXTO PARA LEER EN VOZ ALTA. Cero markdown, asteriscos, corchetes o encabezados como "Título:", "Fotógrafo:", etc.
+- SEPARADORES MUSICALES: Coloca la línea exacta ---PAUSA--- justo después de la apertura, entre cada bloque temático/fuente, antes del bloque de newsletters y antes del cierre final.
 - FONÉTICA: Escribe siempre "niusleter" o "niusleters" en lugar de "newsletter/s", y "el Magazine de arte online Colosal" en lugar de "Colossal", para que la voz en español los lea perfectamente natural.
-- Títulos de obras, exposiciones, series, libros, películas: TRADÚCELOS al español natural ("Paisajes etéreos", no "Ethereal Landscapes"). Si no tienes traducción oficial, adapta el significado.
-- Nombres propios de personas/lugares: MANTÉN el original.
-- Estructura de programa de radio:
-  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español del día de hoy según el enunciado, ej: 14 de febrero de 2026]."
+- TRADUCCIÓN: Títulos de obras, exposiciones, series, libros: TRADÚCELOS al español natural y fluido ("Viaje nocturno", no "Night Journey"). Nombres propios de autores/ciudades: MANTÉN el original.
+- ESTRUCTURA DE PROGRAMA DE RADIO FOTOGRÁFICO:
+  1. APERTURA obligatoria: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es [fecha en español del día, ej: 14 de febrero de 2026]... y venimos cargados de historias visuales fascinantes."
      ---PAUSA---
-  2. BLOQUES POR FUENTE: Para cada fuente que tenga artículos, narra cada artículo en 2-3 frases con tono cercano, como contándole a un amigo. Une artículos de la misma fuente con fluidez. Separa cada fuente con ---PAUSA---.
-  3. BLOQUE DE NIUSLETERS (si hay correos en Newsletters): Cuéntalos de forma distendida. Separa con ---PAUSA---.
-  4. CIERRE obligatorio: inventa una variante natural de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters. Gracias a todos ellos por hacer el mundo de la fotografía más visible, por revelarnos tanta inspiración cada día y ayudarnos a enfocar mejor nuestra mirada. ¡Nos escuchamos mañana!"
-- Duración objetivo: 3-4 minutos de locución (~400-600 palabras).
-- Ritmo: frases cortas, respiradas, lenguaje oral (contracciones, "vamos a ver", "fíjate", "resulta que")."""
+  2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales (ej: "Y de la luz del atardecer nos vamos al contraste radical de...", "Cambiando de tercio, en la revista Lomography encontramos...").
+     En cada noticia, destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
+     Separa cada bloque de fuente con ---PAUSA---.
+  3. BLOQUE DE NIUSLETERS (si hay correos en Newsletters): Cuéntalos de forma distendida y amena. Separa con ---PAUSA---.
+  4. CIERRE inspirador: inventa una variante fresca de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters para apoyar su trabajo. Gracias por acompañarnos, por mantener viva la pasión por la imagen y por ayudarnos a mirar el mundo con más detalle. ¡Cargad baterías o carretes, y nos escuchamos mañana!"
+- TONO Y RITMO: Muy humano, cercano, entusiasta y cómplice con la comunidad fotográfica. Usa frases respiradas y pausas naturales con puntos suspensivos ("...") o comas para dar calidez y ritmo radiofónico.
+- Duración objetivo: 3-5 minutos de locución (~450-650 palabras)."""
+
 
 
 def clean_for_gemini(text):

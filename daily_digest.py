@@ -4,6 +4,7 @@ import random
 import re
 import urllib.request
 from datetime import date, datetime
+from pathlib import Path
 
 from server import firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name, trim_lomo_body
 from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_huck,
@@ -231,14 +232,41 @@ def process_rss_item(a, label):
 
 def pick_day_image(items_by_source):
     candidates = []
-    for key in SOURCES:
+    for key, _ in SOURCES:
         for item in items_by_source.get(key) or []:
             img = item.get('image') or ''
             if img:
                 candidates.append(img.split('?')[0])
+    if candidates:
+        return random.choice(candidates)
+
+    # Fallback 1: buscar en feeds.json fotos de artículos recientes
+    try:
+        feeds_path = os.path.join(DIR, 'feeds.json')
+        if os.path.exists(feeds_path):
+            with open(feeds_path, encoding='utf-8') as f:
+                feeds = json.load(f).get('items', [])
+            for item in feeds:
+                t = item.get('thumbnail') or ''
+                if t and 'instagram' not in t and 'avatar' not in t.lower():
+                    candidates.append(t.split('?')[0])
+    except Exception:
+        pass
+
+    # Fallback 2: buscar en digests anteriores
     if not candidates:
-        return ''
-    return random.choice(candidates)
+        try:
+            for p in sorted(Path(OUT_DIR).glob('*.images.json'), reverse=True):
+                with open(p, encoding='utf-8') as f:
+                    imgs = json.load(f)
+                    if imgs:
+                        candidates.extend(imgs[:5])
+                        break
+        except Exception:
+            pass
+
+    return random.choice(candidates) if candidates else ''
+
 
 def render_html(items_by_source):
     total = sum(len(v) for v in items_by_source.values())
