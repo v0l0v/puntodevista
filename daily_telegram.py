@@ -394,12 +394,14 @@ PRIMERA SECCIÓN - Título creativo, sugerente y periodístico en español para 
 
 SEGUNDA SECCIÓN - Resúmenes completos y atractivos para la web y redes sociales (formato exacto):
 - Sin introducciones, sin títulos de programa, sin despedidas, sin notas.
-- Por cada artículo:
+- Por cada artículo o fuente habitual:
   **Título del artículo**
   Resumen de 3-4 frases bien estructuradas:
   1. ¿Qué historia, tema o concepto visual aborda el proyecto?
   2. ¿Qué técnica, estética o proceso fotográfico se utiliza (medio formato, analógico, blanco y negro contrastado, luz natural, etc.)?
   3. ¿Cuál es el valor o reflexión artística que aporta al espectador/fotógrafo?
+- CASO ESPECIAL - SI HAY NEWSLETTER DE FOTONISTAS (Ana Arbonés / Ana de Fotonistas / fotonistas.com):
+  No hagas un resumen completo ni destripes la lección completa que Ana envía a sus suscriptores para no hacer competencia desleal. Da solo 2 frases picantes y sugerentes que generen "hype" e intriga sobre el tema que plantea hoy, e invita directamente a los lectores a suscribirse a su Fotoletter en fotonistas.com.
 
 TERCERA SECCIÓN (solo el texto locutable para el audio del podcast):
 REGLAS ESTRICTAS:
@@ -413,10 +415,19 @@ REGLAS ESTRICTAS:
   2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales (ej: "Y de la luz del atardecer nos vamos al contraste radical de...", "Cambiando de tercio, en la revista Lomography encontramos...").
      En cada noticia, destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
      Separa cada bloque de fuente con ---PAUSA---.
-  3. BLOQUE DE NIUSLETERS (si hay correos en Newsletters): Cuéntalos de forma distendida y amena. Separa con ---PAUSA---.
+  3. BLOQUE DE NIUSLETERS (ESPECIAL TRATAMIENTO A ANA DE FOTONISTAS):
+     Si hay correos en la sección de newsletters:
+     - Si el correo es de Ana de Fotonistas (fotonistas.com / Ana Arbonés): Trátalo con muchísimo cariño, admiración y respeto hacia su proyecto formativo. Ana es farmacéutica de Zaragoza que fundó Fotonistas para enseñar a mirar sin obsesionarse con los cacharritos ni tecnicismos.
+       * REGLA DE ORO: NO reveles toda la información ni destripes el contenido exclusivo de su correo.
+       * Da solo unas pinceladas o una pequeña semilla de reflexión que abra el apetito y cree curiosidad ("hype").
+       * Destaca su lema o espíritu («el secreto no está en la cámara, sino en tu forma de mirar»).
+       * Invita explícitamente a los oyentes con entusiasmo a entrar en fotonistas.com y suscribirse a su Fotoletter diaria para leer sus correos completos.
+     - Si hay otros correos, coméntalos también de forma distendida.
+     - Separa este bloque con ---PAUSA---.
   4. CIERRE inspirador: inventa una variante fresca de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters para apoyar su trabajo. Gracias por acompañarnos, por mantener viva la pasión por la imagen y por ayudarnos a mirar el mundo con más detalle. ¡Cargad baterías o carretes, y nos escuchamos mañana!"
 - TONO Y RITMO: Muy humano, cercano, entusiasta y cómplice con la comunidad fotográfica. Usa frases respiradas y pausas naturales con puntos suspensivos ("...") o comas para dar calidez y ritmo radiofónico.
 - Duración objetivo: 3-5 minutos de locución (~450-650 palabras)."""
+
 
 
 
