@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Thu, 20 Aug 2026 14:13:07 +0000</lastBuildDate>
+<lastBuildDate>Thu, 20 Aug 2026 14:27:17 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -586,6 +586,64 @@ El trabajo de esta pareja estadounidense nos sumerge en un universo surrealista 
 
 Archivos: El cuestionario a Alexandre de Metz
 Una reveladora entrevista que explora el instinto visual de uno de los fundadores de YellowKorner. Alexandre de Metz comparte su agudo sentido de la estética y su pasión por descubrir y democratizar el arte fotográfico. Un soplo de motivación para confiar en nuestra propia intuición a la hora de capturar y valorar imágenes.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 16 · El latido de la luz: celebrando el día mundial de la fotografía y el arte de mirar la calle</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-19.mp3</guid>
+    <pubDate>Wed, 19 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Dublín / El Centro Internacional de la Imagen – Mujeres en el foco x Nikon 2025
+Esta exposición internacional celebra y visibiliza la mirada de las fotógrafas de todo el mundo, destacando narrativas visuales diversas y poderosas. A través de una amplia variedad de técnicas que van desde el retrato documental hasta la fotografía conceptual, las artistas exploran la identidad y la resiliencia humana. La muestra invita al espectador a reflexionar sobre la equidad de género en el arte y el impacto de la perspectiva femenina en la documentación del mundo contemporáneo.
+
+Fotografía+ / Talento Emergente 2026
+La segunda edición de esta iniciativa global reúne las propuestas de nuevos creadores seleccionados entre más de mil trescientas candidaturas de todo el mundo. El proyecto destaca por su eclecticismo estético, mostrando desde experimentaciones analógicas y texturas granuladas hasta composiciones digitales de vanguardia. Esta plataforma ofrece una valiosa reflexión sobre el futuro de la imagen y cómo las nuevas generaciones redefinen los límites del lenguaje visual.
+
+Convocatoria abierta – El concurso de Fotografía de Naturaleza 2026
+Este certamen internacional invita a fotógrafos de todos los niveles a capturar la asombrosa biodiversidad de nuestro planeta con el fin de concienciar sobre su conservación. Las imágenes participantes se centran en el uso de la luz natural, el detalle macro y la paciencia del paisaje puro para revelar la fragilidad del entorno. El concurso aporta una profunda reflexión ética sobre nuestra responsabilidad colectiva en la protección de los ecosistemas terrestres y marinos.
+
+Museo de Fotografía de Irlanda – Taller
+El reconocido fotógrafo Artur Sikora imparte un taller de iniciación centrado en el uso de cámaras de 35 milímetros y el revelado de película en blanco y negro. Los participantes aprenden a dominar el grano cinematográfico, el contraste de luces y sombras y el proceso químico del revelado tradicional en el cuarto oscuro. Esta experiencia formativa rescata el valor del tiempo y la paciencia en la era digital, animando a los fotógrafos a conectar físicamente con la creación de cada fotograma.
+
+Astrid Ullens y Howard Greenberg reciben el primer Premio Gruber
+La Sociedad Alemana de Fotografía otorga este galardón pionero a dos figuras fundamentales del mercado y coleccionismo de arte fotográfico internacional. La distinción reconoce tanto la preservación de archivos históricos en emulsiones clásicas de plata como el impulso de nuevas corrientes contemporáneas. El premio subraya la importancia del mecenazgo y el coleccionismo para mantener vivo el legado visual y asegurar que las futuras generaciones sigan valorando la fotografía como una de las bellas artes.
+
+Celebra el Día Mundial de la Fotografía en la Toscana y Nueva York
+Este evento conmemora el 19 de agosto de 1839, fecha en la que el gobierno francés liberó la patente del daguerrotipo, marcando el nacimiento oficial de nuestro medio de expresión. Las celebraciones en la Toscana y Nueva York combinan la belleza del paisaje natural bañado por el sol con el dinamismo de la fotografía callejera urbana. Esta efeméride es una oportunidad de oro para reflexionar sobre cómo la captura de la luz ha transformado nuestra memoria colectiva y nuestra manera de percibir la realidad.
+
+Fundación Graham – Subvenciones para Organizaciones 2026
+La fundación anuncia el apoyo a cuarenta y cinco proyectos institucionales que exploran la intersección entre la arquitectura, el espacio y la fotografía. Las propuestas financiadas utilizan desde la fotografía documental a gran formato hasta instalaciones inmersivas para analizar cómo habitamos el entorno construido. El valor de este programa radica en su capacidad para fomentar debates críticos sobre la política del espacio y la representación visual de nuestras ciudades.
+
+Fotonistas por Ana Arbonés
+¿Quieres descubrir por qué la fotografía de calle es mucho más que pulsar un botón y por qué todo el mundo se divierte aprendiendo con Rober Tomás? Ana nos trae hoy una refrescante dosis de realidad sobre el proceso de aprendizaje práctico y la importancia de salir a la calle a escribir con luz sin miedo a equivocarse. Te invitamos a suscribirte a su Fotoletter en fotonistas.com para no perderte sus sabios consejos diarios y descubrir el código secreto que transformará tu mirada.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-19.mp3" length="7094027" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-19.png"/>
+    <itunes:duration>4:55</itunes:duration>
+    <itunes:title>Episodio 16 · El latido de la luz: celebrando el día mundial de la fotografía y el arte de mirar la calle</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Dublín / El Centro Internacional de la Imagen – Mujeres en el foco x Nikon 2025
+Esta exposición internacional celebra y visibiliza la mirada de las fotógrafas de todo el mundo, destacando narrativas visuales diversas y poderosas. A través de una amplia variedad de técnicas que van desde el retrato documental hasta la fotografía conceptual, las artistas exploran la identidad y la resiliencia humana. La muestra invita al espectador a reflexionar sobre la equidad de género en el arte y el impacto de la perspectiva femenina en la documentación del mundo contemporáneo.
+
+Fotografía+ / Talento Emergente 2026
+La segunda edición de esta iniciativa global reúne las propuestas de nuevos creadores seleccionados entre más de mil trescientas candidaturas de todo el mundo. El proyecto destaca por su eclecticismo estético, mostrando desde experimentaciones analógicas y texturas granuladas hasta composiciones digitales de vanguardia. Esta plataforma ofrece una valiosa reflexión sobre el futuro de la imagen y cómo las nuevas generaciones redefinen los límites del lenguaje visual.
+
+Convocatoria abierta – El concurso de Fotografía de Naturaleza 2026
+Este certamen internacional invita a fotógrafos de todos los niveles a capturar la asombrosa biodiversidad de nuestro planeta con el fin de concienciar sobre su conservación. Las imágenes participantes se centran en el uso de la luz natural, el detalle macro y la paciencia del paisaje puro para revelar la fragilidad del entorno. El concurso aporta una profunda reflexión ética sobre nuestra responsabilidad colectiva en la protección de los ecosistemas terrestres y marinos.
+
+Museo de Fotografía de Irlanda – Taller
+El reconocido fotógrafo Artur Sikora imparte un taller de iniciación centrado en el uso de cámaras de 35 milímetros y el revelado de película en blanco y negro. Los participantes aprenden a dominar el grano cinematográfico, el contraste de luces y sombras y el proceso químico del revelado tradicional en el cuarto oscuro. Esta experiencia formativa rescata el valor del tiempo y la paciencia en la era digital, animando a los fotógrafos a conectar físicamente con la creación de cada fotograma.
+
+Astrid Ullens y Howard Greenberg reciben el primer Premio Gruber
+La Sociedad Alemana de Fotografía otorga este galardón pionero a dos figuras fundamentales del mercado y coleccionismo de arte fotográfico internacional. La distinción reconoce tanto la preservación de archivos históricos en emulsiones clásicas de plata como el impulso de nuevas corrientes contemporáneas. El premio subraya la importancia del mecenazgo y el coleccionismo para mantener vivo el legado visual y asegurar que las futuras generaciones sigan valorando la fotografía como una de las bellas artes.
+
+Celebra el Día Mundial de la Fotografía en la Toscana y Nueva York
+Este evento conmemora el 19 de agosto de 1839, fecha en la que el gobierno francés liberó la patente del daguerrotipo, marcando el nacimiento oficial de nuestro medio de expresión. Las celebraciones en la Toscana y Nueva York combinan la belleza del paisaje natural bañado por el sol con el dinamismo de la fotografía callejera urbana. Esta efeméride es una oportunidad de oro para reflexionar sobre cómo la captura de la luz ha transformado nuestra memoria colectiva y nuestra manera de percibir la realidad.
+
+Fundación Graham – Subvenciones para Organizaciones 2026
+La fundación anuncia el apoyo a cuarenta y cinco proyectos institucionales que exploran la intersección entre la arquitectura, el espacio y la fotografía. Las propuestas financiadas utilizan desde la fotografía documental a gran formato hasta instalaciones inmersivas para analizar cómo habitamos el entorno construido. El valor de este programa radica en su capacidad para fomentar debates críticos sobre la política del espacio y la representación visual de nuestras ciudades.
+
+Fotonistas por Ana Arbonés
+¿Quieres descubrir por qué la fotografía de calle es mucho más que pulsar un botón y por qué todo el mundo se divierte aprendiendo con Rober Tomás? Ana nos trae hoy una refrescante dosis de realidad sobre el proceso de aprendizaje práctico y la importancia de salir a la calle a escribir con luz sin miedo a equivocarse. Te invitamos a suscribirte a su Fotoletter en fotonistas.com para no perderte sus sabios consejos diarios y descubrir el código secreto que transformará tu mirada.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
