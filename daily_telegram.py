@@ -173,7 +173,7 @@ def generate_audio(text, out_path, episode_date=None):
             subprocess.run([
                 'edge-tts',
                 '--voice', TTS_VOICE,
-                '--rate', TTS_RATE,
+                f'--rate={TTS_RATE}',
                 '--text', clean,
                 '--write-media', out_path
             ], check=True, capture_output=True, text=True, timeout=120)
@@ -190,7 +190,7 @@ def generate_audio(text, out_path, episode_date=None):
             subprocess.run([
                 'edge-tts',
                 '--voice', TTS_VOICE,
-                '--rate', TTS_RATE,
+                f'--rate={TTS_RATE}',
                 '--text', b,
                 '--write-media', raw_mp3
             ], check=True, capture_output=True, text=True, timeout=120)
@@ -260,7 +260,7 @@ def generate_audio(text, out_path, episode_date=None):
             subprocess.run([
                 'edge-tts',
                 '--voice', TTS_VOICE,
-                '--rate', TTS_RATE,
+                f'--rate={TTS_RATE}',
                 '--text', clean,
                 '--write-media', out_path
             ], check=True, capture_output=True, text=True, timeout=120)

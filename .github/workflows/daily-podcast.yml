@@ -6,6 +6,11 @@ on:
     types:
       - completed
   workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'Fecha del episodio (YYYY-MM-DD), vacío para hoy'
+        required: false
+        default: ''
 
 concurrency:
   group: daily-podcast
@@ -41,7 +46,13 @@ jobs:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
           GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
-        run: python3 daily_telegram.py
+        run: |
+          TARGET_DATE="${{ inputs.target_date }}"
+          if [ -n "$TARGET_DATE" ]; then
+            python3 daily_telegram.py "$TARGET_DATE"
+          else
+            python3 daily_telegram.py
+          fi
 
       - name: Publicar episodio en GitHub Releases
         env:
@@ -49,7 +60,8 @@ jobs:
         run: |
           gh release view episodios >/dev/null 2>&1 || \
             gh release create episodios --title "Punto de vista · podcast" --notes "Episodios diarios del podcast de Punto de vista"
-          DATE=$(date +%F)
+          TARGET_DATE="${{ inputs.target_date }}"
+          DATE="${TARGET_DATE:-$(date +%F)}"
           MP3="podcast/podcast-${DATE}.mp3"
           COVER="podcast-cover-${DATE}.png"
           if [ -f "$MP3" ]; then
