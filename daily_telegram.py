@@ -441,13 +441,12 @@ REGLAS ESTRICTAS:
   2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales (ej: "Y de la luz del atardecer nos vamos al contraste radical de...", "Cambiando de tercio, en la revista Lomography encontramos...").
      En cada noticia, destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
      Separa cada bloque de fuente con ---PAUSA---.
-  3. BLOQUE DE NIUSLETERS (ESPECIAL TRATAMIENTO A ANA DE FOTONISTAS):
+  3. BLOQUE DE NIUSLETERS (TRATAMIENTO A ANA DE FOTONISTAS):
      Si hay correos en la sección de newsletters:
-     - Si el correo es de Ana de Fotonistas (fotonistas.com / Ana Arbonés): Trátalo con muchísimo cariño, admiración y respeto hacia su proyecto formativo. Ana es farmacéutica de Zaragoza que fundó Fotonistas para enseñar a mirar sin obsesionarse con los cacharritos ni tecnicismos.
+     - Si el correo es de Ana de Fotonistas (fotonistas.com / Ana Arbonés): Trátala con cercanía, naturalidad y complicidad (como a alguien habitual de la comunidad). NO hace falta presentarla, ni repetir su biografía ni profesión en cada episodio.
        * REGLA DE ORO: NO reveles toda la información ni destripes el contenido exclusivo de su correo.
-       * Da solo unas pinceladas o una pequeña semilla de reflexión que abra el apetito y cree curiosidad ("hype").
-       * Destaca su lema o espíritu («el secreto no está en la cámara, sino en tu forma de mirar»).
-       * Invita explícitamente a los oyentes con entusiasmo a entrar en fotonistas.com y suscribirse a su Fotoletter diaria para leer sus correos completos.
+       * Da solo unas pinceladas o una pequeña semilla de reflexión que abra el apetito y cree curiosidad ("hype") sobre el tema de su correo de hoy.
+       * Invita de forma directa y natural a los oyentes a entrar en fotonistas.com y suscribirse a su Fotoletter diaria para leer sus reflexiones completas.
      - Si hay otros correos, coméntalos también de forma distendida.
      - Separa este bloque con ---PAUSA---.
   4. CIERRE inspirador: inventa una variante fresca de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters para apoyar su trabajo. Gracias por acompañarnos, por mantener viva la pasión por la imagen y por ayudarnos a mirar el mundo con más detalle. ¡Cargad baterías o carretes, y nos escuchamos mañana!"
