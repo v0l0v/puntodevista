@@ -456,47 +456,52 @@ def main():
         if isinstance(data, dict) and data.get('thumbnail'):
             item['thumbnail'] = data['thumbnail']
 
-    all_entries = sorted(colossal + lomo + boom + tpj + swan + huck + lensculture + odlp + magnum + shootit,
-                         key=lambda x: x.get('_parsedDate') or x.get('date') or '',
-                         reverse=True)
+    source_items = {
+        'colossal': colossal,
+        'lomography': lomo,
+        'booooooom': boom,
+        'tpj': tpj,
+        'swan': swan,
+        'huck': huck,
+        'lensculture': lensculture,
+        'odlp': odlp,
+        'magnum': magnum,
+        'shootitwithfilm': shootit,
+    }
 
-    with open(os.path.join(DIR, 'lomography.json'), 'w') as f:
-        json.dump({'items': lomo, 'count': len(lomo), 'updated': ts}, f)
+    # Ingestar fuentes RSS adicionales configuradas en sources.json
+    for src in get_active_sources():
+        s_id = src['id']
+        if s_id not in source_items:
+            print(f'  Ingesta dinámica: {src["name"]}...')
+            custom_items = []
+            for feed_url in (src.get('feeds') or []):
+                custom_items.extend(fetch_rss(feed_url, s_id, include_content=True))
+            source_items[s_id] = custom_items
 
-    with open(os.path.join(DIR, 'booooooom.json'), 'w') as f:
-        json.dump({'items': boom, 'count': len(boom), 'updated': ts}, f)
+    all_entries = []
+    saved_names = []
+    for src in get_active_sources():
+        s_id = src['id']
+        items = source_items.get(s_id, [])
+        all_entries.extend(items)
+        fname = f'{s_id}.json'
+        with open(os.path.join(DIR, fname), 'w', encoding='utf-8') as f:
+            json.dump({'items': items, 'count': len(items), 'updated': ts}, f, ensure_ascii=False)
+        saved_names.append(fname)
 
-    with open(os.path.join(DIR, 'tpj.json'), 'w') as f:
-        json.dump({'items': tpj, 'count': len(tpj), 'updated': ts}, f)
+    all_entries.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
+    with open(os.path.join(DIR, 'feeds.json'), 'w', encoding='utf-8') as f:
+        json.dump({'items': all_entries, 'count': len(all_entries), 'updated': ts}, f, ensure_ascii=False)
 
-    with open(os.path.join(DIR, 'swan.json'), 'w') as f:
-        json.dump({'items': swan, 'count': len(swan), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'huck.json'), 'w') as f:
-        json.dump({'items': huck, 'count': len(huck), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'lensculture.json'), 'w') as f:
-        json.dump({'items': lensculture, 'count': len(lensculture), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'odlp.json'), 'w') as f:
-        json.dump({'items': odlp, 'count': len(odlp), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'magnum.json'), 'w') as f:
-        json.dump({'items': magnum, 'count': len(magnum), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'shootitwithfilm.json'), 'w') as f:
-        json.dump({'items': shootit, 'count': len(shootit), 'updated': ts}, f)
-
-    with open(os.path.join(DIR, 'feeds.json'), 'w') as f:
-        json.dump({'items': all_entries, 'count': len(all_entries), 'updated': ts}, f)
-
-    print(f'  Guardado: lomography.json, booooooom.json, tpj.json, swan.json, huck.json, lensculture.json, odlp.json, magnum.json, feeds.json ({len(all_entries)} total)')
+    print(f'  Guardado: {", ".join(saved_names)}, feeds.json ({len(all_entries)} total)')
 
     print('  10. Subiendo a GitHub...')
     try:
+        json_files = [f"{s['id']}.json" for s in get_active_sources()] + ['feeds.json', 'sources.json']
+        cache_files = [f"{s['id']}_articles.json" for s in get_active_sources() if os.path.exists(os.path.join(DIR, f"{s['id']}_articles.json"))]
         result = subprocess.run(
-            ['git', 'add', 'lomography.json', 'booooooom.json', 'tpj.json', 'swan.json', 'huck.json', 'lensculture.json', 'odlp.json', 'magnum.json', 'shootitwithfilm.json', 'feeds.json',
-             'lomography_articles.json', 'booooooom_articles.json', 'swan_articles.json', 'lensculture_articles.json', 'odlp_articles.json', 'magnum_articles.json'],
+            ['git', 'add'] + json_files + cache_files,
             capture_output=True, text=True, cwd=DIR
         )
         result = subprocess.run(

@@ -586,9 +586,20 @@ def main():
     items_by_source['lomography'] = lomo
     print(f'    {len(lomo)} artículos')
 
-    print('  3. Booooooom, TPJ, Swann, Huck, LensCulture, L\'Œil de la Photographie (RSS)...')
-    for key, label, fn in RSS_SOURCES:
-        articles = [a for a in fn() if is_within_24h(a.get('_parsedDate') or a.get('pubDate') or a.get('date'), TODAY)]
+    print('  3. Ingesta de fuentes (RSS / APIs)...')
+    for src in get_active_sources():
+        key = src['id']
+        label = src['name']
+        if key in ('colossal', 'lomography'):
+            continue
+        if key in FETCH_MAP:
+            raw_articles = FETCH_MAP[key]()
+        else:
+            from update_static_data import fetch_rss
+            raw_articles = []
+            for feed_url in (src.get('feeds') or []):
+                raw_articles.extend(fetch_rss(feed_url, key, include_content=True))
+        articles = [a for a in raw_articles if is_within_24h(a.get('_parsedDate') or a.get('pubDate') or a.get('date'), TODAY)]
         if key == 'odlp':
             filtered = []
             for a in articles:
@@ -602,7 +613,7 @@ def main():
         items_by_source[key] = items
         for item in items:
             print(f'    → {item["title"][:60]}')
-        print(f'    {len(items)} artículos')
+        print(f'    {len(items)} artículos ({label})')
 
     print('  4. Newsletters por email (label: fotopodcast)...')
     email_items = fetch_email_newsletters(TODAY, hours=24)

@@ -16,7 +16,19 @@ const RSS_PROXIES = [
   u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
 ];
 const REFRESH_MS = 10 * 60 * 1000;
-const ALL_SOURCES = ['colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm'];
+let ALL_SOURCES = ['colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm'];
+let SOURCE_LABELS = {
+  colossal: 'Colossal · Fotografía',
+  lomography: 'Lomography Magazine',
+  booooooom: 'Booooooom',
+  tpj: 'The Photographic Journal',
+  swan: 'Swann Galleries',
+  huck: 'Huck Magazine',
+  lensculture: 'LensCulture',
+  odlp: "L'Œil de la Photographie",
+  magnum: 'Magnum Photos',
+  shootitwithfilm: 'Shoot It With Film',
+};
 const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
 const PODCAST_COVER = 'podcast-cover.png';
@@ -177,38 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilter();
   });
 
-  document.getElementById('chk-all').addEventListener('change', (e) => {
-    __allChecked = e.target.checked;
-    __sources.clear();
-    saveSources();
-    applyFilter();
-  });
-
-  ALL_SOURCES.forEach(src => {
-    const row = document.querySelector(`.source-row[data-src="${src}"]`);
-    row.querySelector('input').addEventListener('change', (e) => {
-      __allChecked = false;
-      if (e.target.checked) __sources.add(src);
-      else __sources.delete(src);
-      saveSources();
-      applyFilter();
-    });
-    row.addEventListener('click', (e) => {
-      if (e.target.tagName === 'INPUT') return;
-      e.preventDefault();
-      __allChecked = false;
-      if (__sources.size === 1 && __sources.has(src)) {
-        __sources.clear();
-      } else {
-        __sources.clear();
-        __sources.add(src);
-      }
-      saveSources();
-      applyFilter();
-    });
-  });
-
   loadSources();
+  await loadSourcesConfig();
+  setupSourcesUI();
   sortSourcesUI();
   loadFeeds();
   fetchPodcastMeta();
@@ -363,6 +346,75 @@ function loadSources() {
 
 function saveSources() {
   localStorage.setItem(SOURCES_KEY, JSON.stringify([...__sources]));
+}
+
+async function loadSourcesConfig() {
+  try {
+    const resp = await fetch('sources.json', { cache: 'no-store' });
+    const data = await resp.json();
+    if (Array.isArray(data) && data.length) {
+      ALL_SOURCES = data.filter(s => s.enabled !== false).map(s => s.id);
+      for (const s of data) {
+        if (s.name) SOURCE_LABELS[s.id] = s.name;
+      }
+    }
+  } catch {}
+}
+
+function setupSourcesUI() {
+  const panel = document.getElementById('sources-panel');
+  if (!panel) return;
+  
+  panel.innerHTML = '';
+  const allRow = document.createElement('label');
+  allRow.className = 'source-row all';
+  allRow.id = 'source-all-row';
+  allRow.innerHTML = `<input type="checkbox" id="chk-all" ${__allChecked ? 'checked' : ''}><span>Todas</span><span class="src-count" id="count-all">0</span>`;
+  panel.appendChild(allRow);
+
+  const chkAll = allRow.querySelector('input');
+  if (chkAll) {
+    chkAll.onchange = (e) => {
+      __allChecked = e.target.checked;
+      __sources.clear();
+      saveSources();
+      applyFilter();
+    };
+  }
+
+  ALL_SOURCES.forEach(src => {
+    const labelText = getSourceLabel(src);
+    const row = document.createElement('label');
+    row.className = 'source-row';
+    row.dataset.src = src;
+    row.innerHTML = `<input type="checkbox" data-src="${src}"><span>${labelText}</span><span class="src-count" id="count-${src}">0</span>`;
+    
+    const input = row.querySelector('input');
+    input.checked = isSourceVisible(src);
+    input.onchange = (e) => {
+      __allChecked = false;
+      if (e.target.checked) __sources.add(src);
+      else __sources.delete(src);
+      saveSources();
+      applyFilter();
+    };
+
+    row.onclick = (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      e.preventDefault();
+      __allChecked = false;
+      if (__sources.size === 1 && __sources.has(src)) {
+        __sources.clear();
+      } else {
+        __sources.clear();
+        __sources.add(src);
+      }
+      saveSources();
+      applyFilter();
+    };
+
+    panel.appendChild(row);
+  });
 }
 
 async function loadFeeds() {
@@ -800,19 +852,7 @@ function podcastCardHTML() {
 }
 
 function getSourceLabel(src) {
-  switch (src) {
-    case 'colossal':    return 'Colossal · Fotografía';
-    case 'lomography':  return 'Lomography Magazine';
-    case 'booooooom':   return 'Booooooom';
-    case 'tpj':         return 'The Photographic Journal';
-    case 'swan':        return 'Swann Galleries';
-    case 'huck':        return 'Huck Magazine';
-    case 'lensculture': return 'LensCulture';
-    case 'odlp':        return "L'Œil de la Photographie";
-    case 'magnum':      return 'Magnum Photos';
-    case 'shootitwithfilm': return 'Shoot It With Film';
-    default:            return src;
-  }
+  return SOURCE_LABELS[src] || src;
 }
 
 function render(entries) {
@@ -838,30 +878,21 @@ function render(entries) {
     </div>`;
   }).join('');
   document.getElementById('loader').classList.add('hide');
-  const total = Math.min(entries.length, 100);
-  const colossal = entries.slice(0, 100).filter(e => e._source === 'colossal').length;
-  const lomo = entries.slice(0, 100).filter(e => e._source === 'lomography').length;
-  const boom = entries.slice(0, 100).filter(e => e._source === 'booooooom').length;
-  const tpj = entries.slice(0, 100).filter(e => e._source === 'tpj').length;
-  const swan = entries.slice(0, 100).filter(e => e._source === 'swan').length;
-  const huck = entries.slice(0, 100).filter(e => e._source === 'huck').length;
-  const lensculture = entries.slice(0, 100).filter(e => e._source === 'lensculture').length;
-  const odlp = entries.slice(0, 100).filter(e => e._source === 'odlp').length;
-  const magnum = entries.slice(0, 100).filter(e => e._source === 'magnum').length;
-  const shootit = total - colossal - lomo - boom - tpj - swan - huck - lensculture - odlp - magnum;
-  document.getElementById('count-colossal').textContent = String(colossal);
-  document.getElementById('count-lomography').textContent = String(lomo);
-  document.getElementById('count-booooooom').textContent = String(boom);
-  document.getElementById('count-tpj').textContent = String(tpj);
-  document.getElementById('count-swan').textContent = String(swan);
-  document.getElementById('count-huck').textContent = String(huck);
-  document.getElementById('count-lensculture').textContent = String(lensculture);
-  document.getElementById('count-odlp').textContent = String(odlp);
-  document.getElementById('count-magnum').textContent = String(magnum);
-  const elShootit = document.getElementById('count-shootitwithfilm');
-  if (elShootit) elShootit.textContent = String(shootit);
-  document.getElementById('count-all').textContent = String(total);
-  document.getElementById('footer-info').textContent = total + ' fotografías';
+  
+  const top100 = entries.slice(0, 100);
+  const total = top100.length;
+  const counts = {};
+  for (const e of top100) {
+    if (e._source) counts[e._source] = (counts[e._source] || 0) + 1;
+  }
+  for (const src of ALL_SOURCES) {
+    const countEl = document.getElementById(`count-${src}`);
+    if (countEl) countEl.textContent = String(counts[src] || 0);
+  }
+  const elAll = document.getElementById('count-all');
+  if (elAll) elAll.textContent = String(total);
+  const elFooter = document.getElementById('footer-info');
+  if (elFooter) elFooter.textContent = total + ' fotografías';
 }
 
 function fmtDate(d) {
@@ -1320,6 +1351,39 @@ function renderShootItWithFilmArticle(body, entry) {
   body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
 }
 
+function renderGenericArticle(body, entry) {
+  const content = cleanContent(entry.content || entry.excerpt || '');
+  const images = extractImages(content);
+  if (!images.length && entry.thumbnail) {
+    images.push({ url: entry.thumbnail, caption: '' });
+  }
+  const socialLinks = extractSocialLinks(content);
+  const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const sourceName = getSourceLabel(entry._source);
+  body.innerHTML = `
+    <div class="modal-tools">
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
+      <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
+    </div>
+    ${linksHTML}
+    <div class="modal-title-group">
+      <h2 class="modal-title">${entry.title}</h2>
+      <div class="modal-meta">
+        <span class="modal-source">${sourceName}</span>
+        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
+      </div>
+    </div>
+    <div class="modal-article">
+      <div class="modal-article-content">${content || '<p>Contenido completo disponible en el sitio web original.</p>'}</div>
+      <div class="modal-footer" style="padding-top:2rem">
+        <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
+      </div>
+    </div>
+  `;
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+}
+
 async function openModal(card) {
   const id = card.dataset.id;
   const source = card.dataset.source;
@@ -1605,11 +1669,12 @@ async function openModal(card) {
     return;
   }
 
-  if (source === 'shootitwithfilm') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
-    renderShootItWithFilmArticle(body, entry);
-    return;
+  if (source === 'shootitwithfilm' || (source !== 'colossal' && source !== 'lomography')) {
+    const entry = window.__allEntries?.find(e => String(e._id) === String(id));
+    if (entry) {
+      renderGenericArticle(body, entry);
+      return;
+    }
   }
 
   let post;
