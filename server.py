@@ -869,6 +869,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except Exception as e:
                 data = json.dumps({'status': 'error', 'message': str(e)})
             self.wfile.write(data.encode())
+        elif parsed.path == '/api/shootitwithfilm':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            try:
+                with open(os.path.join(DIR, 'shootitwithfilm.json')) as f:
+                    items = json.load(f).get('items', [])
+                data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
+            except Exception as e:
+                data = json.dumps({'status': 'error', 'message': str(e)})
+            self.wfile.write(data.encode())
         elif parsed.path == '/api/swan/article':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

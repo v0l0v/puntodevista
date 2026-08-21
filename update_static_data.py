@@ -37,6 +37,7 @@ LENSCULTURE_URL = 'https://www.lensculture.com/feeds/feed.rss'
 ODLP_URL = 'https://loeildelaphotographie.com/en/feed/'
 MAGNUM_URL = 'https://www.magnumphotos.com/wp-json/wp/v2/posts?per_page=30'
 SHOOTIT_URL = 'https://shootitwithfilm.com/category/features/feed/'
+SHOOTIT_WP_API = 'https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1'
 
 
 def fetch_colossal():
@@ -214,6 +215,32 @@ def fetch_magnum():
 
 
 def fetch_shootitwithfilm():
+    try:
+        req = urllib.request.Request(SHOOTIT_WP_API, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            posts = json.loads(resp.read().decode('utf-8'))
+        items = []
+        for p in posts:
+            thumb = ''
+            try:
+                thumb = p.get('_embedded', {}).get('wp:featuredmedia', [{}])[0].get('source_url', '')
+            except Exception:
+                thumb = ''
+            items.append({
+                '_source': 'shootitwithfilm',
+                '_id': str(p.get('id') or p.get('link')),
+                'title': p.get('title', {}).get('rendered', ''),
+                'link': p.get('link', ''),
+                'date': p.get('date', '')[:10],
+                '_parsedDate': p.get('date', ''),
+                'thumbnail': thumb,
+                'content': p.get('content', {}).get('rendered', ''),
+                'excerpt': p.get('excerpt', {}).get('rendered', ''),
+            })
+        if items:
+            return items
+    except Exception as e:
+        print(f'     error fetch_shootitwithfilm (WP API): {e}')
     return fetch_rss(SHOOTIT_URL, 'shootitwithfilm', fetch_page_fallback=False)
 
 
