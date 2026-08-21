@@ -239,7 +239,7 @@ def generate_audio(text, out_path, episode_date=None):
             filter_inputs += f'[{idx}:a]'
 
         cmd = ['ffmpeg', '-y'] + inputs + [
-            '-filter_complex', f'{filter_inputs}concat=n={len(sequence)}:v=0:a=1[outa]',
+            '-filter_complex', f'{filter_inputs}concat=n={len(sequence)}:v=0:a=1,loudnorm=I=-16:TP=-1.5:LRA=11[outa]',
             '-map', '[outa]',
             '-b:a', '192k',
             out_path

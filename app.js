@@ -366,8 +366,12 @@ function saveSources() {
 }
 
 async function loadFeeds() {
-  const [colossal, lomo, boom, tpj, swan, huck, lensculture, odlp, magnum, shootit] = await Promise.all([fetchColossal(), fetchLomography(), fetchBooooooom(), fetchTpj(), fetchSwan(), fetchHuck(), fetchLensCulture(), fetchOdlp(), fetchMagnum(), fetchShootItWithFilm()]);
-  window.__rawEntries = [...colossal, ...lomo, ...boom, ...tpj, ...swan, ...huck, ...lensculture, ...odlp, ...magnum, ...shootit];
+  const fetchers = [
+    fetchColossal(), fetchLomography(), fetchBooooooom(), fetchTpj(), fetchSwan(),
+    fetchHuck(), fetchLensCulture(), fetchOdlp(), fetchMagnum(), fetchShootItWithFilm()
+  ];
+  const results = await Promise.allSettled(fetchers);
+  window.__rawEntries = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
   combineAndSortAllEntries();
 }
 
