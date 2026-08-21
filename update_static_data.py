@@ -23,21 +23,27 @@ RSS_HEADERS = {
     'Accept-Language': 'en-US,en;q=0.9',
 }
 
-WP_API = 'https://www.thisiscolossal.com/wp-json/wp/v2/posts?categories=496&per_page=20'
-LOMO_URL = 'https://www.lomography.com/magazine/'
-BOOM_URL = 'https://www.booooooom.com/blog/photo/feed/'
-TPJ_URLS = [
+from sources_config import load_sources_config, get_active_sources, get_source_by_id
+
+def _src_prop(src_id, prop, default):
+    s = get_source_by_id(src_id)
+    return (s and s.get(prop)) or default
+
+WP_API = _src_prop('colossal', 'wp_api', 'https://www.thisiscolossal.com/wp-json/wp/v2/posts?categories=496&per_page=20')
+LOMO_URL = _src_prop('lomography', 'url', 'https://www.lomography.com/magazine/')
+BOOM_URL = (_src_prop('booooooom', 'feeds', ['https://www.booooooom.com/blog/photo/feed/']) or [''])[0]
+TPJ_URLS = _src_prop('tpj', 'feeds', [
     'https://thephotographicjournal.com/essays/rss',
     'https://thephotographicjournal.com/interviews/feed',
     'https://thephotographicjournal.com/features/feed',
-]
-SWAN_URL = 'https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed'
-HUCK_URL = 'https://www.huckmag.com/topic/photography/feed'
-LENSCULTURE_URL = 'https://www.lensculture.com/feeds/feed.rss'
-ODLP_URL = 'https://loeildelaphotographie.com/en/feed/'
-MAGNUM_URL = 'https://www.magnumphotos.com/wp-json/wp/v2/posts?per_page=30'
-SHOOTIT_URL = 'https://shootitwithfilm.com/category/features/feed/'
-SHOOTIT_WP_API = 'https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1'
+])
+SWAN_URL = (_src_prop('swan', 'feeds', ['https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed']) or [''])[0]
+HUCK_URL = (_src_prop('huck', 'feeds', ['https://www.huckmag.com/topic/photography/feed']) or [''])[0]
+LENSCULTURE_URL = (_src_prop('lensculture', 'feeds', ['https://www.lensculture.com/feeds/feed.rss']) or [''])[0]
+ODLP_URL = (_src_prop('odlp', 'feeds', ['https://loeildelaphotographie.com/en/feed/']) or [''])[0]
+MAGNUM_URL = _src_prop('magnum', 'wp_api', 'https://www.magnumphotos.com/wp-json/wp/v2/posts?per_page=30')
+SHOOTIT_URL = (_src_prop('shootitwithfilm', 'feeds', ['https://shootitwithfilm.com/category/features/feed/']) or [''])[0]
+SHOOTIT_WP_API = _src_prop('shootitwithfilm', 'wp_api', 'https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1')
 
 
 def fetch_colossal():

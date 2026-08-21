@@ -1,0 +1,98 @@
+[
+  {
+    "id": "colossal",
+    "name": "Colossal · Fotografía",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://www.thisiscolossal.com/wp-json/wp/v2/posts?categories=496&per_page=20",
+    "url": "https://www.thisiscolossal.com/category/photography/"
+  },
+  {
+    "id": "lomography",
+    "name": "Lomography Magazine",
+    "type": "custom",
+    "enabled": true,
+    "url": "https://www.lomography.com/magazine/"
+  },
+  {
+    "id": "booooooom",
+    "name": "Booooooom",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://www.booooooom.com/blog/photo/feed/"
+    ],
+    "url": "https://www.booooooom.com/blog/photo/"
+  },
+  {
+    "id": "tpj",
+    "name": "The Photographic Journal",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://thephotographicjournal.com/essays/rss",
+      "https://thephotographicjournal.com/interviews/feed",
+      "https://thephotographicjournal.com/features/feed"
+    ],
+    "url": "https://thephotographicjournal.com/"
+  },
+  {
+    "id": "swan",
+    "name": "Swann Galleries",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed"
+    ],
+    "url": "https://www.swanngalleries.com/news/category/photographs-and-photobooks/"
+  },
+  {
+    "id": "huck",
+    "name": "Huck Magazine",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://www.huckmag.com/topic/photography/feed"
+    ],
+    "url": "https://www.huckmag.com/topic/photography"
+  },
+  {
+    "id": "lensculture",
+    "name": "LensCulture",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://www.lensculture.com/feeds/feed.rss"
+    ],
+    "url": "https://www.lensculture.com/"
+  },
+  {
+    "id": "odlp",
+    "name": "L'Œil de la Photographie",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://loeildelaphotographie.com/en/feed/"
+    ],
+    "url": "https://loeildelaphotographie.com/en/"
+  },
+  {
+    "id": "magnum",
+    "name": "Magnum Photos",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://www.magnumphotos.com/wp-json/wp/v2/posts?per_page=30",
+    "url": "https://www.magnumphotos.com/stories/"
+  },
+  {
+    "id": "shootitwithfilm",
+    "name": "Shoot It With Film",
+    "type": "wp-api",
+    "enabled": true,
+    "feeds": [
+      "https://shootitwithfilm.com/category/features/feed/"
+    ],
+    "wp_api": "https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "url": "https://shootitwithfilm.com/"
+  }
+]

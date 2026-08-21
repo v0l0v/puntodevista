@@ -12,6 +12,8 @@ from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_hu
                                 fetch_lensculture, fetch_odlp, fetch_magnum, fetch_shootitwithfilm)
 from fetch_email_newsletter import fetch_email_newsletters
 
+from sources_config import get_active_sources, get_source_label
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
 TODAY = date.today()
@@ -67,30 +69,40 @@ def is_within_24h(date_val, target_date=None, hours=24):
     return False
 
 
-SOURCES = [
-    ('colossal', 'Colossal · Fotografía'),
-    ('lomography', 'Lomography Magazine'),
-    ('booooooom', 'Booooooom'),
-    ('tpj', 'The Photographic Journal'),
-    ('swan', 'Swann Galleries'),
-    ('huck', 'Huck Magazine'),
-    ('lensculture', 'LensCulture'),
-    ('odlp', 'L\'Œil de la Photographie'),
-    ('magnum', 'Magnum Photos'),
-    ('shootitwithfilm', 'Shoot It With Film'),
-    ('email', 'Newsletters · Email'),
-]
+def get_configured_sources():
+    active = get_active_sources()
+    if active:
+        s = [(item['id'], item['name']) for item in active]
+        s.append(('email', 'Newsletters · Email'))
+        return s
+    return [
+        ('colossal', 'Colossal · Fotografía'),
+        ('lomography', 'Lomography Magazine'),
+        ('booooooom', 'Booooooom'),
+        ('tpj', 'The Photographic Journal'),
+        ('swan', 'Swann Galleries'),
+        ('huck', 'Huck Magazine'),
+        ('lensculture', 'LensCulture'),
+        ('odlp', 'L\'Œil de la Photographie'),
+        ('magnum', 'Magnum Photos'),
+        ('shootitwithfilm', 'Shoot It With Film'),
+        ('email', 'Newsletters · Email'),
+    ]
 
-RSS_SOURCES = [
-    ('booooooom', 'Booooooom', fetch_booooooom),
-    ('tpj', 'The Photographic Journal', fetch_tpj),
-    ('swan', 'Swann Galleries', fetch_swan),
-    ('huck', 'Huck Magazine', fetch_huck),
-    ('lensculture', 'LensCulture', fetch_lensculture),
-    ('odlp', 'L\'Œil de la Photographie', fetch_odlp),
-    ('magnum', 'Magnum Photos', fetch_magnum),
-    ('shootitwithfilm', 'Shoot It With Film', fetch_shootitwithfilm),
-]
+SOURCES = get_configured_sources()
+
+FETCH_MAP = {
+    'booooooom': fetch_booooooom,
+    'tpj': fetch_tpj,
+    'swan': fetch_swan,
+    'huck': fetch_huck,
+    'lensculture': fetch_lensculture,
+    'odlp': fetch_odlp,
+    'magnum': fetch_magnum,
+    'shootitwithfilm': fetch_shootitwithfilm,
+}
+
+RSS_SOURCES = [(s_id, s_name, FETCH_MAP[s_id]) for s_id, s_name in SOURCES if s_id in FETCH_MAP]
 
 EMOJI_RE = re.compile(
     '[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
