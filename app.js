@@ -952,7 +952,10 @@ function getSourceLabel(src) {
 
 function render(entries) {
   const el = document.getElementById('entries');
-  el.innerHTML = podcastCardHTML() + entries.slice(0, 100).map(e => {
+  const all = window.__allEntries || [];
+  const displayItems = __allChecked ? entries.slice(0, 150) : entries;
+
+  el.innerHTML = podcastCardHTML() + displayItems.map(e => {
     const isPodcast = e.is_podcast_entry;
     const src = isPodcast ? e.image : extractImg(e);
     const sourceLabel = isPodcast ? 'Podcast · Punto de vista' : getSourceLabel(e._source);
@@ -974,10 +977,9 @@ function render(entries) {
   }).join('');
   document.getElementById('loader').classList.add('hide');
   
-  const top100 = entries.slice(0, 100);
-  const total = top100.length;
+  // Contadores globales por cada fuente
   const counts = {};
-  for (const e of top100) {
+  for (const e of all) {
     if (e._source) counts[e._source] = (counts[e._source] || 0) + 1;
   }
   for (const src of ALL_SOURCES) {
@@ -985,9 +987,9 @@ function render(entries) {
     if (countEl) countEl.textContent = String(counts[src] || 0);
   }
   const elAll = document.getElementById('count-all');
-  if (elAll) elAll.textContent = String(total);
+  if (elAll) elAll.textContent = String(all.length);
   const elFooter = document.getElementById('footer-info');
-  if (elFooter) elFooter.textContent = total + ' fotografías';
+  if (elFooter) elFooter.textContent = displayItems.length + ' fotografías';
 }
 
 function fmtDate(d) {
