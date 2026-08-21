@@ -202,6 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   loadSources();
+  loadCachedFeeds();
   await loadSourcesConfig();
   setupSourcesUI();
   sortSourcesUI();
@@ -456,26 +457,64 @@ const CUSTOM_FETCHERS = {
   shootitwithfilm: fetchShootItWithFilm,
 };
 
+const CACHED_ENTRIES_KEY = 'feedfoto.cached_entries';
+
+function loadCachedFeeds() {
+  try {
+    const raw = localStorage.getItem(CACHED_ENTRIES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length) {
+        window.__rawEntries = parsed.map(i => ({
+          ...i,
+          _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null
+        }));
+        combineAndSortAllEntries();
+      }
+    }
+  } catch {}
+}
+
 async function loadFeeds() {
-  const fetchers = ALL_SOURCES.map(src => {
-    if (CUSTOM_FETCHERS[src]) return CUSTOM_FETCHERS[src]();
-    return fetchApiOrJson(`/api/${src}`, `${src}.json`, normalizeGenericSource(src));
-  });
-  const results = await Promise.allSettled(fetchers);
-  let loaded = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
-  
-  if (!loaded.length) {
-    try {
-      const resp = await fetch('feeds.json', { cache: 'no-store' });
+  // 1. Carga inmediata desde caché local del navegador (0 ms)
+  loadCachedFeeds();
+
+  // 2. Carga ultra rápida del bundle consolidado feeds.json (~100 ms)
+  let staticLoaded = false;
+  try {
+    const resp = await fetch('feeds.json', { cache: 'no-store' });
+    if (resp.ok) {
       const data = await resp.json();
-      if (data && data.items) loaded = data.items.map(i => ({
-        ...i,
-        _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null
-      }));
-    } catch {}
+      if (data && Array.isArray(data.items) && data.items.length) {
+        window.__rawEntries = data.items.map(i => ({
+          ...i,
+          _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null
+        }));
+        combineAndSortAllEntries();
+        staticLoaded = true;
+        try {
+          localStorage.setItem(CACHED_ENTRIES_KEY, JSON.stringify(data.items.slice(0, 150)));
+        } catch {}
+      }
+    }
+  } catch {}
+
+  // 3. Revalidación en segundo plano de APIs individuales (solo si no cargó feeds.json o en entorno local)
+  if (!staticLoaded || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    const fetchers = ALL_SOURCES.map(src => {
+      if (CUSTOM_FETCHERS[src]) return CUSTOM_FETCHERS[src]();
+      return fetchApiOrJson(`/api/${src}`, `${src}.json`, normalizeGenericSource(src));
+    });
+    const results = await Promise.allSettled(fetchers);
+    const dynamicLoaded = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
+    if (dynamicLoaded.length) {
+      window.__rawEntries = dynamicLoaded;
+      combineAndSortAllEntries();
+      try {
+        localStorage.setItem(CACHED_ENTRIES_KEY, JSON.stringify(dynamicLoaded.slice(0, 150)));
+      } catch {}
+    }
   }
-  window.__rawEntries = loaded;
-  combineAndSortAllEntries();
 }
 
 function combineAndSortAllEntries() {
