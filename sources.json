@@ -92,7 +92,7 @@
     "feeds": [
       "https://shootitwithfilm.com/category/features/feed/"
     ],
-    "wp_api": "https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "wp_api": "https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "url": "https://shootitwithfilm.com/"
   },
   {
@@ -101,7 +101,9 @@
     "type": "rss",
     "enabled": true,
     "feeds": [
-      "https://www.35mmc.com/feed/"
+      "https://www.35mmc.com/feed/",
+      "https://www.35mmc.com/feed/?paged=2",
+      "https://www.35mmc.com/feed/?paged=3"
     ],
     "url": "https://www.35mmc.com/"
   },
@@ -110,7 +112,7 @@
     "name": "Kosmo Foto",
     "type": "wp-api",
     "enabled": true,
-    "wp_api": "https://kosmofoto.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "wp_api": "https://kosmofoto.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "feeds": [
       "https://kosmofoto.com/feed/"
     ],
@@ -119,9 +121,8 @@
   {
     "id": "casualphotophile",
     "name": "Casual Photophile",
-    "type": "wp-api",
+    "type": "rss",
     "enabled": true,
-    "wp_api": "https://casualphotophile.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://casualphotophile.com/feed/"
     ],
@@ -132,7 +133,7 @@
     "name": "Blind Magazine",
     "type": "wp-api",
     "enabled": true,
-    "wp_api": "https://www.blind-magazine.com/wp-json/wp/v2/posts?per_page=25&_embed=1",
+    "wp_api": "https://www.blind-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "feeds": [
       "https://www.blind-magazine.com/en/feed/"
     ],
@@ -144,7 +145,8 @@
     "type": "rss",
     "enabled": true,
     "feeds": [
-      "https://phroommagazine.com/feed/"
+      "https://phroommagazine.com/feed/",
+      "https://phroommagazine.com/feed/?paged=2"
     ],
     "url": "https://phroommagazine.com/"
   },
@@ -153,7 +155,7 @@
     "name": "C41 Magazine",
     "type": "wp-api",
     "enabled": true,
-    "wp_api": "https://www.c41magazine.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "wp_api": "https://www.c41magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "feeds": [
       "https://www.c41magazine.com/feed/"
     ],
@@ -164,7 +166,7 @@
     "name": "Feature Shoot",
     "type": "wp-api",
     "enabled": true,
-    "wp_api": "https://www.featureshoot.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "wp_api": "https://www.featureshoot.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "feeds": [
       "https://www.featureshoot.com/feed/"
     ],
@@ -176,7 +178,7 @@
     "type": "wp-api",
     "archive_mode": true,
     "enabled": true,
-    "wp_api": "https://aint-bad.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "wp_api": "https://aint-bad.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
     "feeds": [
       "https://aint-bad.com/feed/"
     ],
@@ -189,7 +191,8 @@
     "archive_mode": true,
     "enabled": true,
     "feeds": [
-      "https://emulsive.org/feed"
+      "https://emulsive.org/feed",
+      "https://emulsive.org/feed?paged=2"
     ],
     "url": "https://emulsive.org/"
   }
