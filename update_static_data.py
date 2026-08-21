@@ -78,6 +78,47 @@ def fetch_lomography():
     return parse_magazine_list(md)
 
 
+def fetch_wp_api(wp_api_url, source_id):
+    items = []
+    try:
+        req = urllib.request.Request(wp_api_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            posts = json.loads(resp.read().decode('utf-8'))
+        for p in posts:
+            thumb = ''
+            media = p.get('_embedded', {}).get('wp:featuredmedia', [])
+            if media and isinstance(media, list) and isinstance(media[0], dict):
+                thumb = media[0].get('source_url', '')
+                if not thumb:
+                    thumb = media[0].get('media_details', {}).get('sizes', {}).get('large', {}).get('source_url', '')
+            if not thumb:
+                c = p.get('content', {}).get('rendered', '')
+                m = re.search(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', c)
+                if m:
+                    thumb = m.group(1)
+            raw_title = p.get('title', {}).get('rendered', '')
+            title = unescape(re.sub(r'<[^>]+>', '', raw_title)).strip()
+            link = p.get('link', '')
+            if not title or not link:
+                continue
+            items.append({
+                '_source': source_id,
+                '_id': p.get('id') or link,
+                'title': title,
+                'link': link,
+                'date': p.get('date', '')[:10],
+                '_parsedDate': p.get('date', ''),
+                'thumbnail': thumb,
+                'content': p.get('content', {}).get('rendered', ''),
+                'excerpt': unescape(re.sub(r'<[^>]+>', '', p.get('excerpt', {}).get('rendered', '')))[:300].strip(),
+            })
+        print(f'     {len(items)} artículos WP API ({source_id})')
+        return items
+    except Exception as e:
+        print(f'     error fetch_wp_api ({source_id}): {e}')
+        return []
+
+
 def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
     try:
         req = urllib.request.Request(url, headers=RSS_HEADERS)
@@ -139,22 +180,42 @@ def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
             seen.add(key)
 
             thumb = ''
-            for tm in re.finditer(r'<img[^>]+src="([^"]+)"', content):
-                url_img = tm.group(1)
-                if 'facebook.com' not in url_img and 'google' not in url_img and 'tracking' not in url_img:
-                    thumb = url_img
-                    break
+            # 1. Buscar en enclosure y media:content
+            for elem in item:
+                tag_l = elem.tag.lower()
+                if 'enclosure' in tag_l or 'media' in tag_l:
+                    u = elem.attrib.get('url') or elem.attrib.get('href')
+                    if u and any(ext in u.lower() for ext in ('.jpg', '.jpeg', '.png', '.webp', '.gif', 'image', 'wp-content')):
+                        thumb = u
+                        break
+            
+            # 2. Buscar en contenido HTML
+            if not thumb and content:
+                for tm in re.finditer(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', content):
+                    url_img = tm.group(1)
+                    if 'facebook.com' not in url_img and 'google' not in url_img and 'tracking' not in url_img and 'avatar' not in url_img:
+                        thumb = url_img
+                        break
 
+            # 3. Fallback a página web con og:image
             if not thumb and link and fetch_page_fallback:
                 try:
-                    req2 = urllib.request.Request(link, headers={'User-Agent': 'Mozilla/5.0'})
-                    with urllib.request.urlopen(req2, timeout=10) as resp2:
+                    req2 = urllib.request.Request(link, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
+                    with urllib.request.urlopen(req2, timeout=6) as resp2:
                         html2 = resp2.read().decode('utf-8', errors='ignore')
-                    for tm2 in re.finditer(r'<img[^>]+src="([^"]+)"', html2):
-                        url_img2 = tm2.group(1)
-                        if 'facebook.com' not in url_img2 and 'google' not in url_img2 and 'tracking' not in url_img2:
-                            thumb = url_img2
-                            break
+                    m_og = re.search(r'property=[\"\']og:image[\"\']\s+content=[\"\']([^\"\']+)[\"\']', html2) or re.search(r'content=[\"\']([^\"\']+)[\"\']\s+property=[\"\']og:image[\"\']', html2)
+                    if m_og:
+                        thumb = m_og.group(1)
+                    else:
+                        m_tw = re.search(r'name=[\"\']twitter:image[\"\']\s+content=[\"\']([^\"\']+)[\"\']', html2) or re.search(r'content=[\"\']([^\"\']+)[\"\']\s+name=[\"\']twitter:image[\"\']', html2)
+                        if m_tw:
+                            thumb = m_tw.group(1)
+                        else:
+                            for tm2 in re.finditer(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', html2):
+                                url_img2 = tm2.group(1)
+                                if 'facebook.com' not in url_img2 and 'google' not in url_img2 and 'tracking' not in url_img2 and 'avatar' not in url_img2 and 'logo' not in url_img2.lower():
+                                    thumb = url_img2
+                                    break
                 except Exception:
                     pass
 
@@ -469,14 +530,17 @@ def main():
         'shootitwithfilm': shootit,
     }
 
-    # Ingestar fuentes RSS adicionales configuradas en sources.json
+    # Ingestar fuentes adicionales configuradas en sources.json
     for src in get_active_sources():
         s_id = src['id']
         if s_id not in source_items:
             print(f'  Ingesta dinámica: {src["name"]}...')
             custom_items = []
-            for feed_url in (src.get('feeds') or []):
-                custom_items.extend(fetch_rss(feed_url, s_id, include_content=True, fetch_page_fallback=False))
+            if src.get('type') == 'wp-api' and src.get('wp_api'):
+                custom_items = fetch_wp_api(src['wp_api'], s_id)
+            if not custom_items:
+                for feed_url in (src.get('feeds') or []):
+                    custom_items.extend(fetch_rss(feed_url, s_id, include_content=True, fetch_page_fallback=True))
             source_items[s_id] = custom_items
 
     all_entries = []
