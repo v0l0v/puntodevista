@@ -424,6 +424,63 @@ def render_text(items_by_source):
         lines.append('No hubo artículos hoy.')
     return '\n'.join(lines)
 
+def detect_duplicates_and_cross_coverage(items_by_source):
+    """
+    Analiza todos los artículos del día entre distintas fuentes para identificar:
+    1. Duplicados exactos por enlace dentro de la misma fuente.
+    2. Cobertura cruzada (mismo fotógrafo o proyecto cubierto por más de una fuente).
+    """
+    all_items = []
+    seen_links = set()
+    for src_key in list(items_by_source.keys()):
+        filtered = []
+        for item in items_by_source[src_key]:
+            link = item.get('link', '').strip()
+            if link and link in seen_links:
+                continue
+            if link:
+                seen_links.add(link)
+            filtered.append(item)
+            all_items.append((src_key, item))
+        items_by_source[src_key] = filtered
+
+    def extract_keywords(title, photog):
+        words = set()
+        if photog:
+            clean_p = re.sub(r'[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]', '', photog.lower())
+            words.update([w for w in clean_p.split() if len(w) > 3])
+        if title:
+            clean_t = re.sub(r'\b(photo|series|project|interview|with|by|and|the|for|from|magazine|travel|story|lens|film)\b', '', title.lower())
+            clean_t = re.sub(r'[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]', '', clean_t)
+            words.update([w for w in clean_t.split() if len(w) > 4])
+        return words
+
+    item_keywords = []
+    for src_key, item in all_items:
+        kw = extract_keywords(item.get('title', ''), item.get('photographer') or '')
+        item_keywords.append((src_key, item, kw))
+
+    for i in range(len(item_keywords)):
+        src1, item1, kw1 = item_keywords[i]
+        if not kw1:
+            continue
+        for j in range(i + 1, len(item_keywords)):
+            src2, item2, kw2 = item_keywords[j]
+            if src1 == src2 or not kw2:
+                continue
+            intersection = kw1.intersection(kw2)
+            photog1 = (item1.get('photographer') or '').strip().lower()
+            photog2 = (item2.get('photographer') or '').strip().lower()
+            same_photog = bool(photog1 and photog2 and (photog1 == photog2 or photog1 in photog2 or photog2 in photog1))
+            
+            if same_photog or len(intersection) >= 2:
+                c1 = item1.setdefault('cross_sources', [])
+                if src2 not in c1:
+                    c1.append(src2)
+                c2 = item2.setdefault('cross_sources', [])
+                if src1 not in c2:
+                    c2.append(src1)
+
 def render_podcast(items_by_source):
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
     total = sum(len(v) for v in items_by_source.values())
@@ -446,6 +503,7 @@ def render_podcast(items_by_source):
              '',
              '## Contenido del día',
              '']
+    sources_dict = dict(SOURCES)
     for key, label in SOURCES:
         items = items_by_source.get(key) or []
         if not items:
@@ -458,6 +516,9 @@ def render_podcast(items_by_source):
                 lines.append(f'Fotógrafo: {item["photographer"]}')
             elif item.get('photographers'):
                 lines.append(f'Fotógrafos: {", ".join(item["photographers"])}')
+            if item.get('cross_sources'):
+                cross_labels = [sources_dict.get(s, s) for s in item['cross_sources']]
+                lines.append(f'Nota editorial: Cobertura cruzada detectada. Este tema o artista también se publica hoy en: {", ".join(cross_labels)}')
             lines.append('')
             lines.append(clean_text(item['full_text']))
             lines.append('')
@@ -535,6 +596,9 @@ def main():
     email_items = fetch_email_newsletters(TODAY, hours=24)
     items_by_source['email'] = email_items
     print(f'    {len(email_items)} newsletter(s)')
+
+    print('  5. Detección de duplicados y análisis de cobertura cruzada...')
+    detect_duplicates_and_cross_coverage(items_by_source)
 
     html = render_html(items_by_source)
     podcast = render_podcast(items_by_source)
