@@ -531,6 +531,8 @@ def render_podcast(items_by_source):
             if item.get('cross_sources'):
                 cross_labels = [sources_dict.get(s, s) for s in item['cross_sources']]
                 lines.append(f'Nota editorial: Cobertura cruzada detectada. Este tema o artista también se publica hoy en: {", ".join(cross_labels)}')
+            if item.get('is_archive_flashback'):
+                lines.append(f'Nota editorial (JOYA DEL ARCHIVO / FLASHBACK HISTÓRICO): Este artículo proviene del archivo de {label}. Conéctalo con cariño como un recuerdo especial en el guion justificando un motivo sugerente (un proceso químico, temática compartida con las noticias de hoy o autor rescatado).')
             lines.append('')
             lines.append(clean_text(item['full_text']))
             lines.append('')
@@ -600,6 +602,18 @@ def main():
             for feed_url in (src.get('feeds') or []):
                 raw_articles.extend(fetch_rss(feed_url, key, include_content=True))
         articles = [a for a in raw_articles if is_within_24h(a.get('_parsedDate') or a.get('pubDate') or a.get('date'), TODAY)]
+        is_flashback = False
+        if not articles and src.get('archive_mode') and raw_articles:
+            # Seleccionar una joya del archivo histórico
+            candidates = [
+                a for a in raw_articles 
+                if not re.search(r'\b(deal|sale|discount|update|notice|shop|coupon|black friday)\b', a.get('title', ''), re.I)
+            ]
+            chosen = random.choice(candidates if candidates else raw_articles)
+            articles = [chosen]
+            is_flashback = True
+            print(f'    → [Joya del archivo] {chosen.get("title")[:60]}')
+
         if key == 'odlp':
             filtered = []
             for a in articles:
@@ -610,9 +624,13 @@ def main():
                 filtered.append(a)
             articles = filtered
         items = [process_rss_item(a, label) for a in articles]
+        if is_flashback:
+            for item in items:
+                item['is_archive_flashback'] = True
         items_by_source[key] = items
         for item in items:
-            print(f'    → {item["title"][:60]}')
+            if not is_flashback:
+                print(f'    → {item["title"][:60]}')
         print(f'    {len(items)} artículos ({label})')
 
     print('  4. Newsletters por email (label: fotopodcast)...')

@@ -16,7 +16,10 @@ const RSS_PROXIES = [
   u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
 ];
 const REFRESH_MS = 10 * 60 * 1000;
-let ALL_SOURCES = ['colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm'];
+let ALL_SOURCES = [
+  'colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm',
+  '35mmc', 'kosmofoto', 'casualphotophile', 'blind', 'phroom', 'c41', 'featureshoot', 'aintbad', 'emulsive'
+];
 let SOURCE_LABELS = {
   colossal: 'Colossal · Fotografía',
   lomography: 'Lomography Magazine',
@@ -28,6 +31,15 @@ let SOURCE_LABELS = {
   odlp: "L'Œil de la Photographie",
   magnum: 'Magnum Photos',
   shootitwithfilm: 'Shoot It With Film',
+  '35mmc': '35mmc',
+  kosmofoto: 'Kosmo Foto',
+  casualphotophile: 'Casual Photophile',
+  blind: 'Blind Magazine',
+  phroom: 'Phroom Magazine',
+  c41: 'C41 Magazine',
+  featureshoot: 'Feature Shoot',
+  aintbad: "Ain't-Bad",
+  emulsive: 'EMULSIVE'
 };
 const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
@@ -417,13 +429,52 @@ function setupSourcesUI() {
   });
 }
 
+function normalizeGenericSource(sourceId) {
+  return function(items) {
+    return (items || []).map(i => ({
+      _source: sourceId,
+      _id: i.link || i._id || `${sourceId}-${i.title}`,
+      _parsedDate: (i.date || i._parsedDate || i.pubDate) ? new Date(i.date || i._parsedDate || i.pubDate) : null,
+      link: i.link,
+      title: i.title,
+      content: i.content || i.excerpt || i.description || '',
+      thumbnail: i.thumbnail || ''
+    }));
+  };
+}
+
+const CUSTOM_FETCHERS = {
+  colossal: fetchColossal,
+  lomography: fetchLomography,
+  booooooom: fetchBooooooom,
+  tpj: fetchTpj,
+  swan: fetchSwan,
+  huck: fetchHuck,
+  lensculture: fetchLensCulture,
+  odlp: fetchOdlp,
+  magnum: fetchMagnum,
+  shootitwithfilm: fetchShootItWithFilm,
+};
+
 async function loadFeeds() {
-  const fetchers = [
-    fetchColossal(), fetchLomography(), fetchBooooooom(), fetchTpj(), fetchSwan(),
-    fetchHuck(), fetchLensCulture(), fetchOdlp(), fetchMagnum(), fetchShootItWithFilm()
-  ];
+  const fetchers = ALL_SOURCES.map(src => {
+    if (CUSTOM_FETCHERS[src]) return CUSTOM_FETCHERS[src]();
+    return fetchApiOrJson(`/api/${src}`, `${src}.json`, normalizeGenericSource(src));
+  });
   const results = await Promise.allSettled(fetchers);
-  window.__rawEntries = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
+  let loaded = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
+  
+  if (!loaded.length) {
+    try {
+      const resp = await fetch('feeds.json', { cache: 'no-store' });
+      const data = await resp.json();
+      if (data && data.items) loaded = data.items.map(i => ({
+        ...i,
+        _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null
+      }));
+    } catch {}
+  }
+  window.__rawEntries = loaded;
   combineAndSortAllEntries();
 }
 

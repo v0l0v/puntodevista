@@ -476,7 +476,7 @@ def main():
             print(f'  Ingesta dinámica: {src["name"]}...')
             custom_items = []
             for feed_url in (src.get('feeds') or []):
-                custom_items.extend(fetch_rss(feed_url, s_id, include_content=True))
+                custom_items.extend(fetch_rss(feed_url, s_id, include_content=True, fetch_page_fallback=False))
             source_items[s_id] = custom_items
 
     all_entries = []
