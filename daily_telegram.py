@@ -431,15 +431,16 @@ TERCERA SECCIÓN (solo el texto locutable para el audio del podcast):
 REGLAS ESTRICTAS:
 - SOLO TEXTO PARA LEER EN VOZ ALTA. Cero markdown, asteriscos, corchetes o encabezados como "Título:", "Fotógrafo:", etc.
 - SEPARADORES MUSICALES: Coloca la línea exacta ---PAUSA--- justo después de la apertura, entre cada bloque temático/fuente, antes del bloque de newsletters y antes del cierre final.
-- FONÉTICA: Escribe siempre "niusleter" o "niusleters" en lugar de "newsletter/s", y "el Magazine de arte online Colosal" en lugar de "Colossal", para que la voz en español los lea perfectamente natural.
+- FONÉTICA Y NOMBRES: Escribe siempre "niusleter" o "niusleters" en lugar de "newsletter/s", y "el Magazine de arte online Colosal" en lugar de "Colossal", para que la voz en español los lea perfectamente natural.
 - TRADUCCIÓN: Títulos de obras, exposiciones, series, libros: TRADÚCELOS al español natural y fluido ("Viaje nocturno", no "Night Journey"). Nombres propios de autores/ciudades: MANTÉN el original.
+- MENCIÓN ARMÓNICA DE LAS FUENTES (OBLIGATORIO): Al comentar cada noticia o proyecto, CITA SU FUENTE O PUBLICACIÓN ORIGINAL (al menos una vez, y en principio no más de una vez) integrada de forma orgánica, elegante y armónica en la narración o en la transición (ejemplos: "Tal como nos descubren desde LensCulture...", "A través de las páginas de Shoot It With Film...", "En un reciente reportaje de Huck Magazine...", "Desde la emblemática agencia Magnum Photos nos llega...", "Leemos en Lomography que..."). Debe sonar como una mención periodística natural, nunca como una ficha técnica ni repitiendo el nombre varias veces.
 - ESTRUCTURA DE PROGRAMA DE RADIO FOTOGRÁFICO:
   1. APERTURA OBLIGATORIA (CON GANCHO Y HYPE INICIAL):
      - Saluda con calidez y sigue este esquema exacto:
        "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num} de Punto de vista... y [GANCHO/HYPE: frase breve y sugerente levantando expectación sobre uno de los proyectos o noticias estrella del boletín de hoy, por ejemplo: 'tenemos un proyecto fascinante de X sobre Y que analizaremos en el episodio de hoy / hoy descubrimos la impresionante mirada de X sobre Y que desgranaremos a continuación...']."
      - Coloca inmediatamente la línea exacta ---PAUSA--- después de la apertura.
-  2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales (ej: "Y de la luz del atardecer nos vamos al contraste radical de...", "Cambiando de tercio, en la revista Lomography encontramos...").
-     En cada noticia, destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
+  2. NARRACIÓN DE HISTORIAS: No leas una lista seca de noticias. Conecta los artículos con transiciones naturales y fluidas.
+     En cada noticia, cita la fuente con armonía y destaca no solo quién es el autor, sino cómo mira: la luz, el grano, el desenfoque, el soporte utilizado y qué lección visual podemos llevarnos hoy al coger la cámara.
      Separa cada bloque de fuente con ---PAUSA---.
   3. BLOQUE DE NIUSLETERS (TRATAMIENTO A ANA DE FOTONISTAS):
      Si hay correos en la sección de newsletters:
@@ -447,7 +448,7 @@ REGLAS ESTRICTAS:
        * REGLA DE ORO: NO reveles toda la información ni destripes el contenido exclusivo de su correo.
        * Da solo unas pinceladas o una pequeña semilla de reflexión que abra el apetito y cree curiosidad ("hype") sobre el tema de su correo de hoy.
        * Invita de forma directa y natural a los oyentes a entrar en fotonistas.com y suscribirse a su Fotoletter diaria para leer sus reflexiones completas.
-     - Si hay otros correos, coméntalos también de forma distendida.
+     - Si hay otros correos, coméntalos también de forma distendida mencionando su origen.
      - Separa este bloque con ---PAUSA---.
   4. CIERRE inspirador: inventa una variante fresca de este mensaje: "Y hasta aquí la inspiración de hoy. No olvidéis visitar las webs y revistas originales y suscribiros a sus niusleters para apoyar su trabajo. Gracias por acompañarnos, por mantener viva la pasión por la imagen y por ayudarnos a mirar el mundo con más detalle. ¡Cargad baterías o carretes, y nos escuchamos mañana!"
 - TONO Y RITMO: Muy humano, cercano, entusiasta y cómplice con la comunidad fotográfica. Usa frases respiradas y pausas naturales con puntos suspensivos ("...") o comas para dar calidez y ritmo radiofónico.
