@@ -108,8 +108,9 @@
   {
     "id": "kosmofoto",
     "name": "Kosmo Foto",
-    "type": "rss",
+    "type": "wp-api",
     "enabled": true,
+    "wp_api": "https://kosmofoto.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://kosmofoto.com/feed/"
     ],
@@ -118,8 +119,9 @@
   {
     "id": "casualphotophile",
     "name": "Casual Photophile",
-    "type": "rss",
+    "type": "wp-api",
     "enabled": true,
+    "wp_api": "https://casualphotophile.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://casualphotophile.com/feed/"
     ],
@@ -128,8 +130,9 @@
   {
     "id": "blind",
     "name": "Blind Magazine",
-    "type": "rss",
+    "type": "wp-api",
     "enabled": true,
+    "wp_api": "https://www.blind-magazine.com/wp-json/wp/v2/posts?per_page=25&_embed=1",
     "feeds": [
       "https://www.blind-magazine.com/en/feed/"
     ],
@@ -148,8 +151,9 @@
   {
     "id": "c41",
     "name": "C41 Magazine",
-    "type": "rss",
+    "type": "wp-api",
     "enabled": true,
+    "wp_api": "https://www.c41magazine.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://www.c41magazine.com/feed/"
     ],
@@ -158,8 +162,9 @@
   {
     "id": "featureshoot",
     "name": "Feature Shoot",
-    "type": "rss",
+    "type": "wp-api",
     "enabled": true,
+    "wp_api": "https://www.featureshoot.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://www.featureshoot.com/feed/"
     ],
@@ -168,9 +173,10 @@
   {
     "id": "aintbad",
     "name": "Ain't-Bad",
-    "type": "rss",
+    "type": "wp-api",
     "archive_mode": true,
     "enabled": true,
+    "wp_api": "https://aint-bad.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
     "feeds": [
       "https://aint-bad.com/feed/"
     ],
