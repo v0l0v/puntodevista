@@ -96,6 +96,8 @@ def fetch_wp_api(wp_api_url, source_id):
                 m = re.search(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', c)
                 if m:
                     thumb = m.group(1)
+            if thumb and ('kosmofoto.com' in thumb) and not ('i0.wp.com' in thumb):
+                thumb = 'https://i0.wp.com/' + re.sub(r'^https?://', '', thumb)
             raw_title = p.get('title', {}).get('rendered', '')
             title = unescape(re.sub(r'<[^>]+>', '', raw_title)).strip()
             link = p.get('link', '')

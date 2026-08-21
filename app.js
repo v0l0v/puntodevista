@@ -876,9 +876,20 @@ function normalizeShootItWithFilm(items) {
 }
 
 function extractImg(post) {
-  if (post.thumbnail) return post.thumbnail;
-  const m = (post.content || '').match(/<img[^>]+src=["']([^"']+)["']/);
-  return m ? m[1] : null;
+  let img = post.thumbnail;
+  if (!img) {
+    const m = (post.content || '').match(/<img[^>]+src=["']([^"']+)["']/i);
+    img = m ? m[1] : null;
+  }
+  if (!img) {
+    const m = (post.content || '').match(/data-orig-file=["']([^"']+)["']/i) ||
+              (post.content || '').match(/srcset=["']([^"'\s,]+)/i);
+    img = m ? m[1] : null;
+  }
+  if (img && img.includes('kosmofoto.com') && !img.includes('i0.wp.com')) {
+    img = 'https://i0.wp.com/' + img.replace(/^https?:\/\//, '');
+  }
+  return img;
 }
 
 function isSourceVisible(src) {
@@ -962,7 +973,7 @@ function render(entries) {
     return `<div class="card" data-color="?" data-id="${e._id}" data-source="${e._source}" onclick="openModal(this)">
       <div class="card-inner">
         <div class="card-skeleton"></div>
-        ${src ? `<img class="card-image" src="${src}" alt="" loading="lazy" onload="imgLoaded(this)" onerror="imgError(this)">` : ''}
+        ${src ? `<img class="card-image" src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="imgLoaded(this)" onerror="imgError(this)">` : ''}
         <div class="card-overlay"></div>
       </div>
       <div class="card-info">
@@ -1005,19 +1016,26 @@ function imgLoaded(img) {
   card.querySelector('.card-skeleton')?.remove();
   const overlay = card.querySelector('.card-overlay');
   if (card.dataset.color === '?') {
-    card.dataset.color = '1';
-    overlay.className = 'card-overlay color';
+    card.dataset.color = '0';
   }
 }
 
 function imgError(img) {
+  if (!img.dataset.retried) {
+    img.dataset.retried = '1';
+    const src = img.src;
+    if (src && !src.includes('i0.wp.com') && (src.includes('kosmofoto.com') || src.includes('wp-content'))) {
+      img.src = 'https://i0.wp.com/' + src.replace(/^https?:\/\//, '');
+      return;
+    }
+  }
   img.remove();
   const card = img.closest('.card');
-  card.querySelector('.card-skeleton')?.remove();
-  card.querySelector('.card-overlay')?.remove();
-  const info = card.querySelector('.card-info');
+  card?.querySelector('.card-skeleton')?.remove();
+  card?.querySelector('.card-overlay')?.remove();
+  const info = card?.querySelector('.card-info');
   if (info) info.style.opacity = '1';
-  if (card.dataset.color === '?') {
+  if (card && card.dataset.color === '?') {
     card.dataset.color = '1';
   }
 }
