@@ -1508,18 +1508,35 @@ async function openModal(card) {
   setTimeout(forceEagerImages, 0);
 
   if (source === 'podcast') {
-    // Don't open modal for podcast cards — open the player bar instead
     document.getElementById('modal').classList.add('hide');
-    const entry = window.__allEntries?.find(e => e._id === id);
+    const entry = window.__allEntries?.find(e => String(e._id) === String(id) || e.link === id);
     if (entry) playPodcastInBar(entry);
     return;
   }
 
   playClickOpen();
 
+  // Buscar el artículo de forma robusta por _id, por link o por título
+  const entry = window.__allEntries?.find(e => 
+    String(e._id) === String(id) || 
+    (e.link && String(e.link) === String(id)) ||
+    (e.title && card.querySelector('.card-title a') && e.title.trim() === card.querySelector('.card-title a').textContent.trim())
+  );
+
+  if (!entry) {
+    body.innerHTML = `
+      <div class="modal-tools">
+        <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
+      </div>
+      <div class="modal-article">
+        <p class="modal-error">No se pudo localizar el artículo seleccionado.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Lomography
   if (source === 'lomography') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/lomography/article?url=${encodeURIComponent(entry.link)}`);
@@ -1536,32 +1553,14 @@ async function openModal(card) {
     }
     if (data) {
       renderLomoArticle(body, entry, data);
-    } else {
-      body.innerHTML = `
-        <div class="modal-tools">
-          <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-        </div>
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">Lomography Magazine</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-          </div>
-        </div>
-        <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
-          <div class="modal-footer" style="padding-top:2rem">
-            <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-          </div>
-        </div>
-      `;
+      return;
     }
+    renderGenericArticle(body, entry);
     return;
   }
 
+  // Booooooom
   if (source === 'booooooom') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/booooooom/article?url=${encodeURIComponent(entry.link)}`);
@@ -1578,39 +1577,20 @@ async function openModal(card) {
     }
     if (data) {
       renderBoomArticle(body, entry, data);
-    } else {
-      body.innerHTML = `
-        <div class="modal-tools">
-          <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-        </div>
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">Booooooom</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-          </div>
-        </div>
-        <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
-          <div class="modal-footer" style="padding-top:2rem">
-            <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-          </div>
-        </div>
-      `;
+      return;
     }
+    renderGenericArticle(body, entry);
     return;
   }
 
+  // The Photographic Journal
   if (source === 'tpj') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     renderTpjArticle(body, entry);
     return;
   }
 
+  // Swann Galleries
   if (source === 'swan') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/swan/article?url=${encodeURIComponent(entry.link)}`);
@@ -1627,39 +1607,20 @@ async function openModal(card) {
     }
     if (data) {
       renderSwanArticle(body, entry, data);
-    } else {
-      body.innerHTML = `
-        <div class="modal-tools">
-          <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-        </div>
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">Swann Galleries</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-          </div>
-        </div>
-        <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
-          <div class="modal-footer" style="padding-top:2rem">
-            <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-          </div>
-        </div>
-      `;
+      return;
     }
+    renderGenericArticle(body, entry);
     return;
   }
 
+  // Huck Magazine
   if (source === 'huck') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     renderHuckArticle(body, entry);
     return;
   }
 
+  // LensCulture
   if (source === 'lensculture') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/lensculture/article?url=${encodeURIComponent(entry.link)}`);
@@ -1676,32 +1637,14 @@ async function openModal(card) {
     }
     if (data) {
       renderLensCultureArticle(body, entry, data);
-    } else {
-      body.innerHTML = `
-        <div class="modal-tools">
-          <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-        </div>
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">LensCulture</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-          </div>
-        </div>
-        <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
-          <div class="modal-footer" style="padding-top:2rem">
-            <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-          </div>
-        </div>
-      `;
+      return;
     }
+    renderGenericArticle(body, entry);
     return;
   }
 
+  // L'Œil de la Photographie
   if (source === 'odlp') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/odlp/article?url=${encodeURIComponent(entry.link)}`);
@@ -1718,32 +1661,14 @@ async function openModal(card) {
     }
     if (data) {
       renderOdlpArticle(body, entry, data);
-    } else {
-      body.innerHTML = `
-        <div class="modal-tools">
-          <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-        </div>
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">L'Œil de la Photographie</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-          </div>
-        </div>
-        <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
-          <div class="modal-footer" style="padding-top:2rem">
-            <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-          </div>
-        </div>
-      `;
+      return;
     }
+    renderGenericArticle(body, entry);
     return;
   }
 
+  // Magnum Photos
   if (source === 'magnum') {
-    const entry = window.__allEntries?.find(e => e._id === id);
-    if (!entry) { body.innerHTML = '<p class="modal-error">error</p>'; return; }
     let data = null;
     try {
       const resp = await fetch(`/api/magnum/article?url=${encodeURIComponent(entry.link)}`);
@@ -1760,79 +1685,54 @@ async function openModal(card) {
     }
     if (data) {
       renderMagnumArticle(body, entry, data);
-    } else {
+      return;
+    }
+    renderGenericArticle(body, entry);
+    return;
+  }
+
+  // Colossal
+  if (source === 'colossal') {
+    if (entry.content) {
+      const images = extractImages(entry.content);
+      const cleaned = cleanContent(entry.content);
+      const photographers = extractColossalPhotographers(entry.content);
+      const photoHTML = photographers.length ? '<div class="modal-photographers"><span class="photographer-label">Fotógrafos</span>' + photographers.map(p => '<a href="' + p.url + '" target="_blank" rel="noopener" class="photographer-link">' + p.name + '</a>').join(', ') + '</div>' : '';
+      const colossalLinks = extractSocialLinks(entry.content);
+      const linksHTML = colossalLinks.length ? '<div class="modal-links">' + colossalLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+      
       body.innerHTML = `
         <div class="modal-tools">
+          ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+          <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
           <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
         </div>
+        ${photoHTML}
+        ${linksHTML}
         <div class="modal-title-group">
           <h2 class="modal-title">${entry.title}</h2>
           <div class="modal-meta">
-            <span class="modal-source">Magnum Photos</span>
-            ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
+            <span class="modal-source">Colossal · Fotografía</span>
+            <span class="modal-sep">·</span>
+            <span class="modal-date">${entry._parsedDate ? fmtDate(entry._parsedDate) : ''}</span>
           </div>
         </div>
         <div class="modal-article">
-          <p class="modal-error">no se pudo cargar el contenido desde este servidor</p>
+          <div class="modal-article-content">${cleaned}</div>
           <div class="modal-footer" style="padding-top:2rem">
             <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
           </div>
         </div>
       `;
-    }
-    return;
-  }
-
-  if (source === 'shootitwithfilm' || (source !== 'colossal' && source !== 'lomography')) {
-    const entry = window.__allEntries?.find(e => String(e._id) === String(id));
-    if (entry) {
-      renderGenericArticle(body, entry);
+      body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
       return;
     }
-  }
-
-  let post;
-  try {
-    post = await (await fetch(`${POST_API}/${id}`)).json();
-  } catch {}
-  if (!post || post.code) {
-    body.innerHTML = '<p class="modal-error">error al cargar el artículo</p>';
+    renderGenericArticle(body, entry);
     return;
   }
 
-  const images = extractImages(post.content.rendered);
-  const cleaned = cleanContent(post.content.rendered);
-  const photographers = extractColossalPhotographers(post.content.rendered);
-  const photoHTML = photographers.length ? '<div class="modal-photographers"><span class="photographer-label">Fotógrafos</span>' + photographers.map(p => '<a href="' + p.url + '" target="_blank" rel="noopener" class="photographer-link">' + p.name + '</a>').join(', ') + '</div>' : '';
-  const colossalLinks = extractSocialLinks(post.content.rendered);
-  const linksHTML = colossalLinks.length ? '<div class="modal-links">' + colossalLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
-  const articleHTML = `
-    <div class="modal-article">
-      <div class="modal-article-content">${cleaned}</div>
-      <div class="modal-footer" style="padding-top:2rem">
-        <a href="${post.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
-      </div>
-    </div>
-  `;
-
-  body.innerHTML = `
-    <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
-      <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
-      <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
-    </div>
-    ${photoHTML}
-    ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${post.title.rendered}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Colossal · Fotografía</span>
-        <span class="modal-sep">·</span>
-        <span class="modal-date">${fmtDate(new Date(post.date))}</span>
-      </div>
-    </div>
-    ${articleHTML}
-  `;
+  // Todas las demás fuentes (Shoot It With Film, 35mmc, Kosmo Foto, C41, Phroom, Feature Shoot, Ain't-Bad, EMULSIVE, etc.)
+  renderGenericArticle(body, entry);
 }
 
 function openGallery() {
