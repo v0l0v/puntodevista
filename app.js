@@ -480,39 +480,44 @@ async function loadFeeds() {
   loadCachedFeeds();
 
   // 2. Carga ultra rápida del bundle consolidado feeds.json (~100 ms)
-  let staticLoaded = false;
+  let currentEntries = window.__rawEntries || [];
   try {
     const resp = await fetch('feeds.json', { cache: 'no-store' });
     if (resp.ok) {
       const data = await resp.json();
       if (data && Array.isArray(data.items) && data.items.length) {
-        window.__rawEntries = data.items.map(i => ({
+        currentEntries = data.items.map(i => ({
           ...i,
           _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null
         }));
+        window.__rawEntries = currentEntries;
         combineAndSortAllEntries();
-        staticLoaded = true;
         try {
-          localStorage.setItem(CACHED_ENTRIES_KEY, JSON.stringify(data.items.slice(0, 150)));
+          localStorage.setItem(CACHED_ENTRIES_KEY, JSON.stringify(data.items.slice(0, 200)));
         } catch {}
       }
     }
   } catch {}
 
-  // 3. Revalidación en segundo plano de APIs individuales (solo si no cargó feeds.json o en entorno local)
-  if (!staticLoaded || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    const fetchers = ALL_SOURCES.map(src => {
+  // 3. Autorecuperación: si alguna fuente de ALL_SOURCES no está en feeds.json, cargar su archivo individual
+  const loadedSources = new Set(currentEntries.map(e => e._source));
+  const missingSources = ALL_SOURCES.filter(s => !loadedSources.has(s));
+
+  if (missingSources.length > 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    const targets = missingSources.length > 0 ? missingSources : ALL_SOURCES;
+    const fetchers = targets.map(src => {
       if (CUSTOM_FETCHERS[src]) return CUSTOM_FETCHERS[src]();
       return fetchApiOrJson(`/api/${src}`, `${src}.json`, normalizeGenericSource(src));
     });
     const results = await Promise.allSettled(fetchers);
     const dynamicLoaded = results.flatMap(r => (r.status === 'fulfilled' && Array.isArray(r.value)) ? r.value : []);
     if (dynamicLoaded.length) {
-      window.__rawEntries = dynamicLoaded;
-      combineAndSortAllEntries();
-      try {
-        localStorage.setItem(CACHED_ENTRIES_KEY, JSON.stringify(dynamicLoaded.slice(0, 150)));
-      } catch {}
+      const seen = new Set(currentEntries.map(e => e._id || e.link));
+      const newItems = dynamicLoaded.filter(e => !seen.has(e._id || e.link));
+      if (newItems.length) {
+        window.__rawEntries = [...currentEntries, ...newItems];
+        combineAndSortAllEntries();
+      }
     }
   }
 }
