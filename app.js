@@ -18,7 +18,7 @@ const RSS_PROXIES = [
 const REFRESH_MS = 10 * 60 * 1000;
 let ALL_SOURCES = [
   'colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm',
-  '35mmc', 'kosmofoto', 'casualphotophile', 'blind', 'phroom', 'c41', 'featureshoot', 'aintbad', 'emulsive'
+  '35mmc', 'kosmofoto', 'casualphotophile', 'phroom', 'c41', 'featureshoot', 'aintbad', 'emulsive'
 ];
 let SOURCE_LABELS = {
   colossal: 'Colossal · Fotografía',
@@ -34,7 +34,6 @@ let SOURCE_LABELS = {
   '35mmc': '35mmc',
   kosmofoto: 'Kosmo Foto',
   casualphotophile: 'Casual Photophile',
-  blind: 'Blind Magazine',
   phroom: 'Phroom Magazine',
   c41: 'C41 Magazine',
   featureshoot: 'Feature Shoot',

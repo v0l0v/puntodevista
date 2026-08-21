@@ -127,18 +127,6 @@
       "https://casualphotophile.com/feed/"
     ],
     "url": "https://casualphotophile.com/"
-  },
-  {
-    "id": "blind",
-    "name": "Blind Magazine",
-    "type": "wp-api",
-    "enabled": true,
-    "wp_api": "https://www.blind-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
-    "feeds": [
-      "https://www.blind-magazine.com/en/feed/"
-    ],
-    "url": "https://www.blind-magazine.com/en/"
-  },
   {
     "id": "phroom",
     "name": "Phroom Magazine",
