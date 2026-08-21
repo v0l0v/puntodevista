@@ -112,7 +112,7 @@ function updatePodcastProgress(player, audio) {
   if (time) time.textContent = fmtDur(Math.floor(audio.currentTime)) + ' / ' + fmtDur(Math.floor(audio.duration));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadSources();
 
   // ── Panel Fuentes ──────────────────────────────────────────────────
