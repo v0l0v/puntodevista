@@ -500,21 +500,17 @@ def main():
         if 'nothing to commit' in result.stdout:
             print('     Sin cambios')
             return
-        result = subprocess.run(
-            ['git', 'pull', '--rebase', '--autostash'],
-            capture_output=True, text=True, cwd=DIR
-        )
-        if result.returncode != 0:
-            print(f'     ⚠️ Rebase fallido: {result.stderr[:200]}')
-            return
-        result = subprocess.run(
-            ['git', 'push'],
-            capture_output=True, text=True, cwd=DIR
-        )
-        if result.returncode == 0:
-            print('     ✅ Push a GitHub OK')
-        else:
-            print(f'     ⚠️ Error push: {result.stderr[:200]}')
+        pushed = False
+        for attempt in range(4):
+            pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
+            push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
+            if push.returncode == 0:
+                print('     ✅ Push a GitHub OK')
+                pushed = True
+                break
+            time.sleep(3 * (attempt + 1))
+        if not pushed:
+            print(f'     ⚠️ Push fallido tras reintentos')
     except Exception as e:
         print(f'     ⚠️ Git error: {e}')
 

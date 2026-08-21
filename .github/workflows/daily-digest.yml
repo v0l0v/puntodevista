@@ -62,5 +62,7 @@ jobs:
         run: |
           git add resumenes
           git commit -m "chore: daily digest $(date +%Y-%m-%d)" || echo "nada que commitear"
-          git pull --rebase --autostash || true
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash || true
+            git push && break || sleep 5
+          done

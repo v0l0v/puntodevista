@@ -8,7 +8,8 @@ from update_static_data import (fetch_colossal, fetch_lomography, fetch_booooooo
                                 fetch_tpj, fetch_swan, fetch_huck, load_previous_items,
                                 update_lomography_articles, update_booooooom_articles, update_swan_articles,
                                 fetch_lensculture, update_lensculture_articles,
-                                fetch_odlp, update_odlp_articles, fetch_magnum, update_magnum_articles)
+                                fetch_odlp, update_odlp_articles, fetch_magnum, update_magnum_articles,
+                                fetch_shootitwithfilm)
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -88,7 +89,13 @@ def main():
         magnum = load_previous_items('magnum.json')
     print(f'     {len(magnum)} artículos')
 
-    print('  6e. Actualizando cachés de artículos...')
+    print('  6e. Shoot It With Film...')
+    shootit = fetch_shootitwithfilm()
+    if not shootit:
+        shootit = load_previous_items('shootitwithfilm.json')
+    print(f'     {len(shootit)} artículos')
+
+    print('  6f. Actualizando cachés de artículos...')
     if lomo:
         update_lomography_articles(lomo)
     if boom:
@@ -129,7 +136,7 @@ def main():
             if isinstance(data, dict) and data.get('thumbnail'):
                 item['thumbnail'] = data['thumbnail']
 
-    all_entries = sorted(colossal + lomo + boom + tpj + swan + huck + lensculture + odlp + magnum,
+    all_entries = sorted(colossal + lomo + boom + tpj + swan + huck + lensculture + odlp + magnum + shootit,
                          key=lambda x: x.get('_parsedDate') or x.get('date') or '',
                          reverse=True)
 
@@ -141,12 +148,13 @@ def main():
     save_payload('lensculture.json', lensculture, all_entries)
     save_payload('odlp.json', odlp, all_entries)
     save_payload('magnum.json', magnum, all_entries)
+    save_payload('shootitwithfilm.json', shootit, all_entries)
     save_payload('feeds.json', all_entries, all_entries)
 
     print('  7. Subiendo a GitHub...')
     try:
         subprocess.run(
-            ['git', 'add', 'lomography.json', 'booooooom.json', 'tpj.json', 'swan.json', 'huck.json', 'lensculture.json', 'odlp.json', 'magnum.json', 'feeds.json',
+            ['git', 'add', 'lomography.json', 'booooooom.json', 'tpj.json', 'swan.json', 'huck.json', 'lensculture.json', 'odlp.json', 'magnum.json', 'shootitwithfilm.json', 'feeds.json',
              'lomography_articles.json', 'booooooom_articles.json', 'swan_articles.json', 'lensculture_articles.json', 'odlp_articles.json', 'magnum_articles.json'],
             capture_output=True, text=True, cwd=DIR
         )
@@ -157,21 +165,22 @@ def main():
         if 'nothing to commit' in res.stdout:
             print('     Sin cambios')
             return
-        if res.returncode != 0:
+        if res.returncode != 0 and 'nothing to commit' not in (res.stdout + res.stderr):
             print(f'     ⚠️ Error commit: {res.stderr[:300]}')
             return
-        pull = subprocess.run(
-            ['git', 'pull', '--rebase', '--autostash'],
-            capture_output=True, text=True, cwd=DIR
-        )
-        if pull.returncode != 0:
-            print(f'     ⚠️ Rebase fallido: {pull.stderr[:200]}')
-            return
-        res = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
-        if res.returncode == 0:
-            print('     ✅ Push a GitHub OK')
-        else:
-            print(f'     ⚠️ Error push: {res.stderr[:200]}')
+        
+        # Reintentos con rebase para evitar colisiones en CI
+        pushed = False
+        for attempt in range(4):
+            pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
+            push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
+            if push.returncode == 0:
+                print('     ✅ Push a GitHub OK')
+                pushed = True
+                break
+            time.sleep(3 * (attempt + 1))
+        if not pushed:
+            print(f'     ⚠️ Push fallido tras reintentos')
     except Exception as e:
         print(f'     ⚠️ Git error: {e}')
 

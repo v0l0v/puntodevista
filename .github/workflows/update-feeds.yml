@@ -46,5 +46,7 @@ jobs:
         run: |
           git add telegram_sent.json
           git commit -m "chore: telegram news state $(date +%Y-%m-%d)" || echo "nada que commitear"
-          git pull --rebase --autostash || true
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash || true
+            git push && break || sleep 5
+          done

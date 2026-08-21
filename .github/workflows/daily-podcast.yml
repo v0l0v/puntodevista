@@ -80,5 +80,7 @@ jobs:
         run: |
           git add podcast_meta.json podcast.xml
           git commit -m "chore: podcast feed $(date +%F)" || echo "nada que commitear"
-          git pull --rebase --autostash || true
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash || true
+            git push && break || sleep 5
+          done
