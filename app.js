@@ -970,7 +970,8 @@ function render(entries) {
     const src = isPodcast ? e.image : extractImg(e);
     const sourceLabel = isPodcast ? 'Podcast · Punto de vista' : getSourceLabel(e._source);
     const linkHref = isPodcast ? '#' : e.link;
-    return `<div class="card" data-color="?" data-id="${e._id}" data-source="${e._source}" onclick="openModal(this)">
+    const cardId = String(e._id || e.link || `${e._source}-${e.title}`);
+    return `<div class="card" data-color="?" data-id="${encodeURIComponent(cardId)}" data-source="${e._source}" onclick="openModal(this)">
       <div class="card-inner">
         <div class="card-skeleton"></div>
         ${src ? `<img class="card-image" src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="imgLoaded(this)" onerror="imgError(this)">` : ''}
@@ -1499,7 +1500,7 @@ function renderGenericArticle(body, entry) {
 }
 
 async function openModal(card) {
-  const id = card.dataset.id;
+  const rawId = decodeURIComponent(card.dataset.id || '');
   const source = card.dataset.source;
   incrementReadCount(source);
   const body = document.getElementById('modal-body');
@@ -1509,18 +1510,20 @@ async function openModal(card) {
 
   if (source === 'podcast') {
     document.getElementById('modal').classList.add('hide');
-    const entry = window.__allEntries?.find(e => String(e._id) === String(id) || e.link === id);
+    const entry = window.__allEntries?.find(e => String(e._id) === rawId || e.link === rawId);
     if (entry) playPodcastInBar(entry);
     return;
   }
 
   playClickOpen();
 
-  // Buscar el artículo de forma robusta por _id, por link o por título
+  // Buscar el artículo de forma robusta por _id, por link o por título exacto
+  const cardTitle = card.querySelector('.card-title a')?.textContent?.trim() || '';
   const entry = window.__allEntries?.find(e => 
-    String(e._id) === String(id) || 
-    (e.link && String(e.link) === String(id)) ||
-    (e.title && card.querySelector('.card-title a') && e.title.trim() === card.querySelector('.card-title a').textContent.trim())
+    (e._id != null && String(e._id) === rawId) || 
+    (e.link && String(e.link) === rawId) ||
+    (String(e._id || e.link) === rawId) ||
+    (cardTitle && e.title && e.title.trim() === cardTitle)
   );
 
   if (!entry) {

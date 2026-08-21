@@ -226,6 +226,7 @@ def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
 
             article = {
                 '_source': source,
+                '_id': link or f'{source}-{title}',
                 'title': title,
                 'link': link,
                 'date': pub_date,
