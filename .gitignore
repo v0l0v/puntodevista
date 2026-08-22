@@ -7,3 +7,4 @@ podcast/
 config.json
 .cover_cache/
 podcast-cover-*.png
+archive.db*
