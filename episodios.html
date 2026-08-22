@@ -40,7 +40,21 @@
 
   #loader { max-width: 1600px; margin: 2rem auto; padding: 0 2rem; }
 
+  /* ── Opción B: Reproductor Sticky arriba en episodios.html ── */
+  #podcast-hero {
+    position: sticky;
+    top: 58px;
+    z-index: 40;
+  }
+  .podcast-hero-inner {
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  }
+
   @media (max-width: 720px) {
+    #podcast-hero { top: 52px; }
     #episodes { grid-template-columns: 1fr; gap: 2px; padding: 2px; }
     .card { aspect-ratio: 16 / 9; }
   }
