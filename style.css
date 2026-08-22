@@ -47,8 +47,9 @@ body {
 }
 
 header {
-  position: sticky;
-  top: 0; z-index: 50;
+  position: relative;
+  top: auto;
+  z-index: 10;
   background: rgba(10,10,10,0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -772,11 +773,11 @@ footer {
   .podcast-player input[type="range"] { display: none; }
 
   /* Podcast del día: apilado y compacto */
-  #podcast-hero { padding: 0 2px; }
+  #podcast-hero { top: 0; padding: 0.5rem 2px; }
   .podcast-hero-inner {
     grid-template-columns: 1fr;
     gap: 0.6rem;
-    margin: 2px 0;
+    margin: 0;
     padding: 0.8rem;
   }
   #podcast-hero-img { width: 100%; height: 160px; }
@@ -1141,11 +1142,14 @@ footer {
   .podcast-player input[type="range"] { width: 40px; }
 }
 
-/* PODCAST DEL DÍA (portada) */
+/* PODCAST DEL DÍA (portada y episodios) */
 #podcast-hero {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 var(--gap);
+  padding: 0.75rem var(--gap);
 }
 #podcast-hero.hide { display: none; }
 .podcast-hero-inner {
@@ -1153,9 +1157,12 @@ footer {
   grid-template-columns: 120px 1fr minmax(300px, 460px);
   align-items: center;
   gap: 1.2rem;
-  margin: 1.2rem 0 0.4rem;
+  margin: 0;
   padding: 0.9rem 1.2rem;
-  background: linear-gradient(180deg, #141414, #0f0f0f);
+  background: rgba(18, 18, 18, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255,1,0,0.22);
   border-left: 3px solid #ff0100;
 }

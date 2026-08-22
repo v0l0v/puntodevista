@@ -82,22 +82,32 @@ function updateAllPodcastPlayersUI() {
   });
 }
 
-function syncPlayerBarEntry(entry) {
+function selectHeroPodcastEntry(entry) {
   if (!entry) return;
-  const bar = document.getElementById('podcast-player-bar');
-  if (!bar) return;
-  const imgEl = document.getElementById('bar-img');
-  const titleEl = document.getElementById('bar-title');
-  const barPlayer = document.getElementById('bar-player');
-  if (imgEl) setPodcastImage(imgEl, entry);
-  if (titleEl) titleEl.textContent = entry.title || entry.podcast_title;
-  if (barPlayer) barPlayer.dataset.url = entry.link;
-  bar.classList.remove('hide');
+  const hero = document.getElementById('podcast-hero');
+  if (!hero) return;
+  const img = document.getElementById('podcast-hero-img');
+  const title = document.getElementById('podcast-hero-title');
+  const meta = document.getElementById('podcast-hero-meta');
+  const resumen = document.getElementById('podcast-hero-resumen');
+  const player = document.getElementById('podcast-hero-player');
+
+  if (img) setPodcastImage(img, entry);
+  if (title) title.textContent = entry.podcast_title || entry.title;
+  if (meta) meta.textContent = 'episodio ' + (entry.num || '') + ' · ' + fmtDate(new Date((entry.date || '') + 'T00:00:00')) + ' · ' + fmtDur(entry.duration);
+  if (resumen) resumen.onclick = (e) => { e.preventDefault(); openPodcastResumen(entry); };
+  
+  if (player) {
+    player.dataset.url = entry.link;
+  }
+  hero.classList.remove('hide');
+
+  const audio = getSharedPodcastAudio(entry.link, entry);
+  audio.play().catch(() => {});
 }
 
 function getSharedPodcastAudio(url, entry) {
   if (__sharedAudio && __sharedAudio._url === url) {
-    if (entry) syncPlayerBarEntry(entry);
     return __sharedAudio;
   }
   if (__sharedAudio) {
@@ -115,7 +125,6 @@ function getSharedPodcastAudio(url, entry) {
     updateAllPodcastPlayersUI();
   });
   __sharedAudio = audio;
-  if (entry) syncPlayerBarEntry(entry);
   return audio;
 }
 
@@ -134,7 +143,6 @@ function initPodcastPlayers() {
 
       if (audio.paused) {
         audio.play().catch(() => {});
-        syncPlayerBarEntry(entry);
       } else {
         audio.pause();
       }
@@ -2004,9 +2012,8 @@ function sortSourcesUI() {
 }
 
 function playPodcastInBar(entry) {
-  if (!entry || !entry.link) return;
-  const audio = getSharedPodcastAudio(entry.link, entry);
-  audio.play().catch(() => {});
+  if (!entry) return;
+  selectHeroPodcastEntry(entry);
 }
 
 function closePlayerBar() {

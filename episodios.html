@@ -40,29 +40,7 @@
 
   #loader { max-width: 1600px; margin: 2rem auto; padding: 0 2rem; }
 
-  /* ── Barra superior se desplaza naturalmente al hacer scroll ── */
-  header {
-    position: relative;
-    top: auto;
-    z-index: 10;
-  }
-
-  /* ── Reproductor Sticky arriba: al hacer scroll sube y se fija en top:0 ocultando la cabecera ── */
-  #podcast-hero {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    padding: 0.75rem var(--gap);
-  }
-  .podcast-hero-inner {
-    background: rgba(18, 18, 18, 0.96);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-  }
-
   @media (max-width: 720px) {
-    #podcast-hero { top: 0; padding: 0.5rem 2px; }
     #episodes { grid-template-columns: 1fr; gap: 2px; padding: 2px; }
     .card { aspect-ratio: 16 / 9; }
   }
