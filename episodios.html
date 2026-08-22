@@ -56,6 +56,12 @@
       <span class="logo-text">Punto de vista</span>
     </a>
     <div class="header-controls" role="toolbar" aria-label="Controles de filtro">
+      <div class="search-container">
+        <div id="search-input-wrapper">
+          <input type="search" id="search-input" placeholder="Buscar…" aria-label="Buscar episodios">
+          <button id="search-clear" type="button" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+      </div>
       <a id="podcast-filter-btn" class="sources-btn podcast-btn active" href="episodios.html" aria-label="Ir a los episodios del podcast">podcast</a>
       <a id="date-btn" class="sources-btn" href="index.html?panel=date" aria-label="Filtrar artículos por fecha">
         cuando <span id="date-btn-label">todo</span> ⌄
@@ -432,9 +438,40 @@ function renderEpisodes(meta) {
   if (resumen) resumen.onclick = (ev) => { ev.preventDefault(); openPodcastResumen(latest); };
   ensureRadio(RELEASE + '/podcast-' + latest.date + '.mp3');
   document.getElementById('podcast-hero').classList.remove('hide');
+  renderEpisodeList(episodes);
+  document.getElementById('loader').classList.add('hide');
 
-  el.innerHTML = episodes.map((e, i) => {
-    const num = episodes.length - i;
+  // ── Buscador en vivo para episodios ──
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (searchClear) searchClear.classList.toggle('visible', !!q);
+      const filtered = !q ? episodes : episodes.filter(ep => {
+        const text = `${ep.podcast_title || ''} ${ep.description || ''} ${ep.date || ''}`.toLowerCase();
+        return text.includes(q);
+      });
+      renderEpisodeList(filtered);
+    });
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchClear.classList.remove('visible');
+        renderEpisodeList(episodes);
+      });
+    }
+  }
+}
+
+function renderEpisodeList(list) {
+  const el = document.getElementById('episodes');
+  if (!list || !list.length) {
+    el.innerHTML = '<div class="ep-empty">No se encontraron episodios para esta búsqueda</div>';
+    return;
+  }
+  el.innerHTML = list.map((e) => {
+    const num = episodes.length - episodes.indexOf(e);
     const title = e.podcast_title || 'Resumen diario';
     const rawImg = e.image || '';
     return `<div class="card episode" data-color="1" data-id="${e.date}" role="button" tabindex="0" aria-label="Cargar y reproducir episodio ${num}">
@@ -452,8 +489,6 @@ function renderEpisodes(meta) {
       </div>
     </div>`;
   }).join('');
-
-  document.getElementById('loader').classList.add('hide');
 }
 
 // ─── Card Tilt / Parallax (igual que la portada) ────────────────────────────
@@ -512,15 +547,11 @@ function renderEpisodes(meta) {
     if (!card) return;
     if (activeCard && activeCard !== card) {
       resetCard(activeCard);
-      cancelAnimationFrame(rafId);
     }
-    if (activeCard !== card) {
-      activeCard = card;
-      currentRx = 0; currentRy = 0;
-      currentTx = 0; currentTy = 0;
-      card.classList.add('is-tilting');
-      rafId = requestAnimationFrame(animate);
-    }
+    activeCard = card;
+    card.classList.add('is-tilting');
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(animate);
     const rect = card.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -563,5 +594,6 @@ function renderEpisodes(meta) {
   }
 })();
 </script>
+<script src="chat.js"></script>
 </body>
 </html>

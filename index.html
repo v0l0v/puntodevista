@@ -19,6 +19,12 @@
   <div class="header-inner">
     <a class="logo" href="index.html" style="text-decoration:none;color:inherit"><span class="logo-text">Punto de vista</span></a>
     <div class="header-controls" role="toolbar" aria-label="Controles de filtro">
+      <div class="search-container">
+        <div id="search-input-wrapper">
+          <input type="search" id="search-input" placeholder="Buscar…" aria-label="Buscar artículos">
+          <button id="search-clear" type="button" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+      </div>
       <a id="podcast-filter-btn" class="sources-btn podcast-btn" href="episodios.html" aria-label="Ir a los episodios del podcast">podcast</a>
       <button id="date-btn" class="sources-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="date-panel" aria-label="Filtrar por fecha">
         cuando <span id="date-btn-label">todo</span> ⌄
@@ -112,5 +118,6 @@
 </footer>
 
 <script src="app.js"></script>
+<script src="chat.js"></script>
 </body>
 </html>

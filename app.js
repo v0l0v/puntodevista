@@ -243,8 +243,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     __allChecked = !__allChecked;
     __sources.clear();
     saveSources();
-    applyFilter();
-  });
+  // ── Buscador en vivo ───────────────────────────────────────────────
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      __searchQuery = e.target.value.trim();
+      if (searchClear) searchClear.classList.toggle('visible', !!__searchQuery);
+      applyFilter();
+    });
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        __searchQuery = '';
+        searchClear.classList.remove('visible');
+        searchInput.focus();
+        applyFilter();
+      });
+    }
+  }
 
   loadSources();
   loadCachedFeeds();
@@ -973,10 +990,21 @@ function isMobile() {
   return window.matchMedia('(max-width: 720px)').matches;
 }
 
+let __searchQuery = '';
+
+function isSearchMatch(e, q) {
+  if (!q) return true;
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const photo = e.photographer || (e.photographers ? e.photographers.join(' ') : '');
+  const text = `${e.title || ''} ${photo} ${e.summary || ''} ${e.excerpt || ''} ${e.content || ''} ${e._source || ''}`.toLowerCase();
+  return terms.every(t => text.includes(t));
+}
+
 function applyFilter() {
   const entries = (window.__allEntries || [])
     .filter(e => isSourceVisible(e._source))
-    .filter(e => isDateVisible(e));
+    .filter(e => isDateVisible(e))
+    .filter(e => isSearchMatch(e, __searchQuery));
   render(entries);
 
   document.getElementById('chk-all').checked = __allChecked;
