@@ -43,8 +43,9 @@
   /* ── Opción B: Reproductor Sticky arriba en episodios.html ── */
   #podcast-hero {
     position: sticky;
-    top: 58px;
-    z-index: 40;
+    top: 0;
+    z-index: 50;
+    padding: 0.75rem var(--gap);
   }
   .podcast-hero-inner {
     background: rgba(18, 18, 18, 0.95);
@@ -54,7 +55,7 @@
   }
 
   @media (max-width: 720px) {
-    #podcast-hero { top: 52px; }
+    #podcast-hero { top: 0; padding: 0.5rem 2px; }
     #episodes { grid-template-columns: 1fr; gap: 2px; padding: 2px; }
     .card { aspect-ratio: 16 / 9; }
   }
@@ -64,24 +65,6 @@
 
 <a class="skip-link" href="#episodes">Saltar al contenido</a>
 
-<header>
-  <div class="header-inner">
-    <a class="logo" href="index.html" style="text-decoration:none;color:inherit">
-      <span class="logo-text">Punto de vista</span>
-    </a>
-    <div class="header-controls" role="toolbar" aria-label="Controles de filtro">
-      <a id="podcast-filter-btn" class="sources-btn podcast-btn active" href="episodios.html" aria-label="Ir a los episodios del podcast">podcast</a>
-      <a id="date-btn" class="sources-btn" href="index.html?panel=date" aria-label="Filtrar artículos por fecha">
-        cuando <span id="date-btn-label">todo</span> ⌄
-      </a>
-      <a id="sources-btn" class="sources-btn" href="index.html?panel=sources" aria-label="Seleccionar fuentes de artículos">
-        fuentes <span id="sources-btn-count" aria-live="polite">todas</span> ⌄
-      </a>
-      <button id="fullscreen-btn" class="sources-btn" type="button" aria-label="Pantalla completa" onclick="toggleFullscreen()">⛶</button>
-    </div>
-  </div>
-</header>
-
 <div id="podcast-hero" class="hide" aria-label="Podcast del día">
   <div class="podcast-hero-inner">
     <img id="podcast-hero-img" src="podcast-cover.png" alt="Punto de vista — podcast">
@@ -90,9 +73,10 @@
       <h1 id="podcast-hero-title"></h1>
       <div class="podcast-hero-meta">
         <span id="podcast-hero-meta"></span>
-        <a href="episodios.html">todos los episodios →</a>
+        <a href="index.html">← feed de artículos</a>
         <a href="podcast.xml">suscripción rss</a>
         <a href="#" id="podcast-hero-resumen" role="button">resumen</a>
+        <button id="fullscreen-btn" class="sources-btn" type="button" aria-label="Pantalla completa" onclick="toggleFullscreen()" style="border:1px solid rgba(255,255,255,0.15);background:transparent;color:inherit;padding:2px 8px;border-radius:4px;cursor:pointer">⛶</button>
       </div>
     </div>
     <div class="podcast-player" id="podcast-hero-player" data-url="">
