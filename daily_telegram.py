@@ -496,9 +496,18 @@ def main():
         print('  No se obtuvo respuesta de Gemini.')
         return
 
-    print(f'  Resumen generado ({len(summary)} chars)')
-
     podcast_title, resumen, locutable = parse_summary(summary)
+
+    # Persistir el guion locutable para trazabilidad y auditoría
+    locutable_path = os.path.join(OUT_DIR, f'digest-{today.isoformat()}.locutable.txt')
+    try:
+        with open(locutable_path, 'w', encoding='utf-8') as f:
+            f.write(f'# Guion locutable · {today.isoformat()}\n')
+            f.write(f'# Título: {podcast_title}\n\n')
+            f.write(locutable)
+        print(f'  Guion locutable guardado en: {locutable_path}')
+    except Exception as e:
+        print(f'  ⚠️ Error guardando guion locutable: {e}')
 
     print('  Generando audio...')
     clean_text_audio = clean_text(locutable)

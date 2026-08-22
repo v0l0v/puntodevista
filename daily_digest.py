@@ -402,13 +402,19 @@ def clean_text(t):
     t = re.sub(r'\*\*(.+?)\*\*', r'\1', t)
     t = re.sub(r'\*(.+?)\*', r'\1', t)
     t = re.sub(r'[_*~`]', '', t)
+    # Limpieza de boilerplate de L'Oeil de la Photographie
+    t = re.sub(r'Cet article\s+.*?\s+est apparu en premier.*$', '', t, flags=re.IGNORECASE)
+    t = re.sub(r'\[…\]|\[\.\.\.\]', '', t)
+    # Limpieza de pie de página de newsletters / bajas
+    t = re.sub(r'¿No quieres que te escriba más\?.*$', '', t, flags=re.IGNORECASE)
+    t = re.sub(r'Date de baja aquí.*$', '', t, flags=re.IGNORECASE)
     t = re.sub(r'\s+', ' ', t).strip()
     t = re.sub(r'&#8217;', "'", t)
     t = re.sub(r'&#8211;', '–', t)
     t = re.sub(r'&#\d+;', '', t)
     t = t.replace('\\', '')
     t = re.sub(r'\|', ', ', t)
-    return t
+    return t.strip()
 
 def text_summary(item):
     lines = [f'  Artículo: {item["title"]}', f'  Fuente: {item["source"]}']

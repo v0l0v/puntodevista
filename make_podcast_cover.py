@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import urllib.request
 from pathlib import Path
@@ -117,6 +118,16 @@ def main():
 
     subtitle = sys.argv[3] if len(sys.argv) > 3 else None
     create_cover(day_image_path, date_str, out_path, subtitle)
+
+    # Copiar también a assets/covers/ para disponibilidad estática y desarrollo local
+    assets_covers_dir = os.path.join(DIR, 'assets', 'covers')
+    os.makedirs(assets_covers_dir, exist_ok=True)
+    assets_cover_path = os.path.join(assets_covers_dir, out_name)
+    try:
+        shutil.copy2(out_path, assets_cover_path)
+        print(f'Copia estática guardada en: {assets_cover_path}')
+    except Exception as e:
+        print(f'  ⚠️ Error al copiar a assets/covers: {e}')
 
 
 if __name__ == '__main__':

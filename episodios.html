@@ -112,6 +112,10 @@ const COVER = 'podcast-cover.png';
 function epCover(date) {
   return RELEASE + '/podcast-cover-' + date + '.png';
 }
+
+function epLocalCover(date) {
+  return 'assets/covers/podcast-cover-' + date + '.png';
+}
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
 function toggleFullscreen() {
@@ -169,19 +173,35 @@ function epImgLoaded(img) {
 }
 
 function epImgError(img) {
-  if (!img.dataset.fallback) {
-    img.dataset.fallback = '1';
+  const card = img.closest('.card');
+  const date = card ? card.dataset.id : (img.dataset.date || '');
+  const stage = parseInt(img.dataset.stage || '0', 10);
+
+  // 1. Probar releases (stage 0 ya intentado al inicio) -> Fallback a assets/covers/
+  if (stage === 0 && date) {
+    img.dataset.stage = '1';
+    img.src = epLocalCover(date);
+    return;
+  }
+  // 2. Fallback a la imagen del artículo (e.image)
+  if (stage <= 1 && img.dataset.rawImage) {
+    img.dataset.stage = '2';
+    img.src = img.dataset.rawImage;
+    return;
+  }
+  // 3. Fallback final a podcast-cover.png
+  if (stage <= 2) {
+    img.dataset.stage = '3';
     img.src = COVER;
     return;
   }
-  const card = img.closest('.card');
-  img.remove();
   if (card) {
     const sk = card.querySelector('.card-skeleton');
     if (sk) sk.remove();
     const overlay = card.querySelector('.card-overlay');
     if (overlay) overlay.remove();
   }
+  img.remove();
 }
 
 function splitItems(desc) {
@@ -306,7 +326,13 @@ function selectEpisode(card) {
   const r = ensureRadio(url);
   const num = episodes.length - episodes.indexOf(e);
   const heroImg = document.getElementById('podcast-hero-img');
-  if (heroImg) heroImg.src = epCover(e.date);
+  if (heroImg) {
+    heroImg.dataset.date = e.date;
+    heroImg.dataset.stage = '0';
+    heroImg.dataset.rawImage = e.image || '';
+    heroImg.onerror = function() { epImgError(this); };
+    heroImg.src = epCover(e.date);
+  }
   document.getElementById('podcast-hero-title').textContent = e.podcast_title || 'Resumen diario';
   document.getElementById('podcast-hero-meta').textContent = 'episodio ' + num + ' · ' + fmtFecha(e.date) + ' · ' + fmtDur(e.duration);
   const resumen = document.getElementById('podcast-hero-resumen');
@@ -393,7 +419,13 @@ function renderEpisodes(meta) {
   const heroImg = document.getElementById('podcast-hero-img');
   const heroTitle = document.getElementById('podcast-hero-title');
   const heroMeta = document.getElementById('podcast-hero-meta');
-  if (heroImg) heroImg.src = epCover(latest.date);
+  if (heroImg) {
+    heroImg.dataset.date = latest.date;
+    heroImg.dataset.stage = '0';
+    heroImg.dataset.rawImage = latest.image || '';
+    heroImg.onerror = function() { epImgError(this); };
+    heroImg.src = epCover(latest.date);
+  }
   if (heroTitle) heroTitle.textContent = latest.podcast_title || 'Resumen diario';
   if (heroMeta) heroMeta.textContent = 'episodio ' + episodes.length + ' · ' + fmtFecha(latest.date) + ' · ' + fmtDur(latest.duration);
   const resumen = document.getElementById('podcast-hero-resumen');
@@ -404,10 +436,11 @@ function renderEpisodes(meta) {
   el.innerHTML = episodes.map((e, i) => {
     const num = episodes.length - i;
     const title = e.podcast_title || 'Resumen diario';
+    const rawImg = e.image || '';
     return `<div class="card episode" data-color="1" data-id="${e.date}" role="button" tabindex="0" aria-label="Cargar y reproducir episodio ${num}">
       <div class="card-inner">
         <div class="card-skeleton"></div>
-        <img class="card-image" src="${epCover(e.date)}" alt="" loading="lazy" onload="epImgLoaded(this)" onerror="epImgError(this)">
+        <img class="card-image" src="${epCover(e.date)}" data-date="${e.date}" data-stage="0" data-raw-image="${esc(rawImg)}" alt="" loading="lazy" onload="epImgLoaded(this)" onerror="epImgError(this)">
         <div class="card-overlay color"></div>
       </div>
       <div class="card-info">
