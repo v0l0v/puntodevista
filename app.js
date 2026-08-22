@@ -566,13 +566,39 @@ async function fetchPodcastMeta() {
   } catch {}
 }
 
+function setPodcastImage(imgEl, entry) {
+  if (!imgEl || !entry) return;
+  const date = entry.date || '';
+  let stage = 0;
+  
+  imgEl.onerror = function() {
+    stage++;
+    if (stage === 1 && date) {
+      this.src = 'assets/covers/podcast-cover-' + date + '.png';
+      return;
+    }
+    if (stage === 2 && entry.image && entry.image !== this.src) {
+      this.src = entry.image;
+      return;
+    }
+    if (stage <= 3) {
+      this.src = PODCAST_COVER;
+      return;
+    }
+    this.onerror = null;
+  };
+
+  const releaseCover = `${PODCAST_RELEASE}/podcast-cover-${date}.png`;
+  imgEl.src = releaseCover;
+}
+
 function renderPodcastHero() {
   const hero = document.getElementById('podcast-hero');
   const entries = window.__podcastEntries || [];
   if (!hero || !entries.length) return;
   const latest = entries[entries.length - 1];
   const img = document.getElementById('podcast-hero-img');
-  if (img) img.src = latest.image || PODCAST_COVER;
+  if (img) setPodcastImage(img, latest);
   const title = document.getElementById('podcast-hero-title');
   if (title) title.textContent = latest.podcast_title;
   const meta = document.getElementById('podcast-hero-meta');
@@ -1947,7 +1973,7 @@ function playPodcastInBar(entry) {
   const titleEl = document.getElementById('bar-title');
   const playerEl = document.getElementById('bar-player');
 
-  if (imgEl) imgEl.src = entry.image || PODCAST_COVER;
+  if (imgEl) setPodcastImage(imgEl, entry);
   if (titleEl) titleEl.textContent = entry.title;
 
   if (playerEl) {
