@@ -243,6 +243,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     __allChecked = !__allChecked;
     __sources.clear();
     saveSources();
+    applyFilter();
+  });
+
   // ── Buscador en vivo ───────────────────────────────────────────────
   const searchInput = document.getElementById('search-input');
   const searchClear = document.getElementById('search-clear');
