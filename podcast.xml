@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sat, 22 Aug 2026 07:50:11 +0000</lastBuildDate>
+<lastBuildDate>Sun, 23 Aug 2026 07:51:04 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -814,6 +814,46 @@ Esta joya del archivo nos transporta al emocionante lanzamiento de la HARMAN Pho
 
 La cámara siempre a punto por Ana de Fotonistas
 Ana plantea hoy una analogía tan divertida como certera: llevar la cámara lista y desenfundada como si fuera el revólver de un pistolero en el Salvaje Oeste para no perder jamás ese instante decisivo. ¿Quieres saber cómo evitar que se te escapen las mejores fotos de la calle por culpa de un despiste técnico? Te invitamos a descubrir sus reflexiones completas suscribiéndote a su Fotoletter diaria en fotonistas.com.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 20 · La luz que resiste al tiempo: de los neones de Hong Kong a la poesía del alma analógica</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-23.mp3</guid>
+    <pubDate>Sun, 23 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Capturing the Invisible City: @filmlifeww on Recording the Lingering Warmth of Hong Kong with the Lomo MC-A
+Este proyecto documental busca preservar la memoria colectiva y la identidad cultural de un Hong Kong en constante desaparición, capturando elementos cotidianos como los icónicos carteles de neón y los andamios de bambú. Utilizando la cámara compacta Lomo MC-A con películas de ISO 400 y 800, el fotógrafo logra un estilo de calle de alto contraste, dinámico y con una gran riqueza tonal en escenas nocturnas. La serie invita a los creadores a mirar con mayor sensibilidad su entorno diario, utilizando la fotografía como una herramienta activa de conservación histórica.
+
+Poet-Photographer Satellite June on the Intersection Between Poetry & Analogue Photography
+La artista Nikki, conocida como Satellite June, explora el duelo, la pérdida y la salud mental a través de un diálogo íntimo entre la poesía escrita a máquina y la fotografía química en su libro Las muchas muertes de mi madre. Con una variedad de cámaras analógicas y películas experimentales como Lomography Redscale, construye una estética onírica, cálida y granulada dominada por autorretratos y sutiles detalles cotidianos. Su obra demuestra cómo el proceso fotográfico puede convertirse en un refugio terapéutico y un lenguaje instintivo para procesar las emociones más complejas.
+
+Plus X and a Mamiya 7II in Venice
+El autor comparte un viaje nostálgico a través de su archivo fotográfico recuperando imágenes de una rápida visita a Venecia a principios de los años dos mil. Las fotografías, capturadas con el icónico sistema de medio formato Mamiya 7 II y película Kodak Plus X, destacan por su rica gama de grises y una nitidez excepcional. Esta breve serie celebra la belleza atemporal de la fotografía química clásica y nos recuerda el valor de revisitar y revalorizar nuestro propio archivo histórico.
+
+Baptiste Penetticobra
+Esta joya del archivo de Ain't-Bad nos invita a redescubrir la obra del artista multidisciplinar francés Baptiste Penetticobra, graduado en fotografía y videoarte. Su trabajo transita de forma fluida entre la imagen fija y el lenguaje audiovisual, explorando narrativas contemporáneas con un enfoque conceptual y performativo. La pieza destaca la importancia de cruzar fronteras artísticas para enriquecer la mirada fotográfica y construir discursos visuales más profundos.
+
+Travelogue: Fujicolor in Paris on a Nikon L35AF
+Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada escapada invernal a París documentada de la manera más sencilla y espontánea posible. Utilizando una cámara compacta Nikon L35AF y película Fujicolor, el autor captura la atmósfera fría pero romántica de las calles parisinas con una estética directa y cargada de nostalgia analógica. El artículo es una hermosa lección sobre cómo la simplicidad del equipo nos permite conectar de forma más libre y honesta con el entorno que nos rodea.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-23.mp3" length="7276232" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-23.png"/>
+    <itunes:duration>5:03</itunes:duration>
+    <itunes:title>Episodio 20 · La luz que resiste al tiempo: de los neones de Hong Kong a la poesía del alma analógica</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Capturing the Invisible City: @filmlifeww on Recording the Lingering Warmth of Hong Kong with the Lomo MC-A
+Este proyecto documental busca preservar la memoria colectiva y la identidad cultural de un Hong Kong en constante desaparición, capturando elementos cotidianos como los icónicos carteles de neón y los andamios de bambú. Utilizando la cámara compacta Lomo MC-A con películas de ISO 400 y 800, el fotógrafo logra un estilo de calle de alto contraste, dinámico y con una gran riqueza tonal en escenas nocturnas. La serie invita a los creadores a mirar con mayor sensibilidad su entorno diario, utilizando la fotografía como una herramienta activa de conservación histórica.
+
+Poet-Photographer Satellite June on the Intersection Between Poetry & Analogue Photography
+La artista Nikki, conocida como Satellite June, explora el duelo, la pérdida y la salud mental a través de un diálogo íntimo entre la poesía escrita a máquina y la fotografía química en su libro Las muchas muertes de mi madre. Con una variedad de cámaras analógicas y películas experimentales como Lomography Redscale, construye una estética onírica, cálida y granulada dominada por autorretratos y sutiles detalles cotidianos. Su obra demuestra cómo el proceso fotográfico puede convertirse en un refugio terapéutico y un lenguaje instintivo para procesar las emociones más complejas.
+
+Plus X and a Mamiya 7II in Venice
+El autor comparte un viaje nostálgico a través de su archivo fotográfico recuperando imágenes de una rápida visita a Venecia a principios de los años dos mil. Las fotografías, capturadas con el icónico sistema de medio formato Mamiya 7 II y película Kodak Plus X, destacan por su rica gama de grises y una nitidez excepcional. Esta breve serie celebra la belleza atemporal de la fotografía química clásica y nos recuerda el valor de revisitar y revalorizar nuestro propio archivo histórico.
+
+Baptiste Penetticobra
+Esta joya del archivo de Ain't-Bad nos invita a redescubrir la obra del artista multidisciplinar francés Baptiste Penetticobra, graduado en fotografía y videoarte. Su trabajo transita de forma fluida entre la imagen fija y el lenguaje audiovisual, explorando narrativas contemporáneas con un enfoque conceptual y performativo. La pieza destaca la importancia de cruzar fronteras artísticas para enriquecer la mirada fotográfica y construir discursos visuales más profundos.
+
+Travelogue: Fujicolor in Paris on a Nikon L35AF
+Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada escapada invernal a París documentada de la manera más sencilla y espontánea posible. Utilizando una cámara compacta Nikon L35AF y película Fujicolor, el autor captura la atmósfera fría pero romántica de las calles parisinas con una estética directa y cargada de nostalgia analógica. El artículo es una hermosa lección sobre cómo la simplicidad del equipo nos permite conectar de forma más libre y honesta con el entorno que nos rodea.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
