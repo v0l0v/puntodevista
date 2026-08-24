@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 24 Aug 2026 09:24:32 +0000</lastBuildDate>
+<lastBuildDate>Mon, 24 Aug 2026 09:36:40 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.png</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.png"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -857,7 +857,7 @@ Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada esc
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 21 · 24 de agosto de 2026</title>
+    <title>Episodio 21 · Homenaje a Jay Maisel, linajes de color y el filtro de disonancia</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3</guid>
     <pubDate>Mon, 24 Aug 2026 05:00:00 +0000</pubDate>
@@ -865,7 +865,7 @@ Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada esc
     <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3" length="12256173" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-24.png"/>
     <itunes:duration>8:30</itunes:duration>
-    <itunes:title>Episodio 21 · 24 de agosto de 2026</itunes:title>
+    <itunes:title>Episodio 21 · Homenaje a Jay Maisel, linajes de color y el filtro de disonancia</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[Edición especial a tres voces con Roberto, Beatriz y Clara. Rendimos tributo al maestro Jay Maisel (1931-2026) y su dominio del color en las calles de Nueva York, analizamos el uso de la emulsión química como lenguaje de resistencia y planteamos el disparador creativo de hoy.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
