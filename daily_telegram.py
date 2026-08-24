@@ -143,8 +143,8 @@ def get_day_music(target_date=None):
     return fallback if os.path.exists(fallback) else None
 
 
-TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-ElviraNeural')
-TTS_RATE = os.environ.get('TTS_RATE', '-4%')
+TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-AlvaroNeural')
+TTS_RATE = os.environ.get('TTS_RATE', '-3%')
 
 
 def generate_audio(text, out_path, episode_date=None):
@@ -168,7 +168,7 @@ def generate_audio(text, out_path, episode_date=None):
     print(f'  Generando locución ({TTS_VOICE}, rate={TTS_RATE}) en {len(blocks)} bloque(s)...')
 
     # Si no hay música de fondo disponible, generar en un solo archivo directo
-    if not bg_music or len(blocks) == 1 and not os.path.exists(bg_music):
+    if not bg_music or not os.path.exists(bg_music):
         try:
             subprocess.run([
                 'edge-tts',
