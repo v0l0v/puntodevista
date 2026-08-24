@@ -94,7 +94,7 @@ def create_cover(day_image_path, date_str, out_path, subtitle=None):
     draw.text(((SIZE - sub_w) // 2, y_center + 60), subtitle, font=font_sub, fill=(200, 200, 200, 255))
 
     img = img.convert('RGB')
-    img.save(out_path)
+    img.save(out_path, format='JPEG', quality=85, optimize=True)
     print(f'Portada generada: {out_path} ({img.size[0]}x{img.size[1]})')
 
 
@@ -113,7 +113,7 @@ def main():
         print(f'  Descargando imagen del día: {image_url[:80]}...')
         day_image_path = download_image(image_url, cache_dir)
 
-    out_name = f'podcast-cover-{date_str}.png'
+    out_name = f'podcast-cover-{date_str}.jpg'
     out_path = os.path.join(DIR, out_name)
 
     subtitle = sys.argv[3] if len(sys.argv) > 3 else None

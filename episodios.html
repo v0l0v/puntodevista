@@ -76,7 +76,7 @@
 
 <div id="podcast-hero" class="hide" aria-label="Podcast del día">
   <div class="podcast-hero-inner">
-    <img id="podcast-hero-img" src="podcast-cover.png" alt="Punto de vista — podcast">
+    <img id="podcast-hero-img" src="podcast-cover.jpg" alt="Punto de vista — podcast">
     <div class="podcast-hero-body">
       <span class="podcast-hero-badge"><span class="podcast-dot"></span> Podcast · Punto de vista</span>
       <h1 id="podcast-hero-title"></h1>
@@ -113,14 +113,14 @@
 
 <script>
 const RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
-const COVER = 'podcast-cover.png';
+const COVER = 'podcast-cover.jpg';
 
 function epCover(date) {
-  return RELEASE + '/podcast-cover-' + date + '.png';
+  return RELEASE + '/podcast-cover-' + date + '.jpg';
 }
 
 function epLocalCover(date) {
-  return 'assets/covers/podcast-cover-' + date + '.png';
+  return 'assets/covers/podcast-cover-' + date + '.jpg';
 }
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 

@@ -63,7 +63,7 @@ jobs:
           TARGET_DATE="${{ inputs.target_date }}"
           DATE="${TARGET_DATE:-$(date +%F)}"
           MP3="podcast/podcast-${DATE}.mp3"
-          COVER="podcast-cover-${DATE}.png"
+          COVER="podcast-cover-${DATE}.jpg"
           if [ -f "$MP3" ]; then
             gh release upload episodios "$MP3" --clobber
           else
@@ -71,6 +71,8 @@ jobs:
           fi
           if [ -f "$COVER" ]; then
             gh release upload episodios "$COVER" --clobber
+          elif [ -f "podcast-cover-${DATE}.png" ]; then
+            gh release upload episodios "podcast-cover-${DATE}.png" --clobber
           fi
 
       - name: Regenerar feed RSS del podcast

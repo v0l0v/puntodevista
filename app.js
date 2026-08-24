@@ -42,7 +42,7 @@ let SOURCE_LABELS = {
 };
 const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
-const PODCAST_COVER = 'podcast-cover.png';
+const PODCAST_COVER = 'podcast-cover.jpg';
 
 const CLICK_OPEN = ['assets/mp3/click1.mp3', 'assets/mp3/click2.mp3', 'assets/mp3/click3.mp3', 'assets/mp3/click4.mp3'];
 let _clickLast = -1;
@@ -640,7 +640,7 @@ function setPodcastImage(imgEl, entry) {
   imgEl.onerror = function() {
     stage++;
     if (stage === 1 && date) {
-      this.src = 'assets/covers/podcast-cover-' + date + '.png';
+      this.src = 'assets/covers/podcast-cover-' + date + '.jpg';
       return;
     }
     if (stage === 2 && entry.image && entry.image !== this.src) {
@@ -654,7 +654,7 @@ function setPodcastImage(imgEl, entry) {
     this.onerror = null;
   };
 
-  const releaseCover = `${PODCAST_RELEASE}/podcast-cover-${date}.png`;
+  const releaseCover = `${PODCAST_RELEASE}/podcast-cover-${date}.jpg`;
   imgEl.src = releaseCover;
 }
 
