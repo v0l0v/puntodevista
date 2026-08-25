@@ -140,9 +140,49 @@
     return row;
   }
 
-  // Motor de Búsqueda Semántica y Conceptual
-  function queryArchiveSemantic(query) {
-    if (!archiveData) return { articles: [], podcasts: [], expandedTerms: [] };
+  // Motor de Búsqueda Semántica y Conceptual (sqlite-vec + Gemini Embeddings con fallback)
+  async function queryArchiveSemantic(query) {
+    // 1. Intentar consultar el motor vectorial real en el backend (/api/search)
+    try {
+      const resp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=hybrid&limit=10`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          const articles = data.items.map(item => ({
+            id: item.id,
+            title: item.title,
+            photographer: item.photographer,
+            source: item.source,
+            url: item.url || item.link,
+            published_date: item.published_date || item.date,
+            summary: item.summary,
+            score: item.score || 10,
+            rank_type: item.rank_type || 'vectorial (sqlite-vec + Gemini)'
+          }));
+
+          let podcasts = [];
+          try {
+            const podResp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=podcast&limit=3`);
+            if (podResp.ok) {
+              const podData = await podResp.json();
+              if (podData.status === 'ok' && podData.items) {
+                podcasts = podData.items;
+              }
+            }
+          } catch {}
+
+          return {
+            articles,
+            podcasts,
+            expandedTerms: [],
+            mode: 'vectorial_real'
+          };
+        }
+      }
+    } catch {}
+
+    // 2. Fallback estático (para navegación offline o GitHub Pages estático)
+    if (!archiveData) return { articles: [], podcasts: [], expandedTerms: [], mode: 'fallback' };
 
     const rawTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
     const expandedTerms = new Set(rawTerms);
@@ -202,7 +242,8 @@
     return {
       articles: scoredArticles.slice(0, 6),
       podcasts: scoredPodcasts.slice(0, 3),
-      expandedTerms: termsArray
+      expandedTerms: termsArray,
+      mode: 'fallback'
     };
   }
 
@@ -316,7 +357,7 @@
       loading.remove();
     }
 
-    const results = queryArchiveSemantic(q);
+    const results = await queryArchiveSemantic(q);
     const responseHtml = generateAssistantResponse(q, results);
     addMessage('bot', responseHtml);
   }

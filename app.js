@@ -236,18 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // ── Panel Fuentes: checkboxes ──────────────────────────────────────
-  document.getElementById('source-all-row').addEventListener('click', (e) => {
-    if (e.target.tagName === 'INPUT') return;
-    e.preventDefault();
-    __allChecked = !__allChecked;
-    __sources.clear();
-    saveSources();
-    applyFilter();
-  });
-
-  // ── Buscador en vivo con soporte sqlite-vec ─────────────────────────
-  const searchInput = document.getElementById('search-input');
+  // ── Inicialización de fuentes y feeds ──────────────────────────────
   const searchClear = document.getElementById('search-clear');
   let _searchTimer = null;
 
@@ -349,10 +338,10 @@ function setDateFilter(period, value) {
 function updateDateBtnLabel() {
   const { period, value } = __dateFilter;
   const labels = {
-    all: 'todo', year: 'este año', month: 'este mes',
+    all: 'todas', year: 'este año', month: 'este mes',
     week: 'esta semana', day: 'hoy'
   };
-  let label = labels[period] || 'todo';
+  let label = labels[period] || 'todas';
   if (period === 'month-specific' && value) {
     label = `${MONTH_NAMES[value.getMonth()]} ${value.getFullYear()}`;
   }
@@ -482,17 +471,17 @@ function setupSourcesUI() {
   const allRow = document.createElement('label');
   allRow.className = 'source-row all';
   allRow.id = 'source-all-row';
-  allRow.innerHTML = `<input type="checkbox" id="chk-all" ${__allChecked ? 'checked' : ''}><span>Todas</span><span class="src-count" id="count-all">0</span>`;
+  allRow.innerHTML = `<input type="checkbox" id="chk-all" ${__allChecked ? 'checked' : ''}><span>Todas las fuentes</span><span class="src-count" id="count-all">0</span>`;
   panel.appendChild(allRow);
 
   const chkAll = allRow.querySelector('input');
   if (chkAll) {
-    chkAll.onchange = (e) => {
+    chkAll.addEventListener('change', (e) => {
       __allChecked = e.target.checked;
       __sources.clear();
       saveSources();
       applyFilter();
-    };
+    });
   }
 
   ALL_SOURCES.forEach(src => {
@@ -504,27 +493,26 @@ function setupSourcesUI() {
     
     const input = row.querySelector('input');
     input.checked = isSourceVisible(src);
-    input.onchange = (e) => {
-      __allChecked = false;
-      if (e.target.checked) __sources.add(src);
-      else __sources.delete(src);
-      saveSources();
-      applyFilter();
-    };
-
-    row.onclick = (e) => {
-      if (e.target.tagName === 'INPUT') return;
-      e.preventDefault();
-      __allChecked = false;
-      if (__sources.size === 1 && __sources.has(src)) {
-        __sources.clear();
+    input.addEventListener('change', (e) => {
+      if (__allChecked) {
+        __allChecked = false;
+        ALL_SOURCES.forEach(s => {
+          if (s !== src) __sources.add(s);
+        });
       } else {
-        __sources.clear();
-        __sources.add(src);
+        if (e.target.checked) {
+          __sources.add(src);
+          if (__sources.size === ALL_SOURCES.length) {
+            __allChecked = true;
+            __sources.clear();
+          }
+        } else {
+          __sources.delete(src);
+        }
       }
       saveSources();
       applyFilter();
-    };
+    });
 
     panel.appendChild(row);
   });
@@ -1052,8 +1040,12 @@ function applyFilter() {
       .checked = isSourceVisible(src);
   });
 
-  document.getElementById('sources-btn-count').textContent =
-    __allChecked ? 'todas' : (__sources.size === 0 ? 'ninguna' : `${__sources.size}`);
+  const countEl = document.getElementById('sources-btn-count');
+  if (countEl) {
+    countEl.textContent = __allChecked
+      ? 'todas'
+      : (__sources.size === 0 ? 'ninguna' : (__sources.size === 1 ? getSourceLabel([...__sources][0]) : `${__sources.size} activas`));
+  }
   const sb = document.getElementById('sources-btn');
   if (sb) sb.classList.toggle('active', !__allChecked && __sources.size > 0);
 }
@@ -1868,12 +1860,65 @@ async function openModal(card) {
       body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
       return;
     }
+  // 35mmc, EMULSIVE, Huck, Phroom
+  if (['35mmc', 'emulsive', 'huck', 'phroom'].includes(source)) {
+    let data = null;
+    try {
+      const resp = await fetch(`/api/${source}/article?url=${encodeURIComponent(entry.link)}`);
+      const d = await resp.json();
+      if (d.status === 'ok') data = d;
+    } catch {}
+    if (!data) {
+      try {
+        const resp = await fetch(`${source}_articles.json`);
+        const cache = await resp.json();
+        const cached = (cache.articles || cache)[entry.link];
+        if (cached && cached.status === 'ok') data = cached;
+      } catch {}
+    }
+    if (data) {
+      renderCachedArticle(body, entry, data, getSourceLabel(source));
+      return;
+    }
     renderGenericArticle(body, entry);
     return;
   }
 
-  // Todas las demás fuentes (Shoot It With Film, 35mmc, Kosmo Foto, C41, Phroom, Feature Shoot, Ain't-Bad, EMULSIVE, etc.)
+  // Todas las demás fuentes (Shoot It With Film, Kosmo Foto, C41, Feature Shoot, Ain't-Bad, etc.)
   renderGenericArticle(body, entry);
+}
+
+function renderCachedArticle(body, entry, data, sourceLabel) {
+  const content = cleanContent(data.content || entry.content || entry.excerpt || '');
+  const images = (data.images && data.images.length) ? data.images : extractImages(content);
+  if (!images.length && (data.thumbnail || entry.thumbnail)) {
+    images.push({ url: data.thumbnail || entry.thumbnail, alt: '' });
+  }
+  const socialLinks = extractSocialLinks(content);
+  const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+
+  body.innerHTML = `
+    <div class="modal-tools">
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
+      <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
+    </div>
+    ${linksHTML}
+    <div class="modal-title-group">
+      <h2 class="modal-title">${entry.title}</h2>
+      <div class="modal-meta">
+        <span class="modal-source">${sourceLabel || getSourceLabel(entry._source)}</span>
+        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
+      </div>
+    </div>
+    <div class="modal-article">
+      <div class="modal-article-content">${content}</div>
+      <div class="modal-footer" style="padding-top:2rem">
+        <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
+      </div>
+    </div>
+  `;
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.alt || i.caption || '' })));
 }
 
 function openGallery() {

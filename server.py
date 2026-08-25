@@ -640,7 +640,6 @@ def scrape_odlp_article(url):
         if mm and mm.start() < cut:
             cut = mm.start()
     content_md = content_md[:cut].strip()
-    
     images = [{'url': im.group(2), 'alt': im.group(1)} for im in re.finditer(r'!\[([^\]]*)\]\(([^)]+)\)', md)]
     images = [img for img in images if 'loeildelaphotographie.com/wp-content/uploads/' in img['url']]
     
@@ -652,6 +651,7 @@ def scrape_odlp_article(url):
 
 
 MAGNUM_ARTICLE_CACHE = {}
+
 
 def scrape_magnum_article(url):
     now = time.time()
@@ -771,6 +771,183 @@ def scrape_swan_article(url):
             'credits': [], 'thumbnail': swan_og_image(url)}
     SWAN_ARTICLE_CACHE[url] = {'data': data, 'time': now}
     return data
+
+
+# --- SCRAPERS PARA 35MMC, EMULSIVE, HUCK, PHROOM Y ARTÍCULOS GENÉRICOS ---
+
+ARTICLE_GENERIC_CACHE = {}
+
+
+def extract_html_article_payload(html_page, url, source_id=''):
+    content_html = ''
+    images = []
+    
+    if source_id == '35mmc' or '35mmc.com' in url:
+        m = re.search(r'<div class=[\"\']text-content[\"\']>(.*?)(?:<div class=[\"\']author-details|<div class=[\"\']post-closer|<footer)', html_page, re.DOTALL)
+        if m:
+            content_html = m.group(1)
+        m_head = re.search(r'<img[^>]+class=[\"\'][^\"\']*main-post-image[^\"\']*[\"\'][^>]+src=[\"\']([^\"\']+)[\"\']', html_page)
+        if m_head:
+            images.append({'url': m_head.group(1), 'alt': 'Main Post Image'})
+    elif source_id == 'emulsive' or 'emulsive.org' in url:
+        m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)</div>\s*<!-- \.?entry-content', html_page, re.DOTALL)
+        if not m:
+            m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)(?:<footer|<div id=[\"\']comments[\"\'])', html_page, re.DOTALL)
+        if m:
+            content_html = m.group(1)
+    elif source_id == 'huck' or 'huckmag.com' in url:
+        m = re.search(r'<div class=[\"\'][^\"\']*(?:article__body|article-body|story-body)[^\"\']*[\"\']>(.*?)(?:<aside|<footer|<div class=[\"\']share)', html_page, re.DOTALL)
+        if m:
+            content_html = m.group(1)
+    elif source_id == 'phroom' or 'phroom' in url:
+        m = re.search(r'<div class=[\"\'][^\"\']*(?:entry-content|post-content)[^\"\']*[\"\']>(.*?)(?:<footer|<div class=[\"\']sharedaddy)', html_page, re.DOTALL)
+        if m:
+            content_html = m.group(1)
+
+    if not content_html:
+        m = re.search(r'<article[^>]*>(.*?)</article>', html_page, re.DOTALL | re.IGNORECASE)
+        if m:
+            content_html = m.group(1)
+        else:
+            m_main = re.search(r'<main[^>]*>(.*?)</main>', html_page, re.DOTALL | re.IGNORECASE)
+            content_html = m_main.group(1) if m_main else html_page
+
+    # Extraer imágenes
+    seen_imgs = {img['url'] for img in images}
+    for im in re.finditer(r'<img[^>]+src=[\"\'](https?://[^\"\']+\.(?:jpg|jpeg|png|webp|avif)(?:\?[^\"\']*)?)[\"\']', content_html, re.I):
+        u = im.group(1)
+        if not any(ign in u.lower() for ign in ['avatar', 'icon', 'logo', 'badge', 'emoji', 'pixel', 'advert', 'banner', 'button', 'track']):
+            if u not in seen_imgs:
+                seen_imgs.add(u)
+                alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im.group(0))
+                alt = alt_m.group(1) if alt_m else ''
+                images.append({'url': u, 'alt': alt})
+
+    # Limpieza de scripts y estilos
+    clean_html = re.sub(r'<script[^>]*>.*?</script>', '', content_html, flags=re.DOTALL | re.I)
+    clean_html = re.sub(r'<style[^>]*>.*?</style>', '', clean_html, flags=re.DOTALL | re.I)
+    clean_html = re.sub(r'class=[\"\'][^\"\']*[\"\']', '', clean_html)
+    clean_html = re.sub(r'id=[\"\'][^\"\']*[\"\']', '', clean_html)
+    clean_html = re.sub(r'<div[^>]*>\s*</div>', '', clean_html)
+
+    # Texto limpio para resúmenes
+    clean_text = re.sub(r'<[^>]+>', ' ', clean_html)
+    clean_text = html.unescape(re.sub(r'\s+', ' ', clean_text).strip())
+
+    thumbnail = images[0]['url'] if images else ''
+    return {
+        'status': 'ok',
+        'content': clean_html,
+        'clean_text': clean_text,
+        'images': images,
+        'credits': [],
+        'thumbnail': thumbnail
+    }
+
+
+def scrape_35mmc_article(url):
+    now = time.time()
+    if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
+        return ARTICLE_GENERIC_CACHE[url]['data']
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+        data = extract_html_article_payload(html_page, url, '35mmc')
+        ARTICLE_GENERIC_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error scraping 35mmc {url}: {e}')
+        return None
+
+
+def scrape_emulsive_article(url):
+    now = time.time()
+    if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
+        return ARTICLE_GENERIC_CACHE[url]['data']
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+        data = extract_html_article_payload(html_page, url, 'emulsive')
+        ARTICLE_GENERIC_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error scraping emulsive {url}: {e}')
+        return None
+
+
+def scrape_huck_article(url):
+    now = time.time()
+    if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
+        return ARTICLE_GENERIC_CACHE[url]['data']
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+        data = extract_html_article_payload(html_page, url, 'huck')
+        ARTICLE_GENERIC_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error scraping huck {url}: {e}')
+        return None
+
+
+def scrape_phroom_article(url):
+    now = time.time()
+    if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
+        return ARTICLE_GENERIC_CACHE[url]['data']
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+        data = extract_html_article_payload(html_page, url, 'phroom')
+        ARTICLE_GENERIC_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error scraping phroom {url}: {e}')
+        return None
+
+
+def scrape_generic_article(url, source_id=''):
+    if not url:
+        return None
+    now = time.time()
+    if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
+        return ARTICLE_GENERIC_CACHE[url]['data']
+
+    if source_id == '35mmc' or '35mmc.com' in url:
+        return scrape_35mmc_article(url)
+    if source_id == 'emulsive' or 'emulsive.org' in url:
+        return scrape_emulsive_article(url)
+    if source_id == 'huck' or 'huckmag.com' in url:
+        return scrape_huck_article(url)
+    if source_id == 'phroom' or 'phroom' in url:
+        return scrape_phroom_article(url)
+    if source_id == 'swan' or 'swanngalleries.com' in url:
+        return scrape_swan_article(url)
+    if source_id == 'lensculture' or 'lensculture.com' in url:
+        return scrape_lensculture_article(url)
+    if source_id == 'odlp' or 'loeildelaphotographie.com' in url:
+        return scrape_odlp_article(url)
+    if source_id == 'magnum' or 'magnumphotos.com' in url:
+        return scrape_magnum_article(url)
+    if source_id == 'booooooom' or 'booooooom.com' in url:
+        return scrape_booooooom_article(url)
+    if source_id == 'lomography' or 'lomography.com' in url:
+        return scrape_lomography_article(url, resolve_profiles=False)
+
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+        data = extract_html_article_payload(html_page, url, source_id)
+        ARTICLE_GENERIC_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error generic scrape {url}: {e}')
+        return None
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -978,6 +1155,82 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
                 return
             data = scrape_magnum_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/35mmc/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_35mmc_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/emulsive/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_emulsive_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/huck/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_huck_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/phroom/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_phroom_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            source_id = qs.get('source', [''])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_generic_article(url, source_id)
             if data is None:
                 self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
             else:

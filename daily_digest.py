@@ -7,7 +7,8 @@ from datetime import date, datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
-from server import firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name, trim_lomo_body
+from server import (firecrawl_scrape, parse_magazine_list, clean_lomo_credit_name,
+                    trim_lomo_body, scrape_generic_article)
 from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_huck,
                                 fetch_lensculture, fetch_odlp, fetch_magnum, fetch_shootitwithfilm)
 from fetch_email_newsletter import fetch_email_newsletters
@@ -274,21 +275,54 @@ def process_lomo(article):
     }
 
 def process_rss_item(a, label):
-    content = a.get('content') or a.get('excerpt') or ''
+    link = a.get('link') or ''
+    source_id = a.get('_source') or ''
+    content = a.get('content') or a.get('full_text') or a.get('excerpt') or ''
+    thumb = a.get('thumbnail') or a.get('image') or ''
+    images = [thumb] if thumb else []
+
+    # Enriquecer artículos cuyo contenido sea solo un extracto breve
+    if link and (len(content) < 500 or source_id in ('35mmc', 'emulsive', 'huck', 'phroom', 'casualphotophile')):
+        cache_file = os.path.join(DIR, f'{source_id}_articles.json')
+        cached = None
+        if os.path.exists(cache_file):
+            try:
+                with open(cache_file, 'r', encoding='utf-8') as cf:
+                    cached = json.load(cf).get('articles', {}).get(link)
+            except Exception:
+                pass
+        if not cached:
+            try:
+                cached = scrape_generic_article(link, source_id)
+            except Exception:
+                pass
+
+        if cached and isinstance(cached, dict) and cached.get('status') == 'ok':
+            if cached.get('clean_text'):
+                content = cached['clean_text']
+            elif cached.get('content'):
+                content = cached['content']
+            if cached.get('images'):
+                images = [im['url'] if isinstance(im, dict) else im for im in cached['images']]
+            if cached.get('thumbnail'):
+                thumb = cached['thumbnail']
+            elif images:
+                thumb = images[0]
+
     full_text = clean_text(content)
     summary = clean_text(a.get('excerpt') or content)
-    if len(summary) > 400:
-        summary = summary[:397] + '…'
-    thumb = a.get('thumbnail') or ''
+    if len(summary) > 450:
+        summary = summary[:447] + '…'
+
     return {
         'title': a['title'],
-        'link': a['link'],
-        'photographer': None,
-        'photographers': None,
+        'link': link,
+        'photographer': a.get('photographer'),
+        'photographers': a.get('photographers'),
         'summary': summary,
         'full_text': full_text,
         'image': thumb,
-        'images': [thumb] if thumb else [],
+        'images': images if images else ([thumb] if thumb else []),
         'source': label
     }
 

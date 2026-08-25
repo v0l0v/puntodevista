@@ -13,7 +13,8 @@ from html import unescape
 from server import (firecrawl_scrape, parse_magazine_list, scrape_lomography_article,
                     scrape_booooooom_article, scrape_swan_article, scrape_lensculture_article,
                     scrape_lensculture, scrape_odlp_article, scrape_odlp, scrape_magnum_article,
-                    scrape_magnum)
+                    scrape_magnum, scrape_35mmc_article, scrape_emulsive_article,
+                    scrape_huck_article, scrape_phroom_article, scrape_generic_article)
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -395,6 +396,22 @@ def update_magnum_articles(items):
     return update_article_cache('magnum_articles.json', items, scrape_magnum_article)
 
 
+def update_35mmc_articles(items):
+    return update_article_cache('35mmc_articles.json', items, scrape_35mmc_article)
+
+
+def update_emulsive_articles(items):
+    return update_article_cache('emulsive_articles.json', items, scrape_emulsive_article)
+
+
+def update_huck_articles(items):
+    return update_article_cache('huck_articles.json', items, scrape_huck_article)
+
+
+def update_phroom_articles(items):
+    return update_article_cache('phroom_articles.json', items, scrape_phroom_article)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Genera datos estáticos (feeds + caches de artículos).')
     parser.add_argument('--keep-lomo', action='store_true',
@@ -546,6 +563,68 @@ def main():
                     custom_items.extend(fetch_rss(feed_url, s_id, include_content=True, fetch_page_fallback=True))
             source_items[s_id] = custom_items
 
+    # 9e. 35mmc articles (enriquecimiento de contenido y galería)
+    if '35mmc' in source_items and source_items['35mmc']:
+        print('  9e. 35mmc articles (cache)...')
+        purge_bad_articles('35mmc_articles.json')
+        new_35mmc = update_35mmc_articles(source_items['35mmc'][:10])
+        cache_35mmc = load_article_cache('35mmc_articles.json')
+        print(f'     {new_35mmc} nuevos | {len(cache_35mmc)} en cache')
+        for item in source_items['35mmc']:
+            data = cache_35mmc.get(item.get('link'))
+            if isinstance(data, dict):
+                if data.get('thumbnail'):
+                    item['thumbnail'] = data['thumbnail']
+                if data.get('content'):
+                    item['content'] = data['content']
+                if data.get('clean_text'):
+                    item['full_text'] = data['clean_text']
+
+    # 9f. Emulsive articles (enriquecimiento de contenido y galería)
+    if 'emulsive' in source_items and source_items['emulsive']:
+        print('  9f. EMULSIVE articles (cache)...')
+        purge_bad_articles('emulsive_articles.json')
+        new_emulsive = update_emulsive_articles(source_items['emulsive'][:10])
+        cache_emulsive = load_article_cache('emulsive_articles.json')
+        print(f'     {new_emulsive} nuevos | {len(cache_emulsive)} en cache')
+        for item in source_items['emulsive']:
+            data = cache_emulsive.get(item.get('link'))
+            if isinstance(data, dict):
+                if data.get('thumbnail'):
+                    item['thumbnail'] = data['thumbnail']
+                if data.get('content'):
+                    item['content'] = data['content']
+
+    # 9g. Huck articles (enriquecimiento de contenido y galería)
+    if 'huck' in source_items and source_items['huck']:
+        print('  9g. Huck Magazine articles (cache)...')
+        purge_bad_articles('huck_articles.json')
+        new_huck = update_huck_articles(source_items['huck'][:10])
+        cache_huck = load_article_cache('huck_articles.json')
+        print(f'     {new_huck} nuevos | {len(cache_huck)} en cache')
+        for item in source_items['huck']:
+            data = cache_huck.get(item.get('link'))
+            if isinstance(data, dict):
+                if data.get('thumbnail'):
+                    item['thumbnail'] = data['thumbnail']
+                if data.get('content'):
+                    item['content'] = data['content']
+
+    # 9h. Phroom articles (enriquecimiento de contenido y galería)
+    if 'phroom' in source_items and source_items['phroom']:
+        print('  9h. Phroom articles (cache)...')
+        purge_bad_articles('phroom_articles.json')
+        new_phroom = update_phroom_articles(source_items['phroom'][:10])
+        cache_phroom = load_article_cache('phroom_articles.json')
+        print(f'     {new_phroom} nuevos | {len(cache_phroom)} en cache')
+        for item in source_items['phroom']:
+            data = cache_phroom.get(item.get('link'))
+            if isinstance(data, dict):
+                if data.get('thumbnail'):
+                    item['thumbnail'] = data['thumbnail']
+                if data.get('content'):
+                    item['content'] = data['content']
+
     all_entries = []
     saved_names = []
     for src in get_active_sources():
@@ -557,11 +636,18 @@ def main():
             json.dump({'items': items, 'count': len(items), 'updated': ts}, f, ensure_ascii=False)
         saved_names.append(fname)
 
-    all_entries.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
-    with open(os.path.join(DIR, 'feeds.json'), 'w', encoding='utf-8') as f:
-        json.dump({'items': all_entries, 'count': len(all_entries), 'updated': ts}, f, ensure_ascii=False)
-
-    print(f'  Guardado: {", ".join(saved_names)}, feeds.json ({len(all_entries)} total)')
+    try:
+        from sync_archive import sync_source_json_files, export_full_feeds_json
+        from archive_db import get_connection
+        with get_connection() as conn:
+            sync_source_json_files(conn)
+            conn.commit()
+        export_full_feeds_json()
+    except Exception as e:
+        print(f'  ⚠️ Error sincronizando archivo histórico: {e}')
+        all_entries.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
+        with open(os.path.join(DIR, 'feeds.json'), 'w', encoding='utf-8') as f:
+            json.dump({'items': all_entries, 'count': len(all_entries), 'updated': ts}, f, ensure_ascii=False)
 
     print('  10. Subiendo a GitHub...')
     try:
