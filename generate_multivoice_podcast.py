@@ -42,7 +42,7 @@ def load_config():
 
 CONFIG = load_config()
 GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-3.5-flash'
+GEMINI_MODEL = 'gemini-2.5-flash'
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
 def gemini_generate(prompt, max_tokens=6000, temperature=0.7):

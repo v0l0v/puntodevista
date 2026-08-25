@@ -982,6 +982,52 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
             else:
                 self.wfile.write(json.dumps(data).encode())
+        elif parsed.path == '/api/search':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            q = qs.get('q', [''])[0].strip()
+            limit = int(qs.get('limit', [15])[0])
+            mode = qs.get('mode', ['hybrid'])[0]
+            source = qs.get('source', [None])[0]
+
+            if not q:
+                self.wfile.write(json.dumps({'status': 'ok', 'items': [], 'count': 0}).encode())
+                return
+
+            try:
+                import vector_search
+                if mode == 'semantic':
+                    items = vector_search.search_semantic(q, limit=limit, source=source)
+                elif mode == 'podcast':
+                    items = vector_search.search_podcasts_semantic(q, limit=limit)
+                else:
+                    items = vector_search.search_hybrid(q, limit=limit)
+
+                self.wfile.write(json.dumps({'status': 'ok', 'query': q, 'mode': mode, 'items': items, 'count': len(items)}).encode())
+            except Exception as e:
+                self.wfile.write(json.dumps({'status': 'error', 'message': str(e)}).encode())
+        elif parsed.path == '/api/lineage':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            article_id = int(qs.get('id', [0])[0])
+            limit = int(qs.get('limit', [3])[0])
+
+            if not article_id:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing article id'}).encode())
+                return
+
+            try:
+                import vector_search
+                lineage = vector_search.find_visual_lineage(article_id, limit=limit)
+                self.wfile.write(json.dumps({'status': 'ok', 'article_id': article_id, 'lineage': lineage}).encode())
+            except Exception as e:
+                self.wfile.write(json.dumps({'status': 'error', 'message': str(e)}).encode())
         else:
             super().do_GET()
 

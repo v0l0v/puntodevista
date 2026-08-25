@@ -246,15 +246,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyFilter();
   });
 
-  // ── Buscador en vivo ───────────────────────────────────────────────
+  // ── Buscador en vivo con soporte sqlite-vec ─────────────────────────
   const searchInput = document.getElementById('search-input');
   const searchClear = document.getElementById('search-clear');
+  let _searchTimer = null;
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       __searchQuery = e.target.value.trim();
       if (searchClear) searchClear.classList.toggle('visible', !!__searchQuery);
       applyFilter();
+
+      // Consultar sqlite-vec vía /api/search si la query tiene profundidad conceptual
+      clearTimeout(_searchTimer);
+      if (__searchQuery.length >= 3) {
+        _searchTimer = setTimeout(async () => {
+          try {
+            const resp = await fetch(`/api/search?q=${encodeURIComponent(__searchQuery)}&limit=30`);
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data.status === 'ok' && data.items && data.items.length > 0) {
+                const currentUrls = new Set((window.__allEntries || []).map(x => x.link || x.url));
+                let added = false;
+                for (const item of data.items) {
+                  const u = item.url || item.link;
+                  if (!currentUrls.has(u)) {
+                    item._source = item.source || item._source || 'archivo';
+                    item.link = u;
+                    item.image = item.image_url || '';
+                    item._parsedDate = item.published_date ? new Date(item.published_date).getTime() : 0;
+                    window.__allEntries.push(item);
+                    currentUrls.add(u);
+                    added = true;
+                  }
+                }
+                if (added) applyFilter();
+              }
+            }
+          } catch (err) {
+            // Modo offline / estático: el filtro local continúa funcionando normalmente
+          }
+        }, 350);
+      }
     });
+
     if (searchClear) {
       searchClear.addEventListener('click', () => {
         searchInput.value = '';

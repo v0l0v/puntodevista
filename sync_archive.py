@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-sync_archive.py — Ingesta e indexación de todo el histórico de artículos y podcasts en SQLite FTS5.
+sync_archive.py — Ingesta e indexación de todo el histórico de artículos y podcasts en SQLite FTS5 y sqlite-vec.
 """
+
 
 import json
 import os
@@ -139,6 +140,16 @@ def main():
     for src, cnt in sorted(stats['sources'].items(), key=lambda x: -x[1]):
         print(f"    - {src:20s}: {cnt:4d} artículos")
 
+    # Ingesta e indexación de vectores con sqlite-vec
+    print("\n⚡ Indexando vectores en sqlite-vec...")
+    try:
+        from vector_search import index_missing_embeddings, index_missing_podcasts
+        index_missing_embeddings(batch_limit=100)
+        index_missing_podcasts()
+    except Exception as e:
+        print(f"⚠️ Vector indexation skipped: {e}")
+
 
 if __name__ == '__main__':
     main()
+

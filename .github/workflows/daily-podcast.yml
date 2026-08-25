@@ -34,7 +34,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           which ffmpeg || { sudo apt-get update -o Acquire::Retries=3 && sudo apt-get install -y ffmpeg; }
-          pip install requests edge-tts Pillow
+          pip install requests edge-tts Pillow sqlite-vec
 
       - name: Configurar git
         run: |
@@ -49,9 +49,9 @@ jobs:
         run: |
           TARGET_DATE="${{ inputs.target_date }}"
           if [ -n "$TARGET_DATE" ]; then
-            python3 daily_telegram.py "$TARGET_DATE"
+            python3 daily_podcast.py "$TARGET_DATE"
           else
-            python3 daily_telegram.py
+            python3 daily_podcast.py
           fi
 
       - name: Publicar episodio en GitHub Releases

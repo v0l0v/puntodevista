@@ -95,50 +95,35 @@ def get_articles_for_day(target_date_str=None):
     conn.close()
     return rows
 
+import vector_search
+
 def find_historical_connections(current_article, limit=3):
-    """Busca en el archivo proyectos anteriores que dialoguen temáticamente con el artículo actual."""
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
+    """Busca en el archivo proyectos anteriores que dialoguen temáticamente con el artículo actual usando sqlite-vec."""
+    if not current_article or not current_article.get('id'):
+        return []
+    
+    # Búsqueda de Linaje Visual mediante sqlite-vec
+    try:
+        candidates = vector_search.find_visual_lineage(current_article['id'], limit=limit)
+        if candidates and len(candidates) >= 1:
+            return candidates
+    except Exception as e:
+        print(f"⚠️ Error en linaje vectorial: {e}")
+        candidates = []
 
-    text_sample = f"{current_article['title']} {current_article.get('summary', '')}"
-    stop_words = {'de', 'la', 'que', 'el', 'en', 'y', 'a', 'los', 'del', 'se', 'las', 'por', 'un', 'para',
-                  'con', 'no', 'una', 'su', 'al', 'lo', 'como', 'más', 'pero', 'sus', 'le', 'ya', 'o', 'este',
-                  'the', 'of', 'and', 'to', 'a', 'in', 'that', 'is', 'was', 'he', 'for', 'it', 'with', 'as',
-                  'his', 'on', 'be', 'at', 'by', 'i', 'this', 'had', 'not', 'are', 'but', 'from', 'or', 'have',
-                  'an', 'they', 'which', 'one', 'you', 'were', 'her', 'all', 'she', 'there', 'would', 'their'}
-
-    words = re.findall(r'\b[a-zA-ZáéíóúÁÉÍÓÚñÑ]{4,}\b', text_sample.lower())
-    keywords = [w for w in words if w not in stop_words][:6]
-
-    candidates = []
-    if keywords:
-        fts_query = ' OR '.join(keywords)
+    # Fallback Semántico o Híbrido con texto del artículo
+    text_sample = f"{current_article.get('title', '')} {current_article.get('summary', '')}".strip()
+    if text_sample:
         try:
-            c.execute("""
-                SELECT a.id, a.url, a.source, a.title, a.photographer, a.published_date, a.summary, a.image_url
-                FROM articles_fts fts
-                JOIN articles a ON a.id = fts.rowid
-                WHERE articles_fts MATCH ? AND a.id != ? AND (a.source != ? OR a.published_date != ?)
-                ORDER BY rank
-                LIMIT ?;
-            """, (fts_query, current_article['id'], current_article['source'], current_article.get('published_date', ''), limit))
-            candidates = [dict(r) for r in c.fetchall()]
+            sem_matches = vector_search.search_semantic(text_sample, limit=limit * 2)
+            filtered = [m for m in sem_matches if m.get('id') != current_article.get('id') and m.get('source') != current_article.get('source')]
+            if filtered:
+                return filtered[:limit]
         except Exception:
             pass
 
-    if len(candidates) < 2:
-        c.execute("""
-            SELECT id, url, source, title, photographer, published_date, summary, image_url
-            FROM articles
-            WHERE id != ? AND source != ? AND summary != ''
-            ORDER BY RANDOM()
-            LIMIT ?;
-        """, (current_article['id'], current_article['source'], limit - len(candidates)))
-        candidates.extend([dict(r) for r in c.fetchall()])
-
-    conn.close()
     return candidates
+
 
 def generate_lineage_digest(target_date_str=None):
     """Genera la píldora diaria de linaje visual y propuesta creativa."""

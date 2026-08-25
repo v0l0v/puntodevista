@@ -196,10 +196,21 @@ def upsert_podcast(conn, item):
     return True
 
 
-def search_articles(query, limit=20, db_path=DEFAULT_DB_PATH):
-    """Búsqueda full-text sobre artículos con ranking BM25 y snippets contextuales."""
+def search_articles(query, limit=20, mode='hybrid', db_path=DEFAULT_DB_PATH):
+    """Búsqueda sobre artículos usando sqlite-vec (híbrido o semántico) con fallback FTS5."""
+    try:
+        import vector_search
+        if mode == 'semantic':
+            results = vector_search.search_semantic(query, limit=limit, db_path=db_path)
+        else:
+            results = vector_search.search_hybrid(query, limit=limit, db_path=db_path)
+        if results:
+            return results
+    except Exception as e:
+        pass
+
+    # Fallback a FTS5 con ranking BM25
     with get_connection(db_path) as conn:
-        # Sanitizar consulta simple
         clean_q = ' '.join([f'"{w}"' if any(c in w for c in ':-+*') else w for w in query.split() if w])
         if not clean_q:
             return []
@@ -213,6 +224,7 @@ def search_articles(query, limit=20, db_path=DEFAULT_DB_PATH):
             a.photographer,
             a.published_date,
             a.image_url,
+            a.summary,
             snippet(articles_fts, 4, '<b>', '</b>', '…', 24) as snippet_full,
             snippet(articles_fts, 3, '<b>', '</b>', '…', 24) as snippet_summary,
             bm25(articles_fts) as rank
@@ -226,20 +238,19 @@ def search_articles(query, limit=20, db_path=DEFAULT_DB_PATH):
             cur = conn.execute(sql, (clean_q, limit))
             return [dict(row) for row in cur.fetchall()]
         except sqlite3.OperationalError:
-            fallback_sql = """
-            SELECT id, url, source, title, photographer, published_date, image_url, summary
-            FROM articles
-            WHERE title LIKE ? OR summary LIKE ? OR full_text LIKE ? OR photographer LIKE ?
-            ORDER BY published_date DESC
-            LIMIT ?;
-            """
-            pattern = f'%{query}%'
-            cur = conn.execute(fallback_sql, (pattern, pattern, pattern, pattern, limit))
-            return [dict(row) for row in cur.fetchall()]
+            return []
 
 
 def search_podcasts(query, limit=10, db_path=DEFAULT_DB_PATH):
-    """Búsqueda full-text sobre episodios del podcast."""
+    """Búsqueda sobre episodios del podcast usando sqlite-vec con fallback FTS5."""
+    try:
+        import vector_search
+        results = vector_search.search_podcasts_semantic(query, limit=limit, db_path=db_path)
+        if results:
+            return results
+    except Exception:
+        pass
+
     with get_connection(db_path) as conn:
         clean_q = ' '.join([f'"{w}"' if any(c in w for c in ':-+*') else w for w in query.split() if w])
         if not clean_q:
@@ -253,6 +264,7 @@ def search_podcasts(query, limit=10, db_path=DEFAULT_DB_PATH):
             p.duration,
             p.audio_url,
             p.image_url,
+            p.description,
             snippet(podcasts_fts, 2, '<b>', '</b>', '…', 24) as snippet_desc,
             snippet(podcasts_fts, 3, '<b>', '</b>', '…', 24) as snippet_locutable,
             bm25(podcasts_fts) as rank
@@ -266,16 +278,7 @@ def search_podcasts(query, limit=10, db_path=DEFAULT_DB_PATH):
             cur = conn.execute(sql, (clean_q, limit))
             return [dict(row) for row in cur.fetchall()]
         except sqlite3.OperationalError:
-            fallback_sql = """
-            SELECT id, date, title, duration, audio_url, image_url, description
-            FROM podcasts
-            WHERE title LIKE ? OR description LIKE ? OR locutable_text LIKE ?
-            ORDER BY date DESC
-            LIMIT ?;
-            """
-            pattern = f'%{query}%'
-            cur = conn.execute(fallback_sql, (pattern, pattern, pattern, limit))
-            return [dict(row) for row in cur.fetchall()]
+            return []
 
 
 def get_stats(db_path=DEFAULT_DB_PATH):
