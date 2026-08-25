@@ -21,6 +21,11 @@
 
   // Diccionario semántico ampliado para fallback estático
   const CONCEPT_MAP = {
+    'tren': ['tren', 'trenes', 'train', 'viaje', 'viajes', 'viajar', 'viajare', 'journey', 'tránsito', 'transit', 'estación', 'station', 'metro', 'subway', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros', 'velocidad', 'movimiento'],
+    'trenes': ['tren', 'trenes', 'train', 'viaje', 'journey', 'tránsito', 'transit', 'estación', 'station', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros'],
+    'viaje': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'ruta', 'desplazamiento', 'carretera', 'tren', 'estación', 'tránsito'],
+    'viajar': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'tren', 'estación'],
+    'lluvia': ['lluvia', 'rain', 'tormenta', 'niebla', 'fog', 'charcos', 'paraguas', 'gotas', 'cristal', 'mojado'],
     'agua': ['mar', 'playa', 'océano', 'costa', 'río', 'lago', 'olas', 'surf', 'water', 'beach', 'sea', 'ocean'],
     'atardecer': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'anochecer', 'sol', 'cielo'],
     'atardeceres': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'mar', 'agua', 'sol'],
@@ -251,7 +256,12 @@
       ? window.__allEntries 
       : (archiveData?.articles || []);
 
-    const stopwords = new Set(['junto', 'los', 'las', 'del', 'con', 'para', 'por', 'sobre', 'una', 'uno', 'unas', 'unos', 'que', 'como', 'and', 'the', 'for', 'with']);
+    const stopwords = new Set([
+      'junto', 'los', 'las', 'del', 'con', 'para', 'por', 'sobre', 'una', 'uno', 'unas', 'unos',
+      'que', 'como', 'and', 'the', 'for', 'with', 'gustaria', 'gustaría', 'mañana', 'hoy', 'dia',
+      'día', 'quiero', 'dame', 'disparador', 'creativo', 'ejercicio', 'reto', 'propuesta', 'ideas',
+      'idea', 'hacer', 'fotos', 'fotografia', 'fotografía', 'hacia', 'desde', 'este', 'esta'
+    ]);
     const rawTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2 && !stopwords.has(w));
     const expandedTerms = new Set(rawTerms);
 
@@ -329,7 +339,7 @@
     const qLower = query.toLowerCase();
     const { articles, podcasts } = results;
 
-    // 1. Caso especial: Disparador Creativo
+    // 1. Caso especial: Disparador Creativo Contextualizado
     if (qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
       const topArt = articles[0] || (window.__allEntries ? window.__allEntries[Math.floor(Math.random() * window.__allEntries.length)] : null);
       const title = topArt ? (topArt.title || 'Geometría y Sombra en lo Cotidiano') : 'Geometría y Sombra en lo Cotidiano';
@@ -339,20 +349,33 @@
       const url = topArt?.url || topArt?.link || '#';
       const photo = topArt?.photographer ? escapeHtml(topArt.photographer) : '';
 
-      // Generar reto según contexto
+      // Generar reto contextual analizando la intención del usuario y la obra de referencia
       const tLow = title.toLowerCase();
       let retoTitulo = 'El Espacio que No Ocupamos';
       let retoTexto = 'Encuentra un rincón cotidiano donde la luz incida oblicua (amanecer o atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.';
 
-      if (tLow.includes('street') || tLow.includes('calle') || tLow.includes('urban') || tLow.includes('city')) {
-        retoTitulo = 'La Coincidencia Involuntaria (Street)';
+      if (qLower.includes('tren') || qLower.includes('viaj') || qLower.includes('trayect') || qLower.includes('estacion') || qLower.includes('estación') || qLower.includes('transit') || tLow.includes('train') || tLow.includes('journey') || tLow.includes('rail')) {
+        retoTitulo = 'La Ventanilla: Umbral entre Intimidad y Velocidad (Tren & Tránsito)';
+        retoTexto = `
+          <strong>1. Doble Exposición en el Cristal:</strong> Enfoca en manual a la superficie de la ventanilla. Superpón el reflejo del interior (la mirada o las manos de un pasajero) con el paisaje exterior que corre a gran velocidad.<br><br>
+          <strong>2. Contraste Cinético:</strong> Apoya la cámara firme en el reposabrazos o tu rodilla y dispara a <strong>1/15s – 1/30s</strong>: el interior del vagón quedará nítido mientras el exterior se convertirá en un barrido de líneas cinéticas abstractas.<br><br>
+          <strong>3. El No-Lugar:</strong> En las paradas intermedias, captura el instante fugaz en que alguien espera en el andén o se despide a través del cristal.
+        `;
+      } else if (qLower.includes('lluvia') || qLower.includes('niebla') || qLower.includes('tormenta') || tLow.includes('rain') || tLow.includes('fog')) {
+        retoTitulo = 'Atmósferas Difusas y Superficies Húmedas';
+        retoTexto = 'Aprovecha las gotas en cristales o los reflejos en el asfalto mojado. Dispara a máxima apertura (f/1.8 – f/2.8) enfocando en una sola gota para convertir las luces de fondo en bokeh de color cinematográfico.';
+      } else if (qLower.includes('noche') || qLower.includes('nocturn') || qLower.includes('neon') || qLower.includes('neón') || tLow.includes('night') || tLow.includes('shadow')) {
+        retoTitulo = 'Claroscuro y Luces Aisladas';
+        retoTexto = 'Encuentra una única fuente de luz artificial (farola, escaparate o neón). Mide la exposición en las altas luces y deja que las sombras caigan en negro profundo para forzar la intriga psicológica.';
+      } else if (tLow.includes('street') || tLow.includes('calle') || tLow.includes('urban') || tLow.includes('city') || qLower.includes('calle')) {
+        retoTitulo = 'La Coincidencia Involuntaria (Street Photography)';
         retoTexto = 'Sal a una calle transitada, busca un fondo con fuerte contraste geométrico o color plano y espera inmóvil a que un transeúnte complete la composición con su postura, sombra o vestimenta. Prioriza el instante decisivo.';
-      } else if (tLow.includes('portrait') || tLow.includes('retrato') || tLow.includes('body') || tLow.includes('cuerpo')) {
+      } else if (tLow.includes('portrait') || tLow.includes('retrato') || tLow.includes('body') || tLow.includes('cuerpo') || qLower.includes('retrato')) {
         retoTitulo = 'Retrato sin Mirada';
         retoTexto = 'Fotografía a una persona cercana sin mostrar directamente sus ojos: concéntrate en la tensión de las manos, el gesto de la espalda o la silueta contra una ventana en penumbra.';
-      } else if (tLow.includes('sea') || tLow.includes('water') || tLow.includes('mar') || tLow.includes('ocean') || tLow.includes('landscape') || tLow.includes('nature')) {
+      } else if (tLow.includes('sea') || tLow.includes('water') || tLow.includes('mar') || tLow.includes('ocean') || tLow.includes('landscape') || tLow.includes('nature') || qLower.includes('mar') || qLower.includes('agua')) {
         retoTitulo = 'Textura Líquida y Línea de Horizonte';
-        retoTexto = 'Busca agua en movimiento o niebla matutina. Reduce la velocidad de obturación a 1/8s - 1/2s para capturar el flujo sin perder la estructura geométrica del entorno.';
+        retoTexto = 'Busca agua en movimiento o niebla matutina. Reduce la velocidad de obturación a 1/8s – 1/2s para capturar el flujo sin perder la estructura geométrica del entorno.';
       }
 
       return `
@@ -379,10 +402,10 @@
             </div>
           </div>
 
-          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.45;">
-            <strong>Tu ejercicio hoy:</strong> ${retoTexto}
+          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.5;">
+            <strong>Tu ejercicio para el trayecto:</strong><br>${retoTexto}
           </div>
-          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Quieres otro disparador enfocado en formato analógico, retrato íntimo o monocromo?</em></p>
+          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Quieres ajustar el reto a blanco y negro, película analógica o fotografía de viaje?</em></p>
         </div>
       `;
     }
