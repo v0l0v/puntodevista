@@ -2004,6 +2004,15 @@ footer {
   border-color: #ff0100;
   box-shadow: 0 0 15px rgba(255, 1, 0, 0.2);
 }
+@keyframes estenopoInputPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 1, 0, 0.65); border-color: #ff0100; }
+  70% { box-shadow: 0 0 0 8px rgba(255, 1, 0, 0); border-color: #ff0100; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 1, 0, 0); }
+}
+.gemini-input-wrapper.input-pulse {
+  animation: estenopoInputPulse 0.5s ease-out;
+  border-color: #ff0100;
+}
 .gemini-input-icon {
   font-size: 0.95rem;
   margin-right: 0.5rem;

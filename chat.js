@@ -140,28 +140,28 @@
       </p>
 
       <div class="estenopo-intro-grid">
-        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoQuery('Atardeceres junto al agua y luz dorada', event)" title="Pulsa para enfocar por atmósfera y luz">
+        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoCard('atmosphere', 'Atardeceres junto al agua y luz dorada', event)" title="Añadir enfoque de atmósfera y luz al chat">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Atmósferas & Luz</span>
-            <span class="estenopo-card-action">Enfocar luz →</span>
+            <span class="estenopo-card-action">+ Añadir</span>
           </div>
           <strong>Buscar por tono y sensación</strong>
           <p>Escribe cómo te sientes o la luz que buscas: <em>«luces de neón en la niebla»</em>, <em>«atardecer junto al mar»</em> o <em>«penumbra»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoQuery('Linaje de la soledad urbana y suburbios', event)" title="Pulsa para contrastar miradas y linajes">
+        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoCard('lineage', 'Linaje de la soledad urbana y suburbios', event)" title="Añadir enfoque de linaje visual al chat">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Linajes Visuales</span>
-            <span class="estenopo-card-action">Cruzar miradas →</span>
+            <span class="estenopo-card-action">+ Añadir</span>
           </div>
           <strong>Diálogo entre fotógrafos</strong>
           <p>Compara cómo distintos autores y publicaciones abordan un mismo tema estético a lo largo del tiempo.</p>
         </div>
 
-        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoQuery('Disparador creativo para hoy', event)" title="Pulsa para pedir un reto fotográfico">
+        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoCard('spark', 'Disparador creativo para hoy', event)" title="Añadir disparador creativo al chat">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Disparador Creativo</span>
-            <span class="estenopo-card-action">Pedir reto →</span>
+            <span class="estenopo-card-action">+ Añadir</span>
           </div>
           <strong>Un ejercicio para salir hoy</strong>
           <p>Pide un reto técnico y poético adaptado a tu plan: <em>«viajo en tren»</em>, <em>«día de lluvia»</em> o <em>«retrato sin rostro»</em>.</p>
@@ -170,16 +170,16 @@
         <div class="estenopo-intro-card card-taxonomy">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Constelaciones</span>
-            <span class="estenopo-card-action">Filtrar tag</span>
+            <span class="estenopo-card-action">+ Añadir tag</span>
           </div>
           <strong>Filtrar por etiquetas clave</strong>
           <div class="estenopo-intro-tags">
-            <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
-            <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
-            <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">#intimidad</button>
-            <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">#marina</button>
-            <button type="button" onclick="window.askEstenopoTag('#nocturna', event)" class="estenopo-tag-badge">#nocturna</button>
-            <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">#viaje</button>
+            <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">+ #calle</button>
+            <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">+ #analógico</button>
+            <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">+ #intimidad</button>
+            <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">+ #marina</button>
+            <button type="button" onclick="window.askEstenopoTag('#nocturna', event)" class="estenopo-tag-badge">+ #nocturna</button>
+            <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">+ #viaje</button>
           </div>
         </div>
       </div>
@@ -642,15 +642,63 @@
     }
   };
 
+  window.askEstenopoCard = function(mode, defaultText, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const input = document.getElementById('chat-input');
+    const formWrapper = document.querySelector('.gemini-input-wrapper');
+    if (!input) return;
+
+    const current = input.value.trim();
+    if (!current) {
+      input.value = defaultText;
+    } else {
+      if (mode === 'atmosphere') {
+        input.value = `Atmósferas y luz: ${current}`;
+      } else if (mode === 'lineage') {
+        input.value = `Linaje visual de ${current}`;
+      } else if (mode === 'spark') {
+        input.value = `Disparador creativo: ${current}`;
+      } else {
+        input.value = `${current} ${defaultText}`;
+      }
+    }
+    input.focus();
+    const len = input.value.length;
+    input.setSelectionRange(len, len);
+
+    if (formWrapper) {
+      formWrapper.classList.remove('input-pulse');
+      void formWrapper.offsetWidth;
+      formWrapper.classList.add('input-pulse');
+    }
+  };
+
   window.askEstenopoTag = function(tag, e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
     const input = document.getElementById('chat-input');
-    if (input) {
+    const formWrapper = document.querySelector('.gemini-input-wrapper');
+    if (!input) return;
+
+    const current = input.value.trim();
+    if (!current) {
       input.value = tag;
-      handleUserSubmit(new Event('submit'));
+    } else if (!current.includes(tag)) {
+      input.value = `${current} ${tag}`;
+    }
+    input.focus();
+    const len = input.value.length;
+    input.setSelectionRange(len, len);
+
+    if (formWrapper) {
+      formWrapper.classList.remove('input-pulse');
+      void formWrapper.offsetWidth;
+      formWrapper.classList.add('input-pulse');
     }
   };
 
