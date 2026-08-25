@@ -45,29 +45,26 @@
     widget.id = 'chat-widget';
     widget.innerHTML = `
       <!-- Botón Flotante -->
-      <button id="chat-trigger-btn" aria-label="Abrir Inteligencia Visual" title="Consultar inteligencia del archivo fotográfico">
-        <span class="chat-btn-sparkle">✨</span>
-        <span class="chat-btn-text">Inteligencia Visual</span>
+      <button id="chat-trigger-btn" aria-label="Abrir Estenopo · Inteligencia Visual" title="Consultar a Estenopo sobre el archivo fotográfico">
+        <span class="chat-btn-sparkle">📷</span>
+        <span class="chat-btn-text">Estenopo</span>
       </button>
 
-      <!-- Panel Inferior Estilo Gemini Chat (Media Pantalla) -->
-      <div id="chat-drawer" class="hide" role="dialog" aria-modal="true" aria-label="Gemini · Inteligencia Visual">
+      <!-- Panel Lateral Vertical Estenopo -->
+      <div id="chat-drawer" class="hide" role="dialog" aria-modal="true" aria-label="Estenopo · Inteligencia Visual">
         
-        <!-- Barra de arrastre / Handle superior -->
-        <div class="chat-drag-handle" title="Arrastrar o cambiar tamaño"></div>
-
-        <!-- Cabecera Gemini -->
+        <!-- Cabecera Estenopo -->
         <div class="chat-header">
           <div class="chat-header-left">
-            <div class="gemini-badge-glow">✨ Gemini</div>
+            <div class="chat-badge-glow">📷 Estenopo</div>
             <div class="chat-header-info">
               <div class="chat-title">Inteligencia Visual & Curaduría</div>
-              <div class="chat-subtitle">Buscador Conceptual · 860+ Obras · Linajes & Podcasts</div>
+              <div class="chat-subtitle">860+ Obras · Linajes · Podcasts</div>
             </div>
           </div>
           <div class="chat-header-actions">
             <button id="chat-clear-btn" class="chat-tool-btn" title="Limpiar conversación">🗑️</button>
-            <button id="chat-expand-btn" class="chat-tool-btn" title="Expandir/Reducir ventana">⛶</button>
+            <button id="chat-expand-btn" class="chat-tool-btn" title="Expandir/Reducir ancho">⛶</button>
             <button id="chat-close-btn" class="chat-tool-btn" title="Cerrar panel">✕</button>
           </div>
         </div>
@@ -80,20 +77,20 @@
         <!-- Zona de Mensajes del Chat -->
         <div class="chat-messages" id="chat-messages">
           <div class="chat-msg bot">
-            <div class="msg-avatar-gemini">✨</div>
+            <div class="msg-avatar-estenopo">📷</div>
             <div class="msg-content">
-              <p class="gemini-greeting"><strong>Hola. Soy el asistente de Inteligencia Visual de <em>Punto de vista</em>.</strong></p>
+              <p class="gemini-greeting"><strong>Hola. Soy Estenopo, el asistente de Inteligencia Visual de <em>Punto de vista</em>.</strong></p>
               <p>Exploro las conexiones conceptuales, estéticas y técnicas a través de los <strong>867 artículos y 22 podcasts</strong> del archivo histórico.</p>
-              <p style="margin-top:0.4rem;font-size:0.85rem;color:#cbd5e1;">Pídeme encontrar proyectos por <strong>atmósferas</strong> (<em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em>), descubrir <strong>linajes entre fotógrafos</strong> o un <strong>disparador creativo</strong> para salir hoy a hacer fotos.</p>
+              <p style="margin-top:0.4rem;font-size:0.84rem;color:#cbd5e1;">Pídeme encontrar proyectos por <strong>atmósferas</strong> (<em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em>), descubrir <strong>linajes entre fotógrafos</strong> o un <strong>disparador creativo</strong> para salir hoy a hacer fotos.</p>
             </div>
           </div>
         </div>
 
-        <!-- Barra de Input Flotante Estilo Gemini -->
+        <!-- Barra de Input Flotante Estenopo -->
         <form class="gemini-input-container" id="chat-form">
           <div class="gemini-input-wrapper">
-            <span class="gemini-input-icon">✨</span>
-            <input type="text" id="chat-input" placeholder="Pregunta sobre una atmósfera, autor, concepto o técnica…" autocomplete="off" aria-label="Escribe tu consulta">
+            <span class="gemini-input-icon">📷</span>
+            <input type="text" id="chat-input" placeholder="Pregunta a Estenopo sobre atmósferas, conceptos o autores…" autocomplete="off" aria-label="Escribe tu consulta">
             <button type="submit" id="chat-send-btn" aria-label="Enviar consulta">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -172,10 +169,10 @@
     if (!container) return;
     container.innerHTML = `
       <div class="chat-msg bot">
-        <div class="msg-avatar-gemini">✨</div>
+        <div class="msg-avatar-estenopo">📷</div>
         <div class="msg-content">
           <p><strong>Conversación reiniciada.</strong></p>
-          <p style="color:#cbd5e1;font-size:0.85rem;">¿Qué concepto visual o proyecto fotográfico te gustaría explorar ahora?</p>
+          <p style="color:#cbd5e1;font-size:0.84rem;">¿Qué atmósfera, concepto o autor te gustaría explorar ahora?</p>
         </div>
       </div>
     `;
@@ -188,7 +185,7 @@
     const row = document.createElement('div');
     row.className = `chat-msg ${sender}`;
     const avatar = sender === 'bot' 
-      ? '<div class="msg-avatar-gemini">✨</div>' 
+      ? '<div class="msg-avatar-estenopo">📷</div>' 
       : '<div class="msg-avatar-user">👤</div>';
 
     row.innerHTML = `
@@ -254,14 +251,15 @@
       ? window.__allEntries 
       : (archiveData?.articles || []);
 
-    const rawTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const stopwords = new Set(['junto', 'los', 'las', 'del', 'con', 'para', 'por', 'sobre', 'una', 'uno', 'unas', 'unos', 'que', 'como', 'and', 'the', 'for', 'with']);
+    const rawTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2 && !stopwords.has(w));
     const expandedTerms = new Set(rawTerms);
 
     // Expandir con el mapa semántico
     rawTerms.forEach(t => {
       for (const [key, synonyms] of Object.entries(CONCEPT_MAP)) {
-        if (t.includes(key) || key.includes(t)) {
-          synonyms.forEach(s => expandedTerms.add(s));
+        if (t === key || key.includes(t)) {
+          synonyms.forEach(s => expandedTerms.add(s.toLowerCase()));
         }
       }
     });
@@ -270,31 +268,31 @@
 
     const scoredArticles = dataset.map(a => {
       let score = 0;
-      const title = (a.title || '').toLowerCase();
-      const photo = (a.photographer || '').toLowerCase();
-      const summary = (a.summary || a.excerpt || a.content || '').toLowerCase();
-      const src = (a._source || a.source || '').toLowerCase();
+      const rawTitle = decodeHtmlEntities(a.title || '');
+      const rawPhoto = decodeHtmlEntities(a.photographer || '');
+      const rawSummary = decodeHtmlEntities(a.summary || a.excerpt || a.content || '');
+      const rawSrc = decodeHtmlEntities(a._source || a.source || '');
 
       rawTerms.forEach(t => {
-        if (title.includes(t)) score += 20;
-        if (photo.includes(t)) score += 15;
-        if (summary.includes(t)) score += 8;
-        if (src.includes(t)) score += 5;
+        if (matchWordInText(rawTitle, t)) score += 20;
+        if (matchWordInText(rawPhoto, t)) score += 15;
+        if (matchWordInText(rawSummary, t)) score += 8;
+        if (matchWordInText(rawSrc, t)) score += 5;
       });
 
       termsArray.forEach(t => {
-        if (title.includes(t)) score += 6;
-        if (summary.includes(t)) score += 3;
+        if (matchWordInText(rawTitle, t)) score += 6;
+        if (matchWordInText(rawSummary, t)) score += 3;
       });
 
       return {
         id: a._id || a.id || a.link,
-        title: a.title,
-        photographer: a.photographer,
-        source: a._source || a.source,
+        title: rawTitle,
+        photographer: rawPhoto,
+        source: rawSrc,
         url: a.link || a.url,
         published_date: a.date || a._parsedDate,
-        summary: a.summary || a.excerpt || '',
+        summary: rawSummary,
         image: a.image || a.thumbnail || '',
         score,
         rank_type: 'Semántica Heurística'
@@ -304,20 +302,20 @@
     const podcastsDataset = window.__podcastEntries || archiveData?.podcasts || [];
     const scoredPodcasts = podcastsDataset.map(p => {
       let score = 0;
-      const title = (p.title || p.podcast_title || '').toLowerCase();
-      const desc = (p.description || '').toLowerCase();
+      const title = decodeHtmlEntities(p.title || p.podcast_title || '');
+      const desc = decodeHtmlEntities(p.description || '');
 
       rawTerms.forEach(t => {
-        if (title.includes(t)) score += 15;
-        if (desc.includes(t)) score += 8;
+        if (matchWordInText(title, t)) score += 15;
+        if (matchWordInText(desc, t)) score += 8;
       });
 
       termsArray.forEach(t => {
-        if (title.includes(t)) score += 5;
-        if (desc.includes(t)) score += 3;
+        if (matchWordInText(title, t)) score += 5;
+        if (matchWordInText(desc, t)) score += 3;
       });
 
-      return { ...p, score };
+      return { ...p, title, description: desc, score };
     }).filter(p => p.score > 0).sort((a, b) => b.score - a.score);
 
     return {
@@ -339,15 +337,15 @@
 
       return `
         <div class="gemini-response-box">
-          <div class="gemini-badge-sparkle">✨ Disparador Creativo del Día</div>
-          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.1rem;font-family:'Playfair Display',serif;">Reto: El Espacio que No Ocupamos</h4>
-          <p style="color:#cbd5e1;font-size:0.92rem;line-height:1.5;">
+          <div class="gemini-badge-sparkle">📷 Disparador Creativo del Día</div>
+          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.05rem;font-family:'Playfair Display',serif;">Reto: El Espacio que No Ocupamos</h4>
+          <p style="color:#cbd5e1;font-size:0.88rem;line-height:1.5;">
             Inspirado en el lenguaje visual de <strong>«${escapeHtml(title)}»</strong>${author}:
           </p>
-          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.8rem;margin:0.8rem 0;border-radius:4px;color:#f8fafc;font-size:0.92rem;">
+          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;">
             <strong>Tu ejercicio hoy:</strong> Encuentra un rincón cotidiano donde la luz incida oblicua (al amanecer o al atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.
           </div>
-          <p style="font-size:0.8rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Te apetece otro disparador enfocado en retrato callejero o formato analógico?</em></p>
+          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Te apetece otro disparador enfocado en retrato callejero o formato analógico?</em></p>
         </div>
       `;
     }
@@ -357,9 +355,9 @@
       return `
         <div class="gemini-response-box">
           <div class="gemini-badge-sparkle">🌐 Observatorio de Tendencias</div>
-          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.05rem;">Dossier Semanal de Inteligencia Curatorial</h4>
-          <p style="color:#cbd5e1;font-size:0.9rem;">Hemos analizado el pulso de más de 850 proyectos fotográficos:</p>
-          <ul style="margin:0.5rem 0 0.8rem 1.2rem;font-size:0.88rem;color:#cbd5e1;line-height:1.5;">
+          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.02rem;">Dossier de Inteligencia Curatorial</h4>
+          <p style="color:#cbd5e1;font-size:0.86rem;">Patrones visuales detectados en más de 850 proyectos:</p>
+          <ul style="margin:0.5rem 0 0.8rem 1.2rem;font-size:0.84rem;color:#cbd5e1;line-height:1.5;">
             <li><strong>Tendencia 1:</strong> El Espacio Doméstico como Escenario Psicológico.</li>
             <li><strong>Tendencia 2:</strong> Arqueología Visual de Subculturas y Comunidades.</li>
             <li><strong>Tendencia 3:</strong> La Imperfección Analógica frente a la Hipernitidez Sintética.</li>
@@ -376,8 +374,8 @@
       return `
         <div class="gemini-response-box">
           <p>No encontré obras que resuenen directamente con <em>«${escapeHtml(query)}»</em> en el archivo.</p>
-          <p style="margin-top:0.5rem;font-size:0.88rem;color:#94a3b8;">
-            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o medios como <strong>Magnum</strong> o <strong>35mmc</strong>.
+          <p style="margin-top:0.5rem;font-size:0.85rem;color:#94a3b8;">
+            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o publicaciones como <strong>Magnum</strong> o <strong>35mmc</strong>.
           </p>
         </div>
       `;
@@ -385,8 +383,8 @@
 
     let out = `
       <div class="gemini-response-box">
-        <p style="color:#e2e8f0;font-size:0.95rem;line-height:1.5;">
-          He analizado el archivo y seleccionado estas resonancias para <strong>«${escapeHtml(query)}»</strong>:
+        <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
+          Resonancias seleccionadas para <strong>«${escapeHtml(query)}»</strong>:
         </p>
     `;
 
@@ -398,43 +396,43 @@
         <div class="gemini-lineage-banner">
           <div class="gemini-lineage-title">🧬 Linaje Visual Detectado</div>
           <div class="gemini-lineage-desc">
-            Existe un diálogo estético notable entre <strong>«${escapeHtml(a1.title)}»</strong> (${(a1.source || '').toUpperCase()}) y <strong>«${escapeHtml(a2.title)}»</strong> (${(a2.source || '').toUpperCase()}) al abordar la atmósfera desde miradas complementarias.
+            Diálogo estético entre <strong>«${escapeHtml(a1.title)}»</strong> (${(a1.source || '').toUpperCase()}) y <strong>«${escapeHtml(a2.title)}»</strong> (${(a2.source || '').toUpperCase()}).
           </div>
         </div>
       `;
     }
 
-    // Grid de Tarjetas Visuales de Artículos
+    // Lista de Enlaces Sombreados para Artículos
     if (articles.length > 0) {
       out += `
         <div class="gemini-section-header">
-          <span>📸 Obras & Ensayos Seleccionados (${articles.length})</span>
+          <span>📸 Obras & Ensayos (${articles.length})</span>
         </div>
-        <div class="gemini-cards-grid">
+        <div class="estenopo-links-list">
       `;
 
       articles.forEach(a => {
-        const photo = a.photographer ? ` · <em>${escapeHtml(a.photographer)}</em>` : '';
-        const thumb = a.image ? `<img src="${a.image}" alt="" class="gemini-card-thumb" loading="lazy" onerror="this.style.display='none'">` : '';
-        const sourceName = (a.source || 'ARCHIVO').toUpperCase();
+        const photo = a.photographer ? escapeHtml(a.photographer) : '';
+        const sourceName = escapeHtml((a.source || 'ARCHIVO').toUpperCase());
         const articleId = escapeHtml(String(a.id || a.url));
         const sourceSafe = escapeHtml(String(a.source || ''));
 
         out += `
-          <div class="gemini-card">
-            ${thumb}
-            <div class="gemini-card-body">
-              <div class="gemini-card-badge">${sourceName}${photo}</div>
-              <h5 class="gemini-card-title">${escapeHtml(a.title)}</h5>
-              <p class="gemini-card-snippet">${escapeHtml((a.summary || '').slice(0, 140))}…</p>
-              <div class="gemini-card-actions">
-                <button class="gemini-card-btn view-btn" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo con galería">
-                  👁️ Abrir en Lector
-                </button>
-                <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="gemini-card-btn ext-btn" title="Ir al sitio original">
-                  Original ↗
-                </a>
-              </div>
+          <div class="estenopo-link-item">
+            <div class="estenopo-link-meta">
+              <span>${sourceName}</span>
+              ${photo ? `<span class="estenopo-link-author">· ${photo}</span>` : ''}
+            </div>
+            <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
+              ${escapeHtml(a.title)}
+            </a>
+            <div class="estenopo-link-actions">
+              <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo en lector">
+                👁️ Lector
+              </button>
+              <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a la publicación original">
+                Original ↗
+              </a>
             </div>
           </div>
         `;
@@ -443,13 +441,13 @@
       out += `</div>`;
     }
 
-    // Podcasts Vinculados
+    // Podcasts Vinculados en formato Enlaces Sombreados
     if (podcasts.length > 0) {
       out += `
-        <div class="gemini-section-header" style="margin-top:1.2rem">
-          <span>🎙️ Episodios del Podcast Relacionados</span>
+        <div class="gemini-section-header" style="margin-top:1rem">
+          <span>🎙️ Podcasts Relacionados (${podcasts.length})</span>
         </div>
-        <div class="gemini-podcasts-list">
+        <div class="estenopo-podcasts-list">
       `;
 
       podcasts.forEach(p => {
@@ -458,16 +456,12 @@
         const audioUrl = p.audio_url || p.link || '';
 
         out += `
-          <div class="gemini-podcast-card">
-            <div class="gemini-podcast-icon">🎙️</div>
-            <div class="gemini-podcast-content">
-              <div class="gemini-podcast-title">${escapeHtml(p.title || 'Resumen Diario')}</div>
-              <div class="gemini-podcast-meta">Fecha: ${dateStr} ${durationMin ? `· ${durationMin}` : ''}</div>
-              <div class="gemini-podcast-desc">${escapeHtml((p.description || '').slice(0, 150))}…</div>
-              <div class="gemini-podcast-actions">
-                ${audioUrl ? `<button class="gemini-pod-btn play" onclick="window.playPodcastByUrl('${audioUrl}')">▶ Reproducir Episodio</button>` : ''}
-                <a href="episodios.html" target="_blank" class="gemini-pod-btn">Ver Todos →</a>
-              </div>
+          <div class="estenopo-podcast-item">
+            <div class="estenopo-podcast-meta">🎙️ ${dateStr} ${durationMin ? `· ${durationMin}` : ''}</div>
+            <div class="estenopo-podcast-title">${escapeHtml(p.title || 'Resumen Diario')}</div>
+            <div class="estenopo-link-actions">
+              ${audioUrl ? `<button class="estenopo-mini-btn view" onclick="window.playPodcastByUrl('${audioUrl}')">▶ Reproducir</button>` : ''}
+              <a href="episodios.html" target="_blank" class="estenopo-mini-btn">Ver Todos →</a>
             </div>
           </div>
         `;
@@ -491,7 +485,7 @@
 
     const loading = addMessage('bot', `
       <div class="gemini-typing-indicator">
-        <span class="sparkle-spin">✨</span> Consultando archivo vectorial y cruzando linajes…
+        <span class="sparkle-spin">📷</span> Estenopo está consultando el archivo…
       </div>
     `);
 
@@ -506,8 +500,34 @@
     }
   }
 
+  function decodeHtmlEntities(str) {
+    if (!str) return '';
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value
+      .replace(/&#8217;/g, "'")
+      .replace(/&#8216;/g, "'")
+      .replace(/&#8220;/g, '"')
+      .replace(/&#8221;/g, '"')
+      .replace(/&#8211;/g, '–')
+      .replace(/&#8212;/g, '—')
+      .replace(/&#039;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+  }
+
+  function matchWordInText(text, term) {
+    if (!text || !term) return false;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}($|[^\\p{L}\\p{N}])`, 'iu');
+    return regex.test(text);
+  }
+
   function escapeHtml(str) {
-    return String(str || '')
+    const clean = decodeHtmlEntities(String(str || ''));
+    return clean
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
