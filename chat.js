@@ -83,10 +83,8 @@
         <div class="chat-messages" id="chat-messages">
           <div class="chat-msg bot">
             <div class="msg-avatar-estenopo">📷</div>
-            <div class="msg-content">
-              <p class="gemini-greeting"><strong>Hola. Soy Estenopo, el asistente de Inteligencia Visual de <em>Punto de vista</em>.</strong></p>
-              <p>Exploro las conexiones conceptuales, estéticas y técnicas a través de los <strong>867 artículos y 22 podcasts</strong> del archivo histórico.</p>
-              <p style="margin-top:0.4rem;font-size:0.84rem;color:#cbd5e1;">Pídeme encontrar proyectos por <strong>atmósferas</strong> (<em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em>), descubrir <strong>linajes entre fotógrafos</strong> o un <strong>disparador creativo</strong> para salir hoy a hacer fotos.</p>
+            <div class="msg-content" id="chat-intro-content">
+              ${getIntroWelcomeHtml()}
             </div>
           </div>
         </div>
@@ -124,6 +122,57 @@
     });
 
     preloadArchive();
+  }
+
+  function getIntroWelcomeHtml() {
+    return `
+      <p class="gemini-greeting"><strong>Hola. Soy Estenopo, tu asistente de Inteligencia Visual y Curaduría.</strong></p>
+      <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.45;margin:0.4rem 0 0.75rem;">
+        Exploro las conexiones conceptuales, estéticas y técnicas a través de las <strong>867 obras y 22 podcasts</strong> del archivo histórico de <em>Punto de vista</em>.
+      </p>
+
+      <div class="estenopo-intro-grid">
+        <div class="estenopo-intro-card">
+          <div class="estenopo-intro-icon">🌫️</div>
+          <div class="estenopo-intro-text">
+            <strong>1. Búsqueda por Atmósferas</strong>
+            <span>Busca por sensaciones, luz o emociones: <em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em> o <em>«soledad en el metro»</em>.</span>
+          </div>
+        </div>
+
+        <div class="estenopo-intro-card">
+          <div class="estenopo-intro-icon">🧬</div>
+          <div class="estenopo-intro-text">
+            <strong>2. Linajes & Cruces Visuales</strong>
+            <span>Descubre cómo dialogan estéticamente fotógrafos y publicaciones de distintas épocas ante un mismo tema.</span>
+          </div>
+        </div>
+
+        <div class="estenopo-intro-card">
+          <div class="estenopo-intro-icon">📷</div>
+          <div class="estenopo-intro-text">
+            <strong>3. Disparadores Creativos</strong>
+            <span>Pídeme un reto para salir hoy a hacer fotos adaptado a tu situación: <em>«viajaré en tren»</em>, <em>«día lluvioso»</em> o <em>«retrato íntimo»</em>.</span>
+          </div>
+        </div>
+
+        <div class="estenopo-intro-card">
+          <div class="estenopo-intro-icon">🏷️</div>
+          <div class="estenopo-intro-text">
+            <strong>4. Catálogo por 39 Categorías</strong>
+            <span>Filtra con un clic en las etiquetas temáticas: 
+              <span style="display:inline-flex;flex-wrap:wrap;gap:0.25rem;margin-top:0.2rem;">
+                <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
+                <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
+                <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">#intimidad</button>
+                <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">#marina</button>
+                <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">#viaje</button>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   async function preloadArchive() {
@@ -176,8 +225,7 @@
       <div class="chat-msg bot">
         <div class="msg-avatar-estenopo">📷</div>
         <div class="msg-content">
-          <p><strong>Conversación reiniciada.</strong></p>
-          <p style="color:#cbd5e1;font-size:0.84rem;">¿Qué atmósfera, concepto o autor te gustaría explorar ahora?</p>
+          ${getIntroWelcomeHtml()}
         </div>
       </div>
     `;

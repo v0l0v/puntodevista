@@ -1377,7 +1377,8 @@ footer {
   top: 0;
   bottom: 0;
   right: 0;
-  width: 440px;
+  width: 50vw;
+  min-width: 480px;
   max-width: 95vw;
   height: 100vh;
   height: 100dvh;
@@ -1395,7 +1396,7 @@ footer {
   transition: width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.25s ease;
 }
 #chat-drawer.expanded {
-  width: 680px;
+  width: 75vw;
   max-width: 95vw;
 }
 #chat-drawer.hide {
@@ -1406,6 +1407,55 @@ footer {
 
 .chat-drag-handle {
   display: none;
+}
+
+/* Intro Grid de Estenopo (Guía de Uso) */
+.estenopo-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+  margin-top: 0.7rem;
+}
+@media (max-width: 980px) {
+  .estenopo-intro-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.estenopo-intro-card {
+  background: rgba(255, 255, 255, 0.028);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  transition: all 0.18s ease;
+}
+.estenopo-intro-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 1, 0, 0.35);
+  transform: translateY(-1px);
+}
+.estenopo-intro-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+.estenopo-intro-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.estenopo-intro-text strong {
+  font-size: 0.78rem;
+  color: #fff;
+  font-weight: 600;
+}
+.estenopo-intro-text span {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.35;
 }
 
 .chat-header {
