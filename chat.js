@@ -21,6 +21,13 @@
 
   // Diccionario semántico ampliado para fallback estático
   const CONCEPT_MAP = {
+    'doisneau': ['doisneau', 'robert doisneau', 'calle', 'street', 'paris', 'parís', 'humanismo', 'humanista', 'blanco y negro', 'candid', 'transeúntes', 'espontáneo', 'fotografía histórica'],
+    'bresson': ['bresson', 'cartier-bresson', 'henri cartier-bresson', 'magnum', 'instante decisivo', 'decisive moment', 'calle', 'street', 'geometría', 'blanco y negro'],
+    'leiter': ['leiter', 'saul leiter', 'color', 'calle', 'reflejos', 'gotas', 'cristales', 'abstracción', 'intimidad', 'color'],
+    'frank': ['frank', 'robert frank', 'the americans', 'carretera', 'viaje', 'road trip', 'subcultura', 'soledad', 'blanco y negro'],
+    'arbus': ['arbus', 'diane arbus', 'retrato', 'identidad', 'cuerpo', 'subcultura', 'singularidad', 'intimidad', 'blanco y negro'],
+    'linaje': ['linaje', 'linajes', 'diálogo', 'diálogos', 'conexión', 'resonancia', 'influencia', 'tradición', 'autores', 'historia', 'memoria'],
+    'suburbios': ['suburbios', 'suburbio', 'suburbia', 'suburbs', 'periferia', 'barrio', 'espacio urbano', 'soledad', 'arquitectura', 'calle'],
     'tren': ['tren', 'trenes', 'train', 'viaje', 'viajes', 'viajar', 'viajare', 'journey', 'tránsito', 'transit', 'estación', 'station', 'metro', 'subway', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros', 'velocidad', 'movimiento'],
     'trenes': ['tren', 'trenes', 'train', 'viaje', 'journey', 'tránsito', 'transit', 'estación', 'station', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros'],
     'viaje': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'ruta', 'desplazamiento', 'carretera', 'tren', 'estación', 'tránsito'],
@@ -31,9 +38,9 @@
     'atardeceres': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'mar', 'agua', 'sol'],
     'mar': ['agua', 'playa', 'costa', 'océano', 'surf', 'litoral', 'puerto'],
     'nostalgia': ['memoria', 'pasado', 'analógico', 'tiempo', 'grano', 'melancolía', 'recuerdo', 'archivo', 'infancia'],
-    'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'individual', 'distancia', 'quietud'],
-    'urbano': ['calle', 'ciudad', 'arquitectura', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto'],
-    'calle': ['street', 'urbano', 'espontáneo', 'peatones', 'calles', 'instantánea', 'cándido'],
+    'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'suburbios', 'individual', 'distancia', 'quietud', 'soledad'],
+    'urbano': ['calle', 'ciudad', 'arquitectura', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto', 'espacio urbano'],
+    'calle': ['street', 'urbano', 'espontáneo', 'peatones', 'calles', 'instantánea', 'cándido', 'calle'],
     'luz': ['claroscuro', 'crepúsculo', 'sombra', 'neón', 'contraste', 'atardecer', 'reflejos', 'iluminación'],
     'noche': ['nocturna', 'neón', 'oscuridad', 'sombras', 'luces', 'madrugada', 'misterio'],
     'analógico': ['película', '35mm', 'formato medio', 'grano', 'emulsión', 'química', 'lomography', 'pinhole', 'estenopeica', 'nikkor', 'leica'],
@@ -326,6 +333,11 @@
     const termsArray = Array.from(expandedTerms);
 
     const scoredArticles = dataset.map(a => {
+      let score = 0;
+      const rawTitle = decodeHtmlEntities(a.title || '');
+      const rawPhoto = decodeHtmlEntities(a.photographer || '');
+      const rawSummary = decodeHtmlEntities(a.summary || a.excerpt || a.content || '');
+      const rawSrc = decodeHtmlEntities(a._source || a.source || '');
       let aTags = [];
       if (Array.isArray(a.tags)) aTags = a.tags;
       else if (typeof a.tags === 'string') {
@@ -337,8 +349,8 @@
         if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
           score += 35;
         }
+        if (matchWordInText(rawPhoto, t)) score += 30;
         if (matchWordInText(rawTitle, t)) score += 20;
-        if (matchWordInText(rawPhoto, t)) score += 15;
         if (matchWordInText(rawSummary, t)) score += 8;
         if (matchWordInText(rawSrc, t)) score += 5;
       });
@@ -348,6 +360,7 @@
         if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
           score += 15;
         }
+        if (matchWordInText(rawPhoto, t)) score += 15;
         if (matchWordInText(rawTitle, t)) score += 6;
         if (matchWordInText(rawSummary, t)) score += 3;
       });
@@ -503,10 +516,13 @@
     if (!articles.length && !podcasts.length) {
       return `
         <div class="gemini-response-box">
-          <p>No encontré obras que resuenen directamente con <em>«${escapeHtml(query)}»</em> en el archivo.</p>
-          <p style="margin-top:0.5rem;font-size:0.85rem;color:#94a3b8;">
-            <em>Prueba buscando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o etiquetas como <strong>#calle</strong> o <strong>#analógico</strong>.
+          <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
+            No encontré obras que coincidan directamente con <em>«${escapeHtml(query)}»</em>.
           </p>
+          <p style="margin:0.5rem 0 0.8rem;font-size:0.85rem;color:#cbd5e1;">
+            ¿Hacia dónde te gustaría <strong>enfocar</strong> la mirada? Pulsa en una de las opciones:
+          </p>
+          ${getIntroWelcomeHtml()}
         </div>
       `;
     }
@@ -642,7 +658,17 @@
     e.preventDefault();
     const input = document.getElementById('chat-input');
     const q = (input?.value || '').trim();
-    if (!q) return;
+    if (!q) {
+      addMessage('bot', `
+        <div class="gemini-response-box">
+          <p style="color:#e2e8f0;font-size:0.9rem;margin-bottom:0.6rem;">
+            ¿Hacia dónde te gustaría <strong>enfocar</strong> tu búsqueda? Pulsa en una opción o escribe una sensación o autor:
+          </p>
+          ${getIntroWelcomeHtml()}
+        </div>
+      `);
+      return;
+    }
 
     input.value = '';
     addMessage('user', `<p>${escapeHtml(q)}</p>`);
