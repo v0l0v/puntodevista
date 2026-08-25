@@ -184,50 +184,54 @@
     return `
       <p class="gemini-greeting"><strong>Estenopo · Inteligencia Visual</strong></p>
       <p style="color:#cbd5e1;font-size:0.875rem;line-height:1.5;margin:0.35rem 0 0.85rem;">
-        Escribe en el chat cualquier idea, sensación o autor, o pulsa en uno de los accesos rápidos para <strong>enfocar tu búsqueda</strong> en el archivo:
+        Escribe en el chat cualquier autor, idea o sensación en español, o elige un modo de búsqueda directa:
       </p>
 
       <div class="estenopo-intro-grid">
-        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoCard('atmosphere', 'Atardeceres junto al agua y luz dorada', event)" title="Explorar atmósferas y luz en el archivo">
+        <!-- 1. Clima y Atmósfera Visual -->
+        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoCard('atmosphere', 'Atardeceres junto al agua y luz dorada', event)" title="Buscar fotografías por clima, luz y estado de ánimo">
           <div class="estenopo-card-header">
-            <span class="estenopo-card-label">Atmósferas & Luz</span>
-            <span class="estenopo-card-action">Explorar →</span>
+            <span class="estenopo-card-label">1. Clima & Luz</span>
+            <span class="estenopo-card-action">Buscar clima →</span>
           </div>
-          <strong>Buscar por tono y sensación</strong>
-          <p>Escribe cómo te sientes o la luz que buscas: <em>«luces de neón en la niebla»</em>, <em>«atardecer junto al mar»</em> o <em>«penumbra»</em>.</p>
+          <strong>Sensación y Atmósfera</strong>
+          <p>Busca por iluminación y estado de ánimo: <em>«niebla matutina»</em>, <em>«luces de neón»</em>, <em>«luz crepuscular»</em> o <em>«penumbra»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoCard('lineage', 'Linaje de la soledad urbana y suburbios', event)" title="Trazar linajes visuales y diálogos">
+        <!-- 2. Cruces entre Fotógrafos / Genealogías -->
+        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoCard('lineage', 'Linaje de la soledad urbana y suburbios', event)" title="Comparar cómo distintos fotógrafos abordan un mismo tema">
           <div class="estenopo-card-header">
-            <span class="estenopo-card-label">Linajes Visuales</span>
-            <span class="estenopo-card-action">Trazar linaje →</span>
+            <span class="estenopo-card-label">2. Cruces & Autores</span>
+            <span class="estenopo-card-action">Cruzar miradas →</span>
           </div>
-          <strong>Diálogo entre fotógrafos</strong>
-          <p>Compara cómo distintos autores y publicaciones abordan un mismo tema estético a lo largo del tiempo.</p>
+          <strong>Diálogo entre Fotógrafos</strong>
+          <p>Compara cómo distintos autores conectan entre sí: <em>«ecos de Saul Leiter»</em>, <em>«soledad en la metrópoli»</em> o <em>«mirada humanista»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoCard('spark', 'Disparador creativo para hoy', event)" title="Generar un reto o disparador fotográfico">
+        <!-- 3. Reto para Salir a Disparar -->
+        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoCard('spark', 'Disparador creativo para hoy', event)" title="Obtén un ejercicio fotográfico adaptado a tu situación de hoy">
           <div class="estenopo-card-header">
-            <span class="estenopo-card-label">Disparador Creativo</span>
-            <span class="estenopo-card-action">Generar reto →</span>
+            <span class="estenopo-card-label">3. Reto para Disparar</span>
+            <span class="estenopo-card-action">Pedir ejercicio →</span>
           </div>
-          <strong>Un ejercicio para salir hoy</strong>
-          <p>Pide un reto técnico y poético adaptado a tu plan: <em>«viajo en tren»</em>, <em>«día de lluvia»</em> o <em>«retrato sin rostro»</em>.</p>
+          <strong>Inspiración para Salir Hoy</strong>
+          <p>Pide un reto técnico y poético según tu plan: <em>«viajo en tren»</em>, <em>«día de lluvia»</em>, <em>«paseo nocturno»</em> o <em>«retrato sin rostro»</em>.</p>
         </div>
 
+        <!-- 4. Exploración por Géneros y Técnicas -->
         <div class="estenopo-intro-card card-taxonomy">
           <div class="estenopo-card-header">
-            <span class="estenopo-card-label">Constelaciones</span>
-            <span class="estenopo-card-action">Filtrar tag</span>
+            <span class="estenopo-card-label">4. Temáticas & Géneros</span>
+            <span class="estenopo-card-action">Filtrar tema</span>
           </div>
-          <strong>Filtrar por etiquetas clave</strong>
+          <strong>Explorar el Archivo</strong>
           <div class="estenopo-intro-tags">
             <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
+            <button type="button" onclick="window.askEstenopoTag('#paisaje', event)" class="estenopo-tag-badge">#paisaje</button>
             <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
             <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">#intimidad</button>
-            <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">#marina</button>
+            <button type="button" onclick="window.askEstenopoTag('#documental', event)" class="estenopo-tag-badge">#documental</button>
             <button type="button" onclick="window.askEstenopoTag('#nocturna', event)" class="estenopo-tag-badge">#nocturna</button>
-            <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">#viaje</button>
           </div>
         </div>
       </div>
