@@ -1634,10 +1634,28 @@ function renderGenericArticle(body, entry) {
   body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
 }
 
-async function openModal(card) {
-  const rawId = decodeURIComponent(card.dataset.id || '');
-  const source = card.dataset.source;
-  incrementReadCount(source);
+async function openModal(cardOrEntry, directSource) {
+  let rawId = '';
+  let source = directSource || '';
+  let entry = null;
+
+  if (cardOrEntry && typeof cardOrEntry === 'object' && !(cardOrEntry instanceof HTMLElement)) {
+    entry = cardOrEntry;
+    rawId = String(entry._id || entry.id || entry.link || entry.url || '');
+    source = entry.source || entry._source || source;
+  } else if (cardOrEntry instanceof HTMLElement) {
+    rawId = decodeURIComponent(cardOrEntry.dataset.id || '');
+    source = cardOrEntry.dataset.source || '';
+    const cardTitle = cardOrEntry.querySelector('.card-title a')?.textContent?.trim() || '';
+    entry = window.__allEntries?.find(e => 
+      (e._id != null && String(e._id) === rawId) || 
+      (e.link && String(e.link) === rawId) ||
+      (String(e._id || e.link) === rawId) ||
+      (cardTitle && e.title && e.title.trim() === cardTitle)
+    );
+  }
+
+  if (source) incrementReadCount(source);
   const body = document.getElementById('modal-body');
   body.innerHTML = '<div class="modal-loading">cargando…</div>';
   document.getElementById('modal').classList.remove('hide');
@@ -1645,21 +1663,11 @@ async function openModal(card) {
 
   if (source === 'podcast') {
     document.getElementById('modal').classList.add('hide');
-    const entry = window.__allEntries?.find(e => String(e._id) === rawId || e.link === rawId);
     if (entry) playPodcastInBar(entry);
     return;
   }
 
   playClickOpen();
-
-  // Buscar el artículo de forma robusta por _id, por link o por título exacto
-  const cardTitle = card.querySelector('.card-title a')?.textContent?.trim() || '';
-  const entry = window.__allEntries?.find(e => 
-    (e._id != null && String(e._id) === rawId) || 
-    (e.link && String(e.link) === rawId) ||
-    (String(e._id || e.link) === rawId) ||
-    (cardTitle && e.title && e.title.trim() === cardTitle)
-  );
 
   if (!entry) {
     body.innerHTML = `
@@ -2251,3 +2259,31 @@ function closePlayerBar() {
   }, { passive: true });
 })();
 // ─────────────────────────────────────────────────────────────────────────────
+
+window.openArticleModal = function(entry) {
+  if (!entry) return;
+  openModal(entry, entry._source || entry.source);
+};
+
+window.openArticleModalById = function(idOrLink, source) {
+  const all = window.__allEntries || [];
+  const targetId = String(idOrLink || '');
+  const entry = all.find(e => 
+    String(e._id) === targetId || 
+    String(e.id) === targetId || 
+    e.link === targetId || 
+    (e.url && e.url === targetId)
+  ) || { _id: targetId, link: targetId, _source: source, source: source, title: 'Artículo' };
+  openModal(entry, source);
+};
+
+window.playPodcastByUrl = function(url, podcastEntry) {
+  const entries = window.__podcastEntries || [];
+  const entry = podcastEntry || entries.find(x => x.link === url || x.url === url) || { link: url, url: url, title: 'Podcast' };
+  const audio = getSharedPodcastAudio(url, entry);
+  if (audio) {
+    audio.play().catch(() => {});
+  }
+  selectHeroPodcastEntry(entry);
+};
+

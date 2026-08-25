@@ -1,14 +1,16 @@
 /**
  * chat.js — Asistente de Inteligencia Curatorial, Linaje Visual y Buscador Conceptual
- * para la plataforma 'Punto de vista'.
+ * Diseño estilo Gemini Chat (Panel inferior de media pantalla con tarjetas visuales e interactividad).
  */
 
 (function () {
   let archiveData = null;
   let isFetchingArchive = false;
   let isOpen = false;
+  let isExpanded = false;
 
   const SUGGESTIONS = [
+    '🌅 Atardeceres junto al agua y luces doradas',
     '✨ Disparador Creativo para hoy',
     '🧬 Linaje de la soledad urbana y suburbios',
     '🌙 Atmósfera nocturna, misterio y sombras',
@@ -17,15 +19,19 @@
     '🌐 Ver Dossier Semanal de Tendencias'
   ];
 
-  // Diccionario de afinidades semánticas y expansión conceptual
+  // Diccionario semántico ampliado para fallback estático
   const CONCEPT_MAP = {
+    'agua': ['mar', 'playa', 'océano', 'costa', 'río', 'lago', 'olas', 'surf', 'water', 'beach', 'sea', 'ocean'],
+    'atardecer': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'anochecer', 'sol', 'cielo'],
+    'atardeceres': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'mar', 'agua', 'sol'],
+    'mar': ['agua', 'playa', 'costa', 'océano', 'surf', 'litoral', 'puerto'],
     'nostalgia': ['memoria', 'pasado', 'analógico', 'tiempo', 'grano', 'melancolía', 'recuerdo', 'archivo', 'infancia'],
     'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'individual', 'distancia', 'quietud'],
     'urbano': ['calle', 'ciudad', 'arquitectura', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto'],
     'calle': ['street', 'urbano', 'espontáneo', 'peatones', 'calles', 'instantánea', 'cándido'],
     'luz': ['claroscuro', 'crepúsculo', 'sombra', 'neón', 'contraste', 'atardecer', 'reflejos', 'iluminación'],
     'noche': ['nocturna', 'neón', 'oscuridad', 'sombras', 'luces', 'madrugada', 'misterio'],
-    'analógico': ['película', '35mm', 'formato medio', 'grano', 'emulsión', 'química', 'lomography', 'pinhole', 'estenopeica'],
+    'analógico': ['película', '35mm', 'formato medio', 'grano', 'emulsión', 'química', 'lomography', 'pinhole', 'estenopeica', 'nikkor', 'leica'],
     'cuerpo': ['retrato', 'identidad', 'piel', 'gesto', 'figura', 'desnudo', 'autorretrato'],
     'duelo': ['pérdida', 'ausencia', 'memoria', 'familia', 'despedida', 'casa', 'silencio', 'recuerdo'],
     'paisaje': ['naturaleza', 'horizonte', 'territorio', 'árboles', 'mar', 'montaña', 'vacío', 'rural'],
@@ -39,37 +45,61 @@
     widget.id = 'chat-widget';
     widget.innerHTML = `
       <!-- Botón Flotante -->
-      <button id="chat-trigger-btn" aria-label="Abrir asistente de inteligencia visual" title="Consultar inteligencia del archivo fotográfico">
-        <span class="chat-btn-icon">👁️</span>
+      <button id="chat-trigger-btn" aria-label="Abrir Inteligencia Visual" title="Consultar inteligencia del archivo fotográfico">
+        <span class="chat-btn-sparkle">✨</span>
         <span class="chat-btn-text">Inteligencia Visual</span>
       </button>
 
-      <!-- Panel / Ventana de Chat -->
-      <div id="chat-drawer" class="hide" role="dialog" aria-modal="true" aria-label="Asistente Fotográfico de Punto de vista">
+      <!-- Panel Inferior Estilo Gemini Chat (Media Pantalla) -->
+      <div id="chat-drawer" class="hide" role="dialog" aria-modal="true" aria-label="Gemini · Inteligencia Visual">
+        
+        <!-- Barra de arrastre / Handle superior -->
+        <div class="chat-drag-handle" title="Arrastrar o cambiar tamaño"></div>
+
+        <!-- Cabecera Gemini -->
         <div class="chat-header">
-          <div class="chat-header-info">
-            <div class="chat-title"><span class="chat-dot"></span> Punto de vista · Inteligencia Visual</div>
-            <div class="chat-subtitle">Buscador Conceptual, Linajes & Disparadores Creativos</div>
+          <div class="chat-header-left">
+            <div class="gemini-badge-glow">✨ Gemini</div>
+            <div class="chat-header-info">
+              <div class="chat-title">Inteligencia Visual & Curaduría</div>
+              <div class="chat-subtitle">Buscador Conceptual · 860+ Obras · Linajes & Podcasts</div>
+            </div>
           </div>
-          <button id="chat-close-btn" aria-label="Cerrar ventana">✕</button>
+          <div class="chat-header-actions">
+            <button id="chat-clear-btn" class="chat-tool-btn" title="Limpiar conversación">🗑️</button>
+            <button id="chat-expand-btn" class="chat-tool-btn" title="Expandir/Reducir ventana">⛶</button>
+            <button id="chat-close-btn" class="chat-tool-btn" title="Cerrar panel">✕</button>
+          </div>
         </div>
 
+        <!-- Sugerencias de consulta tipo Chips Horizontales -->
+        <div class="chat-chips-scroll" id="chat-chips">
+          ${SUGGESTIONS.map(s => `<button class="gemini-chip" type="button">${s}</button>`).join('')}
+        </div>
+
+        <!-- Zona de Mensajes del Chat -->
         <div class="chat-messages" id="chat-messages">
           <div class="chat-msg bot">
-            <div class="msg-avatar">📸</div>
+            <div class="msg-avatar-gemini">✨</div>
             <div class="msg-content">
-              <p><strong>Bienvenido al Observatorio de Punto de vista.</strong></p>
-              <p>No soy un buscador de texto corriente. Puedo cruzar <strong>linajes visuales</strong> entre revistas de distintas épocas, buscar por <strong>atmósferas o conceptos</strong> y proponerte <strong>disparadores creativos</strong> con tu cámara.</p>
-              <div class="chat-chips" id="chat-chips">
-                ${SUGGESTIONS.map(s => `<button class="chat-chip" type="button">${s}</button>`).join('')}
-              </div>
+              <p class="gemini-greeting"><strong>Hola. Soy el asistente de Inteligencia Visual de <em>Punto de vista</em>.</strong></p>
+              <p>Exploro las conexiones conceptuales, estéticas y técnicas a través de los <strong>867 artículos y 22 podcasts</strong> del archivo histórico.</p>
+              <p style="margin-top:0.4rem;font-size:0.85rem;color:#cbd5e1;">Pídeme encontrar proyectos por <strong>atmósferas</strong> (<em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em>), descubrir <strong>linajes entre fotógrafos</strong> o un <strong>disparador creativo</strong> para salir hoy a hacer fotos.</p>
             </div>
           </div>
         </div>
 
-        <form class="chat-input-row" id="chat-form">
-          <input type="text" id="chat-input" placeholder="Busca por concepto, atmósfera o pide un disparador…" autocomplete="off" aria-label="Tu consulta">
-          <button type="submit" id="chat-send-btn" aria-label="Enviar">➤</button>
+        <!-- Barra de Input Flotante Estilo Gemini -->
+        <form class="gemini-input-container" id="chat-form">
+          <div class="gemini-input-wrapper">
+            <span class="gemini-input-icon">✨</span>
+            <input type="text" id="chat-input" placeholder="Pregunta sobre una atmósfera, autor, concepto o técnica…" autocomplete="off" aria-label="Escribe tu consulta">
+            <button type="submit" id="chat-send-btn" aria-label="Enviar consulta">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
         </form>
       </div>
     `;
@@ -78,10 +108,12 @@
 
     document.getElementById('chat-trigger-btn').addEventListener('click', toggleChat);
     document.getElementById('chat-close-btn').addEventListener('click', toggleChat);
+    document.getElementById('chat-expand-btn').addEventListener('click', toggleExpand);
+    document.getElementById('chat-clear-btn').addEventListener('click', clearChat);
     document.getElementById('chat-form').addEventListener('submit', handleUserSubmit);
 
     document.getElementById('chat-chips').addEventListener('click', (e) => {
-      const chip = e.target.closest('.chat-chip');
+      const chip = e.target.closest('.gemini-chip');
       if (chip) {
         const text = chip.textContent.replace(/^[^\wáéíóúÁÉÍÓÚñÑ]+/, '').trim();
         document.getElementById('chat-input').value = text;
@@ -96,12 +128,16 @@
     if (archiveData || isFetchingArchive) return;
     isFetchingArchive = true;
     try {
-      const resp = await fetch('archive_index.json');
-      if (resp.ok) {
-        archiveData = await resp.json();
+      if (window.__allEntries && window.__allEntries.length > 0) {
+        archiveData = { articles: window.__allEntries, podcasts: window.__podcastEntries || [] };
+      } else {
+        const resp = await fetch('feeds.json');
+        if (resp.ok) {
+          const d = await resp.json();
+          archiveData = { articles: d.items || [], podcasts: [] };
+        }
       }
     } catch (e) {
-      console.warn('No se pudo cargar archive_index.json:', e);
     } finally {
       isFetchingArchive = false;
     }
@@ -118,8 +154,31 @@
 
     if (isOpen) {
       preloadArchive();
-      setTimeout(() => document.getElementById('chat-input')?.focus(), 100);
+      setTimeout(() => document.getElementById('chat-input')?.focus(), 150);
     }
+  }
+
+  function toggleExpand() {
+    isExpanded = !isExpanded;
+    const drawer = document.getElementById('chat-drawer');
+    const expandBtn = document.getElementById('chat-expand-btn');
+    if (!drawer) return;
+    drawer.classList.toggle('expanded', isExpanded);
+    if (expandBtn) expandBtn.textContent = isExpanded ? '⇣' : '⛶';
+  }
+
+  function clearChat() {
+    const container = document.getElementById('chat-messages');
+    if (!container) return;
+    container.innerHTML = `
+      <div class="chat-msg bot">
+        <div class="msg-avatar-gemini">✨</div>
+        <div class="msg-content">
+          <p><strong>Conversación reiniciada.</strong></p>
+          <p style="color:#cbd5e1;font-size:0.85rem;">¿Qué concepto visual o proyecto fotográfico te gustaría explorar ahora?</p>
+        </div>
+      </div>
+    `;
   }
 
   function addMessage(sender, htmlContent) {
@@ -128,10 +187,12 @@
 
     const row = document.createElement('div');
     row.className = `chat-msg ${sender}`;
-    const avatar = sender === 'bot' ? '📸' : '👤';
+    const avatar = sender === 'bot' 
+      ? '<div class="msg-avatar-gemini">✨</div>' 
+      : '<div class="msg-avatar-user">👤</div>';
 
     row.innerHTML = `
-      <div class="msg-avatar">${avatar}</div>
+      ${avatar}
       <div class="msg-content">${htmlContent}</div>
     `;
 
@@ -144,7 +205,7 @@
   async function queryArchiveSemantic(query) {
     // 1. Intentar consultar el motor vectorial real en el backend (/api/search)
     try {
-      const resp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=hybrid&limit=10`);
+      const resp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=hybrid&limit=8`);
       if (resp.ok) {
         const data = await resp.json();
         if (data.status === 'ok' && data.items && data.items.length > 0) {
@@ -152,12 +213,13 @@
             id: item.id,
             title: item.title,
             photographer: item.photographer,
-            source: item.source,
+            source: item.source || item._source || '',
             url: item.url || item.link,
             published_date: item.published_date || item.date,
-            summary: item.summary,
+            summary: item.summary || item.excerpt || '',
+            image: item.image_url || item.thumbnail || item.image || '',
             score: item.score || 10,
-            rank_type: item.rank_type || 'vectorial (sqlite-vec + Gemini)'
+            rank_type: 'Vectorial (sqlite-vec + Gemini)'
           }));
 
           let podcasts = [];
@@ -166,7 +228,14 @@
             if (podResp.ok) {
               const podData = await podResp.json();
               if (podData.status === 'ok' && podData.items) {
-                podcasts = podData.items;
+                podcasts = podData.items.map(p => ({
+                  id: p.id,
+                  title: p.title,
+                  date: p.date,
+                  description: p.description,
+                  duration: p.duration,
+                  audio_url: p.audio_url || p.link
+                }));
               }
             }
           } catch {}
@@ -174,20 +243,21 @@
           return {
             articles,
             podcasts,
-            expandedTerms: [],
             mode: 'vectorial_real'
           };
         }
       }
     } catch {}
 
-    // 2. Fallback estático (para navegación offline o GitHub Pages estático)
-    if (!archiveData) return { articles: [], podcasts: [], expandedTerms: [], mode: 'fallback' };
+    // 2. Fallback enriquecido sobre todos los artículos cargados
+    const dataset = (window.__allEntries && window.__allEntries.length > 0) 
+      ? window.__allEntries 
+      : (archiveData?.articles || []);
 
     const rawTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
     const expandedTerms = new Set(rawTerms);
 
-    // Expandir términos con el diccionario semántico
+    // Expandir con el mapa semántico
     rawTerms.forEach(t => {
       for (const [key, synonyms] of Object.entries(CONCEPT_MAP)) {
         if (t.includes(key) || key.includes(t)) {
@@ -198,51 +268,61 @@
 
     const termsArray = Array.from(expandedTerms);
 
-    const scoredArticles = (archiveData.articles || []).map(a => {
+    const scoredArticles = dataset.map(a => {
       let score = 0;
       const title = (a.title || '').toLowerCase();
       const photo = (a.photographer || '').toLowerCase();
-      const summary = (a.summary || '').toLowerCase();
-      const src = (a.source || '').toLowerCase();
+      const summary = (a.summary || a.excerpt || a.content || '').toLowerCase();
+      const src = (a._source || a.source || '').toLowerCase();
 
       rawTerms.forEach(t => {
-        if (title.includes(t)) score += 15;
-        if (photo.includes(t)) score += 12;
-        if (summary.includes(t)) score += 6;
-        if (src.includes(t)) score += 4;
+        if (title.includes(t)) score += 20;
+        if (photo.includes(t)) score += 15;
+        if (summary.includes(t)) score += 8;
+        if (src.includes(t)) score += 5;
       });
 
-      // Puntuación por afinidad semántica expandida
       termsArray.forEach(t => {
-        if (title.includes(t)) score += 4;
-        if (summary.includes(t)) score += 2;
+        if (title.includes(t)) score += 6;
+        if (summary.includes(t)) score += 3;
       });
 
-      return { ...a, score };
+      return {
+        id: a._id || a.id || a.link,
+        title: a.title,
+        photographer: a.photographer,
+        source: a._source || a.source,
+        url: a.link || a.url,
+        published_date: a.date || a._parsedDate,
+        summary: a.summary || a.excerpt || '',
+        image: a.image || a.thumbnail || '',
+        score,
+        rank_type: 'Semántica Heurística'
+      };
     }).filter(a => a.score > 0).sort((a, b) => b.score - a.score);
 
-    const scoredPodcasts = (archiveData.podcasts || []).map(p => {
+    const podcastsDataset = window.__podcastEntries || archiveData?.podcasts || [];
+    const scoredPodcasts = podcastsDataset.map(p => {
       let score = 0;
-      const title = (p.title || '').toLowerCase();
+      const title = (p.title || p.podcast_title || '').toLowerCase();
       const desc = (p.description || '').toLowerCase();
 
       rawTerms.forEach(t => {
-        if (title.includes(t)) score += 12;
-        if (desc.includes(t)) score += 6;
+        if (title.includes(t)) score += 15;
+        if (desc.includes(t)) score += 8;
       });
 
       termsArray.forEach(t => {
-        if (title.includes(t)) score += 3;
-        if (desc.includes(t)) score += 2;
+        if (title.includes(t)) score += 5;
+        if (desc.includes(t)) score += 3;
       });
 
       return { ...p, score };
     }).filter(p => p.score > 0).sort((a, b) => b.score - a.score);
 
     return {
-      articles: scoredArticles.slice(0, 6),
+      articles: scoredArticles.slice(0, 8),
       podcasts: scoredPodcasts.slice(0, 3),
-      expandedTerms: termsArray,
       mode: 'fallback'
     };
   }
@@ -253,19 +333,21 @@
 
     // 1. Caso especial: Disparador Creativo
     if (qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
-      const topArt = articles[0] || (archiveData?.articles ? archiveData.articles[Math.floor(Math.random() * archiveData.articles.length)] : null);
+      const topArt = articles[0] || (window.__allEntries ? window.__allEntries[Math.floor(Math.random() * window.__allEntries.length)] : null);
       const title = topArt ? topArt.title : 'Geometría y Sombra en lo Cotidiano';
       const author = topArt?.photographer ? ` (${topArt.photographer})` : '';
 
       return `
-        <div class="chat-prompt-card">
-          <div class="chat-badge-prompt">✨ Disparador Creativo del Momento</div>
-          <h4 style="margin:0.4rem 0;color:#fff;font-size:1.05rem;">Reto: El Espacio que No Ocupamos</h4>
-          <p><em>Inspirado en el trabajo de «${title}»${author} en el archivo:</em></p>
-          <p style="margin-top:0.5rem;color:#e2e8f0;font-size:0.95rem;">
-            <strong>Tu ejercicio hoy:</strong> Encuentra un rincón de tu casa o de tu calle que veas todos los días y nunca hayas fotografiado. Espera a que la luz incida oblicua (al amanecer o al atardecer). Encuadra de tal manera que el espacio vacío o la sombra ocupe más del 70% del plano. Subexpón 1 punto para forzar el misterio.
+        <div class="gemini-response-box">
+          <div class="gemini-badge-sparkle">✨ Disparador Creativo del Día</div>
+          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.1rem;font-family:'Playfair Display',serif;">Reto: El Espacio que No Ocupamos</h4>
+          <p style="color:#cbd5e1;font-size:0.92rem;line-height:1.5;">
+            Inspirado en el lenguaje visual de <strong>«${escapeHtml(title)}»</strong>${author}:
           </p>
-          <p style="font-size:0.8rem;opacity:0.75;margin-top:0.6rem;">💡 <em>¿Quieres otro disparador enfocado en retrato, arquitectura o película analógica?</em></p>
+          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.8rem;margin:0.8rem 0;border-radius:4px;color:#f8fafc;font-size:0.92rem;">
+            <strong>Tu ejercicio hoy:</strong> Encuentra un rincón cotidiano donde la luz incida oblicua (al amanecer o al atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.
+          </div>
+          <p style="font-size:0.8rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Te apetece otro disparador enfocado en retrato callejero o formato analógico?</em></p>
         </div>
       `;
     }
@@ -273,72 +355,128 @@
     // 2. Caso especial: Dossier de Tendencias
     if (qLower.includes('dossier') || qLower.includes('tendencia') || qLower.includes('informe') || qLower.includes('observatorio')) {
       return `
-        <div class="chat-prompt-card">
-          <div class="chat-badge-prompt">🌐 Observatorio de Tendencias</div>
-          <h4 style="margin:0.4rem 0;color:#fff;">Dossier Semanal de Inteligencia Curatorial</h4>
-          <p>Hemos analizado el pulso de más de 400 proyectos fotográficos en 18 revistas internacionales:</p>
-          <ul style="margin:0.5rem 0 0.8rem 1.2rem;font-size:0.9rem;color:#cbd5e1;">
-            <li><strong>Tendencia 1:</strong> El Espacio Doméstico como Escenario Psicológico y Duelo.</li>
-            <li><strong>Tendencia 2:</strong> Arqueología de la Resistencia y Subculturas en Peligro.</li>
-            <li><strong>Tendencia 3:</strong> La Imperfección Radical y Lentes de Carácter contra la Hipernitidez Sintética.</li>
+        <div class="gemini-response-box">
+          <div class="gemini-badge-sparkle">🌐 Observatorio de Tendencias</div>
+          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.05rem;">Dossier Semanal de Inteligencia Curatorial</h4>
+          <p style="color:#cbd5e1;font-size:0.9rem;">Hemos analizado el pulso de más de 850 proyectos fotográficos:</p>
+          <ul style="margin:0.5rem 0 0.8rem 1.2rem;font-size:0.88rem;color:#cbd5e1;line-height:1.5;">
+            <li><strong>Tendencia 1:</strong> El Espacio Doméstico como Escenario Psicológico.</li>
+            <li><strong>Tendencia 2:</strong> Arqueología Visual de Subculturas y Comunidades.</li>
+            <li><strong>Tendencia 3:</strong> La Imperfección Analógica frente a la Hipernitidez Sintética.</li>
           </ul>
-          <p style="margin-top:0.5rem;">
-            <a href="resumenes/tendencias-2026-W35.html" target="_blank" style="color:#ff4444;font-weight:600;text-decoration:underline;">Leer Dossier Completo de Tendencias →</a>
+          <p style="margin-top:0.6rem;">
+            <a href="resumenes/tendencias-2026-W35.html" target="_blank" class="gemini-btn-primary">Leer Dossier Completo →</a>
           </p>
         </div>
       `;
     }
 
-    // 3. Caso Linaje Visual / Búsqueda Conceptual
+    // 3. Respuesta Curatorial para búsqueda conceptual
     if (!articles.length && !podcasts.length) {
       return `
-        <p>No encontré resonancias exactas para <em>«${query}»</em> en el archivo.</p>
-        <p>💡 <em>Prueba preguntando por conceptos como:</em> <strong>soledad</strong>, <strong>grano analógico</strong>, <strong>nocturna</strong>, <strong>suburbia</strong>, <strong>arquitectura</strong> o nombres como <strong>Magnum</strong>, <strong>LensCulture</strong> o <strong>Ishmael Claxton</strong>.</p>
-      `;
-    }
-
-    let out = `<p>He localizado estas resonancias conceptuales para <strong>«${query}»</strong> en el archivo:</p>`;
-
-    if (articles.length >= 2) {
-      out += `
-        <div class="chat-lineage-box" style="background:rgba(255,51,51,0.08);border-left:3px solid #ff3333;padding:0.6rem 0.8rem;margin:0.6rem 0;border-radius:4px;">
-          <strong style="color:#ff6666;font-size:0.85rem;">🧬 LINAJE VISUAL DETECTADO:</strong>
-          <p style="font-size:0.88rem;margin-top:0.3rem;color:#f0f6fc;">
-            Existe un diálogo directo entre <strong>«${articles[0].title}»</strong> (${articles[0].source.toUpperCase()}) y <strong>«${articles[1].title}»</strong> (${articles[1].source.toUpperCase()}) al abordar este concepto desde diferentes lenguajes visuales.
+        <div class="gemini-response-box">
+          <p>No encontré obras que resuenen directamente con <em>«${escapeHtml(query)}»</em> en el archivo.</p>
+          <p style="margin-top:0.5rem;font-size:0.88rem;color:#94a3b8;">
+            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o medios como <strong>Magnum</strong> o <strong>35mmc</strong>.
           </p>
         </div>
       `;
     }
 
+    let out = `
+      <div class="gemini-response-box">
+        <p style="color:#e2e8f0;font-size:0.95rem;line-height:1.5;">
+          He analizado el archivo y seleccionado estas resonancias para <strong>«${escapeHtml(query)}»</strong>:
+        </p>
+    `;
+
+    // Linaje si hay múltiples artículos
+    if (articles.length >= 2) {
+      const a1 = articles[0];
+      const a2 = articles[1];
+      out += `
+        <div class="gemini-lineage-banner">
+          <div class="gemini-lineage-title">🧬 Linaje Visual Detectado</div>
+          <div class="gemini-lineage-desc">
+            Existe un diálogo estético notable entre <strong>«${escapeHtml(a1.title)}»</strong> (${(a1.source || '').toUpperCase()}) y <strong>«${escapeHtml(a2.title)}»</strong> (${(a2.source || '').toUpperCase()}) al abordar la atmósfera desde miradas complementarias.
+          </div>
+        </div>
+      `;
+    }
+
+    // Grid de Tarjetas Visuales de Artículos
     if (articles.length > 0) {
-      out += `<div class="chat-results-section"><span class="chat-sec-badge">📄 Obras y Ensayos Resonantes</span>`;
+      out += `
+        <div class="gemini-section-header">
+          <span>📸 Obras & Ensayos Seleccionados (${articles.length})</span>
+        </div>
+        <div class="gemini-cards-grid">
+      `;
+
       articles.forEach(a => {
-        const photo = a.photographer ? ` · <em>${a.photographer}</em>` : '';
+        const photo = a.photographer ? ` · <em>${escapeHtml(a.photographer)}</em>` : '';
+        const thumb = a.image ? `<img src="${a.image}" alt="" class="gemini-card-thumb" loading="lazy" onerror="this.style.display='none'">` : '';
+        const sourceName = (a.source || 'ARCHIVO').toUpperCase();
+        const articleId = escapeHtml(String(a.id || a.url));
+        const sourceSafe = escapeHtml(String(a.source || ''));
+
         out += `
-          <div class="chat-result-card article">
-            <div class="chat-card-source">${a.source?.toUpperCase()}${photo} · ${a.published_date || ''}</div>
-            <div class="chat-card-title"><a href="${a.url}" target="_blank" rel="noopener noreferrer">${a.title} ↗</a></div>
-            <div class="chat-card-desc">${(a.summary || '').slice(0, 180)}…</div>
+          <div class="gemini-card">
+            ${thumb}
+            <div class="gemini-card-body">
+              <div class="gemini-card-badge">${sourceName}${photo}</div>
+              <h5 class="gemini-card-title">${escapeHtml(a.title)}</h5>
+              <p class="gemini-card-snippet">${escapeHtml((a.summary || '').slice(0, 140))}…</p>
+              <div class="gemini-card-actions">
+                <button class="gemini-card-btn view-btn" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo con galería">
+                  👁️ Abrir en Lector
+                </button>
+                <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="gemini-card-btn ext-btn" title="Ir al sitio original">
+                  Original ↗
+                </a>
+              </div>
+            </div>
           </div>
         `;
       });
+
       out += `</div>`;
     }
 
+    // Podcasts Vinculados
     if (podcasts.length > 0) {
-      out += `<div class="chat-results-section"><span class="chat-sec-badge">🎙️ Episodios Vinculados</span>`;
+      out += `
+        <div class="gemini-section-header" style="margin-top:1.2rem">
+          <span>🎙️ Episodios del Podcast Relacionados</span>
+        </div>
+        <div class="gemini-podcasts-list">
+      `;
+
       podcasts.forEach(p => {
+        const durationMin = p.duration ? `${Math.floor(p.duration / 60)} min` : '';
+        const dateStr = p.date || '';
+        const audioUrl = p.audio_url || p.link || '';
+
         out += `
-          <div class="chat-result-card podcast">
-            <div class="chat-card-title"><a href="episodios.html" target="_blank">${p.title || 'Resumen Diario'}</a></div>
-            <div class="chat-card-meta">Fecha: ${p.date} · ${Math.floor((p.duration || 0)/60)} min</div>
-            <div class="chat-card-desc">${(p.description || '').slice(0, 160)}…</div>
+          <div class="gemini-podcast-card">
+            <div class="gemini-podcast-icon">🎙️</div>
+            <div class="gemini-podcast-content">
+              <div class="gemini-podcast-title">${escapeHtml(p.title || 'Resumen Diario')}</div>
+              <div class="gemini-podcast-meta">Fecha: ${dateStr} ${durationMin ? `· ${durationMin}` : ''}</div>
+              <div class="gemini-podcast-desc">${escapeHtml((p.description || '').slice(0, 150))}…</div>
+              <div class="gemini-podcast-actions">
+                ${audioUrl ? `<button class="gemini-pod-btn play" onclick="window.playPodcastByUrl('${audioUrl}')">▶ Reproducir Episodio</button>` : ''}
+                <a href="episodios.html" target="_blank" class="gemini-pod-btn">Ver Todos →</a>
+              </div>
+            </div>
           </div>
         `;
       });
+
       out += `</div>`;
     }
 
+    out += `</div>`;
     return out;
   }
 
@@ -351,19 +489,30 @@
     input.value = '';
     addMessage('user', `<p>${escapeHtml(q)}</p>`);
 
-    if (!archiveData) {
-      const loading = addMessage('bot', '<p class="chat-typing"><span>●</span><span>●</span><span>●</span> Analizando mapa conceptual del archivo…</p>');
-      await preloadArchive();
-      loading.remove();
-    }
+    const loading = addMessage('bot', `
+      <div class="gemini-typing-indicator">
+        <span class="sparkle-spin">✨</span> Consultando archivo vectorial y cruzando linajes…
+      </div>
+    `);
 
-    const results = await queryArchiveSemantic(q);
-    const responseHtml = generateAssistantResponse(q, results);
-    addMessage('bot', responseHtml);
+    try {
+      const results = await queryArchiveSemantic(q);
+      loading.remove();
+      const responseHtml = generateAssistantResponse(q, results);
+      addMessage('bot', responseHtml);
+    } catch (err) {
+      loading.remove();
+      addMessage('bot', `<p style="color:#ef4444">Ocurrió un error al procesar tu consulta. Inténtalo de nuevo.</p>`);
+    }
   }
 
   function escapeHtml(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
   if (document.readyState === 'loading') {
@@ -372,3 +521,4 @@
     injectChatUI();
   }
 })();
+
