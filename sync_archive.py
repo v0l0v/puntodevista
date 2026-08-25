@@ -155,12 +155,12 @@ def main():
 
 
 def export_full_feeds_json():
-    """Exporta todos los artículos consolidados de archive.db a feeds.json."""
+    """Exporta todos los artículos consolidados de archive.db a feeds.json incluyendo sus etiquetas."""
     with get_connection() as conn:
         rows = conn.execute("""
             SELECT id, url as link, source as _source, title, photographer,
                    published_date as date, summary as excerpt, summary as content,
-                   image_url as image, image_url as thumbnail
+                   image_url as image, image_url as thumbnail, tags
             FROM articles
             ORDER BY published_date DESC, id DESC
         """).fetchall()
@@ -168,11 +168,19 @@ def export_full_feeds_json():
         for item in items:
             item['_id'] = str(item['id'])
             item['_parsedDate'] = item['date']
+            raw_tags = item.get('tags')
+            if isinstance(raw_tags, str):
+                try:
+                    item['tags'] = json.loads(raw_tags)
+                except Exception:
+                    item['tags'] = []
+            elif not isinstance(raw_tags, list):
+                item['tags'] = []
 
         feeds_path = os.path.join(DIR, 'feeds.json')
         with open(feeds_path, 'w', encoding='utf-8') as f:
             json.dump({'items': items, 'count': len(items), 'updated': json_files_date()}, f, ensure_ascii=False)
-        print(f"   ✓ feeds.json generado con éxito conteniendo {len(items)} artículos históricos.")
+        print(f"   ✓ feeds.json generado con éxito conteniendo {len(items)} artículos históricos con etiquetas.")
 
 
 def json_files_date():

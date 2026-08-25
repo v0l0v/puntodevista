@@ -295,6 +295,12 @@
         if (matchWordInText(rawSummary, t)) score += 3;
       });
 
+      let aTags = [];
+      if (Array.isArray(a.tags)) aTags = a.tags;
+      else if (typeof a.tags === 'string') {
+        try { aTags = JSON.parse(a.tags); } catch { aTags = []; }
+      }
+
       return {
         id: a._id || a.id || a.link,
         title: rawTitle,
@@ -304,6 +310,7 @@
         published_date: a.date || a._parsedDate,
         summary: rawSummary,
         image: a.image || a.thumbnail || '',
+        tags: aTags,
         score,
         rank_type: 'Semántica Heurística'
       };
@@ -348,6 +355,17 @@
       const sourceName = topArt ? escapeHtml(String(topArt.source || topArt._source || 'ARCHIVO').toUpperCase()) : 'ARCHIVO';
       const url = topArt?.url || topArt?.link || '#';
       const photo = topArt?.photographer ? escapeHtml(topArt.photographer) : '';
+
+      let topTags = [];
+      if (topArt) {
+        if (Array.isArray(topArt.tags)) topTags = topArt.tags;
+        else if (typeof topArt.tags === 'string') {
+          try { topTags = JSON.parse(topArt.tags); } catch { topTags = []; }
+        }
+      }
+      const topTagsHtml = topTags.length > 0
+        ? `<div class="estenopo-tags-row">${topTags.map(t => `<button type="button" class="estenopo-tag-badge" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
+        : '';
 
       // Generar reto contextual analizando la intención del usuario y la obra de referencia
       const tLow = title.toLowerCase();
@@ -394,6 +412,7 @@
             <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
               ${escapeHtml(title)}
             </a>
+            ${topTagsHtml}
             <div class="estenopo-link-actions">
               <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir en Lector">
                 👁️ Abrir en Lector
@@ -435,7 +454,7 @@
         <div class="gemini-response-box">
           <p>No encontré obras que resuenen directamente con <em>«${escapeHtml(query)}»</em> en el archivo.</p>
           <p style="margin-top:0.5rem;font-size:0.85rem;color:#94a3b8;">
-            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o publicaciones como <strong>Magnum</strong> o <strong>35mmc</strong>.
+            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o etiquetas como <strong>#calle</strong> o <strong>#analógico</strong>.
           </p>
         </div>
       `;
@@ -467,7 +486,7 @@
       `;
     }
 
-    // Lista de Enlaces Sombreados para Artículos
+    // Lista de Enlaces Sombreados para Artículos con Etiquetas
     if (articles.length > 0) {
       out += `
         <div class="gemini-section-header">
@@ -481,6 +500,10 @@
         const sourceName = escapeHtml((a.source || 'ARCHIVO').toUpperCase());
         const articleId = escapeHtml(String(a.id || a.url));
         const sourceSafe = escapeHtml(String(a.source || ''));
+        const tagsList = a.tags || [];
+        const tagsHtml = tagsList.length > 0
+          ? `<div class="estenopo-tags-row">${tagsList.map(t => `<button type="button" class="estenopo-tag-badge" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
+          : '';
 
         out += `
           <div class="estenopo-link-item">
@@ -491,6 +514,7 @@
             <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
               ${escapeHtml(a.title)}
             </a>
+            ${tagsHtml}
             <div class="estenopo-link-actions">
               <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo en lector">
                 👁️ Lector
@@ -538,6 +562,18 @@
     out += `</div>`;
     return out;
   }
+
+  window.askEstenopoTag = function(tag, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const input = document.getElementById('chat-input');
+    if (input) {
+      input.value = tag;
+      handleUserSubmit(new Event('submit'));
+    }
+  };
 
   async function handleUserSubmit(e) {
     e.preventDefault();

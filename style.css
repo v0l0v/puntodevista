@@ -1662,6 +1662,31 @@ footer {
 .estenopo-link-title:hover {
   color: #ff4444;
 }
+.estenopo-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0.25rem;
+}
+.estenopo-tag-badge {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #94a3b8;
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 0.12rem 0.45rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.estenopo-tag-badge:hover {
+  background: rgba(255, 1, 0, 0.18);
+  border-color: rgba(255, 1, 0, 0.5);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
 .estenopo-link-actions {
   display: flex;
   gap: 0.4rem;
