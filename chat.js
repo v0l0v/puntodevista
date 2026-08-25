@@ -27,7 +27,7 @@
     'frank': ['frank', 'robert frank', 'the americans', 'carretera', 'viaje', 'road trip', 'subcultura', 'soledad', 'blanco y negro'],
     'arbus': ['arbus', 'diane arbus', 'retrato', 'identidad', 'cuerpo', 'subcultura', 'singularidad', 'intimidad', 'blanco y negro'],
     'linaje': ['linaje', 'linajes', 'diálogo', 'diálogos', 'conexión', 'resonancia', 'influencia', 'tradición', 'autores', 'historia', 'memoria'],
-    'suburbios': ['suburbios', 'suburbio', 'suburbia', 'suburbs', 'periferia', 'barrio', 'espacio urbano', 'soledad', 'arquitectura', 'calle'],
+    'suburbios': ['suburbios', 'suburbio', 'suburbia', 'suburbs', 'periferia', 'barrio', 'espacio urbano', 'soledad', 'calle'],
     'tren': ['tren', 'trenes', 'train', 'viaje', 'viajes', 'viajar', 'viajare', 'journey', 'tránsito', 'transit', 'estación', 'station', 'metro', 'subway', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros', 'velocidad', 'movimiento'],
     'trenes': ['tren', 'trenes', 'train', 'viaje', 'journey', 'tránsito', 'transit', 'estación', 'station', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros'],
     'viaje': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'ruta', 'desplazamiento', 'carretera', 'tren', 'estación', 'tránsito'],
@@ -38,15 +38,21 @@
     'atardeceres': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'mar', 'agua', 'sol'],
     'mar': ['agua', 'playa', 'costa', 'océano', 'surf', 'litoral', 'puerto'],
     'nostalgia': ['memoria', 'pasado', 'analógico', 'tiempo', 'grano', 'melancolía', 'recuerdo', 'archivo', 'infancia'],
-    'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'suburbios', 'individual', 'distancia', 'quietud', 'soledad'],
-    'urbano': ['calle', 'ciudad', 'arquitectura', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto', 'espacio urbano'],
+    'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'individual', 'distancia', 'quietud', 'soledad'],
+    'solitarios': ['aislamiento', 'silencio', 'vacío', 'soledad', 'solitario', 'quietud', 'distancia'],
+    'urbano': ['calle', 'ciudad', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto', 'espacio urbano'],
+    'arquitectura': ['arquitectura', 'edificios', 'estructuras', 'fachada', 'brutalismo', 'espacio', 'interior'],
     'calle': ['street', 'urbano', 'espontáneo', 'peatones', 'calles', 'instantánea', 'cándido', 'calle'],
     'luz': ['claroscuro', 'crepúsculo', 'sombra', 'neón', 'contraste', 'atardecer', 'reflejos', 'iluminación'],
     'noche': ['nocturna', 'neón', 'oscuridad', 'sombras', 'luces', 'madrugada', 'misterio'],
     'analógico': ['película', '35mm', 'formato medio', 'grano', 'emulsión', 'química', 'lomography', 'pinhole', 'estenopeica', 'nikkor', 'leica'],
     'cuerpo': ['retrato', 'identidad', 'piel', 'gesto', 'figura', 'desnudo', 'autorretrato'],
     'duelo': ['pérdida', 'ausencia', 'memoria', 'familia', 'despedida', 'casa', 'silencio', 'recuerdo'],
-    'paisaje': ['naturaleza', 'horizonte', 'territorio', 'árboles', 'mar', 'montaña', 'vacío', 'rural'],
+    'paisaje': ['paisaje', 'paisajes', 'naturaleza', 'horizonte', 'territorio', 'árboles', 'arboles', 'campo', 'campos', 'montaña', 'vacío', 'rural'],
+    'paisajes': ['paisaje', 'paisajes', 'naturaleza', 'horizonte', 'territorio', 'árboles', 'arboles', 'campo', 'campos', 'montaña', 'vacío', 'rural'],
+    'arboles': ['árboles', 'arboles', 'bosque', 'naturaleza', 'flora', 'paisaje', 'campo', 'campos', 'ramas'],
+    'árboles': ['árboles', 'arboles', 'bosque', 'naturaleza', 'flora', 'paisaje', 'campo', 'campos', 'ramas'],
+    'campos': ['campo', 'campos', 'rural', 'pradera', 'paisaje', 'naturaleza', 'tierra', 'horizonte'],
     'color': ['cromatismo', 'paleta', 'tonos', 'saturación', 'lomochrome', 'blanco y negro', 'monocromo']
   };
 
@@ -326,8 +332,9 @@
 
     // Expandir con el mapa semántico
     rawTerms.forEach(t => {
+      const cleanT = t.replace(/^#/, '');
       for (const [key, synonyms] of Object.entries(CONCEPT_MAP)) {
-        if (t === key || key.includes(t)) {
+        if (cleanT === key || key === cleanT + 's' || cleanT === key + 's') {
           synonyms.forEach(s => expandedTerms.add(s.toLowerCase()));
         }
       }
