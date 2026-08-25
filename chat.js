@@ -332,20 +332,57 @@
     // 1. Caso especial: Disparador Creativo
     if (qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
       const topArt = articles[0] || (window.__allEntries ? window.__allEntries[Math.floor(Math.random() * window.__allEntries.length)] : null);
-      const title = topArt ? topArt.title : 'Geometría y Sombra en lo Cotidiano';
-      const author = topArt?.photographer ? ` (${topArt.photographer})` : '';
+      const title = topArt ? (topArt.title || 'Geometría y Sombra en lo Cotidiano') : 'Geometría y Sombra en lo Cotidiano';
+      const articleId = topArt ? escapeHtml(String(topArt.id || topArt._id || topArt.url || topArt.link || '')) : '';
+      const sourceSafe = topArt ? escapeHtml(String(topArt.source || topArt._source || '')) : '';
+      const sourceName = topArt ? escapeHtml(String(topArt.source || topArt._source || 'ARCHIVO').toUpperCase()) : 'ARCHIVO';
+      const url = topArt?.url || topArt?.link || '#';
+      const photo = topArt?.photographer ? escapeHtml(topArt.photographer) : '';
+
+      // Generar reto según contexto
+      const tLow = title.toLowerCase();
+      let retoTitulo = 'El Espacio que No Ocupamos';
+      let retoTexto = 'Encuentra un rincón cotidiano donde la luz incida oblicua (amanecer o atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.';
+
+      if (tLow.includes('street') || tLow.includes('calle') || tLow.includes('urban') || tLow.includes('city')) {
+        retoTitulo = 'La Coincidencia Involuntaria (Street)';
+        retoTexto = 'Sal a una calle transitada, busca un fondo con fuerte contraste geométrico o color plano y espera inmóvil a que un transeúnte complete la composición con su postura, sombra o vestimenta. Prioriza el instante decisivo.';
+      } else if (tLow.includes('portrait') || tLow.includes('retrato') || tLow.includes('body') || tLow.includes('cuerpo')) {
+        retoTitulo = 'Retrato sin Mirada';
+        retoTexto = 'Fotografía a una persona cercana sin mostrar directamente sus ojos: concéntrate en la tensión de las manos, el gesto de la espalda o la silueta contra una ventana en penumbra.';
+      } else if (tLow.includes('sea') || tLow.includes('water') || tLow.includes('mar') || tLow.includes('ocean') || tLow.includes('landscape') || tLow.includes('nature')) {
+        retoTitulo = 'Textura Líquida y Línea de Horizonte';
+        retoTexto = 'Busca agua en movimiento o niebla matutina. Reduce la velocidad de obturación a 1/8s - 1/2s para capturar el flujo sin perder la estructura geométrica del entorno.';
+      }
 
       return `
         <div class="gemini-response-box">
           <div class="gemini-badge-sparkle">📷 Disparador Creativo del Día</div>
-          <h4 style="margin:0.5rem 0;color:#fff;font-size:1.05rem;font-family:'Playfair Display',serif;">Reto: El Espacio que No Ocupamos</h4>
-          <p style="color:#cbd5e1;font-size:0.88rem;line-height:1.5;">
-            Inspirado en el lenguaje visual de <strong>«${escapeHtml(title)}»</strong>${author}:
+          <h4 style="margin:0.5rem 0 0.3rem;color:#fff;font-size:1.05rem;font-family:'Playfair Display',serif;">Reto: ${retoTitulo}</h4>
+          <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.4;margin-bottom:0.4rem;">
+            Inspirado en el lenguaje visual de esta obra del archivo:
           </p>
-          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;">
-            <strong>Tu ejercicio hoy:</strong> Encuentra un rincón cotidiano donde la luz incida oblicua (al amanecer o al atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.
+          
+          <div class="estenopo-link-item" style="margin: 0.5rem 0 0.75rem;">
+            <div class="estenopo-link-meta">
+              <span>${sourceName}</span>
+              ${photo ? `<span class="estenopo-link-author">· ${photo}</span>` : ''}
+            </div>
+            <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
+              ${escapeHtml(title)}
+            </a>
+            <div class="estenopo-link-actions">
+              <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir en Lector">
+                👁️ Abrir en Lector
+              </button>
+              ${url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a fuente original">Original ↗</a>` : ''}
+            </div>
           </div>
-          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Te apetece otro disparador enfocado en retrato callejero o formato analógico?</em></p>
+
+          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.45;">
+            <strong>Tu ejercicio hoy:</strong> ${retoTexto}
+          </div>
+          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Quieres otro disparador enfocado en formato analógico, retrato íntimo o monocromo?</em></p>
         </div>
       `;
     }
@@ -392,11 +429,16 @@
     if (articles.length >= 2) {
       const a1 = articles[0];
       const a2 = articles[1];
+      const id1 = escapeHtml(String(a1.id || a1.url));
+      const src1 = escapeHtml(String(a1.source || ''));
+      const id2 = escapeHtml(String(a2.id || a2.url));
+      const src2 = escapeHtml(String(a2.source || ''));
+
       out += `
         <div class="gemini-lineage-banner">
           <div class="gemini-lineage-title">🧬 Linaje Visual Detectado</div>
           <div class="gemini-lineage-desc">
-            Diálogo estético entre <strong>«${escapeHtml(a1.title)}»</strong> (${(a1.source || '').toUpperCase()}) y <strong>«${escapeHtml(a2.title)}»</strong> (${(a2.source || '').toUpperCase()}).
+            Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleModalById('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleModalById('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}).
           </div>
         </div>
       `;
