@@ -428,22 +428,30 @@
     };
   }
 
-  function generateAssistantResponse(query, results) {
-    const qLower = query.toLowerCase();
-    const { articles, podcasts, queryTags = [] } = results;
+  function generateAssistantResponse(query, results, mode = 'general') {
+    const qLower = String(query || '').toLowerCase();
+    const { articles = [], podcasts = [], queryTags = [] } = results || {};
+    const articlesList = Array.isArray(articles) ? articles : [];
+    const podcastsList = Array.isArray(podcasts) ? podcasts : [];
+    const queryTagsList = Array.isArray(queryTags) ? queryTags : [];
 
     // 1. Caso especial: Disparador Creativo Contextualizado
-    if (qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
-      const topArt = articles[0] || (window.__allEntries ? window.__allEntries[Math.floor(Math.random() * window.__allEntries.length)] : null);
+    if (mode === 'spark' || qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
+      const allEnts = (window.__allEntries && window.__allEntries.length > 0) ? window.__allEntries : (archiveData?.articles || []);
+      const topArt = articlesList[0] || (allEnts.length > 0 ? allEnts[Math.floor(Math.random() * allEnts.length)] : null);
       const title = topArt ? (topArt.title || 'Geometría y Sombra en lo Cotidiano') : 'Geometría y Sombra en lo Cotidiano';
       const articleId = topArt ? escapeHtml(String(topArt.id || topArt._id || topArt.url || topArt.link || '')) : '';
       const sourceSafe = topArt ? escapeHtml(String(topArt.source || topArt._source || '')) : '';
       const sourceName = topArt ? escapeHtml(String(topArt.source || topArt._source || 'ARCHIVO').toUpperCase()) : 'ARCHIVO';
       const url = topArt?.url || topArt?.link || '#';
       const photo = topArt?.photographer ? escapeHtml(topArt.photographer) : '';
-      const topTags = topArt?.tags || [];
+      const topTags = Array.isArray(topArt?.tags) ? topArt.tags : [];
       const topTagsHtml = topTags.length > 0
-        ? `<div class="estenopo-tags-row">${topTags.map(t => `<button type="button" class="estenopo-tag-badge ${queryTags.includes(t.toLowerCase()) ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
+        ? `<div class="estenopo-tags-row">${topTags.map(t => {
+            const tagStr = String(t || '');
+            const isMatched = queryTagsList.includes(tagStr.toLowerCase());
+            return `<button type="button" class="estenopo-tag-badge ${isMatched ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(tagStr)}', event)">${escapeHtml(tagStr)}</button>`;
+          }).join('')}</div>`
         : '';
 
       const tLow = (title + ' ' + (topArt?.summary || '')).toLowerCase();
@@ -527,7 +535,7 @@
     }
 
     // 3. Respuesta Curatorial para búsqueda conceptual
-    if (!articles.length && !podcasts.length) {
+    if (!articlesList.length && !podcastsList.length) {
       return `
         <div class="gemini-response-box">
           <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
@@ -545,21 +553,23 @@
       <div class="gemini-response-box">
         <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
           Resonancias seleccionadas para <strong>«${escapeHtml(query)}»</strong>
-          ${queryTags.length > 0 ? `(afinidad en ${queryTags.map(t => `<span style="color:#ff8a65;font-weight:600;">${escapeHtml(t)}</span>`).join(' ')})` : ''}:
+          ${queryTagsList.length > 0 ? `(afinidad en ${queryTagsList.map(t => `<span style="color:#ff8a65;font-weight:600;">${escapeHtml(t)}</span>`).join(' ')})` : ''}:
         </p>
     `;
 
     // Linaje si hay múltiples artículos
-    if (articles.length >= 2) {
-      const a1 = articles[0];
-      const a2 = articles[1];
+    if (articlesList.length >= 2) {
+      const a1 = articlesList[0];
+      const a2 = articlesList[1];
       const id1 = escapeHtml(String(a1.id || a1.url));
       const src1 = escapeHtml(String(a1.source || ''));
       const id2 = escapeHtml(String(a2.id || a2.url));
       const src2 = escapeHtml(String(a2.source || ''));
 
       // Etiquetas comunes entre los dos artículos
-      const commonLinajeTags = (a1.tags || []).filter(t => (a2.tags || []).includes(t));
+      const a1Tags = Array.isArray(a1.tags) ? a1.tags : [];
+      const a2Tags = Array.isArray(a2.tags) ? a2.tags : [];
+      const commonLinajeTags = a1Tags.filter(t => a2Tags.includes(t));
       const tagDesc = commonLinajeTags.length > 0
         ? `a través de ${commonLinajeTags.join(' y ')}`
         : 'por proximidad formal y temática';
@@ -575,7 +585,7 @@
     }
 
     // Lista de Enlaces Sombreados para Artículos con Etiquetas
-    if (articles.length > 0) {
+    if (articlesList.length > 0) {
       out += `
         <div class="gemini-section-header">
           <span>Obras & Ensayos Seleccionados</span>
@@ -583,16 +593,17 @@
         <div class="estenopo-links-list">
       `;
 
-      articles.forEach(a => {
+      articlesList.forEach(a => {
         const photo = a.photographer ? escapeHtml(a.photographer) : '';
         const sourceName = escapeHtml((a.source || 'ARCHIVO').toUpperCase());
         const articleId = escapeHtml(String(a.id || a.url));
         const sourceSafe = escapeHtml(String(a.source || ''));
-        const tagsList = a.tags || [];
+        const tagsList = Array.isArray(a.tags) ? a.tags : [];
         const tagsHtml = tagsList.length > 0
           ? `<div class="estenopo-tags-row">${tagsList.map(t => {
-              const isMatched = queryTags.includes(t.toLowerCase());
-              return `<button type="button" class="estenopo-tag-badge ${isMatched ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`;
+              const tagStr = String(t || '');
+              const isMatched = queryTagsList.includes(tagStr.toLowerCase());
+              return `<button type="button" class="estenopo-tag-badge ${isMatched ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(tagStr)}', event)">${escapeHtml(tagStr)}</button>`;
             }).join('')}</div>`
           : '';
 
