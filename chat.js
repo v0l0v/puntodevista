@@ -268,6 +268,52 @@
     return row;
   }
 
+  const TAXONOMY_PATTERNS = {
+    '#calle': /\b(?:street|calle|calles|peaton(?:es)?|transeunte(?:s)?|candid|flaneur)\b/i,
+    '#retrato': /\b(?:portrait(?:s)?|retrato(?:s)?|face(?:s)?|rostro(?:s)?|mirada(?:s)?|autorretrato)\b/i,
+    '#cuerpo': /\b(?:body|bodies|cuerpo(?:s)?|nude|desnudo(?:s)?|skin|piel|figura)\b/i,
+    '#paisaje': /\b(?:landscape(?:s)?|paisaje(?:s)?|horizon(?:te)?|mountain(?:s)?|montaña(?:s)?|territorio|valle|campo(?:s)?)\b/i,
+    '#marina': /\b(?:ocean|sea|mar|surf|surfing|beach|playa|coast|costa|olas|waves|litoral|submarina)\b/i,
+    '#naturaleza': /\b(?:nature|naturaleza|forest|bosque|trees|árboles|arboles|flora|plantas?|garden|jardín)\b/i,
+    '#fauna': /\b(?:wildlife|fauna|animal(?:s|es)?|birds?|aves?|pájaro(?:s)?|insects?|insectos?)\b/i,
+    '#arquitectura': /\b(?:architecture|arquitectura|building(?:s)?|edificio(?:s)?|brutalismo|fachada|facade)\b/i,
+    '#espacio-urbano': /\b(?:city|ciudad|urban|urbano|metropolis|metrópoli|barrio|tokyo|asfalto)\b/i,
+    '#viaje': /\b(?:journey|travel|viaje|viajar|road\s+trip|train|tren|estación|station|tránsito|transit|carretera)\b/i,
+    '#intimidad': /\b(?:intimacy|intimidad|domestic|doméstico|home|hogar|casa|habitación|quietud|vida\s+cotidiana)\b/i,
+    '#memoria': /\b(?:memory|memoria|grief|duelo|loss|pérdida|nostalgia|recuerdo(?:s)?|pasado|soledad|solitario(?:s)?|silencio)\b/i,
+    '#identidad': /\b(?:identity|identidad|gender|género|queer|trans|lgbtq|raíces)\b/i,
+    '#comunidad': /\b(?:community|comunidad|colectivo|vecindario|indígena|tradición)\b/i,
+    '#sociedad': /\b(?:society|sociedad|social|protest|protesta|activismo|política|derechos)\b/i,
+    '#nocturna': /\b(?:night|nocturn(?:a|o)|darkness|oscuridad|neon|neón|sombras?|shadows?|crepúsculo|atardecer)\b/i,
+    '#color': /\b(?:color|colour|cromatismo|paleta|saturación|kodachrome|lomochrome)\b/i,
+    '#blanco-y-negro': /\b(?:black\s+and\s+white|b&w|blanco\s+y\s+negro|monochrome|monocromo|bw)\b/i,
+    '#claroscuro': /\b(?:chiaroscuro|claroscuro|contraste|silueta(?:s)?|luz\s+y\s+sombra)\b/i,
+    '#minimalismo': /\b(?:minimalis(?:m|ta)|espacio\s+negativo|geometría|líneas)\b/i,
+    '#experimental': /\b(?:experimental|abstracción|abstract|desenfoque|doble\s+exposición|pinhole)\b/i,
+    '#analógico': /\b(?:analogue|analog|film|película|pelicula|darkroom|grano|química|lomography|35mm)\b/i,
+    '#35mm': /\b(?:35mm|135\s+film|point\s+and\s+shoot|telemétrica)\b/i,
+    '#formato-medio': /\b(?:120\s+film|medium\s+format|formato\s+medio|6x6|6x7|hasselblad|mamiya)\b/i,
+    '#cámaras-y-equipo': /\b(?:camera\s+review|lens|cámara|nikon|canon|leica|olympus|fujifilm)\b/i,
+    '#fotolibro': /\b(?:photobook|fotolibro|monografía|fanzine|zine|publicación)\b/i,
+    '#documental': /\b(?:documentar(?:y|io)|reportage|reportaje|ensayo|crónica|testimonio)\b/i,
+    '#entrevista': /\b(?:interview|entrevista|conversación|charla|diálogo)\b/i,
+    '#exposición': /\b(?:exhibition|exposición|gallery|galería|museo|retrospectiva)\b/i,
+    '#fotografía-histórica': /\b(?:vintage|historical|siglo\s+xix|siglo\s+xx|archivo|maestro(?:s)?|clásico)\b/i
+  };
+
+  function inferQueryTags(q) {
+    if (!q) return [];
+    const queryStr = String(q);
+    const explicit = (queryStr.match(/#[a-záéíóúñ0-9-]+/gi) || []).map(t => t.toLowerCase());
+    const inferred = new Set(explicit);
+    for (const [tag, pat] of Object.entries(TAXONOMY_PATTERNS)) {
+      if (pat.test(queryStr)) {
+        inferred.add(tag.toLowerCase());
+      }
+    }
+    return Array.from(inferred);
+  }
+
   // Motor de Búsqueda Semántica y Conceptual (sqlite-vec + Gemini Embeddings con fallback)
   async function queryArchiveSemantic(query, mode = 'general') {
     // Asegurar que los datos del archivo estén listos antes de buscar
