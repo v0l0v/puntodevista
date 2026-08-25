@@ -125,36 +125,36 @@
   function getIntroWelcomeHtml() {
     return `
       <p class="gemini-greeting"><strong>Estenopo · Inteligencia Visual</strong></p>
-      <p style="color:#cbd5e1;font-size:0.875rem;line-height:1.55;margin:0.35rem 0 0.85rem;">
-        Un umbral óptico hacia el archivo fotográfico de <em>Punto de vista</em>. Trazo resonancias entre miradas, atmósferas de luz, procesos químicos y formas de habitar el espacio.
+      <p style="color:#cbd5e1;font-size:0.875rem;line-height:1.5;margin:0.35rem 0 0.85rem;">
+        Escribe en el chat cualquier idea, sensación o autor, o pulsa en uno de los accesos rápidos para <strong>enfocar tu búsqueda</strong> en el archivo:
       </p>
 
       <div class="estenopo-intro-grid">
-        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoQuery('Atardeceres junto al agua y luz dorada', event)" title="Explorar atmósferas de luz y paisaje">
+        <div class="estenopo-intro-card card-atmosphere" role="button" tabindex="0" onclick="window.askEstenopoQuery('Atardeceres junto al agua y luz dorada', event)" title="Pulsa para enfocar por atmósfera y luz">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Atmósferas & Luz</span>
-            <span class="estenopo-card-action">Explorar →</span>
+            <span class="estenopo-card-action">Enfocar luz →</span>
           </div>
-          <strong>El tono emocional del encuadre</strong>
-          <p>Busca por sensaciones y texturas: <em>«luces de neón en la niebla»</em>, <em>«atardeceres junto al mar»</em> o <em>«la penumbra doméstica»</em>.</p>
+          <strong>Buscar por tono y sensación</strong>
+          <p>Escribe cómo te sientes o la luz que buscas: <em>«luces de neón en la niebla»</em>, <em>«atardecer junto al mar»</em> o <em>«penumbra»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoQuery('Linaje de la soledad urbana y suburbios', event)" title="Trazar linajes y conexiones entre fotógrafos">
+        <div class="estenopo-intro-card card-lineage" role="button" tabindex="0" onclick="window.askEstenopoQuery('Linaje de la soledad urbana y suburbios', event)" title="Pulsa para contrastar miradas y linajes">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Linajes Visuales</span>
-            <span class="estenopo-card-action">Trazar diálogo →</span>
+            <span class="estenopo-card-action">Cruzar miradas →</span>
           </div>
-          <strong>Diálogos entre miradas</strong>
-          <p>Descubre cruces estéticos entre autores distantes que convergen en una misma obsesión formal o temática.</p>
+          <strong>Diálogo entre fotógrafos</strong>
+          <p>Compara cómo distintos autores y publicaciones abordan un mismo tema estético a lo largo del tiempo.</p>
         </div>
 
-        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoQuery('Disparador creativo para hoy', event)" title="Generar un ejercicio o reto fotográfico">
+        <div class="estenopo-intro-card card-spark" role="button" tabindex="0" onclick="window.askEstenopoQuery('Disparador creativo para hoy', event)" title="Pulsa para pedir un reto fotográfico">
           <div class="estenopo-card-header">
             <span class="estenopo-card-label">Disparador Creativo</span>
-            <span class="estenopo-card-action">Generar reto →</span>
+            <span class="estenopo-card-action">Pedir reto →</span>
           </div>
-          <strong>Un reto para salir a disparar</strong>
-          <p>Propuestas técnicas y poéticas según tu escenario: <em>«viajo en tren»</em>, <em>«día de lluvia»</em> o <em>«un retrato sin rostro»</em>.</p>
+          <strong>Un ejercicio para salir hoy</strong>
+          <p>Pide un reto técnico y poético adaptado a tu plan: <em>«viajo en tren»</em>, <em>«día de lluvia»</em> o <em>«retrato sin rostro»</em>.</p>
         </div>
 
         <div class="estenopo-intro-card card-taxonomy">
@@ -162,7 +162,7 @@
             <span class="estenopo-card-label">Constelaciones</span>
             <span class="estenopo-card-action">Filtrar tag</span>
           </div>
-          <strong>Explorar por afinidad visual</strong>
+          <strong>Filtrar por etiquetas clave</strong>
           <div class="estenopo-intro-tags">
             <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
             <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
