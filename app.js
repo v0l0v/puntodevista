@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ── Estado del filtro de fecha ─────────────────────────────────────────────
 // period: 'all' | 'year' | 'month' | 'week' | 'day' | 'month-specific'
 // value:  null  | null   | null    | null   | null  | Date (primer día del mes)
-let __dateFilter = { period: 'all', value: null };
+let __dateFilter = { period: 'month', value: null };
 
 const MONTH_NAMES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 
@@ -1025,18 +1025,28 @@ function isSearchMatch(e, q) {
   return terms.every(t => text.includes(t));
 }
 
-function applyFilter() {
+let __visibleLimit = 36;
+const PAGE_SIZE = 36;
+let __currentFilteredEntries = [];
+let __scrollObserver = null;
+
+function applyFilter(resetLimit = true) {
+  if (resetLimit) {
+    __visibleLimit = PAGE_SIZE;
+  }
   const entries = (window.__allEntries || [])
     .filter(e => isSourceVisible(e._source))
     .filter(e => isDateVisible(e))
     .filter(e => isSearchMatch(e, __searchQuery));
+  __currentFilteredEntries = entries;
   render(entries);
 
-  document.getElementById('chk-all').checked = __allChecked;
+  const chkAll = document.getElementById('chk-all');
+  if (chkAll) chkAll.checked = __allChecked;
 
   ALL_SOURCES.forEach(src => {
-    document.querySelector(`.source-row[data-src="${src}"] input`)
-      .checked = isSourceVisible(src);
+    const el = document.querySelector(`.source-row[data-src="${src}"] input`);
+    if (el) el.checked = isSourceVisible(src);
   });
 
   const countEl = document.getElementById('sources-btn-count');
@@ -1089,34 +1099,57 @@ function getSourceLabel(src) {
   return SOURCE_LABELS[src] || src;
 }
 
+function renderCard(e) {
+  const isPodcast = e.is_podcast_entry;
+  const src = isPodcast ? e.image : extractImg(e);
+  const sourceLabel = isPodcast ? 'Podcast · Punto de vista' : getSourceLabel(e._source);
+  const linkHref = isPodcast ? '#' : e.link;
+  const cardId = String(e._id || e.link || `${e._source}-${e.title}`);
+  return `<div class="card" data-color="?" data-id="${encodeURIComponent(cardId)}" data-source="${e._source}" onclick="openModal(this)">
+    <div class="card-inner">
+      <div class="card-skeleton"></div>
+      ${src ? `<img class="card-image" src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="imgLoaded(this)" onerror="imgError(this)">` : ''}
+      <div class="card-overlay"></div>
+    </div>
+    <div class="card-info">
+      <div class="card-source">${sourceLabel}</div>
+      <div class="card-title"><a href="${linkHref}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${e.title}</a></div>
+      <div class="card-meta">
+        <span class="card-date">${e._parsedDate ? fmtDate(e._parsedDate) : ''}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
 function render(entries) {
   const el = document.getElementById('entries');
   const all = window.__allEntries || [];
-  const displayItems = entries;
+  const displayItems = entries.slice(0, __visibleLimit);
 
-  el.innerHTML = podcastCardHTML() + displayItems.map(e => {
-    const isPodcast = e.is_podcast_entry;
-    const src = isPodcast ? e.image : extractImg(e);
-    const sourceLabel = isPodcast ? 'Podcast · Punto de vista' : getSourceLabel(e._source);
-    const linkHref = isPodcast ? '#' : e.link;
-    const cardId = String(e._id || e.link || `${e._source}-${e.title}`);
-    return `<div class="card" data-color="?" data-id="${encodeURIComponent(cardId)}" data-source="${e._source}" onclick="openModal(this)">
-      <div class="card-inner">
-        <div class="card-skeleton"></div>
-        ${src ? `<img class="card-image" src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="imgLoaded(this)" onerror="imgError(this)">` : ''}
-        <div class="card-overlay"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-source">${sourceLabel}</div>
-        <div class="card-title"><a href="${linkHref}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${e.title}</a></div>
-        <div class="card-meta">
-          <span class="card-date">${e._parsedDate ? fmtDate(e._parsedDate) : ''}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('loader').classList.add('hide');
+  let html = podcastCardHTML() + displayItems.map(renderCard).join('');
   
+  if (entries.length > __visibleLimit) {
+    html += `
+      <div id="scroll-sentinel" class="scroll-sentinel" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 0; color: #888; font-size: 0.9rem;">
+        <span style="color:#ff0100">●</span> Cargando más publicaciones del archivo…
+      </div>
+    `;
+  } else if (entries.length > 0 && __dateFilter.period !== 'all') {
+    html += `
+      <div class="archive-end-notice" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: #888; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 2rem;">
+        <p style="margin-bottom: 0.8rem; color: #aaa;">Has visto todas las publicaciones de este período (${entries.length} fotografías)</p>
+        <button type="button" class="sources-btn" style="display:inline-block; margin:0 auto; cursor:pointer;" onclick="setDateFilter('all', null)">
+          Explorar todo el archivo histórico completo (860+ fotos) →
+        </button>
+      </div>
+    `;
+  }
+
+  el.innerHTML = html;
+  document.getElementById('loader').classList.add('hide');
+
+  setupInfiniteScroll();
+
   // Contadores globales por cada fuente
   const counts = {};
   for (const e of all) {
@@ -1129,7 +1162,27 @@ function render(entries) {
   const elAll = document.getElementById('count-all');
   if (elAll) elAll.textContent = String(all.length);
   const elFooter = document.getElementById('footer-info');
-  if (elFooter) elFooter.textContent = displayItems.length + ' fotografías';
+  if (elFooter) elFooter.textContent = displayItems.length + ' de ' + entries.length + ' fotografías';
+}
+
+function setupInfiniteScroll() {
+  if (__scrollObserver) {
+    __scrollObserver.disconnect();
+    __scrollObserver = null;
+  }
+  const sentinel = document.getElementById('scroll-sentinel');
+  if (!sentinel) return;
+
+  __scrollObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      if (__visibleLimit < __currentFilteredEntries.length) {
+        __visibleLimit += PAGE_SIZE;
+        render(__currentFilteredEntries);
+      }
+    }
+  }, { rootMargin: '350px' });
+
+  __scrollObserver.observe(sentinel);
 }
 
 function fmtDate(d) {
