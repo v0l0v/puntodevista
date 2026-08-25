@@ -19,41 +19,83 @@
     'Dossier de Tendencias Visuales'
   ];
 
-  // Diccionario semántico ampliado para fallback estático
+  // Diccionario Semántico Bilingüe Visual (ES <-> EN)
   const CONCEPT_MAP = {
-    'doisneau': ['doisneau', 'robert doisneau', 'calle', 'street', 'paris', 'parís', 'humanismo', 'humanista', 'blanco y negro', 'candid', 'transeúntes', 'espontáneo', 'fotografía histórica'],
-    'bresson': ['bresson', 'cartier-bresson', 'henri cartier-bresson', 'magnum', 'instante decisivo', 'decisive moment', 'calle', 'street', 'geometría', 'blanco y negro'],
-    'leiter': ['leiter', 'saul leiter', 'color', 'calle', 'reflejos', 'gotas', 'cristales', 'abstracción', 'intimidad', 'color'],
-    'frank': ['frank', 'robert frank', 'the americans', 'carretera', 'viaje', 'road trip', 'subcultura', 'soledad', 'blanco y negro'],
-    'arbus': ['arbus', 'diane arbus', 'retrato', 'identidad', 'cuerpo', 'subcultura', 'singularidad', 'intimidad', 'blanco y negro'],
-    'linaje': ['linaje', 'linajes', 'diálogo', 'diálogos', 'conexión', 'resonancia', 'influencia', 'tradición', 'autores', 'historia', 'memoria'],
-    'suburbios': ['suburbios', 'suburbio', 'suburbia', 'suburbs', 'periferia', 'barrio', 'espacio urbano', 'soledad', 'calle'],
-    'tren': ['tren', 'trenes', 'train', 'viaje', 'viajes', 'viajar', 'viajare', 'journey', 'tránsito', 'transit', 'estación', 'station', 'metro', 'subway', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros', 'velocidad', 'movimiento'],
-    'trenes': ['tren', 'trenes', 'train', 'viaje', 'journey', 'tránsito', 'transit', 'estación', 'station', 'railway', 'andén', 'vagón', 'ventanilla', 'pasajeros'],
-    'viaje': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'ruta', 'desplazamiento', 'carretera', 'tren', 'estación', 'tránsito'],
-    'viajar': ['viaje', 'viajes', 'viajar', 'viajare', 'journey', 'travel', 'trip', 'trayecto', 'tren', 'estación'],
-    'lluvia': ['lluvia', 'rain', 'tormenta', 'niebla', 'fog', 'charcos', 'paraguas', 'gotas', 'cristal', 'mojado'],
-    'agua': ['mar', 'playa', 'océano', 'costa', 'río', 'lago', 'olas', 'surf', 'water', 'beach', 'sea', 'ocean'],
-    'atardecer': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'anochecer', 'sol', 'cielo'],
-    'atardeceres': ['puesta de sol', 'crepúsculo', 'sunset', 'golden hour', 'luz dorada', 'mar', 'agua', 'sol'],
-    'mar': ['agua', 'playa', 'costa', 'océano', 'surf', 'litoral', 'puerto'],
-    'nostalgia': ['memoria', 'pasado', 'analógico', 'tiempo', 'grano', 'melancolía', 'recuerdo', 'archivo', 'infancia'],
-    'soledad': ['aislamiento', 'silencio', 'vacío', 'nocturno', 'suburbia', 'individual', 'distancia', 'quietud', 'soledad'],
-    'solitarios': ['aislamiento', 'silencio', 'vacío', 'soledad', 'solitario', 'quietud', 'distancia'],
-    'urbano': ['calle', 'ciudad', 'transeúntes', 'asfalto', 'metrópoli', 'tokio', 'barrio', 'concreto', 'espacio urbano'],
-    'arquitectura': ['arquitectura', 'edificios', 'estructuras', 'fachada', 'brutalismo', 'espacio', 'interior'],
-    'calle': ['street', 'urbano', 'espontáneo', 'peatones', 'calles', 'instantánea', 'cándido', 'calle'],
-    'luz': ['claroscuro', 'crepúsculo', 'sombra', 'neón', 'contraste', 'atardecer', 'reflejos', 'iluminación'],
-    'noche': ['nocturna', 'neón', 'oscuridad', 'sombras', 'luces', 'madrugada', 'misterio'],
-    'analógico': ['película', '35mm', 'formato medio', 'grano', 'emulsión', 'química', 'lomography', 'pinhole', 'estenopeica', 'nikkor', 'leica'],
-    'cuerpo': ['retrato', 'identidad', 'piel', 'gesto', 'figura', 'desnudo', 'autorretrato'],
-    'duelo': ['pérdida', 'ausencia', 'memoria', 'familia', 'despedida', 'casa', 'silencio', 'recuerdo'],
-    'paisaje': ['paisaje', 'paisajes', 'naturaleza', 'horizonte', 'territorio', 'árboles', 'arboles', 'campo', 'campos', 'montaña', 'vacío', 'rural'],
-    'paisajes': ['paisaje', 'paisajes', 'naturaleza', 'horizonte', 'territorio', 'árboles', 'arboles', 'campo', 'campos', 'montaña', 'vacío', 'rural'],
-    'arboles': ['árboles', 'arboles', 'bosque', 'naturaleza', 'flora', 'paisaje', 'campo', 'campos', 'ramas'],
-    'árboles': ['árboles', 'arboles', 'bosque', 'naturaleza', 'flora', 'paisaje', 'campo', 'campos', 'ramas'],
-    'campos': ['campo', 'campos', 'rural', 'pradera', 'paisaje', 'naturaleza', 'tierra', 'horizonte'],
-    'color': ['cromatismo', 'paleta', 'tonos', 'saturación', 'lomochrome', 'blanco y negro', 'monocromo']
+    // Autores Canónicos
+    'doisneau': ['doisneau', 'robert doisneau', 'street', 'calle', 'paris', 'parís', 'humanist', 'humanismo', 'black and white', 'blanco y negro', 'candid', 'pedestrian', 'instantánea'],
+    'bresson': ['bresson', 'cartier-bresson', 'henri cartier-bresson', 'magnum', 'decisive moment', 'instante decisivo', 'street', 'calle', 'geometry', 'geometría', 'black and white'],
+    'leiter': ['leiter', 'saul leiter', 'color', 'street', 'calle', 'reflections', 'reflejos', 'condensation', 'gotas', 'glass', 'cristales', 'abstract', 'abstracción', 'intimacy', 'intimidad'],
+    'frank': ['frank', 'robert frank', 'the americans', 'road trip', 'carretera', 'journey', 'viaje', 'subculture', 'subcultura', 'solitude', 'soledad', 'black and white'],
+    'arbus': ['arbus', 'diane arbus', 'portrait', 'retrato', 'identity', 'identidad', 'body', 'cuerpo', 'subculture', 'marginal', 'intimacy', 'intimidad', 'black and white'],
+    'linaje': ['linaje', 'linajes', 'lineage', 'dialogue', 'diálogo', 'connection', 'conexión', 'resonance', 'resonancia', 'influence', 'influencia', 'tradition', 'tradición', 'masters', 'maestros'],
+
+    // Paisaje, Naturaleza & Territorio (ES -> EN)
+    'paisaje': ['landscape', 'landscapes', 'scenery', 'wilderness', 'terrain', 'territorio', 'horizon', 'horizonte', 'nature', 'naturaleza', 'solitude', 'quietude', 'rural'],
+    'paisajes': ['landscape', 'landscapes', 'scenery', 'wilderness', 'terrain', 'territorio', 'horizon', 'horizonte', 'nature', 'naturaleza', 'solitude', 'quietude', 'rural'],
+    'campo': ['field', 'fields', 'meadow', 'countryside', 'pasture', 'farmland', 'rural', 'terrain', 'earth', 'tierra', 'landscape'],
+    'campos': ['field', 'fields', 'meadow', 'countryside', 'pasture', 'farmland', 'rural', 'terrain', 'earth', 'tierra', 'landscape'],
+    'arbol': ['tree', 'trees', 'forest', 'woods', 'woodland', 'branches', 'canopy', 'foliage', 'botanical', 'flora', 'nature'],
+    'arboles': ['tree', 'trees', 'forest', 'woods', 'woodland', 'branches', 'canopy', 'foliage', 'botanical', 'flora', 'nature'],
+    'árbol': ['tree', 'trees', 'forest', 'woods', 'woodland', 'branches', 'canopy', 'foliage', 'botanical', 'flora', 'nature'],
+    'árboles': ['tree', 'trees', 'forest', 'woods', 'woodland', 'branches', 'canopy', 'foliage', 'botanical', 'flora', 'nature'],
+    'bosque': ['forest', 'woods', 'woodland', 'grove', 'trees', 'árboles', 'nature', 'fog', 'niebla'],
+    'montaña': ['mountain', 'mountains', 'peaks', 'hills', 'alpine', 'rocky', 'elevation', 'landscape'],
+    'montañas': ['mountain', 'mountains', 'peaks', 'hills', 'alpine', 'rocky', 'elevation', 'landscape'],
+    'desierto': ['desert', 'sand', 'dunes', 'arid', 'barren', 'wasteland', 'isolation'],
+
+    // Agua, Mar & Costa (ES -> EN)
+    'mar': ['sea', 'ocean', 'coast', 'coastal', 'beach', 'playa', 'waves', 'olas', 'shore', 'shoreline', 'water', 'tide', 'marina', 'marine'],
+    'playa': ['beach', 'shore', 'coast', 'sand', 'ocean', 'sea', 'mar', 'surf', 'surfing', 'waves'],
+    'agua': ['water', 'ocean', 'sea', 'river', 'lake', 'stream', 'aquatic', 'liquid', 'reflection', 'waves'],
+    'olas': ['waves', 'surf', 'surfing', 'ocean', 'swell', 'tide', 'sea', 'breakwater'],
+
+    // Atmósfera, Clima & Luz (ES -> EN)
+    'luz': ['light', 'sunlight', 'illumination', 'glow', 'chiaroscuro', 'shadow', 'shadows', 'radiance', 'claroscuro', 'ray'],
+    'sombra': ['shadow', 'shadows', 'shade', 'darkness', 'silhouette', 'silueta', 'obscurity', 'penumbra', 'noir'],
+    'sombras': ['shadow', 'shadows', 'shade', 'darkness', 'silhouette', 'silueta', 'obscurity', 'penumbra', 'noir'],
+    'niebla': ['fog', 'mist', 'haze', 'misty', 'foggy', 'atmospheric', 'diffuse', 'vapor', 'obscurity', 'quietude'],
+    'lluvia': ['rain', 'raining', 'rainy', 'wet', 'puddle', 'raindrops', 'storm', 'downpour', 'slick', 'mojado'],
+    'atardecer': ['sunset', 'dusk', 'twilight', 'golden hour', 'sundown', 'evening', 'crepuscular', 'crepúsculo', 'glow'],
+    'atardeceres': ['sunset', 'dusk', 'twilight', 'golden hour', 'sundown', 'evening', 'crepuscular', 'crepúsculo', 'glow'],
+    'amanecer': ['sunrise', 'dawn', 'daybreak', 'morning', 'early morning', 'first light'],
+    'noche': ['night', 'nocturnal', 'darkness', 'midnight', 'neon', 'shadows', 'noir', 'twilight', 'nocturna'],
+    'nocturna': ['night', 'nocturnal', 'darkness', 'neon', 'shadows', 'noir', 'nighttime', 'midnight'],
+
+    // Espacio Urbano & Calle (ES -> EN)
+    'calle': ['street', 'streets', 'urban', 'sidewalk', 'pedestrian', 'crosswalk', 'city', 'avenue', 'candid', 'flaneur'],
+    'calles': ['street', 'streets', 'urban', 'sidewalk', 'pedestrian', 'crosswalk', 'city', 'avenue', 'candid'],
+    'urbano': ['urban', 'city', 'metropolis', 'cityscape', 'downtown', 'asphalt', 'buildings', 'metropolitan', 'barrio'],
+    'ciudad': ['city', 'urban', 'metropolis', 'skyline', 'downtown', 'capital', 'streets', 'tokyo', 'new york', 'paris', 'london'],
+    'suburbios': ['suburb', 'suburbs', 'suburbia', 'suburban', 'periphery', 'outskirts', 'neighborhood', 'residential'],
+    'tren': ['train', 'railway', 'railroad', 'transit', 'subway', 'station', 'commute', 'wagon', 'carriage', 'window', 'passenger', 'journey'],
+    'trenes': ['train', 'railway', 'railroad', 'transit', 'subway', 'station', 'commute', 'wagon', 'carriage', 'window', 'passenger', 'journey'],
+    'viaje': ['journey', 'travel', 'trip', 'transit', 'voyage', 'road trip', 'commute', 'wanderlust', 'itinerary', 'destination'],
+    'viajar': ['travel', 'journey', 'trip', 'roam', 'wander', 'transit', 'voyage'],
+
+    // Emoción, Memoria & Soledad (ES -> EN)
+    'soledad': ['solitude', 'solitary', 'lonely', 'loneliness', 'isolation', 'quietude', 'silence', 'stillness', 'remote', 'empty', 'abandoned'],
+    'solitario': ['solitary', 'lonely', 'isolated', 'lone', 'alone', 'quiet', 'remote', 'single', 'abandoned', 'silent'],
+    'solitarios': ['solitary', 'lonely', 'isolated', 'lone', 'alone', 'quiet', 'remote', 'abandoned', 'silent'],
+    'silencio': ['silence', 'quiet', 'stillness', 'calm', 'peace', 'tranquil', 'serene', 'soundless'],
+    'memoria': ['memory', 'nostalgia', 'past', 'recollection', 'remember', 'archive', 'remembrance', 'heritage', 'time'],
+    'nostalgia': ['nostalgia', 'nostalgic', 'memory', 'melancholy', 'past', 'longing', 'vintage', 'analogue'],
+    'duelo': ['grief', 'loss', 'mourning', 'bereavement', 'absence', 'sorrow', 'memory'],
+    'intimidad': ['intimacy', 'intimate', 'domestic', 'home', 'house', 'room', 'interior', 'privacy', 'personal', 'bedroom'],
+    'familia': ['family', 'parents', 'mother', 'father', 'childhood', 'children', 'generations', 'domestic'],
+
+    // Retrato & Forma Humana (ES -> EN)
+    'retrato': ['portrait', 'portraits', 'portraiture', 'face', 'gaze', 'mirada', 'headshot', 'expression', 'person'],
+    'retratos': ['portrait', 'portraits', 'portraiture', 'faces', 'gaze', 'headshot', 'people'],
+    'cuerpo': ['body', 'bodies', 'figure', 'nude', 'skin', 'flesh', 'gesture', 'human form', 'anatomy', 'movement'],
+    'mirada': ['gaze', 'look', 'eyes', 'glance', 'stare', 'expression', 'portrait', 'eye contact'],
+    'identidad': ['identity', 'gender', 'queer', 'trans', 'self', 'belonging', 'individuality', 'roots'],
+
+    // Estética, Técnica & Formato (ES -> EN)
+    'blanco y negro': ['black and white', 'b&w', 'monochrome', 'monochromatic', 'grayscale', 'silver gelatin'],
+    'color': ['color', 'colour', 'palette', 'chromatic', 'vibrant', 'saturated', 'kodachrome', 'tones', 'hues'],
+    'analógico': ['analogue', 'analog', 'film', '35mm', 'grain', 'darkroom', 'emulsion', 'medium format', 'chemical', 'grainy'],
+    'grano': ['grain', 'grainy', 'texture', 'film grain', 'noise', 'emulsion', 'roughness'],
+    'fotolibro': ['photobook', 'photo book', 'monograph', 'zine', 'fanzine', 'publication', 'publishing']
   };
 
   function injectChatUI() {
