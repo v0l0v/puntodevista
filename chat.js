@@ -56,10 +56,10 @@
     const widget = document.createElement('div');
     widget.id = 'chat-widget';
     widget.innerHTML = `
-      <!-- Botón Flotante Superior Derecho (Logo Portada Podcast Círculo / Pastilla Expandible) -->
+      <!-- Botón Flotante Superior Derecho (Logo Estenopo Círculo / Pastilla Expandible) -->
       <button id="chat-trigger-btn" aria-label="Abrir Buscador · Inteligencia Visual" title="Buscador | Inteligencia Visual">
         <span class="estenopo-logo-wrapper">
-          <img src="podcast-cover.png" alt="Estenopo" class="estenopo-cover-img">
+          <img src="assets/logos/logoFpdv.png" alt="Estenopo" class="estenopo-cover-img">
         </span>
         <span class="chat-btn-text">Buscador | Inteligencia Visual</span>
       </button>
