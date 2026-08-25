@@ -1907,6 +1907,12 @@ footer {
   color: #fff;
   transform: translateY(-1px);
 }
+.estenopo-tag-badge.matched {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #34d399;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+}
 
 .estenopo-link-actions {
   display: flex;

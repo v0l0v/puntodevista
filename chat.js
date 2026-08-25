@@ -286,6 +286,7 @@
             summary: item.summary || item.excerpt || '',
             image: item.image_url || item.thumbnail || item.image || '',
             score: item.score || 10,
+            tags: Array.isArray(item.tags) ? item.tags : [],
             rank_type: 'Vectorial (sqlite-vec + Gemini)'
           }));
 
@@ -310,16 +311,19 @@
           return {
             articles,
             podcasts,
+            queryTags: inferQueryTags(query),
             mode: 'vectorial_real'
           };
         }
       }
     } catch {}
 
-    // 2. Fallback enriquecido sobre todos los artículos cargados
+    // 2. Motor de Intersección Taxonómica Curatorial y Resonancias
     const dataset = (window.__allEntries && window.__allEntries.length > 0) 
       ? window.__allEntries 
       : (archiveData?.articles || []);
+
+    const queryTags = inferQueryTags(query);
 
     const stopwords = new Set([
       'junto', 'los', 'las', 'del', 'con', 'para', 'por', 'sobre', 'una', 'uno', 'unas', 'unos',
@@ -343,33 +347,33 @@
     const termsArray = Array.from(expandedTerms);
 
     const scoredArticles = dataset.map(a => {
-      let score = 0;
-      const rawTitle = decodeHtmlEntities(a.title || '');
-      const rawPhoto = decodeHtmlEntities(a.photographer || '');
-      const rawSummary = decodeHtmlEntities(a.summary || a.excerpt || a.content || '');
-      const rawSrc = decodeHtmlEntities(a._source || a.source || '');
       let aTags = [];
       if (Array.isArray(a.tags)) aTags = a.tags;
       else if (typeof a.tags === 'string') {
         try { aTags = JSON.parse(a.tags); } catch { aTags = []; }
       }
 
+      // 1. Intersección de Etiquetas: Coincidencias exactas (Nivel 3, 2 o 1)
+      const matchingTags = aTags.filter(t => queryTags.includes(t.toLowerCase()));
+      const tagCoincidences = matchingTags.length;
+
+      // Base jerárquica: Tier 3 (300 pts), Tier 2 (200 pts), Tier 1 (100 pts)
+      let score = tagCoincidences * 100;
+
+      const rawTitle = decodeHtmlEntities(a.title || '');
+      const rawPhoto = decodeHtmlEntities(a.photographer || '');
+      const rawSummary = decodeHtmlEntities(a.summary || a.excerpt || a.content || '');
+      const rawSrc = decodeHtmlEntities(a._source || a.source || '');
+
       rawTerms.forEach(t => {
         const cleanT = t.replace(/^#/, '');
-        if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
-          score += 35;
-        }
-        if (matchWordInText(rawPhoto, t)) score += 30;
-        if (matchWordInText(rawTitle, t)) score += 20;
+        if (matchWordInText(rawPhoto, t)) score += 35;
+        if (matchWordInText(rawTitle, t)) score += 25;
         if (matchWordInText(rawSummary, t)) score += 8;
         if (matchWordInText(rawSrc, t)) score += 5;
       });
 
       termsArray.forEach(t => {
-        const cleanT = t.replace(/^#/, '');
-        if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
-          score += 15;
-        }
         if (matchWordInText(rawPhoto, t)) score += 15;
         if (matchWordInText(rawTitle, t)) score += 6;
         if (matchWordInText(rawSummary, t)) score += 3;
@@ -385,8 +389,10 @@
         summary: rawSummary,
         image: a.image || a.thumbnail || '',
         tags: aTags,
+        matchingTags,
+        tagCoincidences,
         score,
-        rank_type: 'Semántica Heurística'
+        rank_type: tagCoincidences > 0 ? `Afinidad (${tagCoincidences} coincidencia${tagCoincidences > 1 ? 's' : ''})` : 'Semántica Heurística'
       };
     }).filter(a => a.score > 0).sort((a, b) => b.score - a.score);
 
@@ -412,13 +418,14 @@
     return {
       articles: scoredArticles.slice(0, 8),
       podcasts: scoredPodcasts.slice(0, 3),
-      mode: 'fallback'
+      queryTags,
+      mode: 'tag_hierarchical'
     };
   }
 
   function generateAssistantResponse(query, results) {
     const qLower = query.toLowerCase();
-    const { articles, podcasts } = results;
+    const { articles, podcasts, queryTags = [] } = results;
 
     // 1. Caso especial: Disparador Creativo Contextualizado
     if (qLower.includes('disparador') || qLower.includes('ejercicio') || qLower.includes('propuesta') || qLower.includes('reto')) {
@@ -429,34 +436,26 @@
       const sourceName = topArt ? escapeHtml(String(topArt.source || topArt._source || 'ARCHIVO').toUpperCase()) : 'ARCHIVO';
       const url = topArt?.url || topArt?.link || '#';
       const photo = topArt?.photographer ? escapeHtml(topArt.photographer) : '';
-
-      let topTags = [];
-      if (topArt) {
-        if (Array.isArray(topArt.tags)) topTags = topArt.tags;
-        else if (typeof topArt.tags === 'string') {
-          try { topTags = JSON.parse(topArt.tags); } catch { topTags = []; }
-        }
-      }
+      const topTags = topArt?.tags || [];
       const topTagsHtml = topTags.length > 0
-        ? `<div class="estenopo-tags-row">${topTags.map(t => `<button type="button" class="estenopo-tag-badge" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
+        ? `<div class="estenopo-tags-row">${topTags.map(t => `<button type="button" class="estenopo-tag-badge ${queryTags.includes(t.toLowerCase()) ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
         : '';
 
-      // Generar reto contextual analizando la intención del usuario y la obra de referencia
-      const tLow = title.toLowerCase();
+      const tLow = (title + ' ' + (topArt?.summary || '')).toLowerCase();
       let retoTitulo = 'El Espacio que No Ocupamos';
-      let retoTexto = 'Encuentra un rincón cotidiano donde la luz incida oblicua (amanecer o atardecer). Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual y subexpón 1 punto para forzar el misterio.';
+      let retoTexto = 'Encuentra un rincón cotidiano donde la luz incida oblicua. Encuadra dejando que la sombra o el espacio negativo ocupe más del 70% del encuadre. Dispara en manual para forzar el misterio.';
 
-      if (qLower.includes('tren') || qLower.includes('viaj') || qLower.includes('trayect') || qLower.includes('estacion') || qLower.includes('estación') || qLower.includes('transit') || tLow.includes('train') || tLow.includes('journey') || tLow.includes('rail')) {
+      if (qLower.includes('tren') || qLower.includes('viaj') || tLow.includes('train') || tLow.includes('journey')) {
         retoTitulo = 'La Ventanilla: Umbral entre Intimidad y Velocidad (Tren & Tránsito)';
         retoTexto = `
           <strong>1. Doble Exposición en el Cristal:</strong> Enfoca en manual a la superficie de la ventanilla. Superpón el reflejo del interior (la mirada o las manos de un pasajero) con el paisaje exterior que corre a gran velocidad.<br><br>
           <strong>2. Contraste Cinético:</strong> Apoya la cámara firme en el reposabrazos o tu rodilla y dispara a <strong>1/15s – 1/30s</strong>: el interior del vagón quedará nítido mientras el exterior se convertirá en un barrido de líneas cinéticas abstractas.<br><br>
           <strong>3. El No-Lugar:</strong> En las paradas intermedias, captura el instante fugaz en que alguien espera en el andén o se despide a través del cristal.
         `;
-      } else if (qLower.includes('lluvia') || qLower.includes('niebla') || qLower.includes('tormenta') || tLow.includes('rain') || tLow.includes('fog')) {
+      } else if (qLower.includes('lluvia') || qLower.includes('niebla') || tLow.includes('rain') || tLow.includes('fog')) {
         retoTitulo = 'Atmósferas Difusas y Superficies Húmedas';
         retoTexto = 'Aprovecha las gotas en cristales o los reflejos en el asfalto mojado. Dispara a máxima apertura (f/1.8 – f/2.8) enfocando en una sola gota para convertir las luces de fondo en bokeh de color cinematográfico.';
-      } else if (qLower.includes('noche') || qLower.includes('nocturn') || qLower.includes('neon') || qLower.includes('neón') || tLow.includes('night') || tLow.includes('shadow')) {
+      } else if (qLower.includes('noche') || qLower.includes('nocturn') || tLow.includes('night') || tLow.includes('shadow')) {
         retoTitulo = 'Claroscuro y Luces Aisladas';
         retoTexto = 'Encuentra una única fuente de luz artificial (farola, escaparate o neón). Mide la exposición en las altas luces y deja que las sombras caigan en negro profundo para forzar la intriga psicológica.';
       } else if (tLow.includes('street') || tLow.includes('calle') || tLow.includes('urban') || tLow.includes('city') || qLower.includes('calle')) {
@@ -465,9 +464,9 @@
       } else if (tLow.includes('portrait') || tLow.includes('retrato') || tLow.includes('body') || tLow.includes('cuerpo') || qLower.includes('retrato')) {
         retoTitulo = 'Retrato sin Mirada';
         retoTexto = 'Fotografía a una persona cercana sin mostrar directamente sus ojos: concéntrate en la tensión de las manos, el gesto de la espalda o la silueta contra una ventana en penumbra.';
-      } else if (tLow.includes('sea') || tLow.includes('water') || tLow.includes('mar') || tLow.includes('ocean') || tLow.includes('landscape') || tLow.includes('nature') || qLower.includes('mar') || qLower.includes('agua')) {
-        retoTitulo = 'Textura Líquida y Línea de Horizonte';
-        retoTexto = 'Busca agua en movimiento o niebla matutina. Reduce la velocidad de obturación a 1/8s – 1/2s para capturar el flujo sin perder la estructura geométrica del entorno.';
+      } else if (tLow.includes('sea') || tLow.includes('water') || tLow.includes('mar') || tLow.includes('ocean') || tLow.includes('landscape') || tLow.includes('nature') || qLower.includes('mar') || qLower.includes('agua') || qLower.includes('campo') || qLower.includes('arbol')) {
+        retoTitulo = 'Textura del Paisaje y Soledad Territorial';
+        retoTexto = 'Busca la tensión entre un horizonte amplio y un elemento solitario (un árbol, una piedra, una casa rural aislada). Dispara con diafragma medio (f/5.6 – f/8) para preservar el grano y la textura del terreno.';
       }
 
       return `
@@ -496,7 +495,7 @@
           </div>
 
           <div style="background:rgba(255,68,68,0.06);border-left:3px solid #ff4444;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.5;">
-            <strong>Tu ejercicio para el trayecto:</strong><br>${retoTexto}
+            <strong>Tu ejercicio:</strong><br>${retoTexto}
           </div>
           <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;color:#94a3b8;"><em>¿Quieres ajustar el reto a blanco y negro, película analógica o fotografía de viaje?</em></p>
         </div>
@@ -540,7 +539,8 @@
     let out = `
       <div class="gemini-response-box">
         <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
-          Resonancias seleccionadas para <strong>«${escapeHtml(query)}»</strong>:
+          Resonancias seleccionadas para <strong>«${escapeHtml(query)}»</strong>
+          ${queryTags.length > 0 ? `(afinidad en ${queryTags.map(t => `<span style="color:#ff8a65;font-weight:600;">${escapeHtml(t)}</span>`).join(' ')})` : ''}:
         </p>
     `;
 
@@ -553,11 +553,17 @@
       const id2 = escapeHtml(String(a2.id || a2.url));
       const src2 = escapeHtml(String(a2.source || ''));
 
+      // Etiquetas comunes entre los dos artículos
+      const commonLinajeTags = (a1.tags || []).filter(t => (a2.tags || []).includes(t));
+      const tagDesc = commonLinajeTags.length > 0
+        ? `a través de ${commonLinajeTags.join(' y ')}`
+        : 'por proximidad formal y temática';
+
       out += `
         <div class="gemini-lineage-banner">
           <div class="gemini-lineage-title">Linaje Visual Detectado</div>
           <div class="gemini-lineage-desc">
-            Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}).
+            Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}) ${tagDesc}.
           </div>
         </div>
       `;
@@ -579,7 +585,10 @@
         const sourceSafe = escapeHtml(String(a.source || ''));
         const tagsList = a.tags || [];
         const tagsHtml = tagsList.length > 0
-          ? `<div class="estenopo-tags-row">${tagsList.map(t => `<button type="button" class="estenopo-tag-badge" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`).join('')}</div>`
+          ? `<div class="estenopo-tags-row">${tagsList.map(t => {
+              const isMatched = queryTags.includes(t.toLowerCase());
+              return `<button type="button" class="estenopo-tag-badge ${isMatched ? 'matched' : ''}" onclick="window.askEstenopoTag('${escapeHtml(t)}', event)">${escapeHtml(t)}</button>`;
+            }).join('')}</div>`
           : '';
 
         out += `
@@ -587,6 +596,7 @@
             <div class="estenopo-link-meta">
               <span>${sourceName}</span>
               ${photo ? `<span class="estenopo-link-author">· ${photo}</span>` : ''}
+              ${a.tagCoincidences ? `<span style="color:#10b981;font-weight:600;margin-left:auto;">${a.tagCoincidences}/3 coincidencias</span>` : ''}
             </div>
             <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
               ${escapeHtml(a.title)}
