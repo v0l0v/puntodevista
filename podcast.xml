@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 24 Aug 2026 18:42:29 +0000</lastBuildDate>
+<lastBuildDate>Tue, 25 Aug 2026 08:06:08 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -857,17 +857,141 @@ Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada esc
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 21 · Homenaje a Jay Maisel, linajes de color y el filtro de disonancia</title>
+    <title>Episodio 21 · El umbral de lo invisible, diarios instantáneos y la memoria del color</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3</guid>
     <pubDate>Mon, 24 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Edición especial a tres voces con Roberto, Beatriz y Clara. Rendimos tributo al maestro Jay Maisel (1931-2026) y su dominio del color en las calles de Nueva York, analizamos el uso de la emulsión química como lenguaje de resistencia y planteamos el disparador creativo de hoy.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3" length="12256173" type="audio/mpeg"/>
+    <description><![CDATA[Lomography Magazine: Drawing Memories: Inside Émilie Gleason's Analogue Journal
+El proyecto explora la fusión del cómic y la fotografía instantánea analógica para documentar la vida cotidiana y la maternidad en un diario de viaje interactivo.
+Utiliza una cámara Lomo'Instant Automat combinada con técnicas de ilustración, collage, notas manuscritas y listas temáticas alrededor de las imágenes.
+Aporta una reflexión sobre cómo la fotografía analógica sirve de hilo conductor narrativo y cómo el espacio en blanco de los márgenes puede enriquecer la memoria visual.
+
+The Photographic Journal: Confessions por Olivia Burgess
+La obra profundiza en los límites entre la presencia física, el cuerpo en movimiento y la representación performativa desde una perspectiva íntima.
+Aplica una estética corporal sensible e intuitiva marcada por la experiencia de la autora como bailarina y modelo profesional frente y detrás de la cámara.
+Ofrece un aprendizaje sobre la transformación de la corporalidad en un lenguaje visual poético capaz de habitar la frontera entre el estatismo y el movimiento.
+
+L'Œil de la Photographie: Edición especial sobre Jay Maisel (1931-2026)
+Un homenaje a la trayectoria del legendario fotógrafo Jay Maisel tras su fallecimiento a los 95 años, recorriendo sus trabajos icónicos en Nueva York, París o Haití.
+Se fundamenta en la maestría absoluta del color, la luz natural y el formato analógico de 35 milímetros y medio formato aplicado al documentalismo urbano y el retrato espontáneo.
+Destaca que una fotografía verdaderamente poderosa es aquella que, tras verla cada día durante años, mantiene intacta su capacidad de fascinar.
+
+35mmc: Keystone Zoom EverFlash XR608 110 Camera
+Analiza el diseño y funcionamiento de una cámara compacta del formato 110 comercializada en los años ochenta con zoom integrado y flash.
+Presenta la estética vintage y el grano característico de las películas de formato miniatura en forma de barra de chocolate típicas del consumo masivo de la época.
+Reflexiona sobre la sencillez técnica y el valor nostálgico de los equipos analógicos populares que democratizaron la fotografía de consumo.
+
+Feature Shoot: Fotografiar la sensación de los lugares sutiles con Lev L. Spiro
+Aborda el concepto celta de los "lugares sutiles", espacios de la naturaleza donde la frontera entre el mundo físico y lo sagrado se vuelve permeable.
+Utiliza técnicas de larga exposición con filtros de densidad neutra y disparos durante las horas extremas del día para capturar la atmósfera sutil del agua y las nubes.
+Invita al fotógrafo a desacelerar, cultivar una atención receptiva y dejarse detener por el entorno para transmutar la simple descripción en emoción pura.
+
+Ain't-Bad (Joya del archivo): El trabajo personal de Jiabao Sun
+Recuperamos del archivo la obra de Jiabao Sun, centrada en la exploración de la identidad personal y el choque cultural entre China y Estados Unidos.
+Destaca por una propuesta estética limpia, ordenada y de luz ambiental pausada que enfatiza el espacio y la composición serena.
+Aporta una lección sobre la fotografía introspectiva como vehículo para procesar la geografía personal y el sentido de pertenencia.
+
+EMULSIVE (Joya del archivo): 8 fotogramas del recién nacido en ILFORD HP5 PLUS por Spencer Cameron
+Rescatamos este sensible ensayo fotográfico analógico sobre los primeros días de vida de un hijo tras un periodo de duelo por la pérdida de una madre.
+Emplea película analógica en blanco y negro de 35mm Ilford HP5 Plus con una cámara Nikon Nikkormat y un objetivo de 50mm a gran apertura de diafragma.
+Muestra el valor terapéutico del acto fotográfico como refugio emocional para inmortalizar la vulnerabilidad y el nacimiento de la esperanza.
+
+Fotonistas (Newsletter de Ana Arbonés)
+¿Sabías que una de las fotografías más icónicas de la Gran Depresión sufrió un retoque directo en el laboratorio que alteró su composición original? Ana Arbonés plantea una fascinante provocación sobre la delgada línea entre la verdad fotográfica y la edición personal, invitándote a descubrir por qué procesar tus imágenes es esencial para definir tu voz; suscríbete a su Fotoletter en fotonistas.com para descubrir toda la historia.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3" length="11229165" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-24.jpg"/>
-    <itunes:duration>8:30</itunes:duration>
-    <itunes:title>Episodio 21 · Homenaje a Jay Maisel, linajes de color y el filtro de disonancia</itunes:title>
+    <itunes:duration>7:47</itunes:duration>
+    <itunes:title>Episodio 21 · El umbral de lo invisible, diarios instantáneos y la memoria del color</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Edición especial a tres voces con Roberto, Beatriz y Clara. Rendimos tributo al maestro Jay Maisel (1931-2026) y su dominio del color en las calles de Nueva York, analizamos el uso de la emulsión química como lenguaje de resistencia y planteamos el disparador creativo de hoy.]]></itunes:summary>
+    <itunes:summary><![CDATA[Lomography Magazine: Drawing Memories: Inside Émilie Gleason's Analogue Journal
+El proyecto explora la fusión del cómic y la fotografía instantánea analógica para documentar la vida cotidiana y la maternidad en un diario de viaje interactivo.
+Utiliza una cámara Lomo'Instant Automat combinada con técnicas de ilustración, collage, notas manuscritas y listas temáticas alrededor de las imágenes.
+Aporta una reflexión sobre cómo la fotografía analógica sirve de hilo conductor narrativo y cómo el espacio en blanco de los márgenes puede enriquecer la memoria visual.
+
+The Photographic Journal: Confessions por Olivia Burgess
+La obra profundiza en los límites entre la presencia física, el cuerpo en movimiento y la representación performativa desde una perspectiva íntima.
+Aplica una estética corporal sensible e intuitiva marcada por la experiencia de la autora como bailarina y modelo profesional frente y detrás de la cámara.
+Ofrece un aprendizaje sobre la transformación de la corporalidad en un lenguaje visual poético capaz de habitar la frontera entre el estatismo y el movimiento.
+
+L'Œil de la Photographie: Edición especial sobre Jay Maisel (1931-2026)
+Un homenaje a la trayectoria del legendario fotógrafo Jay Maisel tras su fallecimiento a los 95 años, recorriendo sus trabajos icónicos en Nueva York, París o Haití.
+Se fundamenta en la maestría absoluta del color, la luz natural y el formato analógico de 35 milímetros y medio formato aplicado al documentalismo urbano y el retrato espontáneo.
+Destaca que una fotografía verdaderamente poderosa es aquella que, tras verla cada día durante años, mantiene intacta su capacidad de fascinar.
+
+35mmc: Keystone Zoom EverFlash XR608 110 Camera
+Analiza el diseño y funcionamiento de una cámara compacta del formato 110 comercializada en los años ochenta con zoom integrado y flash.
+Presenta la estética vintage y el grano característico de las películas de formato miniatura en forma de barra de chocolate típicas del consumo masivo de la época.
+Reflexiona sobre la sencillez técnica y el valor nostálgico de los equipos analógicos populares que democratizaron la fotografía de consumo.
+
+Feature Shoot: Fotografiar la sensación de los lugares sutiles con Lev L. Spiro
+Aborda el concepto celta de los "lugares sutiles", espacios de la naturaleza donde la frontera entre el mundo físico y lo sagrado se vuelve permeable.
+Utiliza técnicas de larga exposición con filtros de densidad neutra y disparos durante las horas extremas del día para capturar la atmósfera sutil del agua y las nubes.
+Invita al fotógrafo a desacelerar, cultivar una atención receptiva y dejarse detener por el entorno para transmutar la simple descripción en emoción pura.
+
+Ain't-Bad (Joya del archivo): El trabajo personal de Jiabao Sun
+Recuperamos del archivo la obra de Jiabao Sun, centrada en la exploración de la identidad personal y el choque cultural entre China y Estados Unidos.
+Destaca por una propuesta estética limpia, ordenada y de luz ambiental pausada que enfatiza el espacio y la composición serena.
+Aporta una lección sobre la fotografía introspectiva como vehículo para procesar la geografía personal y el sentido de pertenencia.
+
+EMULSIVE (Joya del archivo): 8 fotogramas del recién nacido en ILFORD HP5 PLUS por Spencer Cameron
+Rescatamos este sensible ensayo fotográfico analógico sobre los primeros días de vida de un hijo tras un periodo de duelo por la pérdida de una madre.
+Emplea película analógica en blanco y negro de 35mm Ilford HP5 Plus con una cámara Nikon Nikkormat y un objetivo de 50mm a gran apertura de diafragma.
+Muestra el valor terapéutico del acto fotográfico como refugio emocional para inmortalizar la vulnerabilidad y el nacimiento de la esperanza.
+
+Fotonistas (Newsletter de Ana Arbonés)
+¿Sabías que una de las fotografías más icónicas de la Gran Depresión sufrió un retoque directo en el laboratorio que alteró su composición original? Ana Arbonés plantea una fascinante provocación sobre la delgada línea entre la verdad fotográfica y la edición personal, invitándote a descubrir por qué procesar tus imágenes es esencial para definir tu voz; suscríbete a su Fotoletter en fotonistas.com para descubrir toda la historia.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 22 · Luces en rotación, capas de ilusión y el poder ético de la mirada</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-25.mp3</guid>
+    <pubDate>Tue, 25 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Europe’s Carousels Eternally Whirl in Luca Battaglia’s Nostalgic Photos (Colossal)
+Luca Battaglia explora la nostalgia de los carruseles europeos convirtiendo atracciones urbanas cotidianas en enigmáticas esculturas de luz. Utilizando filtros de densidad neutra (ND256 y ND1000) y largas exposiciones de entre 20 y 30 segundos, el fotógrafo disuelve las formas tangibles en patrones abstractos y estelas luminosas de apariencia futurista. El proyecto invita a reflexionar sobre la memoria infantil, la transformación del espacio público y la capacidad de la fotografía para suspender el tiempo.
+
+Shawn Walker’s layered, psychedelic vision of Harlem’s streets (Huck Magazine)
+El legendario fotógrafo Shawn Walker presenta From BeBop to Illusion, un monográfico que reinterpreta las calles de Harlem a través de complejas capas de reflejos en escaparates. Con una estética donde convergen el ritmo del jazz, las superposiciones geométricas y una sutil atmósfera apocalíptica, Walker capta maniquíes y transeúntes fusionados en el cristal. Su trabajo ofrece una valiosa lección sobre cómo trascender el documental directo para construir un lenguaje visual donde la ilusión y la crítica social coexisten.
+
+Resumen de novedades en L'Œil de la Photographie
+La publicación abarca desde la pureza esencial del nuevo libro Plates de Pablo Arroyo y la mirada de coleccionista de Gad Edery, hasta el París nocturno y surrealista de Brassaï en el Heide Museum. Además, destaca el trabajo de Fabián Suspensivo en el Festival OFF Arles 2026 y repasa joyas históricas como la Colección Loewentheil de fotógrafos de la dinastía Qing y el compromiso social de Peter Merts. Un recorrido transversal que recuerda la versatilidad del medio para catalogar la historia, explorar la psique o reivindicar causas sociales.
+
+Nippon Kogaku W-Nikkor 3.5cm f/1.8 LTM – Review (35mmc)
+Esta revisión profundiza en la historia y rendimiento óptico del legendario objetivo vintage Nippon Kogaku W-Nikkor de 35mm f/1.8 con montura de rosca Leica. A través del análisis técnico de sus renderizados, contraste y desenfoques característicos, el artículo pone en valor el diseño clásico japonés de mediados del siglo XX. Un texto fundamental para comprender cómo el carácter y las imperfecciones calculadas de las ópticas analógicas clásicas aportan una firma estética irrepetible a la imagen contemporánea.
+
+Joel Jimenez (Ain't-Bad - Joya del Archivo)
+Rescatamos del archivo de Ain't-Bad la propuesta conceptual del artista costarricense Joel Jimenez, centrada en el análisis psicológico y fenomenológico del espacio. Mediante una cuidada composición arquitectónica y un uso sobrio de la luz natural, Jimenez transforma entornos vacíos en escenarios cargados de tensión narrativa e introspección. Su trabajo enseña a utilizar el paisaje construido como un espejo de la memoria y la soledad contemporánea.
+
+5 Frames… Crisscrossing the old Route 66 on a Polaroid 600 (EMULSIVE - Flashback Histórico)
+Un viaje invernal por la histórica Ruta 66 captado en solo cinco fotogramas a través del chasis de una cámara instantánea Polaroid 600. La estética impredecible, los tonos orgánicos del revelado químico inmediato y la textura vintage elevan el género del diario de ruta a una experiencia nostálgica. La obra nos recuerda el valor de abrazar la imperfección, la pausa y la serendipia en la fotografía de carretera.
+
+Newsletter de Fotonistas (Ana Arbonés)
+¿Hasta qué punto el procesado de una fotografía editorial cruza la línea entre la atmósfera artística y la manipulación de la verdad periodística? Ana plantea una provocadora controversia histórica que cambiará para siempre tu forma de mirar las portadas icónicas; suscríbete a su Fotoletter en fotonistas.com para descubrir el secreto.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-25.mp3" length="10905040" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-25.jpg"/>
+    <itunes:duration>7:34</itunes:duration>
+    <itunes:title>Episodio 22 · Luces en rotación, capas de ilusión y el poder ético de la mirada</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Europe’s Carousels Eternally Whirl in Luca Battaglia’s Nostalgic Photos (Colossal)
+Luca Battaglia explora la nostalgia de los carruseles europeos convirtiendo atracciones urbanas cotidianas en enigmáticas esculturas de luz. Utilizando filtros de densidad neutra (ND256 y ND1000) y largas exposiciones de entre 20 y 30 segundos, el fotógrafo disuelve las formas tangibles en patrones abstractos y estelas luminosas de apariencia futurista. El proyecto invita a reflexionar sobre la memoria infantil, la transformación del espacio público y la capacidad de la fotografía para suspender el tiempo.
+
+Shawn Walker’s layered, psychedelic vision of Harlem’s streets (Huck Magazine)
+El legendario fotógrafo Shawn Walker presenta From BeBop to Illusion, un monográfico que reinterpreta las calles de Harlem a través de complejas capas de reflejos en escaparates. Con una estética donde convergen el ritmo del jazz, las superposiciones geométricas y una sutil atmósfera apocalíptica, Walker capta maniquíes y transeúntes fusionados en el cristal. Su trabajo ofrece una valiosa lección sobre cómo trascender el documental directo para construir un lenguaje visual donde la ilusión y la crítica social coexisten.
+
+Resumen de novedades en L'Œil de la Photographie
+La publicación abarca desde la pureza esencial del nuevo libro Plates de Pablo Arroyo y la mirada de coleccionista de Gad Edery, hasta el París nocturno y surrealista de Brassaï en el Heide Museum. Además, destaca el trabajo de Fabián Suspensivo en el Festival OFF Arles 2026 y repasa joyas históricas como la Colección Loewentheil de fotógrafos de la dinastía Qing y el compromiso social de Peter Merts. Un recorrido transversal que recuerda la versatilidad del medio para catalogar la historia, explorar la psique o reivindicar causas sociales.
+
+Nippon Kogaku W-Nikkor 3.5cm f/1.8 LTM – Review (35mmc)
+Esta revisión profundiza en la historia y rendimiento óptico del legendario objetivo vintage Nippon Kogaku W-Nikkor de 35mm f/1.8 con montura de rosca Leica. A través del análisis técnico de sus renderizados, contraste y desenfoques característicos, el artículo pone en valor el diseño clásico japonés de mediados del siglo XX. Un texto fundamental para comprender cómo el carácter y las imperfecciones calculadas de las ópticas analógicas clásicas aportan una firma estética irrepetible a la imagen contemporánea.
+
+Joel Jimenez (Ain't-Bad - Joya del Archivo)
+Rescatamos del archivo de Ain't-Bad la propuesta conceptual del artista costarricense Joel Jimenez, centrada en el análisis psicológico y fenomenológico del espacio. Mediante una cuidada composición arquitectónica y un uso sobrio de la luz natural, Jimenez transforma entornos vacíos en escenarios cargados de tensión narrativa e introspección. Su trabajo enseña a utilizar el paisaje construido como un espejo de la memoria y la soledad contemporánea.
+
+5 Frames… Crisscrossing the old Route 66 on a Polaroid 600 (EMULSIVE - Flashback Histórico)
+Un viaje invernal por la histórica Ruta 66 captado en solo cinco fotogramas a través del chasis de una cámara instantánea Polaroid 600. La estética impredecible, los tonos orgánicos del revelado químico inmediato y la textura vintage elevan el género del diario de ruta a una experiencia nostálgica. La obra nos recuerda el valor de abrazar la imperfección, la pausa y la serendipia en la fotografía de carretera.
+
+Newsletter de Fotonistas (Ana Arbonés)
+¿Hasta qué punto el procesado de una fotografía editorial cruza la línea entre la atmósfera artística y la manipulación de la verdad periodística? Ana plantea una provocadora controversia histórica que cambiará para siempre tu forma de mirar las portadas icónicas; suscríbete a su Fotoletter en fotonistas.com para descubrir el secreto.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
