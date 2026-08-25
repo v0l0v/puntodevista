@@ -56,19 +56,12 @@
     const widget = document.createElement('div');
     widget.id = 'chat-widget';
     widget.innerHTML = `
-      <!-- Botón Flotante Superior Derecho (Estenopo Círculo / Pastilla Expandible) -->
-      <button id="chat-trigger-btn" aria-label="Abrir Estenopo · Inteligencia Visual" title="Estenopo | Inteligencia Visual">
-        <span class="estenopo-aperture-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
-            <line x1="12" y1="2" x2="12" y2="5"></line>
-            <line x1="12" y1="19" x2="12" y2="22"></line>
-            <line x1="2" y1="12" x2="5" y2="12"></line>
-            <line x1="19" y1="12" x2="22" y2="12"></line>
-          </svg>
+      <!-- Botón Flotante Superior Derecho (Logo Portada Podcast Círculo / Pastilla Expandible) -->
+      <button id="chat-trigger-btn" aria-label="Abrir Buscador · Inteligencia Visual" title="Buscador | Inteligencia Visual">
+        <span class="estenopo-logo-wrapper">
+          <img src="podcast-cover.png" alt="Estenopo" class="estenopo-cover-img">
         </span>
-        <span class="chat-btn-text">Estenopo | Inteligencia Visual</span>
+        <span class="chat-btn-text">Buscador | Inteligencia Visual</span>
       </button>
 
       <!-- Panel Lateral Vertical Estenopo -->
