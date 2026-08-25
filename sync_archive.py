@@ -159,7 +159,7 @@ def export_full_feeds_json():
     with get_connection() as conn:
         rows = conn.execute("""
             SELECT id, url as link, source as _source, title, photographer,
-                   published_date as date, summary as excerpt, full_text as content,
+                   published_date as date, summary as excerpt, summary as content,
                    image_url as image, image_url as thumbnail
             FROM articles
             ORDER BY published_date DESC, id DESC

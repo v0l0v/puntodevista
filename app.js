@@ -587,13 +587,12 @@ async function loadFeeds() {
     }
   } catch {}
 
-  // 3. Autorecuperación: si alguna fuente de ALL_SOURCES no está en feeds.json, cargar su archivo individual
+  // 3. Autorecuperación: si alguna fuente de ALL_SOURCES no está en feeds.json, cargar su archivo individual en segundo plano
   const loadedSources = new Set(currentEntries.map(e => e._source));
   const missingSources = ALL_SOURCES.filter(s => !loadedSources.has(s));
 
-  if (missingSources.length > 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    const targets = missingSources.length > 0 ? missingSources : ALL_SOURCES;
-    const fetchers = targets.map(src => {
+  if (missingSources.length > 0) {
+    const fetchers = missingSources.map(src => {
       if (CUSTOM_FETCHERS[src]) return CUSTOM_FETCHERS[src]();
       return fetchApiOrJson(`/api/${src}`, `${src}.json`, normalizeGenericSource(src));
     });
