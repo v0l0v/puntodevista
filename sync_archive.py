@@ -149,7 +149,38 @@ def main():
     except Exception as e:
         print(f"⚠️ Vector indexation skipped: {e}")
 
+    # Exportar todo el archivo consolidado a feeds.json
+    print("\n📦 Exportando todo el archivo consolidado (850+ artículos) a feeds.json...")
+    export_full_feeds_json()
+
+
+def export_full_feeds_json():
+    """Exporta todos los artículos consolidados de archive.db a feeds.json."""
+    with get_connection() as conn:
+        rows = conn.execute("""
+            SELECT id, url as link, source as _source, title, photographer,
+                   published_date as date, summary as excerpt, full_text as content,
+                   image_url as image, image_url as thumbnail
+            FROM articles
+            ORDER BY published_date DESC, id DESC
+        """).fetchall()
+        items = [dict(r) for r in rows]
+        for item in items:
+            item['_id'] = str(item['id'])
+            item['_parsedDate'] = item['date']
+
+        feeds_path = os.path.join(DIR, 'feeds.json')
+        with open(feeds_path, 'w', encoding='utf-8') as f:
+            json.dump({'items': items, 'count': len(items), 'updated': json_files_date()}, f, ensure_ascii=False)
+        print(f"   ✓ feeds.json generado con éxito conteniendo {len(items)} artículos históricos.")
+
+
+def json_files_date():
+    from datetime import datetime
+    return datetime.now().strftime('%Y-%m-%d')
+
 
 if __name__ == '__main__':
     main()
+
 

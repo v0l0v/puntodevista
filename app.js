@@ -1101,7 +1101,7 @@ function getSourceLabel(src) {
 function render(entries) {
   const el = document.getElementById('entries');
   const all = window.__allEntries || [];
-  const displayItems = __allChecked ? entries.slice(0, 150) : entries;
+  const displayItems = entries;
 
   el.innerHTML = podcastCardHTML() + displayItems.map(e => {
     const isPodcast = e.is_podcast_entry;
