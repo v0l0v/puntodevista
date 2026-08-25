@@ -44,6 +44,16 @@ const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
 const PODCAST_COVER = 'podcast-cover.jpg';
 
+let __allChecked = true;
+let __sources = new Set();
+let __searchQuery = '';
+let __visibleLimit = 36;
+const PAGE_SIZE = 36;
+let __currentFilteredEntries = [];
+let __scrollObserver = null;
+let __dateFilter = { period: 'month', value: null };
+const MONTH_NAMES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
 const CLICK_OPEN = ['assets/mp3/click1.mp3', 'assets/mp3/click2.mp3', 'assets/mp3/click3.mp3', 'assets/mp3/click4.mp3'];
 let _clickLast = -1;
 
@@ -310,13 +320,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// ── Estado del filtro de fecha ─────────────────────────────────────────────
-// period: 'all' | 'year' | 'month' | 'week' | 'day' | 'month-specific'
-// value:  null  | null   | null    | null   | null  | Date (primer día del mes)
-let __dateFilter = { period: 'month', value: null };
-
-const MONTH_NAMES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-
 function setDateFilter(period, value) {
   __dateFilter = { period, value };
   applyFilter();
@@ -382,7 +385,17 @@ function getDateRange() {
 function isDateVisible(entry) {
   const range = getDateRange();
   if (!range) return true;
-  const t = entry._parsedDate || 0;
+  if (!entry) return false;
+  let t = 0;
+  if (entry._parsedDate instanceof Date && !isNaN(entry._parsedDate)) {
+    t = entry._parsedDate.getTime();
+  } else if (typeof entry._parsedDate === 'number') {
+    t = entry._parsedDate;
+  } else if (entry._parsedDate || entry.date) {
+    const d = new Date(entry._parsedDate || entry.date);
+    if (!isNaN(d)) t = d.getTime();
+  }
+  if (!t) return true;
   return t >= range.from && t <= range.to;
 }
 
@@ -427,9 +440,6 @@ function buildMonthsGrid() {
   }
 }
 
-
-let __allChecked = true;
-let __sources = new Set();
 
 function loadSources() {
   try {
@@ -1015,8 +1025,6 @@ function isMobile() {
   return window.matchMedia('(max-width: 720px)').matches;
 }
 
-let __searchQuery = '';
-
 function isSearchMatch(e, q) {
   if (!q) return true;
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -1024,11 +1032,6 @@ function isSearchMatch(e, q) {
   const text = `${e.title || ''} ${photo} ${e.summary || ''} ${e.excerpt || ''} ${e.content || ''} ${e._source || ''}`.toLowerCase();
   return terms.every(t => text.includes(t));
 }
-
-let __visibleLimit = 36;
-const PAGE_SIZE = 36;
-let __currentFilteredEntries = [];
-let __scrollObserver = null;
 
 function applyFilter(resetLimit = true) {
   if (resetLimit) {
@@ -1912,6 +1915,8 @@ async function openModal(card) {
       body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
       return;
     }
+  }
+
   // 35mmc, EMULSIVE, Huck, Phroom
   if (['35mmc', 'emulsive', 'huck', 'phroom'].includes(source)) {
     let data = null;
