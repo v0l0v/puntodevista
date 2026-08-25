@@ -10,13 +10,13 @@
   let isExpanded = false;
 
   const SUGGESTIONS = [
-    '🌅 Atardeceres junto al agua y luces doradas',
-    '✨ Disparador Creativo para hoy',
-    '🧬 Linaje de la soledad urbana y suburbios',
-    '🌙 Atmósfera nocturna, misterio y sombras',
-    '🎞️ Imperfección analógica y grano experimental',
-    '🏠 Memoria familiar, duelo y espacio doméstico',
-    '🌐 Ver Dossier Semanal de Tendencias'
+    'Atardeceres junto al agua y luz dorada',
+    'Disparador creativo para hoy',
+    'Linaje de la soledad urbana y suburbios',
+    'Atmósfera nocturna, misterio y sombras',
+    'Imperfección analógica y grano experimental',
+    'Memoria familiar, duelo y espacio doméstico',
+    'Dossier de Tendencias Visuales'
   ];
 
   // Diccionario semántico ampliado para fallback estático
@@ -51,7 +51,6 @@
     widget.innerHTML = `
       <!-- Botón Flotante -->
       <button id="chat-trigger-btn" aria-label="Abrir Estenopo · Inteligencia Visual" title="Consultar a Estenopo sobre el archivo fotográfico">
-        <span class="chat-btn-sparkle">📷</span>
         <span class="chat-btn-text">Estenopo</span>
       </button>
 
@@ -61,14 +60,14 @@
         <!-- Cabecera Estenopo -->
         <div class="chat-header">
           <div class="chat-header-left">
-            <div class="chat-badge-glow">📷 Estenopo</div>
+            <div class="chat-badge-glow">Estenopo</div>
             <div class="chat-header-info">
               <div class="chat-title">Inteligencia Visual & Curaduría</div>
-              <div class="chat-subtitle">860+ Obras · Linajes · Podcasts</div>
+              <div class="chat-subtitle">Ensayos · Linajes · Resonancias Visuales</div>
             </div>
           </div>
           <div class="chat-header-actions">
-            <button id="chat-clear-btn" class="chat-tool-btn" title="Limpiar conversación">🗑️</button>
+            <button id="chat-clear-btn" class="chat-tool-btn" title="Reiniciar vista">↺</button>
             <button id="chat-expand-btn" class="chat-tool-btn" title="Expandir/Reducir ancho">⛶</button>
             <button id="chat-close-btn" class="chat-tool-btn" title="Cerrar panel">✕</button>
           </div>
@@ -82,7 +81,7 @@
         <!-- Zona de Mensajes del Chat -->
         <div class="chat-messages" id="chat-messages">
           <div class="chat-msg bot">
-            <div class="msg-avatar-estenopo">📷</div>
+            <div class="msg-avatar-estenopo">E</div>
             <div class="msg-content" id="chat-intro-content">
               ${getIntroWelcomeHtml()}
             </div>
@@ -92,8 +91,7 @@
         <!-- Barra de Input Flotante Estenopo -->
         <form class="gemini-input-container" id="chat-form">
           <div class="gemini-input-wrapper">
-            <span class="gemini-input-icon">📷</span>
-            <input type="text" id="chat-input" placeholder="Pregunta a Estenopo sobre atmósferas, conceptos o autores…" autocomplete="off" aria-label="Escribe tu consulta">
+            <input type="text" id="chat-input" placeholder="Pregunta sobre atmósferas de luz, conceptos, autores o etiquetas…" autocomplete="off" aria-label="Escribe tu consulta">
             <button type="submit" id="chat-send-btn" aria-label="Enviar consulta">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -115,7 +113,7 @@
     document.getElementById('chat-chips').addEventListener('click', (e) => {
       const chip = e.target.closest('.gemini-chip');
       if (chip) {
-        const text = chip.textContent.replace(/^[^\wáéíóúÁÉÍÓÚñÑ]+/, '').trim();
+        const text = chip.textContent.replace(/^[^\wáéíóúÁÉÍÓÚñÑ#]+/, '').trim();
         document.getElementById('chat-input').value = text;
         handleUserSubmit(new Event('submit'));
       }
@@ -126,49 +124,40 @@
 
   function getIntroWelcomeHtml() {
     return `
-      <p class="gemini-greeting"><strong>Hola. Soy Estenopo, tu asistente de Inteligencia Visual y Curaduría.</strong></p>
-      <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.45;margin:0.4rem 0 0.75rem;">
-        Exploro las conexiones conceptuales, estéticas y técnicas a través de las <strong>867 obras y 22 podcasts</strong> del archivo histórico de <em>Punto de vista</em>.
+      <p class="gemini-greeting"><strong>Estenopo · Inteligencia Visual</strong></p>
+      <p style="color:#cbd5e1;font-size:0.875rem;line-height:1.55;margin:0.35rem 0 0.85rem;">
+        Un umbral óptico hacia el archivo fotográfico de <em>Punto de vista</em>. Trazo resonancias entre miradas, atmósferas de luz, procesos químicos y formas de habitar el espacio.
       </p>
 
       <div class="estenopo-intro-grid">
-        <div class="estenopo-intro-card">
-          <div class="estenopo-intro-icon">🌫️</div>
-          <div class="estenopo-intro-text">
-            <strong>1. Búsqueda por Atmósferas</strong>
-            <span>Busca por sensaciones, luz o emociones: <em>«atardeceres junto al agua»</em>, <em>«luces de neón en la niebla»</em> o <em>«soledad en el metro»</em>.</span>
-          </div>
+        <div class="estenopo-intro-card card-atmosphere">
+          <div class="estenopo-card-label">Atmósferas & Luz</div>
+          <strong>El tono emocional del encuadre</strong>
+          <p>Busca por sensaciones y texturas: <em>«luces de neón en la niebla»</em>, <em>«atardeceres junto al mar»</em> o <em>«la penumbra doméstica»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card">
-          <div class="estenopo-intro-icon">🧬</div>
-          <div class="estenopo-intro-text">
-            <strong>2. Linajes & Cruces Visuales</strong>
-            <span>Descubre cómo dialogan estéticamente fotógrafos y publicaciones de distintas épocas ante un mismo tema.</span>
-          </div>
+        <div class="estenopo-intro-card card-lineage">
+          <div class="estenopo-card-label">Linajes Visuales</div>
+          <strong>Diálogos entre miradas</strong>
+          <p>Descubre cruces estéticos entre autores distantes que convergen en una misma obsesión formal o temática.</p>
         </div>
 
-        <div class="estenopo-intro-card">
-          <div class="estenopo-intro-icon">📷</div>
-          <div class="estenopo-intro-text">
-            <strong>3. Disparadores Creativos</strong>
-            <span>Pídeme un reto para salir hoy a hacer fotos adaptado a tu situación: <em>«viajaré en tren»</em>, <em>«día lluvioso»</em> o <em>«retrato íntimo»</em>.</span>
-          </div>
+        <div class="estenopo-intro-card card-spark">
+          <div class="estenopo-card-label">Disparador Creativo</div>
+          <strong>Un reto para salir a disparar</strong>
+          <p>Propuestas técnicas y poéticas según tu escenario: <em>«viajo en tren»</em>, <em>«día de lluvia»</em> o <em>«un retrato sin rostro»</em>.</p>
         </div>
 
-        <div class="estenopo-intro-card">
-          <div class="estenopo-intro-icon">🏷️</div>
-          <div class="estenopo-intro-text">
-            <strong>4. Catálogo por 39 Categorías</strong>
-            <span>Filtra con un clic en las etiquetas temáticas: 
-              <span style="display:inline-flex;flex-wrap:wrap;gap:0.25rem;margin-top:0.2rem;">
-                <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
-                <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
-                <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">#intimidad</button>
-                <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">#marina</button>
-                <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">#viaje</button>
-              </span>
-            </span>
+        <div class="estenopo-intro-card card-taxonomy">
+          <div class="estenopo-card-label">Constelaciones</div>
+          <strong>Explorar por afinidad visual</strong>
+          <div class="estenopo-intro-tags">
+            <button type="button" onclick="window.askEstenopoTag('#calle', event)" class="estenopo-tag-badge">#calle</button>
+            <button type="button" onclick="window.askEstenopoTag('#analógico', event)" class="estenopo-tag-badge">#analógico</button>
+            <button type="button" onclick="window.askEstenopoTag('#intimidad', event)" class="estenopo-tag-badge">#intimidad</button>
+            <button type="button" onclick="window.askEstenopoTag('#marina', event)" class="estenopo-tag-badge">#marina</button>
+            <button type="button" onclick="window.askEstenopoTag('#nocturna', event)" class="estenopo-tag-badge">#nocturna</button>
+            <button type="button" onclick="window.askEstenopoTag('#viaje', event)" class="estenopo-tag-badge">#viaje</button>
           </div>
         </div>
       </div>
@@ -448,7 +437,7 @@
 
       return `
         <div class="gemini-response-box">
-          <div class="gemini-badge-sparkle">📷 Disparador Creativo del Día</div>
+          <div class="gemini-badge-sparkle">Disparador Creativo</div>
           <h4 style="margin:0.5rem 0 0.3rem;color:#fff;font-size:1.05rem;font-family:'Playfair Display',serif;">Reto: ${retoTitulo}</h4>
           <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.4;margin-bottom:0.4rem;">
             Inspirado en el lenguaje visual de esta obra del archivo:
@@ -465,16 +454,16 @@
             ${topTagsHtml}
             <div class="estenopo-link-actions">
               <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir en Lector">
-                👁️ Abrir en Lector
+                Abrir en Lector
               </button>
               ${url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a fuente original">Original ↗</a>` : ''}
             </div>
           </div>
 
-          <div style="background:rgba(255,1,0,0.08);border-left:3px solid #ff0100;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.5;">
+          <div style="background:rgba(255,68,68,0.06);border-left:3px solid #ff4444;padding:0.75rem;margin:0.75rem 0;border-radius:4px;color:#f8fafc;font-size:0.88rem;line-height:1.5;">
             <strong>Tu ejercicio para el trayecto:</strong><br>${retoTexto}
           </div>
-          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;">💡 <em>¿Quieres ajustar el reto a blanco y negro, película analógica o fotografía de viaje?</em></p>
+          <p style="font-size:0.78rem;opacity:0.8;margin-top:0.4rem;color:#94a3b8;"><em>¿Quieres ajustar el reto a blanco y negro, película analógica o fotografía de viaje?</em></p>
         </div>
       `;
     }
@@ -483,9 +472,9 @@
     if (qLower.includes('dossier') || qLower.includes('tendencia') || qLower.includes('informe') || qLower.includes('observatorio')) {
       return `
         <div class="gemini-response-box">
-          <div class="gemini-badge-sparkle">🌐 Observatorio de Tendencias</div>
+          <div class="gemini-badge-sparkle">Observatorio de Tendencias</div>
           <h4 style="margin:0.5rem 0;color:#fff;font-size:1.02rem;">Dossier de Inteligencia Curatorial</h4>
-          <p style="color:#cbd5e1;font-size:0.86rem;">Patrones visuales detectados en más de 850 proyectos:</p>
+          <p style="color:#cbd5e1;font-size:0.86rem;">Patrones y resonancias visuales identificadas en el archivo:</p>
           <ul style="margin:0.5rem 0 0.8rem 1.2rem;font-size:0.84rem;color:#cbd5e1;line-height:1.5;">
             <li><strong>Tendencia 1:</strong> El Espacio Doméstico como Escenario Psicológico.</li>
             <li><strong>Tendencia 2:</strong> Arqueología Visual de Subculturas y Comunidades.</li>
@@ -504,7 +493,7 @@
         <div class="gemini-response-box">
           <p>No encontré obras que resuenen directamente con <em>«${escapeHtml(query)}»</em> en el archivo.</p>
           <p style="margin-top:0.5rem;font-size:0.85rem;color:#94a3b8;">
-            💡 <em>Prueba preguntando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o etiquetas como <strong>#calle</strong> o <strong>#analógico</strong>.
+            <em>Prueba buscando por:</em> <strong>atardeceres junto al agua</strong>, <strong>soledad urbana</strong>, <strong>luz de neón nocturna</strong>, <strong>grano analógico</strong>, <strong>arquitectura brutalista</strong> o etiquetas como <strong>#calle</strong> o <strong>#analógico</strong>.
           </p>
         </div>
       `;
@@ -528,7 +517,7 @@
 
       out += `
         <div class="gemini-lineage-banner">
-          <div class="gemini-lineage-title">🧬 Linaje Visual Detectado</div>
+          <div class="gemini-lineage-title">Linaje Visual Detectado</div>
           <div class="gemini-lineage-desc">
             Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleModalById('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleModalById('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}).
           </div>
@@ -540,7 +529,7 @@
     if (articles.length > 0) {
       out += `
         <div class="gemini-section-header">
-          <span>📸 Obras & Ensayos (${articles.length})</span>
+          <span>Obras & Ensayos Seleccionados</span>
         </div>
         <div class="estenopo-links-list">
       `;
@@ -567,7 +556,7 @@
             ${tagsHtml}
             <div class="estenopo-link-actions">
               <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo en lector">
-                👁️ Lector
+                Lector
               </button>
               <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a la publicación original">
                 Original ↗
@@ -584,7 +573,7 @@
     if (podcasts.length > 0) {
       out += `
         <div class="gemini-section-header" style="margin-top:1rem">
-          <span>🎙️ Podcasts Relacionados (${podcasts.length})</span>
+          <span>Episodios & Podcasts Relacionados</span>
         </div>
         <div class="estenopo-podcasts-list">
       `;
@@ -596,10 +585,10 @@
 
         out += `
           <div class="estenopo-podcast-item">
-            <div class="estenopo-podcast-meta">🎙️ ${dateStr} ${durationMin ? `· ${durationMin}` : ''}</div>
+            <div class="estenopo-podcast-meta">${dateStr} ${durationMin ? `· ${durationMin}` : ''}</div>
             <div class="estenopo-podcast-title">${escapeHtml(p.title || 'Resumen Diario')}</div>
             <div class="estenopo-link-actions">
-              ${audioUrl ? `<button class="estenopo-mini-btn view" onclick="window.playPodcastByUrl('${audioUrl}')">▶ Reproducir</button>` : ''}
+              ${audioUrl ? `<button class="estenopo-mini-btn view" onclick="window.playPodcastByUrl('${audioUrl}')">Escuchar</button>` : ''}
               <a href="episodios.html" target="_blank" class="estenopo-mini-btn">Ver Todos →</a>
             </div>
           </div>
