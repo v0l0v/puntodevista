@@ -277,13 +277,17 @@
     const termsArray = Array.from(expandedTerms);
 
     const scoredArticles = dataset.map(a => {
-      let score = 0;
-      const rawTitle = decodeHtmlEntities(a.title || '');
-      const rawPhoto = decodeHtmlEntities(a.photographer || '');
-      const rawSummary = decodeHtmlEntities(a.summary || a.excerpt || a.content || '');
-      const rawSrc = decodeHtmlEntities(a._source || a.source || '');
+      let aTags = [];
+      if (Array.isArray(a.tags)) aTags = a.tags;
+      else if (typeof a.tags === 'string') {
+        try { aTags = JSON.parse(a.tags); } catch { aTags = []; }
+      }
 
       rawTerms.forEach(t => {
+        const cleanT = t.replace(/^#/, '');
+        if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
+          score += 35;
+        }
         if (matchWordInText(rawTitle, t)) score += 20;
         if (matchWordInText(rawPhoto, t)) score += 15;
         if (matchWordInText(rawSummary, t)) score += 8;
@@ -291,15 +295,13 @@
       });
 
       termsArray.forEach(t => {
+        const cleanT = t.replace(/^#/, '');
+        if (aTags.some(tag => tag.toLowerCase().replace(/^#/, '') === cleanT)) {
+          score += 15;
+        }
         if (matchWordInText(rawTitle, t)) score += 6;
         if (matchWordInText(rawSummary, t)) score += 3;
       });
-
-      let aTags = [];
-      if (Array.isArray(a.tags)) aTags = a.tags;
-      else if (typeof a.tags === 'string') {
-        try { aTags = JSON.parse(a.tags); } catch { aTags = []; }
-      }
 
       return {
         id: a._id || a.id || a.link,
