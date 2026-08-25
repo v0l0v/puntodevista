@@ -56,9 +56,19 @@
     const widget = document.createElement('div');
     widget.id = 'chat-widget';
     widget.innerHTML = `
-      <!-- Botón Flotante -->
-      <button id="chat-trigger-btn" aria-label="Abrir Estenopo · Inteligencia Visual" title="Consultar a Estenopo sobre el archivo fotográfico">
-        <span class="chat-btn-text">Estenopo</span>
+      <!-- Botón Flotante Superior Derecho (Estenopo Círculo / Pastilla Expandible) -->
+      <button id="chat-trigger-btn" aria-label="Abrir Estenopo · Inteligencia Visual" title="Estenopo | Inteligencia Visual">
+        <span class="estenopo-aperture-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            <line x1="12" y1="2" x2="12" y2="5"></line>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+            <line x1="2" y1="12" x2="5" y2="12"></line>
+            <line x1="19" y1="12" x2="22" y2="12"></line>
+          </svg>
+        </span>
+        <span class="chat-btn-text">Estenopo | Inteligencia Visual</span>
       </button>
 
       <!-- Panel Lateral Vertical Estenopo -->
@@ -473,12 +483,12 @@
               <span>${sourceName}</span>
               ${photo ? `<span class="estenopo-link-author">· ${photo}</span>` : ''}
             </div>
-            <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
+            <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
               ${escapeHtml(title)}
             </a>
             ${topTagsHtml}
             <div class="estenopo-link-actions">
-              <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir en Lector">
+              <button class="estenopo-mini-btn view" onclick="window.openArticleAndCloseEstenopo('${articleId}', '${sourceSafe}')" title="Abrir en Lector">
                 Abrir en Lector
               </button>
               ${url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a fuente original">Original ↗</a>` : ''}
@@ -547,7 +557,7 @@
         <div class="gemini-lineage-banner">
           <div class="gemini-lineage-title">Linaje Visual Detectado</div>
           <div class="gemini-lineage-desc">
-            Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleModalById('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleModalById('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}).
+            Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}).
           </div>
         </div>
       `;
@@ -578,12 +588,12 @@
               <span>${sourceName}</span>
               ${photo ? `<span class="estenopo-link-author">· ${photo}</span>` : ''}
             </div>
-            <a href="javascript:void(0)" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
+            <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${articleId}', '${sourceSafe}')" class="estenopo-link-title" title="Abrir en Lector">
               ${escapeHtml(a.title)}
             </a>
             ${tagsHtml}
             <div class="estenopo-link-actions">
-              <button class="estenopo-mini-btn view" onclick="window.openArticleModalById('${articleId}', '${sourceSafe}')" title="Abrir artículo completo en lector">
+              <button class="estenopo-mini-btn view" onclick="window.openArticleAndCloseEstenopo('${articleId}', '${sourceSafe}')" title="Abrir artículo completo en lector">
                 Lector
               </button>
               <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="estenopo-mini-btn" title="Ir a la publicación original">
@@ -629,6 +639,15 @@
     out += `</div>`;
     return out;
   }
+
+  window.openArticleAndCloseEstenopo = function(id, source) {
+    if (typeof window.openArticleModalById === 'function') {
+      window.openArticleModalById(id, source);
+    }
+    if (isOpen) {
+      toggleChat();
+    }
+  };
 
   window.askEstenopoTag = function(tag, e) {
     if (e) {

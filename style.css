@@ -1337,39 +1337,90 @@ footer {
   color: #ff0100;
 }
 
-/* ─── WIDGET DE CHAT ASISTENTE FOTOGRÁFICO ──────────────────────────────────── */
+/* ─── BOTÓN DISPARADOR ESTENOPO (SUPERIOR DERECHO · CÍRCULO A PASTILLA) ─────── */
 #chat-trigger-btn {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  top: 1rem;
+  right: 1.25rem;
   z-index: 999;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: rgba(18, 18, 18, 0.95);
-  border: 1px solid rgba(255, 1, 0, 0.4);
+  gap: 0.45rem;
+  background: rgba(14, 15, 18, 0.92);
+  border: 1px solid rgba(255, 1, 0, 0.45);
   color: var(--text);
-  padding: 0.6rem 1.1rem;
-  border-radius: 30px;
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  padding: 0;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 1, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 14px rgba(255, 1, 0, 0.2);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), border-radius 0.3s ease, padding 0.3s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
   font-family: inherit;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#chat-trigger-btn .estenopo-aperture-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  color: #ff4444;
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), color 0.2s ease;
+}
+#chat-trigger-btn .chat-btn-text {
+  max-width: 0;
+  opacity: 0;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #f1f5f9;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
 }
 #chat-trigger-btn:hover {
-  transform: translateY(-2px);
+  width: auto;
+  padding: 0 0.95rem 0 0.1rem;
+  border-radius: 20px;
   border-color: #ff0100;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 1, 0, 0.4);
+  background: rgba(22, 23, 28, 0.98);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.8), 0 0 22px rgba(255, 1, 0, 0.4);
+}
+#chat-trigger-btn:hover .chat-btn-text {
+  max-width: 250px;
+  opacity: 1;
+}
+#chat-trigger-btn:hover .estenopo-aperture-icon {
+  transform: rotate(45deg);
+  color: #ff0100;
 }
 #chat-trigger-btn.active {
   background: #ff0100;
   color: #fff;
   border-color: #ff0100;
+  width: auto;
+  padding: 0 0.95rem 0 0.1rem;
+  border-radius: 20px;
 }
-.chat-btn-sparkle { font-size: 1.1rem; filter: drop-shadow(0 0 6px rgba(255, 100, 100, 0.6)); }
-.chat-btn-text { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+#chat-trigger-btn.active .chat-btn-text {
+  max-width: 250px;
+  opacity: 1;
+  color: #fff;
+}
+#chat-trigger-btn.active .estenopo-aperture-icon {
+  color: #fff;
+}
+@media (max-width: 768px) {
+  #chat-trigger-btn {
+    top: 0.65rem;
+    right: 0.75rem;
+  }
+}
 
 /* ── Panel Lateral Vertical Estenopo (Inteligencia Visual) ──────────────────── */
 #chat-drawer {
