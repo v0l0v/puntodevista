@@ -269,20 +269,25 @@
   }
 
   // Motor de Búsqueda Semántica y Conceptual (sqlite-vec + Gemini Embeddings con fallback)
-  async function queryArchiveSemantic(query) {
+  async function queryArchiveSemantic(query, mode = 'general') {
+    // Asegurar que los datos del archivo estén listos antes de buscar
+    if (!archiveData && (!window.__allEntries || window.__allEntries.length === 0)) {
+      await preloadArchive();
+    }
+
     // 1. Intentar consultar el motor vectorial real en el backend (/api/search)
     try {
       const resp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=hybrid&limit=8`);
       if (resp.ok) {
         const data = await resp.json();
-        if (data.status === 'ok' && data.items && data.items.length > 0) {
+        if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
           const articles = data.items.map(item => ({
-            id: item.id,
-            title: item.title,
-            photographer: item.photographer,
+            id: item.id || item.link || item.url,
+            title: item.title || '',
+            photographer: item.photographer || '',
             source: item.source || item._source || '',
-            url: item.url || item.link,
-            published_date: item.published_date || item.date,
+            url: item.url || item.link || '#',
+            published_date: item.published_date || item.date || '',
             summary: item.summary || item.excerpt || '',
             image: item.image_url || item.thumbnail || item.image || '',
             score: item.score || 10,
@@ -295,14 +300,14 @@
             const podResp = await fetch(`/api/search?q=${encodeURIComponent(query)}&mode=podcast&limit=3`);
             if (podResp.ok) {
               const podData = await podResp.json();
-              if (podData.status === 'ok' && podData.items) {
+              if (podData && podData.status === 'ok' && Array.isArray(podData.items)) {
                 podcasts = podData.items.map(p => ({
-                  id: p.id,
-                  title: p.title,
-                  date: p.date,
-                  description: p.description,
-                  duration: p.duration,
-                  audio_url: p.audio_url || p.link
+                  id: p.id || p.link,
+                  title: p.title || '',
+                  date: p.date || '',
+                  description: p.description || '',
+                  duration: p.duration || 0,
+                  audio_url: p.audio_url || p.link || ''
                 }));
               }
             }
@@ -755,6 +760,7 @@
       const responseHtml = generateAssistantResponse(cleanDisplay, results, mode);
       addMessage('bot', responseHtml);
     } catch (err) {
+      console.error('Error al procesar consulta en Estenopo:', err);
       loading.remove();
       addMessage('bot', `<p style="color:#ef4444">Ocurrió un error al procesar tu consulta. Inténtalo de nuevo.</p>`);
     }
@@ -780,9 +786,13 @@
 
   function matchWordInText(text, term) {
     if (!text || !term) return false;
-    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}($|[^\\p{L}\\p{N}])`, 'iu');
-    return regex.test(text);
+    try {
+      const escaped = String(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}($|[^\\p{L}\\p{N}])`, 'iu');
+      return regex.test(String(text));
+    } catch (e) {
+      return String(text).toLowerCase().includes(String(term).toLowerCase());
+    }
   }
 
   function escapeHtml(str) {
