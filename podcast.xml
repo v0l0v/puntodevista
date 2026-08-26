@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Tue, 25 Aug 2026 08:06:08 +0000</lastBuildDate>
+<lastBuildDate>Wed, 26 Aug 2026 08:11:26 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -992,6 +992,52 @@ Un viaje invernal por la histórica Ruta 66 captado en solo cinco fotogramas a t
 
 Newsletter de Fotonistas (Ana Arbonés)
 ¿Hasta qué punto el procesado de una fotografía editorial cruza la línea entre la atmósfera artística y la manipulación de la verdad periodística? Ana plantea una provocadora controversia histórica que cambiará para siempre tu forma de mirar las portadas icónicas; suscríbete a su Fotoletter en fotonistas.com para descubrir el secreto.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 23 · Mirar al observador: la memoria en la luz, cámaras centenarias y la ética del encuadre</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3</guid>
+    <pubDate>Wed, 26 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Björn Persson's New Book Highlights the World's Incredible and Endangered Wildlife
+Björn Persson presenta su nuevo libro The Earth We Share, centrado en documentar la majestuosidad de la fauna salvaje en peligro de extinción en regiones que van desde Tanzania hasta la Antártida. A través de retratos tonales de gran dramatismo y viñetas íntimas que alternan entre el contacto visual directo y momentos familiares de gran delicadeza, el fotógrafo busca humanizar a los animales como seres sintientes. Esta obra invita a reflexionar sobre la fuerza de la empatía visual para impulsar la conservación del medio ambiente frente a la crisis climática.
+
+The Eclipse Was Real, But Did We See it? – A One Shot Story
+El fotógrafo reflexiona sobre la experiencia vivida en la estación de Finchley Central en Londres durante el eclipse solar del 12 de agosto de 2026, donde decidió cambiar radicalmente su enfoque. En lugar de fotografiar el evento astronómico, utilizó su Panasonic Lumix G9 para retratar a las personas paralizadas en el puente observando el fenómeno a través de las pantallas de sus teléfonos. Este trabajo nos recuerda que a menudo el verdadero valor narrativo de un acontecimiento no está en el fenómeno central, sino en las reacciones y conductas humanas que ocurren alrededor del encuadre.
+
+Kodak No 2 Bulls-eye, model D – Amazing Results with an 1898 Camera
+Un fotógrafo restaura una cámara de cajón Kodak Bulls-eye de 1898 y la adapta mediante piezas impresas en 3D para utilizar película moderna de formato 120. Fotografiando una iglesia abandonada construida ese mismo año sobre película en blanco y negro y color, la lente menisco acromática ofrece una suavidad única en las esquinas y un grano de estética atemporal. El experimento demuestra cómo rescatar procesos y herramientas históricas permite desmarcarse de la nitidez digital perfecta y reconectar con la esencia física y táctil del medio.
+
+Emmanuel Monzon
+El artista visual y fotógrafo Emmanuel Monzon explora en su trabajo la transición del paisaje urbano e industrial norteamericano y la idea de los espacios periurbanos deshabitados. Mediante una estética limpia, composiciones geométricas rigurosas y una iluminación tenue que resalta la ausencia humana, sus imágenes convierten entornos cotidianos en escenarios de meditación visual. Su obra invita al fotógrafo a prestar atención a la geometría del vacío y a encontrar poesía en los lugares que habitualmente cruzamos sin mirar.
+
+Deep price cuts on fresh 120 film from Lomography
+Rescatamos de nuestro archivo la histórica decisión de Lomography de reducir de forma permanente hasta un 30% el precio de sus emulsiones en formato 120. Esta iniciativa nació con la clara intención de evitar que el formato medio analógico cayera en el olvido debido al encarecimiento generalizado del sector. Esta medida supuso un valioso impulso creativo para la comunidad, demostrando que la accesibilidad económica es clave para mantener viva la experimentación con emulsiones y cámaras de formato medio.
+
+Boletín de Fotonistas por Ana Arbonés
+Ana de Fotonistas nos plantea hoy una reflexión brillante y cargada de ironía sobre los límites de la edición digital y la ética profesional en el fotoperiodismo. Si quieres descubrir la surrealista historia de manipulación que ocurrió en un gran diario deportivo y aprender por qué editar consiste en potenciar un fotón y no en arreglar una foto mala, corre a suscribirte a su Fotoletter en fotonistas.com.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3" length="10994328" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-26.jpg"/>
+    <itunes:duration>7:38</itunes:duration>
+    <itunes:title>Episodio 23 · Mirar al observador: la memoria en la luz, cámaras centenarias y la ética del encuadre</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Björn Persson's New Book Highlights the World's Incredible and Endangered Wildlife
+Björn Persson presenta su nuevo libro The Earth We Share, centrado en documentar la majestuosidad de la fauna salvaje en peligro de extinción en regiones que van desde Tanzania hasta la Antártida. A través de retratos tonales de gran dramatismo y viñetas íntimas que alternan entre el contacto visual directo y momentos familiares de gran delicadeza, el fotógrafo busca humanizar a los animales como seres sintientes. Esta obra invita a reflexionar sobre la fuerza de la empatía visual para impulsar la conservación del medio ambiente frente a la crisis climática.
+
+The Eclipse Was Real, But Did We See it? – A One Shot Story
+El fotógrafo reflexiona sobre la experiencia vivida en la estación de Finchley Central en Londres durante el eclipse solar del 12 de agosto de 2026, donde decidió cambiar radicalmente su enfoque. En lugar de fotografiar el evento astronómico, utilizó su Panasonic Lumix G9 para retratar a las personas paralizadas en el puente observando el fenómeno a través de las pantallas de sus teléfonos. Este trabajo nos recuerda que a menudo el verdadero valor narrativo de un acontecimiento no está en el fenómeno central, sino en las reacciones y conductas humanas que ocurren alrededor del encuadre.
+
+Kodak No 2 Bulls-eye, model D – Amazing Results with an 1898 Camera
+Un fotógrafo restaura una cámara de cajón Kodak Bulls-eye de 1898 y la adapta mediante piezas impresas en 3D para utilizar película moderna de formato 120. Fotografiando una iglesia abandonada construida ese mismo año sobre película en blanco y negro y color, la lente menisco acromática ofrece una suavidad única en las esquinas y un grano de estética atemporal. El experimento demuestra cómo rescatar procesos y herramientas históricas permite desmarcarse de la nitidez digital perfecta y reconectar con la esencia física y táctil del medio.
+
+Emmanuel Monzon
+El artista visual y fotógrafo Emmanuel Monzon explora en su trabajo la transición del paisaje urbano e industrial norteamericano y la idea de los espacios periurbanos deshabitados. Mediante una estética limpia, composiciones geométricas rigurosas y una iluminación tenue que resalta la ausencia humana, sus imágenes convierten entornos cotidianos en escenarios de meditación visual. Su obra invita al fotógrafo a prestar atención a la geometría del vacío y a encontrar poesía en los lugares que habitualmente cruzamos sin mirar.
+
+Deep price cuts on fresh 120 film from Lomography
+Rescatamos de nuestro archivo la histórica decisión de Lomography de reducir de forma permanente hasta un 30% el precio de sus emulsiones en formato 120. Esta iniciativa nació con la clara intención de evitar que el formato medio analógico cayera en el olvido debido al encarecimiento generalizado del sector. Esta medida supuso un valioso impulso creativo para la comunidad, demostrando que la accesibilidad económica es clave para mantener viva la experimentación con emulsiones y cámaras de formato medio.
+
+Boletín de Fotonistas por Ana Arbonés
+Ana de Fotonistas nos plantea hoy una reflexión brillante y cargada de ironía sobre los límites de la edición digital y la ética profesional en el fotoperiodismo. Si quieres descubrir la surrealista historia de manipulación que ocurrió en un gran diario deportivo y aprender por qué editar consiste en potenciar un fotón y no en arreglar una foto mala, corre a suscribirte a su Fotoletter en fotonistas.com.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
