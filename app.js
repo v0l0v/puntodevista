@@ -1230,7 +1230,24 @@ function isShareLink(url) {
 function isOwnDomain(href) {
   try {
     const h = new URL(href).hostname.toLowerCase();
-    return h.endsWith('thisiscolossal.com') || h.endsWith('lomography.com') || h.endsWith('booooooom.com');
+    return h.endsWith('thisiscolossal.com') ||
+           h.endsWith('lomography.com') ||
+           h.endsWith('booooooom.com') ||
+           h.endsWith('thephotographicjournal.com') ||
+           h.endsWith('swanngalleries.com') ||
+           h.endsWith('huckmag.com') ||
+           h.endsWith('lensculture.com') ||
+           h.endsWith('loeildelaphotographie.com') ||
+           h.endsWith('magnumphotos.com') ||
+           h.endsWith('shootitwithfilm.com') ||
+           h.endsWith('35mmc.com') ||
+           h.endsWith('kosmofoto.com') ||
+           h.endsWith('casualphotophile.com') ||
+           h.endsWith('phroommagazine.com') ||
+           h.endsWith('c41magazine.com') ||
+           h.endsWith('featureshoot.com') ||
+           h.endsWith('aint-bad.com') ||
+           h.endsWith('emulsive.org');
   } catch {
     return false;
   }
@@ -1519,12 +1536,15 @@ function renderSwanArticle(body, entry, data) {
   const images = data.images || [];
   const thumb = data.thumbnail || entry.thumbnail;
   const thumbHTML = (!images.length && thumb) ? `<div class="modal-article" style="padding-bottom:0"><img src="${thumb}" alt="" class="modal-swan-thumb" loading="lazy"></div>` : '';
+  const socialLinks = data.content ? extractSocialLinks(data.content) : [];
+  const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
   body.innerHTML = `
     <div class="modal-tools">
       ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
+    ${linksHTML}
     ${thumbHTML}
     <div class="modal-title-group">
       <h2 class="modal-title">${entry.title}</h2>
