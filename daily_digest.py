@@ -640,7 +640,7 @@ def main():
             from update_static_data import fetch_rss
             raw_articles = []
             for feed_url in (src.get('feeds') or []):
-                raw_articles.extend(fetch_rss(feed_url, key, include_content=True))
+                raw_articles.extend(fetch_rss(feed_url, key, include_content=True, fetch_page_fallback=False))
         articles = [a for a in raw_articles if is_within_24h(a.get('_parsedDate') or a.get('pubDate') or a.get('date'), TODAY)]
         is_flashback = False
         if not articles and src.get('archive_mode') and raw_articles:

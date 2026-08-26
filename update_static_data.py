@@ -258,7 +258,7 @@ def fetch_rss_multi(urls, source, **kwargs):
 
 
 def fetch_booooooom():
-    return fetch_rss(BOOM_URL, 'booooooom')
+    return fetch_rss(BOOM_URL, 'booooooom', fetch_page_fallback=False)
 
 
 def fetch_tpj():
@@ -266,7 +266,7 @@ def fetch_tpj():
 
 
 def fetch_swan():
-    return fetch_rss(SWAN_URL, 'swan')
+    return fetch_rss(SWAN_URL, 'swan', fetch_page_fallback=False)
 
 
 def fetch_huck():
