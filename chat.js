@@ -634,19 +634,42 @@
             No encontré obras que coincidan directamente con <em>«${escapeHtml(query)}»</em>.
           </p>
           <p style="margin:0.5rem 0 0.8rem;font-size:0.85rem;color:#cbd5e1;">
-            ¿Hacia dónde te gustaría <strong>enfocar</strong> la mirada? Pulsa en una de las opciones:
+            ¿Hacia dónde te gustaría <strong>enfocar</strong> la mirada? Elige una de estas opciones:
           </p>
           ${getIntroWelcomeHtml()}
         </div>
       `;
     }
 
+    // Análisis curatorial del tono y temas detectados
+    let tesisCuratorial = '';
+    if (queryTagsList.includes('#paisaje') || queryTagsList.includes('#naturaleza')) {
+      tesisCuratorial = 'Las obras recuperadas abordan la tensión entre el territorio, la escala humana y el silencio del horizonte.';
+    } else if (queryTagsList.includes('#calle') || queryTagsList.includes('#espacio-urbano')) {
+      tesisCuratorial = 'Una exploración del pulso callejero, la arquitectura cotidiana y los instantes fortuitos de la ciudad.';
+    } else if (queryTagsList.includes('#retrato') || queryTagsList.includes('#cuerpo') || queryTagsList.includes('#intimidad')) {
+      tesisCuratorial = 'Enfoque centrado en la mirada íntima, la vulnerabilidad del cuerpo y la memoria de los espacios habitados.';
+    } else if (queryTagsList.includes('#nocturna') || queryTagsList.includes('#claroscuro')) {
+      tesisCuratorial = 'Investigación sobre la luz artificial, las penumbras densas y la intriga psicológica de la noche.';
+    } else if (queryTagsList.includes('#analógico') || queryTagsList.includes('#35mm')) {
+      tesisCuratorial = 'Resonancias que celebran la materialidad del grano, la química de la emulsión y la textura del celuloide.';
+    } else {
+      tesisCuratorial = 'Diálogo visual entre distintas publicaciones y autores del archivo que exploran esta misma búsqueda formal.';
+    }
+
     let out = `
       <div class="gemini-response-box">
-        <p style="color:#e2e8f0;font-size:0.9rem;line-height:1.5;">
-          Resonancias seleccionadas para <strong>«${escapeHtml(query)}»</strong>
-          ${queryTagsList.length > 0 ? `(afinidad en ${queryTagsList.map(t => `<span style="color:#ff8a65;font-weight:600;">${escapeHtml(t)}</span>`).join(' ')})` : ''}:
-        </p>
+        <div style="margin-bottom:0.75rem;">
+          <p style="color:#e2e8f0;font-size:0.92rem;line-height:1.5;margin-bottom:0.35rem;">
+            <strong>Estenopo:</strong> ${tesisCuratorial}
+          </p>
+          ${queryTagsList.length > 0 ? `
+            <div style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">
+              <span>Afinidades detectadas:</span>
+              ${queryTagsList.map(t => `<span class="estenopo-tag-badge matched" style="font-size:0.62rem;">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
     `;
 
     // Linaje si hay múltiples artículos
@@ -664,11 +687,11 @@
       const commonLinajeTags = a1Tags.filter(t => a2Tags.includes(t));
       const tagDesc = commonLinajeTags.length > 0
         ? `a través de ${commonLinajeTags.join(' y ')}`
-        : 'por proximidad formal y temática';
+        : 'por afinidad estética y conceptual';
 
       out += `
         <div class="gemini-lineage-banner">
-          <div class="gemini-lineage-title">Linaje Visual Detectado</div>
+          <div class="gemini-lineage-title">Genealogía & Linaje Visual</div>
           <div class="gemini-lineage-desc">
             Diálogo estético entre <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id1}', '${src1}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a1.title)}»</a> (${src1.toUpperCase()}) y <a href="javascript:void(0)" onclick="window.openArticleAndCloseEstenopo('${id2}', '${src2}')" style="color:#ff8a65;text-decoration:underline;">«${escapeHtml(a2.title)}»</a> (${src2.toUpperCase()}) ${tagDesc}.
           </div>
@@ -724,6 +747,27 @@
 
       out += `</div>`;
     }
+
+    // Botones de Ramificación Dinámica (Follow-up Sparks)
+    const cleanEscapedQuery = escapeHtml(query);
+    out += `
+      <div style="margin-top:1.1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.07);">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:#94a3b8;margin-bottom:0.4rem;font-weight:600;">
+          Continuar explorando con Estenopo:
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+          <button type="button" class="gemini-chip" onclick="window.askEstenopoCard('spark', 'Disparador creativo: ${cleanEscapedQuery}', event)">
+            ✨ Pedir reto para fotografiar esto
+          </button>
+          <button type="button" class="gemini-chip" onclick="window.askEstenopoCard('lineage', 'Linaje visual de ${cleanEscapedQuery}', event)">
+            🔗 Cruzar con otros fotógrafos
+          </button>
+          <button type="button" class="gemini-chip" onclick="window.askEstenopoTag('#analógico', event)">
+            🎞️ Filtrar en analógico
+          </button>
+        </div>
+      </div>
+    `;
 
     // Podcasts Vinculados en formato Enlaces Sombreados
     if (podcasts.length > 0) {
