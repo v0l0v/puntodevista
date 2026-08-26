@@ -29,9 +29,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Instalar firecrawl CLI
-        run: npm install -g firecrawl-cli
-
       - name: Configurar git
         run: |
           git config user.name "pdv bot"
@@ -39,6 +36,5 @@ jobs:
 
       - name: Refrescar Lomography (gratis vía Jina, 0 créditos)
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
         run: python3 update_lists.py --fresh-lomography

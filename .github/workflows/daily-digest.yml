@@ -27,9 +27,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Instalar firecrawl CLI
-        run: npm install -g firecrawl-cli
-
       - name: Configurar git
         run: |
           git config user.name "pdv bot"
@@ -37,7 +34,6 @@ jobs:
 
       - name: Generar digest diario (prioridad máxima)
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
@@ -54,7 +50,6 @@ jobs:
 
       - name: Actualizar datos estáticos (caches de artículos)
         env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
         run: python3 update_static_data.py --keep-lomo
 

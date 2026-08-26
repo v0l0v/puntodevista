@@ -51,6 +51,19 @@ def fetch_markdown(url, timeout=60, selector=None):
         req = urllib.request.Request('https://r.jina.ai/' + url, headers=headers)
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return resp.read().decode('utf-8', errors='ignore')
+    except urllib.error.HTTPError as e:
+        # Si la API key está agotada (402 Payment Required / Insufficient Balance), reintentar gratis sin key
+        if e.code == 402 or 'Authorization' in headers:
+            try:
+                headers_free = {'User-Agent': 'Mozilla/5.0', 'X-Respond-With': 'markdown'}
+                if selector:
+                    headers_free['X-Target-Selector'] = selector
+                req_free = urllib.request.Request('https://r.jina.ai/' + url, headers=headers_free)
+                with urllib.request.urlopen(req_free, timeout=timeout) as resp_free:
+                    return resp_free.read().decode('utf-8', errors='ignore')
+            except Exception:
+                return None
+        return None
     except Exception:
         return None
 
@@ -71,31 +84,13 @@ def trim_lomo_body(md):
 
 
 def firecrawl_scrape(url, timeout=60, retries=2, selector=None):
-    # Alternativa principal (gratuita): Jina Reader renderiza JS y devuelve markdown.
+    # Extracción vía Jina Reader (renderiza JS, devuelve markdown limpio y sin cuotas).
     for attempt in range(retries + 1):
         md = fetch_markdown(url, timeout=timeout, selector=selector)
-        if md and not is_bot_challenge(md):
+        if md and not is_bot_challenge(md) and not is_rate_limited(md):
             return strip_jina_header(md)
         if attempt < retries:
-            time.sleep(5)
-    # Fallback: CLI de Firecrawl (solo si está instalado y hay créditos).
-    for attempt in range(retries + 1):
-        try:
-            result = subprocess.run(
-                ['firecrawl', 'scrape', url, '--only-main-content'],
-                capture_output=True, text=True, timeout=timeout, cwd=DIR
-            )
-        except Exception:
-            return None
-        md = result.stdout or result.stderr
-        if not md:
-            return None
-        if is_rate_limited(md):
-            if attempt < retries:
-                time.sleep(10)
-                continue
-            return None
-        return md
+            time.sleep(3)
     return None
 
 def parse_magazine_list(md):
