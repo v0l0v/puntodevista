@@ -580,7 +580,7 @@ def scrape_lensculture_article(url):
     
     cut = len(content_md)
     pats = [
-        r'\[(?:Feature|Book review|Interview|Article|Review|Project|Photo essay|Gallery)\s+!\[Image',
+        r'\[(?:Feature|Book review|Interview|Article|Review|Project|Photo essay|Gallery)\s+!\[',
         r'See more articles',
         r'## Get our weekly newsletter',
         r'## Get our free newsletter',
@@ -592,7 +592,20 @@ def scrape_lensculture_article(url):
         if mm and mm.start() < cut:
             cut = mm.start()
     content_md = content_md[:cut].strip()
-    content_md = re.sub(r'\[\]\(https://www\.lensculture\.com/articles/[^)]+#\s*\"(?:Share|Tweet|Mail)\"\)', '', content_md)
+    
+    # Limpieza de artefactos de extracción en LensCulture
+    content_md = re.sub(r'!\[Image \d+:\s*', '![', content_md)
+    content_md = re.sub(r'\[\]\([^)]+\)', '', content_md)
+    content_md = re.sub(r'\[!\[[^\]]*\]\([^)]+/thumb\)\s*[^\]]*\]\(https://www\.lensculture\.com/[^)]+\)', '', content_md)
+    
+    # Deduplicar bloques de texto idénticos (p. ej. título y subtítulo duplicados al inicio)
+    parts = [p.strip() for p in content_md.split('\n\n') if p.strip()]
+    deduped_parts = []
+    for p in parts:
+        if p in deduped_parts and len(p) > 20:
+            continue
+        deduped_parts.append(p)
+    content_md = '\n\n'.join(deduped_parts)
     
     images = [{'url': im.group(2), 'alt': im.group(1)} for im in re.finditer(r'!\[([^\]]*)\]\(([^)]+)\)', content_md)]
     images = [img for img in images if 'logo' not in img['url'].lower() and 'menu-icon' not in img['url'].lower()]
