@@ -41,7 +41,7 @@ TPJ_URLS = _src_prop('tpj', 'feeds', [
 SWAN_URL = (_src_prop('swan', 'feeds', ['https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed']) or [''])[0]
 HUCK_URL = (_src_prop('huck', 'feeds', ['https://www.huckmag.com/topic/photography/feed']) or [''])[0]
 LENSCULTURE_URL = (_src_prop('lensculture', 'feeds', ['https://www.lensculture.com/feeds/feed.rss']) or [''])[0]
-ODLP_URL = (_src_prop('odlp', 'feeds', ['https://loeildelaphotographie.com/en/feed/']) or [''])[0]
+ODLP_URLS = _src_prop('odlp', 'feeds', ['https://loeildelaphotographie.com/en/feed/'])
 MAGNUM_URL = _src_prop('magnum', 'wp_api', 'https://www.magnumphotos.com/wp-json/wp/v2/posts?per_page=30')
 SHOOTIT_URL = (_src_prop('shootitwithfilm', 'feeds', ['https://shootitwithfilm.com/category/features/feed/']) or [''])[0]
 SHOOTIT_WP_API = _src_prop('shootitwithfilm', 'wp_api', 'https://shootitwithfilm.com/wp-json/wp/v2/posts?per_page=20&_embed=1')
@@ -278,7 +278,18 @@ def fetch_lensculture():
 
 
 def fetch_odlp():
-    return fetch_rss(ODLP_URL, 'odlp', fetch_page_fallback=False)
+    fresh = fetch_rss_multi(ODLP_URLS, 'odlp', fetch_page_fallback=False)
+    prev = load_previous_items('odlp.json')
+    seen_links = set()
+    combined = []
+    for item in (fresh + prev):
+        link = item.get('link')
+        if link and link not in seen_links:
+            seen_links.add(link)
+            combined.append(item)
+    # Ordenar por fecha descendente
+    combined.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
+    return combined
 
 
 def fetch_magnum():
