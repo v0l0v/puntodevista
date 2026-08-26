@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Wed, 26 Aug 2026 15:24:02 +0000</lastBuildDate>
+<lastBuildDate>Wed, 26 Aug 2026 15:54:12 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -995,125 +995,25 @@ Newsletter de Fotonistas (Ana Arbonés)
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 23 · La memoria intacta, la luz de la noche y el gesto invisible</title>
+    <title>Episodio 23 · El ojo del cazador paciente: de la primera cámara fusil a la mirada del depredador</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3</guid>
     <pubDate>Wed, 26 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Lin Chao y la calidez del color en formato medio (Lomography Magazine)
-El planificador urbano Lin Chao explora las cualidades estéticas de la película LomoChrome Color '92 Sun-kissed en formato 120 a través de composiciones serenas y llenas de luz natural. Utilizando sus cámaras Rolleiflex, el fotógrafo logra un equilibrio entre la previsión técnica y la intuición para retratar interiores de aire nostálgico y paisajes al atardecer. La serie demuestra cómo una paleta de tonos cálidos y una exposición contenida pueden transformar escenas cotidianas en reflexiones visuales minimalistas de estilo japonés.
+    <description><![CDATA[El panorama fotográfico de hoy viaja desde las calles soleadas de Los Ángeles con los divertidos retratos de perros en coches rescatados por el Ojo de la Fotografía, hasta la profunda resiliencia de los refugiados ucranianos mayores de sesenta años en Bratislava documentada por LensCulture. Recorremos también los tonos analógicos de Lomography en Berlín Este, los ensayos estivales de la revista Buum y la emotiva historia intergeneracional que nos trae la publicación Shoot It With Film.
 
-Tres miradas, una sola modelo y la versatilidad de la Lomo MC-A (Lomography Magazine)
-Tres fotógrafos del equipo de Lomography en Viena interpretan un mismo espacio y sujeto utilizando la cámara Lomo MC-A cargada con distintas emulsiones analógicas. Mediante el uso de aperturas amplias, encuadres espontáneos y el cambio en la profundidad de campo, cada autor extrae una narrativa completamente diferente a partir del color. El experimento resalta la capacidad de la fotografía química para transformar la realidad objetiva según la sensibilidad técnica y la película elegida por el creador.
+En el bloque central nos detenemos en el influyente certamen Fotógrafo de Vida Silvestre del Año, seleccionado por el Magazine de arte online Colosal, prestando especial atención a una sobrecogedora imagen de un oso polar tomada desde el punto de vista exacto de una foca bajo el hielo. Conectamos esta mirada contemporánea con el archivo histórico de Kosmo Foto para descubrir la extraordinaria cámara fusil inventada tras la Primera Guerra Mundial por Cherry Kearton, el primer fotógrafo profesional de fauna de la historia.
 
-Ritmos cotidianos y calma instantánea con Mineho Osawa (Lomography Magazine)
-La batería japonesa Mineho Osawa documenta la intimidad de su hogar y su estrecho vínculo con sus gatos a través de la fotografía instantánea analógica. Utilizando la Lomo’Instant Automat Glass, captura la luz suave de su espacio, el cuidado de las plantas y sus momentos de pausa tras los ensayos musicales. La obra invita a reflexionar sobre el uso de la cámara instantánea como un ritual de desaceleración mental y de registro afectivo del entorno personal.
-
-Japonismo: la calma contemplativa de Alain Combier (L'Œil de la Photographie)
-Alain Combier presenta en París su serie fotográfica fruto de sus años de residencia en Japón, una obra volcada en la atmósfera y el silencio de los paisajes nipones. Empleando luz natural y encuadres de marcado minimalismo, el autor aleja el foco de los grandes acontecimientos para centrarse en la delicadeza de los detalles y los estados de ánimo. La exposición ofrece una lección sobre cómo la sobriedad compositiva permite traducir la serenidad interior al lenguaje de la imagen fija.
-
-Presencia nativa y soberanía en el proyecto Rise de Jeremy Dennis (L'Œil de la Photographie)
-El artista Shinnecock Jeremy Dennis aborda la memoria histórica, la soberanía y la presencia de los pueblos originarios en espacios contemporáneos mediante escenas construidas y edición digital. A través de autorretratos duplicados e iconografía reelaborada, Dennis interpela la incomodidad de la mirada dominante sobre el territorio y la pertenencia. El proyecto destaca el valor de la fotografía conceptual como una herramienta política y educativa capaz de generar empatía social.
-
-La luminosidad física de la materia en la obra de Amanda Means (L'Œil de la Photographie)
-Amanda Means revoluciona el proceso fotográfico de laboratorio al convertir una cámara de madera del siglo XIX en un ampliador para fotografiar objetos tridimensionales. Mediante copias Polaroid de gran formato y la manipulación directa de los químicos sobre el papel sensible, la autora transforma la radiación de la luz en el verdadero sujeto de la obra. Su trabajo supone una profunda indagación sobre la naturaleza física de la emulsión y la pureza del arte abstracto sin cámara.
-
-Punctum – Dialogue: la fotografía como encuentro transcultural (L'Œil de la Photographie)
-La exposición colectiva Punctum – Dialogue reúne a creadores de diversas procedencias para explorar el arte de la cámara como un espacio de encuentro poético y documental. Las imágenes expuestas operan como fragmentos de memoria y de identidad que trascienden las fronteras geográficas e históricas. La muestra invita a considerar la imagen fotográfica como un territorio abierto a la percepción compartida y a la construcción de relatos colectivos.
-
-La sofisticación atemporal en la elegancia de Horst P. Horst (L'Œil de la Photographie / Archivo)
-Una selección de obras del maestro Horst P. Horst rememora seis décadas de liderazgo estilístico en la fotografía de moda y el retrato para la revista Vogue. Con un dominio riguroso de la iluminación de estudio y la geometría compositiva, Horst elevó el desnudo y el bodegón a estándares de elegancia impecables. Su legado reafirma el valor del control absoluto de la luz analógica para crear imágenes que trascienden las épocas.
-
-Perros en automóviles: la ironía urbana de Gary Krueger (L'Œil de la Photographie / Archivo)
-Gary Krueger retrata la cotidianeidad de Los Ángeles en los años setenta a través de una singular serie centrada en perros que viajan en el interior de vehículos de la época. Equipado con una cámara Canon F-1 y un refinado instinto para el momento decisivo, el fotógrafo captura la expresividad canina en convivencia con la cultura del automóvil. La serie ejemplifica la riqueza del archivo documental para rescatar el humor y la espontaneidad en el espacio urbano.
-
-Ex Crucible: la pasión artística en las prisiones de Peter Merts (L'Œil de la Photographie / Archivo)
-Peter Merts documenta durante más de quince años los talleres de arte desarrollados en el sistema penitenciario de California en su libro Ex Crucible. A través de retratos empáticos e imágenes de procesos creativos, el fotógrafo contrapone la calidez del espíritu humano con la severidad del entorno institucional. La obra constituye una lección sobre cómo la fotografía de compromiso social puede devolver la dignidad y resignificar la identidad de las personas.
-
-Atrapando sombras: pioneros de la fotografía en la dinastía Qing (L'Œil de la Photographie / Archivo)
-La exposición virtual de la Colección Loewentheil exhibe imágenes históricas realizadas por los primeros fotógrafos chinos entre los años 1860 y 1903. Mediante el proceso de colodión húmedo sobre placa de vidrio, estos pioneros registraron la arquitectura y la sociedad de la época bajo la influencia de la estética pictórica tradicional. La muestra pone en valor la minuciosidad técnica del siglo XIX como un puente fundamental para la memoria visual del este asiático.
-
-El baile de Núria: Fabián Suspensivo y el amor que permanece (Festival OFF Arles / L'Œil de la Photographie)
-Fabián Suspensivo presenta una conmovedora serie documental que sigue la vida de Núria, una mujer de 85 años que habita la casa que construyó junto a su difunto esposo, cuya historia de amor comenzó con el regalo de una cámara de 120mm. La serie aborda la viudez, la dignidad de los cuidados y el recuerdo desde una perspectiva visual íntima y delicada. La obra demuestra cómo la fotografía posee el poder ineludible de inmortalizar la afectividad y la memoria familiar.
-
-El París secreto de Brassaï: la noche como escenario humano (Heide Museum / L'Œil de la Photographie)
-El Heide Museum acoge una amplia retrospectiva sobre la mítica serie nocturna de Brassaï, revelando no solo sus copias de época sino también las intervenciones del fotógrafo en el laboratorio. Con su cámara de gran formato y una fascinación profunda por la condición humana, el artista húngaro recorrió la niebla y los rincones de la capital francesa en los años treinta. La exposición nos enseña que la fotografía humanista nace del respeto sincero y de la inmersión emocional en el entorno retratado.
-
-Placas: el retorno de Pablo Arroyo a la fotografía pura (SKIRA / L'Œil de la Photographie)
-Pablo Arroyo publica su monografía Placas, marcando un distanciamiento del mundo de la moda comercial para regresar a una búsqueda visual esencial basada en bodegones y desnudos. Con un lenguaje directo y un tratamiento riguroso de los sujetos aislados sobre el fondo, el autor profundiza en la potencia formal del volumen y la luz. El libro ofrece una reflexión sobre cómo la renuncia al artificio decorativo devuelve a la imagen su fuerza expresiva originaria.
-
-Una amistad intergeneracional a través del objetivo de Pál Balázs (Shoot It With Film)
-Pál Balázs comparte un ensayo fotográfico sobre su relación de amistad con el Dr. István Körmendi, un médico centenario y superviviente del Holocausto al que comenzó a fotografiar hace cinco años. Utilizando cámaras Mamiya C330 y Leica M3 con diversas emulsiones, la serie refleja la dimensión cotidiana y afectiva de su vínculo personal. El proyecto demuestra que la práctica fotográfica puede trascender el registro documental para convertirse en un canal de compañía y afecto genuino.
-
-Patrimonio en Dunedin a través del visor subminiatura y el formato medio (35mmc)
-Un recorrido fotográfico por los museos e inmuebles históricos de la ciudad de Dunedin contrapone la respuesta estética de la cámara subminiatura Pentax Auto 110 con la clásica Zeiss Box Tengor. El autor examina cómo las limitaciones de los equipos antiguos y la elección de emulsiones ortocromáticas dotan a la arquitectura de una atmósfera atemporal. El ejercicio evidencia que las restricciones técnicas estimulan la creatividad compositiva al enfrentarse al paisaje urbano.
-
-El eclipse era real, pero ¿lo vimos?: fotografiar al espectador (35mmc)
-Durante el eclipse solar del 12 de agosto de 2026, el autor decide girar su cámara hacia la multitud congregada en la estación de Finchley Central en lugar de encuadrar el sol. La fotografía capta a decenas de peatones deteniendo su rutina diaria para registrar el fenómeno astronómico a través de las pantallas de sus teléfonos móviles. La propuesta ofrece una sagaz reflexión sobre la mediación tecnológica y el comportamiento colectivo ante las luces del cielo.
-
-La exploración compositiva en la obra de Daniel Soder (Ain't-Bad / Archivo)
-El archivo de Ain't-Bad revisa la trayectoria visual de Daniel Soder, fotógrafo formado en Boston centrado en el estudio del espacio y la estructura de la imagen. Su trabajo destaca por el cuidado en la geometría y el rigor compositivo aplicado a la fotografía de autor. Una oportunidad para recuperar proyectos que exploran la articulación del lenguaje fotográfico desde sus bases plásticas.
-
-**EMULSIVE Secret Santa: la comunidad analógica global]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3" length="15593688" type="audio/mpeg"/>
+Como reto creativo del día, Roberto propone romper la perspectiva habitual trabajando el contrapicado extremo o el punto de vista del observado, obligándonos a cambiar la escala de poder en la escena y la relación física entre el fotógrafo y el sujeto.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3" length="10638936" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-26.jpg"/>
-    <itunes:duration>10:49</itunes:duration>
-    <itunes:title>Episodio 23 · La memoria intacta, la luz de la noche y el gesto invisible</itunes:title>
+    <itunes:duration>7:23</itunes:duration>
+    <itunes:title>Episodio 23 · El ojo del cazador paciente: de la primera cámara fusil a la mirada del depredador</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Lin Chao y la calidez del color en formato medio (Lomography Magazine)
-El planificador urbano Lin Chao explora las cualidades estéticas de la película LomoChrome Color '92 Sun-kissed en formato 120 a través de composiciones serenas y llenas de luz natural. Utilizando sus cámaras Rolleiflex, el fotógrafo logra un equilibrio entre la previsión técnica y la intuición para retratar interiores de aire nostálgico y paisajes al atardecer. La serie demuestra cómo una paleta de tonos cálidos y una exposición contenida pueden transformar escenas cotidianas en reflexiones visuales minimalistas de estilo japonés.
+    <itunes:summary><![CDATA[El panorama fotográfico de hoy viaja desde las calles soleadas de Los Ángeles con los divertidos retratos de perros en coches rescatados por el Ojo de la Fotografía, hasta la profunda resiliencia de los refugiados ucranianos mayores de sesenta años en Bratislava documentada por LensCulture. Recorremos también los tonos analógicos de Lomography en Berlín Este, los ensayos estivales de la revista Buum y la emotiva historia intergeneracional que nos trae la publicación Shoot It With Film.
 
-Tres miradas, una sola modelo y la versatilidad de la Lomo MC-A (Lomography Magazine)
-Tres fotógrafos del equipo de Lomography en Viena interpretan un mismo espacio y sujeto utilizando la cámara Lomo MC-A cargada con distintas emulsiones analógicas. Mediante el uso de aperturas amplias, encuadres espontáneos y el cambio en la profundidad de campo, cada autor extrae una narrativa completamente diferente a partir del color. El experimento resalta la capacidad de la fotografía química para transformar la realidad objetiva según la sensibilidad técnica y la película elegida por el creador.
+En el bloque central nos detenemos en el influyente certamen Fotógrafo de Vida Silvestre del Año, seleccionado por el Magazine de arte online Colosal, prestando especial atención a una sobrecogedora imagen de un oso polar tomada desde el punto de vista exacto de una foca bajo el hielo. Conectamos esta mirada contemporánea con el archivo histórico de Kosmo Foto para descubrir la extraordinaria cámara fusil inventada tras la Primera Guerra Mundial por Cherry Kearton, el primer fotógrafo profesional de fauna de la historia.
 
-Ritmos cotidianos y calma instantánea con Mineho Osawa (Lomography Magazine)
-La batería japonesa Mineho Osawa documenta la intimidad de su hogar y su estrecho vínculo con sus gatos a través de la fotografía instantánea analógica. Utilizando la Lomo’Instant Automat Glass, captura la luz suave de su espacio, el cuidado de las plantas y sus momentos de pausa tras los ensayos musicales. La obra invita a reflexionar sobre el uso de la cámara instantánea como un ritual de desaceleración mental y de registro afectivo del entorno personal.
-
-Japonismo: la calma contemplativa de Alain Combier (L'Œil de la Photographie)
-Alain Combier presenta en París su serie fotográfica fruto de sus años de residencia en Japón, una obra volcada en la atmósfera y el silencio de los paisajes nipones. Empleando luz natural y encuadres de marcado minimalismo, el autor aleja el foco de los grandes acontecimientos para centrarse en la delicadeza de los detalles y los estados de ánimo. La exposición ofrece una lección sobre cómo la sobriedad compositiva permite traducir la serenidad interior al lenguaje de la imagen fija.
-
-Presencia nativa y soberanía en el proyecto Rise de Jeremy Dennis (L'Œil de la Photographie)
-El artista Shinnecock Jeremy Dennis aborda la memoria histórica, la soberanía y la presencia de los pueblos originarios en espacios contemporáneos mediante escenas construidas y edición digital. A través de autorretratos duplicados e iconografía reelaborada, Dennis interpela la incomodidad de la mirada dominante sobre el territorio y la pertenencia. El proyecto destaca el valor de la fotografía conceptual como una herramienta política y educativa capaz de generar empatía social.
-
-La luminosidad física de la materia en la obra de Amanda Means (L'Œil de la Photographie)
-Amanda Means revoluciona el proceso fotográfico de laboratorio al convertir una cámara de madera del siglo XIX en un ampliador para fotografiar objetos tridimensionales. Mediante copias Polaroid de gran formato y la manipulación directa de los químicos sobre el papel sensible, la autora transforma la radiación de la luz en el verdadero sujeto de la obra. Su trabajo supone una profunda indagación sobre la naturaleza física de la emulsión y la pureza del arte abstracto sin cámara.
-
-Punctum – Dialogue: la fotografía como encuentro transcultural (L'Œil de la Photographie)
-La exposición colectiva Punctum – Dialogue reúne a creadores de diversas procedencias para explorar el arte de la cámara como un espacio de encuentro poético y documental. Las imágenes expuestas operan como fragmentos de memoria y de identidad que trascienden las fronteras geográficas e históricas. La muestra invita a considerar la imagen fotográfica como un territorio abierto a la percepción compartida y a la construcción de relatos colectivos.
-
-La sofisticación atemporal en la elegancia de Horst P. Horst (L'Œil de la Photographie / Archivo)
-Una selección de obras del maestro Horst P. Horst rememora seis décadas de liderazgo estilístico en la fotografía de moda y el retrato para la revista Vogue. Con un dominio riguroso de la iluminación de estudio y la geometría compositiva, Horst elevó el desnudo y el bodegón a estándares de elegancia impecables. Su legado reafirma el valor del control absoluto de la luz analógica para crear imágenes que trascienden las épocas.
-
-Perros en automóviles: la ironía urbana de Gary Krueger (L'Œil de la Photographie / Archivo)
-Gary Krueger retrata la cotidianeidad de Los Ángeles en los años setenta a través de una singular serie centrada en perros que viajan en el interior de vehículos de la época. Equipado con una cámara Canon F-1 y un refinado instinto para el momento decisivo, el fotógrafo captura la expresividad canina en convivencia con la cultura del automóvil. La serie ejemplifica la riqueza del archivo documental para rescatar el humor y la espontaneidad en el espacio urbano.
-
-Ex Crucible: la pasión artística en las prisiones de Peter Merts (L'Œil de la Photographie / Archivo)
-Peter Merts documenta durante más de quince años los talleres de arte desarrollados en el sistema penitenciario de California en su libro Ex Crucible. A través de retratos empáticos e imágenes de procesos creativos, el fotógrafo contrapone la calidez del espíritu humano con la severidad del entorno institucional. La obra constituye una lección sobre cómo la fotografía de compromiso social puede devolver la dignidad y resignificar la identidad de las personas.
-
-Atrapando sombras: pioneros de la fotografía en la dinastía Qing (L'Œil de la Photographie / Archivo)
-La exposición virtual de la Colección Loewentheil exhibe imágenes históricas realizadas por los primeros fotógrafos chinos entre los años 1860 y 1903. Mediante el proceso de colodión húmedo sobre placa de vidrio, estos pioneros registraron la arquitectura y la sociedad de la época bajo la influencia de la estética pictórica tradicional. La muestra pone en valor la minuciosidad técnica del siglo XIX como un puente fundamental para la memoria visual del este asiático.
-
-El baile de Núria: Fabián Suspensivo y el amor que permanece (Festival OFF Arles / L'Œil de la Photographie)
-Fabián Suspensivo presenta una conmovedora serie documental que sigue la vida de Núria, una mujer de 85 años que habita la casa que construyó junto a su difunto esposo, cuya historia de amor comenzó con el regalo de una cámara de 120mm. La serie aborda la viudez, la dignidad de los cuidados y el recuerdo desde una perspectiva visual íntima y delicada. La obra demuestra cómo la fotografía posee el poder ineludible de inmortalizar la afectividad y la memoria familiar.
-
-El París secreto de Brassaï: la noche como escenario humano (Heide Museum / L'Œil de la Photographie)
-El Heide Museum acoge una amplia retrospectiva sobre la mítica serie nocturna de Brassaï, revelando no solo sus copias de época sino también las intervenciones del fotógrafo en el laboratorio. Con su cámara de gran formato y una fascinación profunda por la condición humana, el artista húngaro recorrió la niebla y los rincones de la capital francesa en los años treinta. La exposición nos enseña que la fotografía humanista nace del respeto sincero y de la inmersión emocional en el entorno retratado.
-
-Placas: el retorno de Pablo Arroyo a la fotografía pura (SKIRA / L'Œil de la Photographie)
-Pablo Arroyo publica su monografía Placas, marcando un distanciamiento del mundo de la moda comercial para regresar a una búsqueda visual esencial basada en bodegones y desnudos. Con un lenguaje directo y un tratamiento riguroso de los sujetos aislados sobre el fondo, el autor profundiza en la potencia formal del volumen y la luz. El libro ofrece una reflexión sobre cómo la renuncia al artificio decorativo devuelve a la imagen su fuerza expresiva originaria.
-
-Una amistad intergeneracional a través del objetivo de Pál Balázs (Shoot It With Film)
-Pál Balázs comparte un ensayo fotográfico sobre su relación de amistad con el Dr. István Körmendi, un médico centenario y superviviente del Holocausto al que comenzó a fotografiar hace cinco años. Utilizando cámaras Mamiya C330 y Leica M3 con diversas emulsiones, la serie refleja la dimensión cotidiana y afectiva de su vínculo personal. El proyecto demuestra que la práctica fotográfica puede trascender el registro documental para convertirse en un canal de compañía y afecto genuino.
-
-Patrimonio en Dunedin a través del visor subminiatura y el formato medio (35mmc)
-Un recorrido fotográfico por los museos e inmuebles históricos de la ciudad de Dunedin contrapone la respuesta estética de la cámara subminiatura Pentax Auto 110 con la clásica Zeiss Box Tengor. El autor examina cómo las limitaciones de los equipos antiguos y la elección de emulsiones ortocromáticas dotan a la arquitectura de una atmósfera atemporal. El ejercicio evidencia que las restricciones técnicas estimulan la creatividad compositiva al enfrentarse al paisaje urbano.
-
-El eclipse era real, pero ¿lo vimos?: fotografiar al espectador (35mmc)
-Durante el eclipse solar del 12 de agosto de 2026, el autor decide girar su cámara hacia la multitud congregada en la estación de Finchley Central en lugar de encuadrar el sol. La fotografía capta a decenas de peatones deteniendo su rutina diaria para registrar el fenómeno astronómico a través de las pantallas de sus teléfonos móviles. La propuesta ofrece una sagaz reflexión sobre la mediación tecnológica y el comportamiento colectivo ante las luces del cielo.
-
-La exploración compositiva en la obra de Daniel Soder (Ain't-Bad / Archivo)
-El archivo de Ain't-Bad revisa la trayectoria visual de Daniel Soder, fotógrafo formado en Boston centrado en el estudio del espacio y la estructura de la imagen. Su trabajo destaca por el cuidado en la geometría y el rigor compositivo aplicado a la fotografía de autor. Una oportunidad para recuperar proyectos que exploran la articulación del lenguaje fotográfico desde sus bases plásticas.
-
-**EMULSIVE Secret Santa: la comunidad analógica global]]></itunes:summary>
+Como reto creativo del día, Roberto propone romper la perspectiva habitual trabajando el contrapicado extremo o el punto de vista del observado, obligándonos a cambiar la escala de poder en la escena y la relación física entre el fotógrafo y el sujeto.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
