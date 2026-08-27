@@ -145,35 +145,89 @@ def gemini_request(prompt):
     return None
 
 
-def get_articles_for_day(target_date_str=None):
-    """Obtiene los artículos de la fecha en archive.db."""
-    if not os.path.exists(DB_PATH):
+def parse_digest_markdown(filepath):
+    """Parsea el archivo digest-{fecha}.podcast.md extrayendo todos los artículos con su texto completo."""
+    if not os.path.exists(filepath):
         return []
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
+    try:
+        with open(filepath, encoding='utf-8') as f:
+            content = f.read()
+    except Exception:
+        return []
 
-    if target_date_str:
-        c.execute("""
-            SELECT id, url, source, title, photographer, published_date, summary, full_text, image_url
-            FROM articles
-            WHERE published_date = ? OR created_at LIKE ?
-            ORDER BY id DESC
-        """, (target_date_str, f'{target_date_str}%'))
-        rows = [dict(r) for r in c.fetchall()]
-        if rows:
+    sections = re.split(r'\n###\s+', content)
+    articles = []
+    for sec in sections[1:]:
+        lines = sec.split('\n')
+        source = lines[0].strip()
+        body = '\n'.join(lines[1:])
+        parts = re.split(r'\n\*\*([^*]+)\*\*\n', body)
+        if len(parts) > 1:
+            for i in range(1, len(parts), 2):
+                title = parts[i].strip()
+                text = parts[i+1].strip() if i+1 < len(parts) else ''
+                author_match = re.search(r'Fotógrafos?:\s*([^\n]+)', text)
+                author = author_match.group(1).strip() if author_match else ''
+                articles.append({
+                    'source': source,
+                    'title': title,
+                    'photographer': author,
+                    'summary': text[:600],
+                    'full_text': text
+                })
+        else:
+            articles.append({
+                'source': source,
+                'title': lines[0],
+                'photographer': '',
+                'summary': body[:600],
+                'full_text': body
+            })
+    return articles
+
+
+def get_articles_for_day(target_date_str=None):
+    """Obtiene todos los artículos de las últimas 24 horas desde el digest markdown y archive.db."""
+    target_dt = date.fromisoformat(target_date_str) if target_date_str else date.today()
+    target_iso = target_dt.isoformat()
+    yesterday_iso = date.fromordinal(target_dt.toordinal() - 1).isoformat()
+
+    articles = []
+    seen_titles = set()
+
+    # 1. Prioridad: Leer el digest generado para esta fecha
+    digest_path = os.path.join(OUT_DIR, f'digest-{target_iso}.podcast.md')
+    if os.path.exists(digest_path):
+        parsed = parse_digest_markdown(digest_path)
+        for a in parsed:
+            tit_key = (a.get('title') or '').strip().lower()
+            if tit_key and tit_key not in seen_titles and len(a.get('full_text', '')) > 20:
+                seen_titles.add(tit_key)
+                articles.append(a)
+
+    # 2. Complementar con archive.db para las últimas 24 horas (hoy y ayer)
+    if os.path.exists(DB_PATH):
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute("""
+                SELECT id, url, source, title, photographer, published_date, summary, full_text, image_url
+                FROM articles
+                WHERE published_date IN (?, ?) OR created_at >= ?
+                ORDER BY published_date DESC, id DESC
+            """, (target_iso, yesterday_iso, f'{yesterday_iso} 00:00:00'))
+            rows = [dict(r) for r in c.fetchall()]
             conn.close()
-            return rows
+            for r in rows:
+                tit_key = (r.get('title') or '').strip().lower()
+                if tit_key and tit_key not in seen_titles:
+                    seen_titles.add(tit_key)
+                    articles.append(r)
+        except Exception as e:
+            print(f'  ⚠️ Error leyendo archive.db: {e}')
 
-    c.execute("""
-        SELECT id, url, source, title, photographer, published_date, summary, full_text, image_url
-        FROM articles
-        ORDER BY published_date DESC, id DESC
-        LIMIT 20
-    """)
-    rows = [dict(r) for r in c.fetchall()]
-    conn.close()
-    return rows
+    return articles
 
 
 def get_historical_counterpart(primary_article):
@@ -242,10 +296,10 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
     headlines_by_source_text = []
     for src, items in by_source.items():
         headlines_by_source_text.append(f"📰 MEDIO: {src}")
-        for item in items[:4]:
+        for item in items[:6]:
             autor = item.get('photographer') or 'Autor'
             tit = item.get('title', 'Sin título')
-            sumario = (item.get('summary') or item.get('full_text', ''))[:160].replace('\n', ' ')
+            sumario = (item.get('summary') or item.get('full_text', ''))[:450].replace('\n', ' ')
             headlines_by_source_text.append(f"  • {tit} (por {autor}): {sumario}")
         headlines_by_source_text.append("")
 
@@ -259,21 +313,21 @@ PROYECTO HISTÓRICO DEL ARCHIVO (LINAJE VISUAL EN ARCHIVE.DB):
 - Medio/Revista: {historical.get('source', '').upper()}
 - Autor/a: {historical.get('photographer') or 'Referencia histórica'}
 - Fecha original: {historical.get('published_date', 'Archivo')}
-- Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:400]}
+- Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:500]}
 """
 
     return f"""Eres el guionista y la voz única de 'Punto de vista', el podcast cultural y diario de fotografía.
 Voz y personalidad: Roberto (narrador único, cercano, apasionado, lúcido, con ritmo de radio cultural de máxima calidad).
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
 
-MATERIAL DE HOY:
+MATERIAL DE LAS ÚLTIMAS 24 HORAS:
 {headlines_block}
 
 PROYECTO PROTAGONISTA DEL DÍA:
 - Título: {primary.get('title')}
 - Medio: {primary.get('source', '').upper()}
 - Autor: {primary.get('photographer') or 'Autor/a reseñado/a'}
-- Resumen/Texto completo: {(primary.get('summary') or primary.get('full_text', ''))[:1000]}
+- Resumen/Texto completo: {(primary.get('summary') or primary.get('full_text', ''))[:1500]}
 
 {hist_text}
 
@@ -295,9 +349,10 @@ Escribe el guion completo para ser leído en voz alta por Roberto con las pausas
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 - SOLO TEXTO PARA LEER EN VOZ ALTA. Cero acotaciones tipo (música alegre), cero asteriscos, corchetes o etiquetas de voz.
+- RIGOR FACTUAL Y VERACIDAD: NUNCA INVENTES NADA. Todo lo que digas debe basarse estrictamente en los datos reales del material provisto. Si un proyecto es breve, sé fiel a su contenido real sin añadir ficción.
 - PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
   * Escribe oraciones naturales y continuas separadas únicamente por puntos y comas.
-  * PROHIBIDO usar guiones largos o rayas (—), guiones aislados (-), dos puntos (:), puntos suspensivos (...) o paréntesis (...). Estos signos provocan cortes bruscos y pausas artificiales en el sintetizador de voz. Si necesitas hacer un inciso o aclaración, usa comas simples.
+  * PROHIBIDO usar guiones largos o rayas (—), guiones aislados (-), dos puntos (:), puntos suspensivos (...) o paréntesis (...). Si necesitas hacer un inciso o aclaración, usa comas simples.
 - FONÉTICA:
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
   * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
@@ -308,10 +363,11 @@ REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 
 ESTRUCTURA DE LOS 4 ACTOS:
 
-1. ACTO 1: APERTURA & TITULARES RÁPIDOS (~180 SEGUNDOS)
+1. ACTO 1: APERTURA & REPASO EDITORIAL DE LAS ÚLTIMAS 24 HORAS (~4 A 5 MINUTOS)
    - Apertura cálida con gancho: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
    - Lanza una frase intrigante que despierte el apetito sobre el proyecto principal de hoy.
-   - REPASO DE TITULARES AGRUPADOS POR MEDIO: Recorre de forma ágil y dinámica las publicaciones de hoy agrupando por cabecera (Lomography, LensCulture, 35mmc, Ojo de Pez, Shoot It With Film, etc.). En 1 o 2 frases por noticia/medio, da los titulares frescos de lo que se cuece hoy en la comunidad fotográfica internacional sin enrollarte.
+   - RECORRIDO EDITORIAL POR LAS PUBLICACIONES: Recorre las noticias de las últimas 24 horas agrupadas por medio.
+   - REGLA DE COBERTURA: Dedica aproximadamente 30 segundos (unas 50 a 75 palabras) a cada noticia importante que tenga contenido real. Explica con claridad quién es el fotógrafo o fotógrafa, el tema, la técnica o cámara empleada y qué aporta a la escena visual actual.
    ---PAUSA---
 
 2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL (~3 MINUTOS)
@@ -328,7 +384,7 @@ ESTRUCTURA DE LOS 4 ACTOS:
 4. ACTO 4: CIERRE Y DESPEDIDA (~45 SEGUNDOS)
    - Roberto despide el episodio con cercanía, agradeciendo a los autores y medios originales, e invitando a salir a hacer fotos: "Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!"
 
-DURACIÓN TOTAL ESTIMADA: ~850 a 1150 palabras (~7 a 9 minutos de locución fluida y pausada)."""
+DURACIÓN TOTAL ESTIMADA: ~1100 a 1450 palabras (~8 a 10 minutos de locución fluida y pausada)."""
 
 
 def parse_summary(summary):
