@@ -1,6 +1,8 @@
 name: Podcast diario a Telegram
 
 on:
+  schedule:
+    - cron: '0 8 * * *'
   workflow_run:
     workflows: ["Digest diario"]
     types:
