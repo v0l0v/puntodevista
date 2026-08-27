@@ -295,6 +295,9 @@ Escribe el guion completo para ser leído en voz alta por Roberto con las pausas
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 - SOLO TEXTO PARA LEER EN VOZ ALTA. Cero acotaciones tipo (música alegre), cero asteriscos, corchetes o etiquetas de voz.
+- PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
+  * Escribe oraciones naturales y continuas separadas únicamente por puntos y comas.
+  * PROHIBIDO usar guiones largos o rayas (—), guiones aislados (-), dos puntos (:), puntos suspensivos (...) o paréntesis (...). Estos signos provocan cortes bruscos y pausas artificiales en el sintetizador de voz. Si necesitas hacer un inciso o aclaración, usa comas simples.
 - FONÉTICA:
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
   * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
@@ -374,22 +377,42 @@ def get_day_music(target_date=None):
 
 
 def clean_text(t):
+    # 1. Eliminar emojis y símbolos decorativos
     t = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
                r'\U0001F1E0-\U0001F1FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F'
                r'\U0001FA70-\U0001FAFF\u2702-\u27B0\u24C2-\U0001F251'
                r'\U0001F004\u2600-\u26FF\uFE0F]', '', t)
+    # 2. Eliminar marcas markdown e HTML
     t = re.sub(r'!\[[^\]]*\]\([^)]+\)', '', t)
     t = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', t)
     t = re.sub(r'<\/?[^>]+>', '', t)
     t = re.sub(r'\*\*(.+?)\*\*', r'\1', t)
     t = re.sub(r'\*(.+?)\*', r'\1', t)
-    t = re.sub(r'[_*~`]', '', t)
-    t = re.sub(r'\s+', ' ', t).strip()
-    t = re.sub(r'&#8217;', "'", t)
-    t = re.sub(r'&#8211;', '–', t)
+    t = re.sub(r'[_*~`#]', '', t)
+
+    # 3. Entidades HTML
+    t = re.sub(r'&#8217;|&apos;', "'", t)
+    t = re.sub(r'&#8211;|&#8212;|&mdash;|&ndash;', ', ', t)
     t = re.sub(r'&#\d+;', '', t)
     t = t.replace('\\', '')
     t = re.sub(r'\|', ', ', t)
+
+    # 4. Suavizar signos que provocan pausas no deseadas en Edge-TTS (AlvaroNeural):
+    # - Rayas, guiones largos o guiones aislados -> coma
+    t = re.sub(r'\s*[—–]\s*', ', ', t)
+    t = re.sub(r'\s+-\s+', ', ', t)
+    # - Puntos suspensivos -> punto simple
+    t = re.sub(r'\.{2,}', '.', t)
+    # - Dos puntos y punto y coma -> coma
+    t = re.sub(r'[:;]', ',', t)
+    # - Paréntesis, corchetes y comillas tipográficas -> eliminados (manteniendo texto interno)
+    t = re.sub(r'[()[\]{}"«»“”]', '', t)
+
+    # 5. Normalizar puntuaciones repetidas y espacios
+    t = re.sub(r',\s*,+', ',', t)
+    t = re.sub(r'\.\s*\.+', '.', t)
+    t = re.sub(r',\s*\.', '.', t)
+    t = re.sub(r'\s+', ' ', t).strip()
     return t
 
 
