@@ -37,16 +37,6 @@
     "url": "https://thephotographicjournal.com/"
   },
   {
-    "id": "swan",
-    "name": "Swann Galleries",
-    "type": "rss",
-    "enabled": false,
-    "feeds": [
-      "https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed"
-    ],
-    "url": "https://www.swanngalleries.com/news/category/photographs-and-photobooks/"
-  },
-  {
     "id": "huck",
     "name": "Huck Magazine",
     "type": "rss",
