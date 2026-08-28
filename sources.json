@@ -40,7 +40,7 @@
     "id": "swan",
     "name": "Swann Galleries",
     "type": "rss",
-    "enabled": true,
+    "enabled": false,
     "feeds": [
       "https://www.swanngalleries.com/news/category/photographs-and-photobooks/feed"
     ],
