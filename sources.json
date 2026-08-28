@@ -201,7 +201,7 @@
     "name": "Blind Magazine",
     "type": "wp-api",
     "enabled": true,
-    "wp_api": "https://blind-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
+    "wp_api": "https://blind-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1&lang=en",
     "feeds": [
       "https://blind-magazine.com/feed/"
     ],
