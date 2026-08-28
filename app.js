@@ -17,15 +17,15 @@ const RSS_PROXIES = [
 ];
 const REFRESH_MS = 10 * 60 * 1000;
 let ALL_SOURCES = [
-  'colossal', 'lomography', 'booooooom', 'tpj', 'swan', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm',
-  '35mmc', 'kosmofoto', 'casualphotophile', 'phroom', 'c41', 'featureshoot', 'aintbad', 'emulsive'
+  'colossal', 'lomography', 'booooooom', 'tpj', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm',
+  '35mmc', 'kosmofoto', 'casualphotophile', 'phroom', 'c41', 'featureshoot', 'aintbad', 'emulsive',
+  'aperture', 'blind', 'asx', '1854', 'clavoardiendo'
 ];
 let SOURCE_LABELS = {
   colossal: 'Colossal · Fotografía',
   lomography: 'Lomography Magazine',
   booooooom: 'Booooooom',
   tpj: 'The Photographic Journal',
-  swan: 'Swann Galleries',
   huck: 'Huck Magazine',
   lensculture: 'LensCulture',
   odlp: "L'Œil de la Photographie",
@@ -38,7 +38,12 @@ let SOURCE_LABELS = {
   c41: 'C41 Magazine',
   featureshoot: 'Feature Shoot',
   aintbad: "Ain't-Bad",
-  emulsive: 'EMULSIVE'
+  emulsive: 'EMULSIVE',
+  aperture: 'Aperture',
+  blind: 'Blind Magazine',
+  asx: 'American Suburb X',
+  '1854': 'British Journal of Photography',
+  clavoardiendo: 'Clavoardiendo Magazine'
 };
 const SOURCES_KEY = 'feedfoto.sources';
 const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
@@ -497,7 +502,6 @@ const CUSTOM_FETCHERS = {
   lomography: fetchLomography,
   booooooom: fetchBooooooom,
   tpj: fetchTpj,
-  swan: fetchSwan,
   huck: fetchHuck,
   lensculture: fetchLensCulture,
   odlp: fetchOdlp,
@@ -1185,25 +1189,35 @@ function cleanContent(html) {
 }
 
 function extractImages(html) {
+  if (!html) return [];
   const items = [];
   const seen = new Set();
-  const imgRe = /<img[^>]+src="([^"]+)"/g;
-  let m;
-  while ((m = imgRe.exec(html)) !== null) {
-    const url = m[1];
-    if (seen.has(url)) continue;
-    seen.add(url);
-    const before = html.substring(0, m.index);
-    const inFigure = before.lastIndexOf('<figure') > before.lastIndexOf('</figure>');
-    let caption = '';
-    if (inFigure) {
-      const after = html.substring(m.index);
-      const capMatch = after.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/);
-      if (capMatch && capMatch.index < (after.indexOf('</figure>') === -1 ? Infinity : after.indexOf('</figure>'))) {
-        caption = capMatch[1].replace(/<[^>]+>/g, '').trim();
+  try {
+    const doc = new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html');
+    doc.querySelectorAll('img').forEach(img => {
+      const url = img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('srcset')?.split(' ')?.[0];
+      if (!url || seen.has(url) || url.startsWith('data:')) return;
+      seen.add(url);
+      const figure = img.closest('figure');
+      let caption = '';
+      if (figure) {
+        caption = figure.querySelector('figcaption')?.textContent?.trim() || '';
+      }
+      if (!caption) {
+        caption = img.getAttribute('alt')?.trim() || '';
+      }
+      items.push({ url, caption });
+    });
+  } catch (e) {
+    const imgRe = /<img[^>]+src=["']([^"']+)["']/g;
+    let m;
+    while ((m = imgRe.exec(html)) !== null) {
+      const url = m[1];
+      if (!seen.has(url)) {
+        seen.add(url);
+        items.push({ url, caption: '' });
       }
     }
-    items.push({ url, caption });
   }
   return items;
 }
@@ -1234,7 +1248,6 @@ function isOwnDomain(href) {
            h.endsWith('lomography.com') ||
            h.endsWith('booooooom.com') ||
            h.endsWith('thephotographicjournal.com') ||
-           h.endsWith('swanngalleries.com') ||
            h.endsWith('huckmag.com') ||
            h.endsWith('lensculture.com') ||
            h.endsWith('loeildelaphotographie.com') ||
@@ -1247,7 +1260,12 @@ function isOwnDomain(href) {
            h.endsWith('c41magazine.com') ||
            h.endsWith('featureshoot.com') ||
            h.endsWith('aint-bad.com') ||
-           h.endsWith('emulsive.org');
+           h.endsWith('emulsive.org') ||
+           h.endsWith('blind-magazine.com') ||
+           h.endsWith('aperture.org') ||
+           h.endsWith('americansuburbx.com') ||
+           h.endsWith('1854.photography') ||
+           h.endsWith('clavoardiendo-magazine.com');
   } catch {
     return false;
   }
@@ -1701,6 +1719,40 @@ async function openModal(cardOrEntry, directSource) {
     return;
   }
 
+  // Enriquecer contenido desde su dataset fuente (${source}.json) si viene solo con excerpt o sin fotos
+  if (source && (!entry.content || entry.content.length < 500 || !entry.content.includes('<img'))) {
+    try {
+      if (!window.__sourceJsonCache) window.__sourceJsonCache = {};
+      let items = window.__sourceJsonCache[source];
+      if (!items) {
+        const resp = await fetch(`${source}.json`);
+        if (resp.ok) {
+          const data = await resp.json();
+          items = data.items || (Array.isArray(data) ? data : []);
+          window.__sourceJsonCache[source] = items;
+        }
+      }
+      if (items && Array.isArray(items)) {
+        const found = items.find(i => 
+          (i.link && i.link === entry.link) || 
+          (i._id != null && String(i._id) === String(entry._id)) ||
+          (i.title && i.title.trim().toLowerCase() === (entry.title || '').trim().toLowerCase())
+        );
+        if (found) {
+          if (found.content && (!entry.content || found.content.length > entry.content.length)) {
+            entry.content = found.content;
+          }
+          if (found.thumbnail && !entry.thumbnail) {
+            entry.thumbnail = found.thumbnail;
+          }
+          if (found.images && found.images.length) {
+            entry.images = found.images;
+          }
+        }
+      }
+    } catch {}
+  }
+
   // Lomography
   if (source === 'lomography') {
     let data = null;
@@ -1752,30 +1804,6 @@ async function openModal(cardOrEntry, directSource) {
   // The Photographic Journal
   if (source === 'tpj') {
     renderTpjArticle(body, entry);
-    return;
-  }
-
-  // Swann Galleries
-  if (source === 'swan') {
-    let data = null;
-    try {
-      const resp = await fetch(`/api/swan/article?url=${encodeURIComponent(entry.link)}`);
-      const d = await resp.json();
-      if (d.status === 'ok') data = d;
-    } catch {}
-    if (!data) {
-      try {
-        const resp = await fetch('swan_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
-      } catch {}
-    }
-    if (data) {
-      renderSwanArticle(body, entry, data);
-      return;
-    }
-    renderGenericArticle(body, entry);
     return;
   }
 
