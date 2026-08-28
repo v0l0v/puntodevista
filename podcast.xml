@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 28 Aug 2026 19:34:30 +0000</lastBuildDate>
+<lastBuildDate>Fri, 28 Aug 2026 19:52:02 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1039,17 +1039,33 @@ Terminamos con un reto de taller práctico que invita a los oyentes a salir a la
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 25 · Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete</title>
+    <title>Episodio 25 · El eco del obturador entre el césped, la masa y la memoria privada</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3</guid>
     <pubDate>Fri, 28 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3" length="14652449" type="audio/mpeg"/>
+    <description><![CDATA[El eco del obturador entre el césped, la masa y la memoria privada
+
+---
+
+Este viernes recorremos un mapa visual vertiginoso que abarca desde la energía underground de las raves y la labor enciclopédica de catalogar todas las emulsiones del mundo, hasta la memoria histórica del sida retratada por Therese Frare. También analizamos las dinámicas de poder en el nuevo libro de Kristina Rozhkova y los experimentos cromáticos de verano en Seúl.
+
+En nuestro tema principal, nos sumergimos en las tripas del fotoperiodismo deportivo a través de un emotivo testimonio en 35mmc, donde su autor relata cómo su pasión nacida en los años setenta con una Minolta SRT 101 lo llevó a cubrir la Copa del Mundo a pie de campo. Conectamos esta experiencia con las joyas de archivo de EMULSIVE y Ain't-Bad para reflexionar sobre el uso de la fotografía analógica como ancla emocional.
+
+Para cerrar el episodio, planteamos un reto práctico de taller enfocado en capturar la escala multitudinaria y la intimidad en eventos públicos, invitando a la comunidad a buscar las historias humanas que habitan en los márgenes de la gran escena.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3" length="9247841" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-28.jpg"/>
-    <itunes:duration>10:10</itunes:duration>
-    <itunes:title>Episodio 25 · Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete</itunes:title>
+    <itunes:duration>6:25</itunes:duration>
+    <itunes:title>Episodio 25 · El eco del obturador entre el césped, la masa y la memoria privada</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete]]></itunes:summary>
+    <itunes:summary><![CDATA[El eco del obturador entre el césped, la masa y la memoria privada
+
+---
+
+Este viernes recorremos un mapa visual vertiginoso que abarca desde la energía underground de las raves y la labor enciclopédica de catalogar todas las emulsiones del mundo, hasta la memoria histórica del sida retratada por Therese Frare. También analizamos las dinámicas de poder en el nuevo libro de Kristina Rozhkova y los experimentos cromáticos de verano en Seúl.
+
+En nuestro tema principal, nos sumergimos en las tripas del fotoperiodismo deportivo a través de un emotivo testimonio en 35mmc, donde su autor relata cómo su pasión nacida en los años setenta con una Minolta SRT 101 lo llevó a cubrir la Copa del Mundo a pie de campo. Conectamos esta experiencia con las joyas de archivo de EMULSIVE y Ain't-Bad para reflexionar sobre el uso de la fotografía analógica como ancla emocional.
+
+Para cerrar el episodio, planteamos un reto práctico de taller enfocado en capturar la escala multitudinaria y la intimidad en eventos públicos, invitando a la comunidad a buscar las historias humanas que habitan en los márgenes de la gran escena.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
