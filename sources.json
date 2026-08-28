@@ -184,5 +184,59 @@
       "https://emulsive.org/feed?paged=2"
     ],
     "url": "https://emulsive.org/"
+  },
+  {
+    "id": "aperture",
+    "name": "Aperture",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://aperture.org/wp-json/wp/v2/posts?per_page=30&_embed=1",
+    "feeds": [
+      "https://aperture.org/feed/"
+    ],
+    "url": "https://aperture.org/"
+  },
+  {
+    "id": "blind",
+    "name": "Blind Magazine",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://blind-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
+    "feeds": [
+      "https://blind-magazine.com/feed/"
+    ],
+    "url": "https://blind-magazine.com/"
+  },
+  {
+    "id": "asx",
+    "name": "American Suburb X",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://americansuburbx.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
+    "feeds": [
+      "https://americansuburbx.com/feed"
+    ],
+    "url": "https://americansuburbx.com/"
+  },
+  {
+    "id": "1854",
+    "name": "British Journal of Photography (1854)",
+    "type": "rss",
+    "enabled": true,
+    "feeds": [
+      "https://www.1854.photography/feed/"
+    ],
+    "url": "https://www.1854.photography/"
+  },
+  {
+    "id": "clavoardiendo",
+    "name": "Clavoardiendo Magazine",
+    "type": "wp-api",
+    "enabled": true,
+    "wp_api": "https://clavoardiendo-magazine.com/wp-json/wp/v2/posts?per_page=30&_embed=1",
+    "feeds": [
+      "https://clavoardiendo-magazine.com/feed/"
+    ],
+    "url": "https://clavoardiendo-magazine.com/"
   }
 ]

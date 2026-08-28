@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fotonistas × Punto de Vista · Dossier Pedagógico Semanal (Agosto 2026)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0c0d0e;
+      --bg-surface: #141618;
+      --bg-card: #1a1d20;
+      --bg-card-hover: #22262b;
+      --bg-accent-subtle: rgba(230, 81, 0, 0.08);
+      --border-subtle: #272b30;
+      --border-accent: #e65100;
+      --text-main: #ededed;
+      --text-muted: #9ba1a6;
+      --text-dim: #6b7278;
+      --accent-orange: #ff6d00;
+      --accent-amber: #ffab00;
+      --accent-teal: #00b4d8;
+      --accent-green: #2ec4b6;
+      --tag-bg: #262b30;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Newsreader', Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px;
+    }
+
+    .wrapper {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* HEADER EDITORIAL */
+    .header {
+      border-bottom: 2px solid var(--border-subtle);
+      padding-bottom: 32px;
+      margin-bottom: 40px;
+    }
+
+    .brand-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge-collab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent-orange);
+    }
+
+    .badge-collab span {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .issue-date {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .main-title {
+      font-family: var(--font-serif);
+      font-size: 2.75rem;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .main-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      max-width: 720px;
+      line-height: 1.5;
+    }
+
+    /* MANIFIESTO O INTRO DE ANA */
+    .intro-letter {
+      background: linear-gradient(145deg, #171a1d, #121416);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-orange);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 48px;
+    }
+
+    .intro-letter h3 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--accent-amber);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .intro-letter p {
+      color: #d1d5db;
+      font-size: 0.98rem;
+      margin-bottom: 14px;
+    }
+
+    .intro-letter p:last-child {
+      margin-bottom: 0;
+    }
+
+    .signature {
+      margin-top: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* SECCIÓN DE PROYECTOS */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .section-heading .pill-count {
+      background: var(--tag-bg);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* TARJETA DE PROYECTO */
+    .project-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      margin-bottom: 40px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-card:hover {
+      border-color: #3e444c;
+    }
+
+    .card-header {
+      padding: 28px 28px 16px 28px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      background: var(--tag-bg);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .meta-source {
+      color: var(--accent-orange);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .project-title {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .project-author {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .card-body {
+      padding: 0 28px 28px 28px;
+    }
+
+    .concept-text {
+      color: #d1d5db;
+      font-size: 0.98rem;
+      margin-bottom: 24px;
+      line-height: 1.65;
+    }
+
+    /* GRID PEDAGÓGICO */
+    .pedagogy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 680px) {
+      .pedagogy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pedagogy-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .box-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .box-label.eyes { color: var(--accent-teal); }
+    .box-label.lesson { color: var(--accent-amber); }
+
+    .box-content {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* RETO DE TALLER (CALLOUT) */
+    .workshop-challenge {
+      background: var(--bg-accent-subtle);
+      border: 1px dashed var(--accent-orange);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .challenge-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-orange);
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .challenge-desc {
+      font-size: 0.92rem;
+      color: #f1f5f9;
+      line-height: 1.55;
+    }
+
+    .challenge-desc strong {
+      color: #ffffff;
+    }
+
+    /* FOOTER EDITORIAL */
+    .footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 36px;
+      margin-top: 60px;
+      text-align: center;
+    }
+
+    .footer-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .footer-desc {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      max-width: 580px;
+      margin: 0 auto 24px auto;
+      line-height: 1.6;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent-orange);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 28px;
+      border-radius: 8px;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .cta-btn:hover {
+      background: #e65100;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand-bar">
+        <div class="badge-collab">
+          FOTONISTAS <span>×</span> PUNTO DE VISTA
+        </div>
+        <div class="issue-date">Edición Especial · Segunda Quincena Agosto 2026</div>
+      </div>
+      <h1 class="main-title">La Mirada Global: 5 Lecciones Visuales del Mundo para Aprender a Mirar</h1>
+      <p class="main-subtitle">
+        Una selección pedagógica de alta escuela comisariada desde el radar internacional de <em>Punto de vista</em> exclusivamente para los socios del <strong>Club Fotonistas</strong>.
+      </p>
+    </header>
+
+    <!-- CARTA EDITORIAL DE BIENVENIDA -->
+    <section class="intro-letter">
+      <h3>Querida comunidad fotonista,</h3>
+      <p>
+        Hacer fotos con alma no consiste en comprar la última cámara del escaparate ni en memorizar fórmulas de laboratorio. Consiste en <strong>afinar la mirada</strong>: entender por qué una imagen nos detiene el pulso mientras pasamos de largo ante otras mil.
+      </p>
+      <p>
+        Esta semana hemos cruzado nuestra filosofía de escuela con el archivo del observatorio internacional de <em>Punto de vista</em>. Hemos rastreado decenas de publicaciones en París, Berlín, Londres y Tokio para traeros <strong>5 proyectos extraordinarios</strong> despojados de tecnicismos estériles, listos para convertirse en 5 lecciones directas que podéis aplicar hoy mismo al salir a la calle.
+      </p>
+      <div class="signature">
+        <span>Ana Arbonés</span> &nbsp;·&nbsp; <span style="font-weight: 400; color: var(--text-muted);">Fotonistas & Punto de Vista</span>
+      </div>
+    </section>
+
+    <!-- LISTADO DE PROYECTOS -->
+    <section>
+      <div class="section-heading">
+        <h2>Los 5 Casos de Estudio de la Semana</h2>
+        <span class="pill-count">5 Proyectos Analizados</span>
+      </div>
+
+      <!-- PROYECTO 1 -->
+      <article class="project-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="meta-tag">Retrato & Empatía</span>
+            <span class="meta-source">LensCulture</span>
+          </div>
+          <h3 class="project-title">Volver a empezar a los sesenta: la dignidad del juego frente al trauma</h3>
+          <div class="project-author">Maryna Syrovatka (Ucrania / Bratislava)</div>
+        </div>
+        <div class="card-body">
+          <p class="concept-text">
+            Syrovatka retrata a un colectivo de mujeres refugiadas de más de sesenta años que han tenido que reconstruir su vida desde cero. En lugar de acudir al dramatismo oscuro o la compasión complaciente, decide fotografiarlas riendo, jugando con objetos cotidianos y vistiendo colores vibrantes. La serie demuestra que el retrato humanista más poderoso no es el que exhibe la herida, sino el que celebra la resistencia del espíritu.
+          </p>
+          
+          <div class="pedagogy-grid">
+            <div class="pedagogy-box">
+              <div class="box-label eyes">👁️ ¿Dónde poner el ojo?</div>
+              <div class="box-content">
+                Observa cómo los fondos neutros y la iluminación suave de ventana eliminan cualquier distracción, obligándote a conectar directamente con la mirada y la postura de las manos.
+              </div>
+            </div>
+            <div class="pedagogy-box">
+              <div class="box-label lesson">💡 La lección invisible</div>
+              <div class="box-content">
+                <strong>La complicidad previa al disparo:</strong> Una foto íntima nunca es mérito del objetivo; es el resultado del tiempo que pasas charlando con tu sujeto antes de levantar la cámara.
+              </div>
+            </div>
+          </div>
+
+          <div class="workshop-challenge">
+            <div class="challenge-title">🎯 Reto de Taller para el Club:</div>
+            <div class="challenge-desc">
+              <strong>El retrato cómplice con atrezo:</strong> Fotografía a alguien cercano (un familiar, un amigo, un vecino) interactuando con un objeto que le haga sonreír o que represente un recuerdo alegre. Prohibido pedirles que posen como modelos: conversa con ellos y dispara en mitad de la carcajada.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROYECTO 2 -->
+      <article class="project-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="meta-tag">Experimento de Mirada</span>
+            <span class="meta-source">Lomography Magazine</span>
+          </div>
+          <h3 class="project-title">Tres fotógrafos, una misma modelo: la cámara no ve nada, miras tú</h3>
+          <div class="project-author">Colectivo Lomo M-C-A (Viena / Tokio)</div>
+        </div>
+        <div class="card-body">
+          <p class="concept-text">
+            Tres fotógrafos con personalidades diametralmente opuestas recibieron exactamente la misma cámara compacta y a la misma modelo en el mismo espacio durante una tarde. El resultado: tres series irreconocibles entre sí. El primero buscó la sombra arquitectónica y el misterio; la segunda, los primeros planos desenfocados y el movimiento; el tercero, el color saturado y la ironía callejera.
+          </p>
+          
+          <div class="pedagogy-grid">
+            <div class="pedagogy-box">
+              <div class="box-label eyes">👁️ ¿Dónde poner el ojo?</div>
+              <div class="box-content">
+                Fíjate en cómo la distancia física al sujeto define el tono: acercarse a 40 cm transmite vulnerabilidad; alejarse a 5 metros convierte al sujeto en una figura gráfica en el paisaje.
+              </div>
+            </div>
+            <div class="pedagogy-box">
+              <div class="box-label lesson">💡 La lección invisible</div>
+              <div class="box-content">
+                <strong>Tu estilo es tu filtro emocional:</strong> No importa cuán simple sea tu cámara; la escena final es siempre un autorretrato de tus propias obsesiones visuales.
+              </div>
+            </div>
+          </div>
+
+          <div class="workshop-challenge">
+            <div class="challenge-title">🎯 Reto de Taller para el Club:</div>
+            <div class="challenge-desc">
+              <strong>La regla de las 3 distancias:</strong> Escoge un único sujeto estático en tu casa o barrio. Haz 3 fotos con tres intenciones opuestas: 1) Como detalle abstracto cerrando el plano al máximo; 2) Como retrato en su contexto; 3) Como un elemento diminuto devorado por su entorno.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROYECTO 3 -->
+      <article class="project-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="meta-tag">Documental Íntimo</span>
+            <span class="meta-source">Shoot It With Film</span>
+          </div>
+          <h3 class="project-title">Amistad más allá de las generaciones: fotografiar el paso del tiempo</h3>
+          <div class="project-author">Pál Balázs (Hungría)</div>
+        </div>
+        <div class="card-body">
+          <p class="concept-text">
+            Balázs documenta a lo largo de varios años su amistad cotidiana con un anciano médico de 97 años superviviente del Holocausto. Lejos de la solemnidad del museo, la cámara de Balázs se detiene en los pequeños gestos: la taza de té, la luz de la tarde rozando las arrugas de la piel, la biblioteca desordenada y el silencio compartido en el salón.
+          </p>
+          
+          <div class="pedagogy-grid">
+            <div class="pedagogy-box">
+              <div class="box-label eyes">👁️ ¿Dónde poner el ojo?</div>
+              <div class="box-content">
+                La dirección de la luz natural: Balázs nunca usa flash; espera pacientemente a que la luz lateral de la ventana modele la textura de los objetos y los rostros.
+              </div>
+            </div>
+            <div class="pedagogy-box">
+              <div class="box-label lesson">💡 La lección invisible</div>
+              <div class="box-content">
+                <strong>La lentitud como método:</strong> La verdadera profundidad documental se consigue cuando la persona fotografiada olvida por completo que tienes una cámara en la mano.
+              </div>
+            </div>
+          </div>
+
+          <div class="workshop-challenge">
+            <div class="challenge-title">🎯 Reto de Taller para el Club:</div>
+            <div class="challenge-desc">
+              <strong>El microrrelato de una estancia:</strong> Elige la habitación donde pase más tiempo alguien mayor en tu familia o entorno. Haz una foto sin personas donde solo a través de los objetos (las gafas sobre la mesa, la manta, las fotos del aparador) se sienta su presencia viva.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROYECTO 4 -->
+      <article class="project-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="meta-tag">Punto de Vista & Tensión</span>
+            <span class="meta-source">Colossal / Wildlife Photographer</span>
+          </div>
+          <h3 class="project-title">El punto de vista invertido: prestarle los ojos a la presa</h3>
+          <div class="project-author">Selección Wildlife Photographer of the Year</div>
+        </div>
+        <div class="card-body">
+          <p class="concept-text">
+            Una de las fotos más impactantes de la selección final del certamen sitúa la cámara sumergida bajo el hielo ártico apuntando hacia arriba. A través del agujero en el agua, asoma la enorme cabeza de un oso polar mirando fijamente a la lente. Es exactamente la perspectiva que tendría una foca segundos antes de ser alcanzada.
+          </p>
+          
+          <div class="pedagogy-grid">
+            <div class="pedagogy-box">
+              <div class="box-label eyes">👁️ ¿Dónde poner el ojo?</div>
+              <div class="box-content">
+                El encuadre vertical y el marco natural creado por el borde del hielo polar, que concentra toda la tensión visual en el centro del fotograma.
+              </div>
+            </div>
+            <div class="pedagogy-box">
+              <div class="box-label lesson">💡 La lección invisible</div>
+              <div class="box-content">
+                <strong>Cambiar la altura del eje óptico:</strong> Disparar siempre de pie a 1,70 m del suelo aburre al cerebro. En cuanto bajas o subes la cámara radicalmente, la historia se transforma por completo.
+              </div>
+            </div>
+          </div>
+
+          <div class="workshop-challenge">
+            <div class="challenge-title">🎯 Reto de Taller para el Club:</div>
+            <div class="challenge-desc">
+              <strong>A ras de suelo (Cámara al suelo):</strong> Sal hoy a la calle y coloca la cámara literalmente apoyada sobre el pavimento o césped. Dispara hacia arriba en contrapicado total hacia personas caminando, animales o farolas sin mirar por el visor. Descubre qué mundo invisible existe a 5 centímetros del suelo.
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROYECTO 5 -->
+      <article class="project-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="meta-tag">Archivo & Nostalgia</span>
+            <span class="meta-source">L'Œil de la Photographie (ODLP)</span>
+          </div>
+          <h3 class="project-title">Perros en coches en los años setenta: la poesía de la ternura absurda</h3>
+          <div class="project-author">Gary Krueger (Joseph Bellows Gallery)</div>
+        </div>
+        <div class="card-body">
+          <p class="concept-text">
+            Durante la década de 1970 en Los Ángeles, Gary Krueger se dedicó a fotografiar a perros asomados a las ventanillas de coches aparcados o en marcha. Con una mezcla de humor socarrón y ternura infinita, Krueger capturó miradas expectantes, lenguas al viento y reflejos en los cromados de los bólidos californianos.
+          </p>
+          
+          <div class="pedagogy-grid">
+            <div class="pedagogy-box">
+              <div class="box-label eyes">👁️ ¿Dónde poner el ojo?</div>
+              <div class="box-content">
+                Los reflejos en los cristales y carrocerías que añaden una segunda capa de lectura visual sobre la ciudad alrededor del perro.
+              </div>
+            </div>
+            <div class="pedagogy-box">
+              <div class="box-label lesson">💡 La lección invisible</div>
+              <div class="box-content">
+                <strong>La fuerza de una serie temática sencilla:</strong> Una foto de un perro en un coche es una anécdota; cuarenta fotos de perros en coches tomadas con coherencia son un ensayo sociológico inolvidable.
+              </div>
+            </div>
+          </div>
+
+          <div class="workshop-challenge">
+            <div class="challenge-title">🎯 Reto de Taller para el Club:</div>
+            <div class="challenge-desc">
+              <strong>El micro-proyecto de 5 fotos:</strong> Escoge una obsesión visual diminuta y común (ej: buzones oxidados, personas comiendo helado, sombras de bicicletas, plantas en balcones estrechos) y toma una serie de 5 fotos donde solo cambie el protagonista pero se mantenga la misma distancia de encuadre.
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- FOOTER / CIERRE -->
+    <footer class="footer">
+      <div class="footer-quote">
+        «El secreto no está en comprar otra cámara, sino en aprender a ver lo extraordinario en lo cotidiano.»
+      </div>
+      <p class="footer-desc">
+        Este documento es un material pedagógico experimental elaborado por <strong>Punto de vista</strong> en colaboración con <strong>Fotonistas</strong> para enriquecer el debate visual del Club y la Fotoletter.
+      </p>
+      <a href="https://fotonistas.com/" target="_blank" rel="noopener" class="cta-btn">
+        Compartir reflexiones en el Club Fotonistas →
+      </a>
+    </footer>
+
+  </div>
+
+</body>
+</html>
