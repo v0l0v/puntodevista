@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 28 Aug 2026 09:46:08 +0000</lastBuildDate>
+<lastBuildDate>Fri, 28 Aug 2026 19:34:30 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1039,29 +1039,17 @@ Terminamos con un reto de taller práctico que invita a los oyentes a salir a la
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 25 · El destello del movimiento y las huellas del verano</title>
+    <title>Episodio 25 · Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3</guid>
     <pubDate>Fri, 28 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[El destello del movimiento y las huellas del verano
-
-En la edición de hoy repasamos la transición estival en el mundo visual a través del cierre de temporada en el Ojo de la Fotografía, el O-D-L-P, las crónicas a pie de campo en la Copa del Mundo y la agilidad de formato medio y compacto registradas por la comunidad de 35 milímetros. También nos adentramos en la escena subterránea de las fiestas libres capturada en película, el verano ardiente junto a los canales parisinos retratado por Augustin Pasquini, los retratos de resistencia femenina en el Líbano firmados por Rania Matar y el valor histórico de la cercanía humana en la fotografía sobre el sida.
-
-El eje central del programa analiza la reciente experimentación visual de Emma Cortijo para la revista de Lomography, explorando el uso de la lente de arte Petzval de 27 milímetros a apertura f uno coma siete con control de desenfoque. Analizamos cómo su trabajo equilibra la fotografía digital, el vídeo y el celuloide en entornos de baja luz y movimiento, conectándolo conceptualmente con el archivo histórico de Emulsive y la labor documental de Nik Stanbridge en los boxes del circuito de Brands Hatch.
-
-Para terminar, proponemos un reto práctico de taller enfocado en la espontaneidad y el dinamismo de la luz ambiental, invitando a los oyentes a salir a la calle para capturar escenas en movimiento con ópticas fijas y encuadres no premeditados.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3" length="9832481" type="audio/mpeg"/>
+    <description><![CDATA[Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3" length="14652449" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-28.jpg"/>
-    <itunes:duration>6:49</itunes:duration>
-    <itunes:title>Episodio 25 · El destello del movimiento y las huellas del verano</itunes:title>
+    <itunes:duration>10:10</itunes:duration>
+    <itunes:title>Episodio 25 · Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[El destello del movimiento y las huellas del verano
-
-En la edición de hoy repasamos la transición estival en el mundo visual a través del cierre de temporada en el Ojo de la Fotografía, el O-D-L-P, las crónicas a pie de campo en la Copa del Mundo y la agilidad de formato medio y compacto registradas por la comunidad de 35 milímetros. También nos adentramos en la escena subterránea de las fiestas libres capturada en película, el verano ardiente junto a los canales parisinos retratado por Augustin Pasquini, los retratos de resistencia femenina en el Líbano firmados por Rania Matar y el valor histórico de la cercanía humana en la fotografía sobre el sida.
-
-El eje central del programa analiza la reciente experimentación visual de Emma Cortijo para la revista de Lomography, explorando el uso de la lente de arte Petzval de 27 milímetros a apertura f uno coma siete con control de desenfoque. Analizamos cómo su trabajo equilibra la fotografía digital, el vídeo y el celuloide en entornos de baja luz y movimiento, conectándolo conceptualmente con el archivo histórico de Emulsive y la labor documental de Nik Stanbridge en los boxes del circuito de Brands Hatch.
-
-Para terminar, proponemos un reto práctico de taller enfocado en la espontaneidad y el dinamismo de la luz ambiental, invitando a los oyentes a salir a la calle para capturar escenas en movimiento con ópticas fijas y encuadres no premeditados.]]></itunes:summary>
+    <itunes:summary><![CDATA[Donde la pasión se hace luz: del estruendo del estadio al susurro del carrete]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
