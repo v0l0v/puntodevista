@@ -230,6 +230,170 @@ def get_articles_for_day(target_date_str=None):
     return articles
 
 
+# --- Ponderación editorial por cadencia de publicación ---
+SOURCE_CADENCE_WEIGHT = {
+    # Publicación semanal / quincenal / baja frecuencia (Premio a la rareza/artesanal)
+    'tpj': 1.6,
+    'aperture': 1.6,
+    'huck': 1.6,
+    '1854': 1.6,
+    'clavoardiendo': 1.6,
+    'phroom': 1.6,
+    'casualphotophile': 1.6,
+    'shootitwithfilm': 1.4,
+
+    # Publicación media (2-4 veces por semana)
+    'blind': 1.2,
+    'booooooom': 1.2,
+    'asx': 1.2,
+    'magnum': 1.2,
+    'lensculture': 1.2,
+    'featureshoot': 1.2,
+    'aintbad': 1.2,
+
+    # Publicación diaria / alto volumen
+    'colossal': 1.0,
+    'lomography': 1.0,
+    '35mmc': 1.0,
+    'c41': 1.0,
+    'kosmofoto': 1.0,
+    'odlp': 1.0,
+    'emulsive': 1.0,
+}
+
+
+def get_recent_primary_sources(target_date, days=7, meta_path=META_PATH):
+    """Devuelve un historial de fuentes que han sido tema principal en los últimos N días."""
+    history = {}
+    target_dt = date.fromisoformat(target_date) if isinstance(target_date, str) else target_date
+
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, 'r', encoding='utf-8') as f:
+                meta = json.load(f)
+            for m in meta:
+                d_str = m.get('date')
+                if not d_str:
+                    continue
+                try:
+                    d = date.fromisoformat(d_str)
+                    diff = (target_dt - d).days
+                    if 0 < diff <= days:
+                        src = (m.get('primary_source') or '').lower()
+                        if src:
+                            if src not in history or diff < history[src]:
+                                history[src] = diff
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    # Complementar buscando en guiones anteriores si meta no tenía primary_source
+    for i in range(1, days + 1):
+        prev_d = date.fromordinal(target_dt.toordinal() - i)
+        guion_p = os.path.join(OUT_DIR, f'podcast-{prev_d.isoformat()}.guion.txt')
+        if os.path.exists(guion_p):
+            try:
+                txt = open(guion_p, encoding='utf-8').read()
+                for src_id in SOURCE_CADENCE_WEIGHT.keys():
+                    if src_id not in history and (f'[{src_id.upper()}]' in txt or f'MEDIO: {src_id.upper()}' in txt):
+                        history[src_id] = i
+            except Exception:
+                pass
+
+    return history
+
+
+def get_rotation_factor(source_id, history):
+    """Calcula el factor de rotación (penalización si ha salido recientemente, bonificación por frescura)."""
+    s = (source_id or '').lower().strip()
+    if s not in history:
+        return 1.60  # No ha salido en los últimos días o nunca
+
+    days_ago = history[s]
+    if days_ago == 1:
+        return 0.15  # Salió ayer -> penalización del 85%
+    elif days_ago == 2:
+        return 0.40  # Salió hace 2 días
+    elif days_ago == 3:
+        return 0.70  # Salió hace 3 días
+    elif days_ago == 4:
+        return 1.10
+    elif days_ago == 5:
+        return 1.35
+    else:
+        return 1.60
+
+
+def select_primary_article(articles, target_date=None, meta_path=META_PATH):
+    """
+    Selecciona el artículo protagonista del podcast aplicando los 3 baremos editoriales:
+      1. Filtro del 50% de longitud relativa respecto al máximo del día.
+      2. Factor de rotación reciente (penaliza repeticiones continuas).
+      3. Bonus de cadencia (premia medios de publicación semanal/artesanal).
+    """
+    if not articles:
+        return None
+    if len(articles) == 1:
+        return articles[0]
+
+    d = target_date or date.today()
+    d_iso = d.isoformat() if isinstance(d, date) else str(d)
+    history = get_recent_primary_sources(d_iso, days=7, meta_path=meta_path)
+
+    # 1. Medir longitudes
+    lengths = []
+    for a in articles:
+        text = a.get('full_text') or a.get('summary') or ''
+        lengths.append(len(text.strip()))
+
+    max_len = max(lengths) if lengths else 0
+    if max_len == 0:
+        return articles[0]
+
+    # Umbral del 50% (con un suelo mínimo absoluto de 600 caracteres)
+    threshold = max(600, int(max_len * 0.50))
+    candidates = []
+    for a in articles:
+        t_len = len((a.get('full_text') or a.get('summary') or '').strip())
+        if t_len >= threshold:
+            candidates.append((a, t_len))
+
+    # Fallback si ningún artículo supera el suelo
+    if not candidates:
+        candidates = [(a, len((a.get('full_text') or a.get('summary') or '').strip())) for a in articles]
+
+    print(f"\n  📊 Evaluación editorial de tema principal ({len(candidates)}/{len(articles)} superaron el corte del 50% [≥{threshold} chars]):")
+
+    scored = []
+    for a, t_len in candidates:
+        src = (a.get('source') or '').lower().strip()
+        # Baremo 1: Base de longitud (1.0 a 1.4)
+        len_ratio = min(1.0, t_len / max_len)
+        base_score = 1.0 + (len_ratio - 0.5) * 0.8
+
+        # Baremo 2: Factor de rotación
+        rot_factor = get_rotation_factor(src, history)
+
+        # Baremo 3: Bonus de cadencia
+        cadence_bonus = SOURCE_CADENCE_WEIGHT.get(src, 1.2)
+
+        total_score = base_score * rot_factor * cadence_bonus
+        scored.append((total_score, a, t_len, base_score, rot_factor, cadence_bonus))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    for sc, a, t_len, b_sc, r_fc, c_bn in scored[:8]:
+        src_name = a.get('source', '').upper()
+        title = (a.get('title') or 'Sin título')[:42]
+        days_ago = history.get(a.get('source', '').lower())
+        rot_info = f"hace {days_ago}d" if days_ago else "fresco"
+        print(f"    • [{src_name:12s}] {title:42s} | len:{t_len:5d} ({b_sc:.2f}) | rot:{r_fc:.2f} ({rot_info}) | cad:{c_bn:.2f} => SCORE: {sc:.3f}")
+
+    winner = scored[0][1]
+    return winner
+
+
 def get_historical_counterpart(primary_article):
     """Busca en el archivo un proyecto clásico o anterior afín usando sqlite-vec o FTS5."""
     if not os.path.exists(DB_PATH) or not primary_article:
@@ -670,11 +834,11 @@ def main():
         print(f'  ❌ No hay artículos para {today}')
         return
 
-    # 2. Identificar protagonista y linaje histórico
-    primary = max(articles, key=lambda a: len(a.get('summary') or a.get('full_text') or ''))
+    # 2. Identificar protagonista y linaje histórico con los 3 baremos editoriales
+    primary = select_primary_article(articles, today, META_PATH)
     historical = get_historical_counterpart(primary)
 
-    print(f"  Proyecto protagonista: [{primary.get('source', '').upper()}] {primary.get('title')}")
+    print(f"\n  🎯 Proyecto protagonista elegido: [{primary.get('source', '').upper()}] {primary.get('title')}")
     if historical:
         print(f"  Linaje histórico (archive.db): [{historical.get('source', '').upper()}] {historical.get('title')}")
 
@@ -765,6 +929,8 @@ def main():
             'image': day_image,
             'images': images,
             'podcast_title': podcast_title,
+            'primary_source': primary.get('source', ''),
+            'primary_title': primary.get('title', ''),
             'size': size,
             'duration': duration,
         }
