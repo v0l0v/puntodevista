@@ -764,21 +764,23 @@ def clean_text(t):
 
     # 3. Entidades HTML
     t = re.sub(r'&#8217;|&apos;', "'", t)
-    t = re.sub(r'&#8211;|&#8212;|&mdash;|&ndash;', ', ', t)
+    t = re.sub(r'&#8211;|&#8212;|&mdash;|&ndash;', ' ', t)
     t = re.sub(r'&#\d+;', '', t)
     t = t.replace('\\', '')
-    t = re.sub(r'\|', ', ', t)
+    t = re.sub(r'\|', ' ', t)
 
-    # 4. Suavizar signos que provocan pausas no deseadas en Edge-TTS (AlvaroNeural):
-    # - Rayas, guiones largos o guiones aislados -> coma
-    t = re.sub(r'\s*[—–]\s*', ', ', t)
-    t = re.sub(r'\s+-\s+', ', ', t)
-    # - Puntos suspensivos -> punto simple
+    # 4. Suavizar signos que provocan pausas artificiales en Edge-TTS (AlvaroNeural):
+    # IMPORTANTE: convertimos a ESPACIO, no a coma. La coma hace que el motor TTS
+    # pause, cortando frases que en español son continuas. El espacio mantiene el flujo.
+    # - Rayas y guiones largos aislados -> espacio
+    t = re.sub(r'\s*[—–]\s*', ' ', t)
+    t = re.sub(r'\s+-\s+', ' ', t)
+    # - Puntos suspensivos -> punto simple (pausa larga innecesaria)
     t = re.sub(r'\.{2,}', '.', t)
-    # - Dos puntos y punto y coma -> coma
-    t = re.sub(r'[:;]', ',', t)
+    # - Dos puntos y punto y coma -> espacio (no coma: evitar pausa artificial)
+    t = re.sub(r'[:;]', ' ', t)
     # - Paréntesis, corchetes y comillas tipográficas -> eliminados (manteniendo texto interno)
-    t = re.sub(r'[()[\]{}"«»“”]', '', t)
+    t = re.sub(r'[(){}\[\]"«»""]', '', t)
 
     # 5. Normalizar puntuaciones repetidas y espacios
     t = re.sub(r',\s*,+', ',', t)
