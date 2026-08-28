@@ -325,12 +325,118 @@ def get_rotation_factor(source_id, history):
         return 1.60
 
 
+def extract_photographer_candidates(article):
+    """Extrae posibles nombres propios de fotógrafos desde el campo photographer o desde el título."""
+    names = []
+    p = (article.get('photographer') or '').strip()
+    if p and len(p.split()) >= 2 and len(p) < 45:
+        names.append(p)
+
+    title = article.get('title') or ''
+    # Patrones comunes en títulos periodísticos de fotografía
+    patterns = [
+        r'(?:with|by|con|de|sobre|,)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)',
+        r'^([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)(?:\s*[:—–\']|\s+Takes|\s+Shoots|\s+Hunts|\s+Herds|\s+repasa|\s+muestra)',
+        r'([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)\’s\b'
+    ]
+    ignore = {'Blind Magazine', 'Feature Shoot', 'Casual Photophile', 'Photographic Journal', 'British Journal', 'Foto Colectania', 'Donostia Cuatro', 'New York', 'North Carolina', 'Sound Squad'}
+    for pat in patterns:
+        for match in re.findall(pat, title):
+            cand = match.strip()
+            if cand not in ignore and cand not in names and len(cand.split()) >= 2 and len(cand) < 40:
+                names.append(cand)
+    return names
+
+
+def find_monographic_counterpart(article, db_path=DB_PATH):
+    """
+    Busca si en archive.db existe otra obra del mismo fotógrafo.
+    Devuelve (counterpart_dict, mode, author_name) donde mode es 'monografico_cruzado' o 'monografico_mismo_medio'.
+    """
+    if not os.path.exists(db_path) or not article:
+        return None, None, None
+
+    art_id = article.get('id', 0)
+    art_url = article.get('url') or article.get('link') or ''
+    art_title = (article.get('title') or '').strip()
+    src = (article.get('source') or '').lower().strip()
+
+    names = extract_photographer_candidates(article)
+    if not names:
+        return None, None, None
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    # Nivel 1: Monográfico Cruzado (otro medio)
+    for name in names:
+        try:
+            c.execute("""
+                SELECT id, url, source, title, photographer, published_date, summary, full_text
+                FROM articles
+                WHERE id != ? AND url != ? AND title != ? AND LOWER(source) != ?
+                  AND (photographer LIKE ? OR title LIKE ? OR summary LIKE ?)
+                ORDER BY id DESC LIMIT 1
+            """, (art_id, art_url, art_title, src, f'%{name}%', f'%{name}%', f'%{name}%'))
+            row = c.fetchone()
+            if row:
+                conn.close()
+                return dict(row), 'monografico_cruzado', name
+        except Exception:
+            pass
+
+    # Nivel 2: Monográfico Mismo Medio (excepción: otra obra anterior diferente en la misma revista)
+    for name in names:
+        try:
+            c.execute("""
+                SELECT id, url, source, title, photographer, published_date, summary, full_text
+                FROM articles
+                WHERE id != ? AND url != ? AND title != ? AND LOWER(source) == ?
+                  AND (photographer LIKE ? OR title LIKE ?)
+                ORDER BY id DESC LIMIT 1
+            """, (art_id, art_url, art_title, src, f'%{name}%', f'%{name}%'))
+            row = c.fetchone()
+            if row:
+                conn.close()
+                return dict(row), 'monografico_mismo_medio', name
+        except Exception:
+            pass
+
+    conn.close()
+    return None, None, None
+
+
+def had_recent_monograph(target_date, days=3, meta_path=META_PATH):
+    """Verifica si en los últimos N días ya se emitió un episodio monográfico."""
+    target_dt = date.fromisoformat(target_date) if isinstance(target_date, str) else target_date
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, 'r', encoding='utf-8') as f:
+                meta = json.load(f)
+            for m in meta:
+                d_str = m.get('date')
+                if not d_str:
+                    continue
+                try:
+                    d = date.fromisoformat(d_str)
+                    diff = (target_dt - d).days
+                    if 0 < diff <= days and m.get('monographic'):
+                        return True
+                except Exception:
+                    pass
+        except Exception:
+            pass
+    return False
+
+
 def select_primary_article(articles, target_date=None, meta_path=META_PATH):
     """
-    Selecciona el artículo protagonista del podcast aplicando los 3 baremos editoriales:
+    Selecciona el artículo protagonista del podcast aplicando los 4 baremos editoriales:
       1. Filtro del 50% de longitud relativa respecto al máximo del día.
       2. Factor de rotación reciente (penaliza repeticiones continuas).
       3. Bonus de cadencia (premia medios de publicación semanal/artesanal).
+      4. Bonus Monográfico (premia proyectos con obra gemela del mismo autor, regulado cada 3 días).
     """
     if not articles:
         return None
@@ -340,6 +446,7 @@ def select_primary_article(articles, target_date=None, meta_path=META_PATH):
     d = target_date or date.today()
     d_iso = d.isoformat() if isinstance(d, date) else str(d)
     history = get_recent_primary_sources(d_iso, days=7, meta_path=meta_path)
+    recent_monograph = had_recent_monograph(d_iso, days=3, meta_path=meta_path)
 
     # 1. Medir longitudes
     lengths = []
@@ -364,6 +471,8 @@ def select_primary_article(articles, target_date=None, meta_path=META_PATH):
         candidates = [(a, len((a.get('full_text') or a.get('summary') or '').strip())) for a in articles]
 
     print(f"\n  📊 Evaluación editorial de tema principal ({len(candidates)}/{len(articles)} superaron el corte del 50% [≥{threshold} chars]):")
+    if recent_monograph:
+        print("    ℹ️ Regulador Monográfico activo: Hubo monográfico en los últimos 3 días (bonus en pausa para alternancia temática).")
 
     scored = []
     for a, t_len in candidates:
@@ -378,37 +487,64 @@ def select_primary_article(articles, target_date=None, meta_path=META_PATH):
         # Baremo 3: Bonus de cadencia
         cadence_bonus = SOURCE_CADENCE_WEIGHT.get(src, 1.2)
 
-        total_score = base_score * rot_factor * cadence_bonus
-        scored.append((total_score, a, t_len, base_score, rot_factor, cadence_bonus))
+        # Baremo 4: Oportunidad Monográfica
+        mono_match, mono_mode, mono_author = find_monographic_counterpart(a, DB_PATH)
+        mono_bonus = 1.0
+        mono_desc = "sin mono"
+        if mono_match and not recent_monograph:
+            if mono_mode == 'monografico_cruzado':
+                mono_bonus = 1.40
+                mono_desc = f"★ MONO-CRUZADO ({mono_author} en {mono_match.get('source', '').upper()})"
+            elif mono_mode == 'monografico_mismo_medio':
+                mono_bonus = 1.20
+                mono_desc = f"★ MONO-MISMO-MEDIO ({mono_author})"
+        elif mono_match and recent_monograph:
+            mono_desc = f"mono-pausa ({mono_author})"
+
+        total_score = base_score * rot_factor * cadence_bonus * mono_bonus
+        scored.append((total_score, a, t_len, base_score, rot_factor, cadence_bonus, mono_bonus, mono_desc))
 
     scored.sort(key=lambda x: x[0], reverse=True)
 
-    for sc, a, t_len, b_sc, r_fc, c_bn in scored[:8]:
+    for sc, a, t_len, b_sc, r_fc, c_bn, m_bn, m_dsc in scored[:8]:
         src_name = a.get('source', '').upper()
-        title = (a.get('title') or 'Sin título')[:42]
+        title = (a.get('title') or 'Sin título')[:38]
         days_ago = history.get(a.get('source', '').lower())
         rot_info = f"hace {days_ago}d" if days_ago else "fresco"
-        print(f"    • [{src_name:12s}] {title:42s} | len:{t_len:5d} ({b_sc:.2f}) | rot:{r_fc:.2f} ({rot_info}) | cad:{c_bn:.2f} => SCORE: {sc:.3f}")
+        print(f"    • [{src_name:10s}] {title:38s} | len:{t_len:5d} ({b_sc:.2f}) | rot:{r_fc:.2f} ({rot_info}) | cad:{c_bn:.2f} | {m_dsc} => SCORE: {sc:.3f}")
 
     winner = scored[0][1]
     return winner
 
 
 def get_historical_counterpart(primary_article):
-    """Busca en el archivo un proyecto clásico o anterior afín usando sqlite-vec o FTS5."""
+    """
+    Busca en el archivo la contraparte histórica para el Linaje Visual:
+      Nivel 1: Monográfico cruzado (mismo fotógrafo en otra revista).
+      Nivel 2: Monográfico mismo medio (excepción: obra anterior diferente del autor).
+      Nivel 3: Linaje conceptual y estético mediante sqlite-vec (o FTS5) en otra revista.
+    """
     if not os.path.exists(DB_PATH) or not primary_article:
-        return None
+        return None, 'none'
 
-    # 1. Intentar vector_search si está disponible
+    # Nivel 1 & 2: Intentar conexión monográfica de autor
+    mono_match, mono_mode, mono_author = find_monographic_counterpart(primary_article, DB_PATH)
+    if mono_match:
+        mono_match['lineage_mode'] = mono_mode
+        mono_match['author_name'] = mono_author
+        return mono_match, mono_mode
+
+    # Nivel 3: Búsqueda Semántica Vectorial en otra revista (sqlite-vec)
     try:
         import vector_search
         candidates = vector_search.find_visual_lineage(primary_article.get('id', 0), limit=2)
         if candidates:
-            return candidates[0]
+            candidates[0]['lineage_mode'] = 'conceptual_vector'
+            return candidates[0], 'conceptual_vector'
     except Exception:
         pass
 
-    # 2. Fallback por FTS5 o búsqueda por palabras clave en otra revista
+    # Fallback por FTS5 en otra revista
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -441,7 +577,10 @@ def get_historical_counterpart(primary_article):
         counterparts = [dict(r) for r in c.fetchall()]
 
     conn.close()
-    return counterparts[0] if counterparts else None
+    if counterparts:
+        counterparts[0]['lineage_mode'] = 'conceptual_fts'
+        return counterparts[0], 'conceptual_fts'
+    return None, 'none'
 
 
 def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num):
@@ -471,11 +610,24 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
 
     hist_text = ""
     if historical:
+        mode = historical.get('lineage_mode', 'conceptual_vector')
+        author = historical.get('author_name') or historical.get('photographer') or primary.get('photographer') or 'el mismo autor'
+        if mode == 'monografico_cruzado':
+            hist_header = f"🌟 ENFOQUE MONOGRÁFICO ESPECIAL (MISMO AUTOR EN OTRA REVISTA: {author.upper()}):"
+            hist_directive = f"⚠️ INSTRUCCIÓN EDITORIAL: Hoy es un episodio MONOGRÁFICO sobre {author}. En el Acto 2 no compares con otro fotógrafo, sino que analiza la trayectoria y evolución de {author} contrastando su obra de hoy ({primary.get('title')}) con su otra obra ({historical.get('title')}) publicada en {historical.get('source', '').upper()}."
+        elif mode == 'monografico_mismo_medio':
+            hist_header = f"🌟 ENFOQUE MONOGRÁFICO ESPECIAL (EVOLUCIÓN AUTORAL DE {author.upper()}):"
+            hist_directive = f"⚠️ INSTRUCCIÓN EDITORIAL: Hoy es un episodio MONOGRÁFICO sobre {author}. En el Acto 2 profundiza en la evolución de su mirada comparando el proyecto de hoy con su trabajo anterior ({historical.get('title')})."
+        else:
+            hist_header = "PROYECTO HISTÓRICO DEL ARCHIVO (LINAJE VISUAL EN ARCHIVE.DB):"
+            hist_directive = "En el Acto 2 conecta la obra de hoy con esta referencia histórica, explicando el diálogo estético y conceptual entre ambas miradas."
+
         hist_text = f"""
-PROYECTO HISTÓRICO DEL ARCHIVO (LINAJE VISUAL EN ARCHIVE.DB):
-- Título: {historical.get('title')}
-- Medio/Revista: {historical.get('source', '').upper()}
-- Autor/a: {historical.get('photographer') or 'Referencia histórica'}
+{hist_header}
+{hist_directive}
+- Título de referencia: {historical.get('title')}
+- Medio/Revista de referencia: {historical.get('source', '').upper()}
+- Autor/a: {historical.get('photographer') or author}
 - Fecha original: {historical.get('published_date', 'Archivo')}
 - Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:500]}
 """
@@ -834,13 +986,14 @@ def main():
         print(f'  ❌ No hay artículos para {today}')
         return
 
-    # 2. Identificar protagonista y linaje histórico con los 3 baremos editoriales
+    # 2. Identificar protagonista y linaje histórico con los 4 baremos editoriales
     primary = select_primary_article(articles, today, META_PATH)
-    historical = get_historical_counterpart(primary)
+    historical, lineage_mode = get_historical_counterpart(primary)
+    is_monographic = lineage_mode in ('monografico_cruzado', 'monografico_mismo_medio')
 
     print(f"\n  🎯 Proyecto protagonista elegido: [{primary.get('source', '').upper()}] {primary.get('title')}")
     if historical:
-        print(f"  Linaje histórico (archive.db): [{historical.get('source', '').upper()}] {historical.get('title')}")
+        print(f"  🧬 Linaje histórico ({lineage_mode}): [{historical.get('source', '').upper()}] {historical.get('title')}")
 
     # 3. Construir prompt y llamar a Gemini
     prompt = build_editorial_podcast_prompt(articles, primary, historical, today, ep_num)
@@ -857,7 +1010,7 @@ def main():
     guion_path = os.path.join(OUT_DIR, f'podcast-{today.isoformat()}.guion.txt')
     locutable_path = os.path.join(OUT_DIR, f'digest-{today.isoformat()}.locutable.txt')
     try:
-        header = f"# Podcast Diario · {today.isoformat()} (Ep #{ep_num})\n# Título: {podcast_title}\n\n"
+        header = f"# Podcast Diario · {today.isoformat()} (Ep #{ep_num})\n# Título: {podcast_title}\n# Enfoque: {lineage_mode}\n\n"
         with open(guion_path, 'w', encoding='utf-8') as f:
             f.write(header + locutable)
         with open(locutable_path, 'w', encoding='utf-8') as f:
@@ -931,13 +1084,17 @@ def main():
             'podcast_title': podcast_title,
             'primary_source': primary.get('source', ''),
             'primary_title': primary.get('title', ''),
+            'monographic': is_monographic,
+            'lineage_mode': lineage_mode,
+            'historical_source': historical.get('source', '') if historical else '',
+            'historical_title': historical.get('title', '') if historical else '',
             'size': size,
             'duration': duration,
         }
         meta.append(entry)
         with open(META_PATH, 'w', encoding='utf-8') as f:
             json.dump(meta, f, ensure_ascii=False, indent=2)
-        print(f'  ✅ Meta del podcast actualizado ({len(meta)} episodios, {duration}s)')
+        print(f'  ✅ Meta del podcast actualizado ({len(meta)} episodios, {duration}s, monográfico={is_monographic})')
 
         tag_title = clean_text(podcast_title) if podcast_title else f'Podcast {today.isoformat()}'
         tag_audio(audio_path, tag_title)
