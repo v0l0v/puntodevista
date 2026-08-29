@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 28 Aug 2026 19:52:02 +0000</lastBuildDate>
+<lastBuildDate>Sat, 29 Aug 2026 13:16:37 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1066,6 +1066,34 @@ Este viernes recorremos un mapa visual vertiginoso que abarca desde la energía 
 En nuestro tema principal, nos sumergimos en las tripas del fotoperiodismo deportivo a través de un emotivo testimonio en 35mmc, donde su autor relata cómo su pasión nacida en los años setenta con una Minolta SRT 101 lo llevó a cubrir la Copa del Mundo a pie de campo. Conectamos esta experiencia con las joyas de archivo de EMULSIVE y Ain't-Bad para reflexionar sobre el uso de la fotografía analógica como ancla emocional.
 
 Para cerrar el episodio, planteamos un reto práctico de taller enfocado en capturar la escala multitudinaria y la intimidad en eventos públicos, invitando a la comunidad a buscar las historias humanas que habitan en los márgenes de la gran escena.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 26 · Ecos de cautiverio y la tensión del tiempo entre pliegues de luz y memoria</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-29.mp3</guid>
+    <pubDate>Sat, 29 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Ecos de cautiverio y la tensión del tiempo entre pliegues de luz y memoria
+
+---
+El panorama fotográfico de hoy nos ofrece un amplio abanico de miradas que exploran la condición humana y la materia. Desde el dinamismo artesanal de las animaciones en ganchillo de Tobie Tse en Hong Kong y las imágenes de medio fotograma de Mina Cho en Seúl, hasta la precisión técnica del accesorio Fotoplug en 35 milímetros y las capturas en movimiento sin retoque de Chip Yates, comprobamos cómo la creación analógica y digital sigue encontrando vías para reinterpretar lo cotidiano y lo escénico.
+
+El eje central de este episodio se detiene en Sentimiento visceral, el estremecedor fotolibro de la artista rusa Kristina Rozhkova publicado en Huck Magazine, donde la autora aborda la experiencia de su detención en 2024 para reflexionar sobre el encierro y las dinámicas del poder. Conectamos su discurso con una joya de archivo del creador multimedia Brad Kahlhamer en Ain't-Bad, cuya exploración sobre las identidades y los confines culturales establece un rico diálogo histórico sobre la resistencia del cuerpo y la memoria frente a la imposición externa.
+
+Como reto creativo para la jornada, te invitamos a explorar visualmente las fronteras y los límites en tu entorno inmediato, imponiéndote una restricción técnica o formal estricta y jugando con la superposición de planos para reflexionar sobre el espacio y la contención antes de accionar el disparador.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-29.mp3" length="11117607" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-29.jpg"/>
+    <itunes:duration>7:43</itunes:duration>
+    <itunes:title>Episodio 26 · Ecos de cautiverio y la tensión del tiempo entre pliegues de luz y memoria</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Ecos de cautiverio y la tensión del tiempo entre pliegues de luz y memoria
+
+---
+El panorama fotográfico de hoy nos ofrece un amplio abanico de miradas que exploran la condición humana y la materia. Desde el dinamismo artesanal de las animaciones en ganchillo de Tobie Tse en Hong Kong y las imágenes de medio fotograma de Mina Cho en Seúl, hasta la precisión técnica del accesorio Fotoplug en 35 milímetros y las capturas en movimiento sin retoque de Chip Yates, comprobamos cómo la creación analógica y digital sigue encontrando vías para reinterpretar lo cotidiano y lo escénico.
+
+El eje central de este episodio se detiene en Sentimiento visceral, el estremecedor fotolibro de la artista rusa Kristina Rozhkova publicado en Huck Magazine, donde la autora aborda la experiencia de su detención en 2024 para reflexionar sobre el encierro y las dinámicas del poder. Conectamos su discurso con una joya de archivo del creador multimedia Brad Kahlhamer en Ain't-Bad, cuya exploración sobre las identidades y los confines culturales establece un rico diálogo histórico sobre la resistencia del cuerpo y la memoria frente a la imposición externa.
+
+Como reto creativo para la jornada, te invitamos a explorar visualmente las fronteras y los límites en tu entorno inmediato, imponiéndote una restricción técnica o formal estricta y jugando con la superposición de planos para reflexionar sobre el espacio y la contención antes de accionar el disparador.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
