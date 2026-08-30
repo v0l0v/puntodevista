@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 30 Aug 2026 12:56:33 +0000</lastBuildDate>
+<lastBuildDate>Sun, 30 Aug 2026 13:30:11 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1095,25 +1095,35 @@ Finalizamos con un desafío práctico diseñado para llevar la narrativa del con
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 27 · Entre el afecto y la emulsión, la poesía cotidiana de la memoria viva</title>
+    <title>Episodio 27 · Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3</guid>
     <pubDate>Sun, 30 Aug 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[El panorama de las últimas veinticuatro horas nos sumerge en una profunda reflexión sobre las distintas formas de entender y habitar la práctica analógica. Desde el cruce de disciplinas creativas como el ganchillo animado en Hong Kong o el registro de recreaciones históricas medievales con cámaras telemétricas, hasta el uso de la fotografía instantánea en inauguraciones de arte y la captura de inviernos helados en medio formato, el día de hoy celebra la versatilidad de la película y el ritmo pausado del encuadre.
+    <description><![CDATA[Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana
+---
 
-En el corazón de la edición nos detenemos en el trabajo de Nur Aishah Kenton y su serie Para quien pueda interesar, publicada en Lomography Magazine. La autora logra traducir los lazos afectivos e íntimos en secuencias poéticas que transforman lo personal en un lenguaje universal. Conectamos su aproximación sensible con el archivo de Ain't-Bad y la trayectoria de Jiabao Sun, observando cómo ambas creadoras utilizan la cámara como un vehículo de exploración identitaria y afectiva a través del tiempo y el espacio.
+---SUMMARY---
+El episodio de hoy aborda una variada jornada de exploración fotográfica y narrativa analógica. Recorremos las últimas publicaciones de la revista Lomography, donde destaca el trabajo de animación mediante ganchillo de Tobie Tse y los recuerdos instantáneos de la artista Yung. Además, nos trasladamos a las calles de un festival medieval registrado en película de 35 milímetros a través de 35mmc.
 
-Para la propuesta práctica del día, planteamos un ejercicio de síntesis narrativa e intimismo visual. Te invitamos a construir una miniserie de tres imágenes centrada en un gesto o espacio cotidiano de tu entorno cercano, buscando convertir una vivencia personal en una pieza visual capaz de resonar en la mirada de cualquier espectador.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3" length="10877384" type="audio/mpeg"/>
+En nuestro análisis central nos detenemos en el proyecto de Nur Aishah Kenton, quien eleva la intimidad personal hacia una dimensión universal mediante series de fotografía analógica. Conectamos su mirada con los archivos de Ain't-Bad y Emulsive, rescatando el trabajo académico de Jiabao Sun y la serenidad invernal capturada en formato medio con una Rolleicord Vb y carrete Fuji Velvia 100.
+
+Finalizamos con una propuesta práctica pensada para el taller de hoy. El ejercicio invita a construir una secuencia de tres imágenes basada en la cercanía afectiva y en la observación pausada, imponiendo restricciones formales que permitan transformar un detalle cotidiano en una declaración poética.
+---]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3" length="8956424" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-30.jpg"/>
-    <itunes:duration>7:33</itunes:duration>
-    <itunes:title>Episodio 27 · Entre el afecto y la emulsión, la poesía cotidiana de la memoria viva</itunes:title>
+    <itunes:duration>6:13</itunes:duration>
+    <itunes:title>Episodio 27 · Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[El panorama de las últimas veinticuatro horas nos sumerge en una profunda reflexión sobre las distintas formas de entender y habitar la práctica analógica. Desde el cruce de disciplinas creativas como el ganchillo animado en Hong Kong o el registro de recreaciones históricas medievales con cámaras telemétricas, hasta el uso de la fotografía instantánea en inauguraciones de arte y la captura de inviernos helados en medio formato, el día de hoy celebra la versatilidad de la película y el ritmo pausado del encuadre.
+    <itunes:summary><![CDATA[Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana
+---
 
-En el corazón de la edición nos detenemos en el trabajo de Nur Aishah Kenton y su serie Para quien pueda interesar, publicada en Lomography Magazine. La autora logra traducir los lazos afectivos e íntimos en secuencias poéticas que transforman lo personal en un lenguaje universal. Conectamos su aproximación sensible con el archivo de Ain't-Bad y la trayectoria de Jiabao Sun, observando cómo ambas creadoras utilizan la cámara como un vehículo de exploración identitaria y afectiva a través del tiempo y el espacio.
+---SUMMARY---
+El episodio de hoy aborda una variada jornada de exploración fotográfica y narrativa analógica. Recorremos las últimas publicaciones de la revista Lomography, donde destaca el trabajo de animación mediante ganchillo de Tobie Tse y los recuerdos instantáneos de la artista Yung. Además, nos trasladamos a las calles de un festival medieval registrado en película de 35 milímetros a través de 35mmc.
 
-Para la propuesta práctica del día, planteamos un ejercicio de síntesis narrativa e intimismo visual. Te invitamos a construir una miniserie de tres imágenes centrada en un gesto o espacio cotidiano de tu entorno cercano, buscando convertir una vivencia personal en una pieza visual capaz de resonar en la mirada de cualquier espectador.]]></itunes:summary>
+En nuestro análisis central nos detenemos en el proyecto de Nur Aishah Kenton, quien eleva la intimidad personal hacia una dimensión universal mediante series de fotografía analógica. Conectamos su mirada con los archivos de Ain't-Bad y Emulsive, rescatando el trabajo académico de Jiabao Sun y la serenidad invernal capturada en formato medio con una Rolleicord Vb y carrete Fuji Velvia 100.
+
+Finalizamos con una propuesta práctica pensada para el taller de hoy. El ejercicio invita a construir una secuencia de tres imágenes basada en la cercanía afectiva y en la observación pausada, imponiendo restricciones formales que permitan transformar un detalle cotidiano en una declaración poética.
+---]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
