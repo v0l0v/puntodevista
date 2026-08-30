@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sat, 29 Aug 2026 13:34:23 +0000</lastBuildDate>
+<lastBuildDate>Sun, 30 Aug 2026 12:56:33 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1092,6 +1092,28 @@ En la edición de hoy recorremos un panorama editorial cargado de experimentaci�
 En el bloque central nos adentramos en el sobrecogedor proyecto de Kristina Rozhkova publicado en Huck Magazine, titulado Sensación visceral. A través de sus imágenes, la autora reflexiona sobre su detención en Rusia durante el año 2024 y las opresivas dinámicas de poder. Conectamos este trabajo con una joya del archivo de Ain't-Bad centrada en el artista Brad Kahlhamer y sus búsquedas sobre las identidades atrapadas en sistemas culturales complejos.
 
 Finalizamos con un desafío práctico diseñado para llevar la narrativa del confinamiento y el límite espacial a vuestra propia práctica fotográfica diaria, explorando encuadres verticales, sombras bloqueantes y barreras físicas en el entorno urbano o doméstico.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 27 · Entre el afecto y la emulsión, la poesía cotidiana de la memoria viva</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3</guid>
+    <pubDate>Sun, 30 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[El panorama de las últimas veinticuatro horas nos sumerge en una profunda reflexión sobre las distintas formas de entender y habitar la práctica analógica. Desde el cruce de disciplinas creativas como el ganchillo animado en Hong Kong o el registro de recreaciones históricas medievales con cámaras telemétricas, hasta el uso de la fotografía instantánea en inauguraciones de arte y la captura de inviernos helados en medio formato, el día de hoy celebra la versatilidad de la película y el ritmo pausado del encuadre.
+
+En el corazón de la edición nos detenemos en el trabajo de Nur Aishah Kenton y su serie Para quien pueda interesar, publicada en Lomography Magazine. La autora logra traducir los lazos afectivos e íntimos en secuencias poéticas que transforman lo personal en un lenguaje universal. Conectamos su aproximación sensible con el archivo de Ain't-Bad y la trayectoria de Jiabao Sun, observando cómo ambas creadoras utilizan la cámara como un vehículo de exploración identitaria y afectiva a través del tiempo y el espacio.
+
+Para la propuesta práctica del día, planteamos un ejercicio de síntesis narrativa e intimismo visual. Te invitamos a construir una miniserie de tres imágenes centrada en un gesto o espacio cotidiano de tu entorno cercano, buscando convertir una vivencia personal en una pieza visual capaz de resonar en la mirada de cualquier espectador.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3" length="10877384" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-30.jpg"/>
+    <itunes:duration>7:33</itunes:duration>
+    <itunes:title>Episodio 27 · Entre el afecto y la emulsión, la poesía cotidiana de la memoria viva</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[El panorama de las últimas veinticuatro horas nos sumerge en una profunda reflexión sobre las distintas formas de entender y habitar la práctica analógica. Desde el cruce de disciplinas creativas como el ganchillo animado en Hong Kong o el registro de recreaciones históricas medievales con cámaras telemétricas, hasta el uso de la fotografía instantánea en inauguraciones de arte y la captura de inviernos helados en medio formato, el día de hoy celebra la versatilidad de la película y el ritmo pausado del encuadre.
+
+En el corazón de la edición nos detenemos en el trabajo de Nur Aishah Kenton y su serie Para quien pueda interesar, publicada en Lomography Magazine. La autora logra traducir los lazos afectivos e íntimos en secuencias poéticas que transforman lo personal en un lenguaje universal. Conectamos su aproximación sensible con el archivo de Ain't-Bad y la trayectoria de Jiabao Sun, observando cómo ambas creadoras utilizan la cámara como un vehículo de exploración identitaria y afectiva a través del tiempo y el espacio.
+
+Para la propuesta práctica del día, planteamos un ejercicio de síntesis narrativa e intimismo visual. Te invitamos a construir una miniserie de tres imágenes centrada en un gesto o espacio cotidiano de tu entorno cercano, buscando convertir una vivencia personal en una pieza visual capaz de resonar en la mirada de cualquier espectador.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
