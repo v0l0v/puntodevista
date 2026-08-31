@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 30 Aug 2026 13:30:11 +0000</lastBuildDate>
+<lastBuildDate>Mon, 31 Aug 2026 15:49:09 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1124,6 +1124,28 @@ En nuestro análisis central nos detenemos en el proyecto de Nur Aishah Kenton, 
 
 Finalizamos con una propuesta práctica pensada para el taller de hoy. El ejercicio invita a construir una secuencia de tres imágenes basada en la cercanía afectiva y en la observación pausada, imponiendo restricciones formales que permitan transformar un detalle cotidiano en una declaración poética.
 ---]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 28 · Horizontes expandidos y la geometría del tiempo: el paisaje reconfigurado</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-31.mp3</guid>
+    <pubDate>Mon, 31 Aug 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[El paisaje del día se viste de luto y de nuevas perspectivas en nuestro recorrido diario por la fotografía contemporánea. Hoy despedimos a dos grandes referentes que han dejado una huella imborrable en la cultura visual, mientras nos adentramos en propuestas que desafían las fronteras físicas de la mirada analógica. Desde los homenajes al gran maestro del color Franco Fontana y la triste partida del director de Visa pour l'image Jean-François Leroy, hasta las reflexiones íntimas de Camille Farrah Lenain y las denuncias visuales de Sasha Velichko, la jornada se presenta cargada de profundidad y memoria.
+
+Analizamos en detalle la propuesta publicada en 35mmc sobre cómo repensar el formato panorámico sin depender exclusivamente de grandes angulares, alterando las proporciones del encuadre y la escala con lentes de focal más larga. Conectamos este enfoque con una joya del archivo de Emulsive centrada en las solargrafías de faros de la costa este estadounidense, un ejercicio de paciencia extrema que dialoga directamente con la modificación del tiempo y la percepción del espacio.
+
+Como cada jornada, cerramos con una propuesta práctica pensada para el taller personal de cada fotógrafo, invitando a salir a la calle para poner a prueba los límites del encuadre, alterar la relación de aspecto habitual y observar cómo la geometría y el tiempo transforman la realidad en poesía visual.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-31.mp3" length="12394989" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-31.jpg"/>
+    <itunes:duration>8:36</itunes:duration>
+    <itunes:title>Episodio 28 · Horizontes expandidos y la geometría del tiempo: el paisaje reconfigurado</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[El paisaje del día se viste de luto y de nuevas perspectivas en nuestro recorrido diario por la fotografía contemporánea. Hoy despedimos a dos grandes referentes que han dejado una huella imborrable en la cultura visual, mientras nos adentramos en propuestas que desafían las fronteras físicas de la mirada analógica. Desde los homenajes al gran maestro del color Franco Fontana y la triste partida del director de Visa pour l'image Jean-François Leroy, hasta las reflexiones íntimas de Camille Farrah Lenain y las denuncias visuales de Sasha Velichko, la jornada se presenta cargada de profundidad y memoria.
+
+Analizamos en detalle la propuesta publicada en 35mmc sobre cómo repensar el formato panorámico sin depender exclusivamente de grandes angulares, alterando las proporciones del encuadre y la escala con lentes de focal más larga. Conectamos este enfoque con una joya del archivo de Emulsive centrada en las solargrafías de faros de la costa este estadounidense, un ejercicio de paciencia extrema que dialoga directamente con la modificación del tiempo y la percepción del espacio.
+
+Como cada jornada, cerramos con una propuesta práctica pensada para el taller personal de cada fotógrafo, invitando a salir a la calle para poner a prueba los límites del encuadre, alterar la relación de aspecto habitual y observar cómo la geometría y el tiempo transforman la realidad en poesía visual.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
