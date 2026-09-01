@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 31 Aug 2026 15:49:09 +0000</lastBuildDate>
+<lastBuildDate>Tue, 01 Sep 2026 12:39:14 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1146,6 +1146,28 @@ Como cada jornada, cerramos con una propuesta práctica pensada para el taller p
 Analizamos en detalle la propuesta publicada en 35mmc sobre cómo repensar el formato panorámico sin depender exclusivamente de grandes angulares, alterando las proporciones del encuadre y la escala con lentes de focal más larga. Conectamos este enfoque con una joya del archivo de Emulsive centrada en las solargrafías de faros de la costa este estadounidense, un ejercicio de paciencia extrema que dialoga directamente con la modificación del tiempo y la percepción del espacio.
 
 Como cada jornada, cerramos con una propuesta práctica pensada para el taller personal de cada fotógrafo, invitando a salir a la calle para poner a prueba los límites del encuadre, alterar la relación de aspecto habitual y observar cómo la geometría y el tiempo transforman la realidad en poesía visual.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 29 · Ecos del Norte y el rastro del tiempo tras la tormenta analógica</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-01.mp3</guid>
+    <pubDate>Tue, 01 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[En la edición de hoy repasamos el emotivo adiós al director y fundador de Visa pour l'Image, Jean-François Leroy, junto a las últimas noticias del sector analógico que incluyen bajadas de precios en carretes Kodak y nuevos hallazgos en la fotografía callejera y documental.
+
+Analizamos en profundidad el proyecto publicado por el British Journal of Photography sobre la edición del libro Norte de Chris Killip, un rescate histórico del archivo que dialoga directamente con la memoria social y las ausencias del tiempo.
+
+Concluimos con un reto creativo práctico centrado en retratar la huella y el rastro de los acontecimientos cuando la multitud y la prisa informativa ya se han evaporado.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-01.mp3" length="11682064" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-01.jpg"/>
+    <itunes:duration>8:06</itunes:duration>
+    <itunes:title>Episodio 29 · Ecos del Norte y el rastro del tiempo tras la tormenta analógica</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[En la edición de hoy repasamos el emotivo adiós al director y fundador de Visa pour l'Image, Jean-François Leroy, junto a las últimas noticias del sector analógico que incluyen bajadas de precios en carretes Kodak y nuevos hallazgos en la fotografía callejera y documental.
+
+Analizamos en profundidad el proyecto publicado por el British Journal of Photography sobre la edición del libro Norte de Chris Killip, un rescate histórico del archivo que dialoga directamente con la memoria social y las ausencias del tiempo.
+
+Concluimos con un reto creativo práctico centrado en retratar la huella y el rastro de los acontecimientos cuando la multitud y la prisa informativa ya se han evaporado.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
