@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Tue, 01 Sep 2026 12:59:59 +0000</lastBuildDate>
+<lastBuildDate>Wed, 02 Sep 2026 10:19:56 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1172,6 +1172,28 @@ El panorama fotográfico de hoy amanece marcado por un sentido tributo en el fot
 En nuestro tema central nos adentramos en el archivo del legendario Chris Killip a través del nuevo libro publicado sobre su obra en el norte de Inglaterra, editado por Mark Holborn cuatro décadas después del emblemático trabajo en la costa británica. Conectamos esta poderosa mirada documental con una joya de archivo de la comunidad analógica, donde la paciencia extrema de las solarigrafías registradas en faros de la costa este norteamericana rescata la misma noción de constancia y resistencia ante el paso del tiempo.
 
 Para el reto creativo de la jornada, te invitamos a reflexionar sobre la ausencia y la huella inspirándonos en el trabajo conceptual sobre sucesos acabados, saliendo a fotografiar escenarios cotidianos justo después de que la acción principal haya terminado, buscando los sutiles ecos que permanecen en el espacio.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 30 · La ilusión de las apariencias y el rastro del tiempo</title>
+    <link>https://v0l0v.github.io/puntodevista/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3</guid>
+    <pubDate>Wed, 02 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[El panorama fotográfico de hoy celebra la gran escala de la memoria visual y el paso del tiempo. Desde los festejos por el bicentenario de la fotografía con caravanas analógicas en Francia hasta los íntimos proyectos familiares de Nick Haymes y Taylor Galloway, la jornada reflexiona sobre cómo registramos la existencia. A su vez, repasamos los finalistas del premio Leica Oskar Barnack y el trabajo de rescate editorial sobre el legado de Chris Killip.
+
+En nuestro análisis principal exploramos el perfil publicado en Aperture sobre Hiroshi Sugimoto, un autor que ha basado su carrera en cuestionar la veracidad de lo que ven sus ojos. Conectamos su profunda reflexión sobre el tiempo y las estructuras con un tesoro de archivo de Emulsive, donde Ernst-Jan de Vries documenta la arquitectura industrial del complejo Zeche Zollverein empleando emulsiones analógicas especiales.
+
+El reto creativo de hoy nos invita a pausar la prisa cotidiana, alejarnos de las pantallas y salir a buscar la armonía dentro del caos urbano y las sombras profundas, poniendo en práctica las ideas compartidas en nuestra niusleter diaria.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3" length="11058840" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-02.jpg"/>
+    <itunes:duration>7:40</itunes:duration>
+    <itunes:title>Episodio 30 · La ilusión de las apariencias y el rastro del tiempo</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[El panorama fotográfico de hoy celebra la gran escala de la memoria visual y el paso del tiempo. Desde los festejos por el bicentenario de la fotografía con caravanas analógicas en Francia hasta los íntimos proyectos familiares de Nick Haymes y Taylor Galloway, la jornada reflexiona sobre cómo registramos la existencia. A su vez, repasamos los finalistas del premio Leica Oskar Barnack y el trabajo de rescate editorial sobre el legado de Chris Killip.
+
+En nuestro análisis principal exploramos el perfil publicado en Aperture sobre Hiroshi Sugimoto, un autor que ha basado su carrera en cuestionar la veracidad de lo que ven sus ojos. Conectamos su profunda reflexión sobre el tiempo y las estructuras con un tesoro de archivo de Emulsive, donde Ernst-Jan de Vries documenta la arquitectura industrial del complejo Zeche Zollverein empleando emulsiones analógicas especiales.
+
+El reto creativo de hoy nos invita a pausar la prisa cotidiana, alejarnos de las pantallas y salir a buscar la armonía dentro del caos urbano y las sombras profundas, poniendo en práctica las ideas compartidas en nuestra niusleter diaria.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
