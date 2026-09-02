@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from email.utils import format_datetime
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-SITE = 'https://v0l0v.github.io/puntodevista'
+SITE = 'https://puntodevista.click'
 RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios'
 COVER = f'{SITE}/podcast-cover.jpg'
 META_PATH = os.path.join(DIR, 'podcast_meta.json')
