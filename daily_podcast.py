@@ -690,6 +690,10 @@ REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
   * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
   * Escribe "la revista Buum" (para Booooooom).
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
+- DIRECTRIZ COMUNITARIA Y CORREOS (ANA DE FOTONISTAS / FOTOLETER):
+  * Si en las publicaciones o correos del día hay contenido de Fotonistas o de Ana:
+    Menciónalo explícitamente en el repaso de Roberto o al inicio del bloque de Nicolás: "en el niusleter de Fotonistas, Ana nos deja una reflexión imperdible...".
+    REGLA DE CERO SPOILERS: NO desveles el contenido ni destripes la carta. Solo presenta la idea o pregunta sugerente para crear intriga y expectación, invitando a la audiencia a suscribirse a su fotoleter.
 - TRADUCCIÓN: Títulos de series/obras → traduce al español. Nombres propios → mantén original.
 
 ESTRUCTURA DE LOS 4 ACTOS:
