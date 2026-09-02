@@ -8,4 +8,6 @@ config.json
 .cover_cache/
 podcast-cover-*.png
 podcast-cover-*.jpg
-archive.db*
+venv/
+.venv/
+tmp_tts_test/
