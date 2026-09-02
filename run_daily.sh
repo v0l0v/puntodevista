@@ -4,6 +4,15 @@ set -e
 DIR="/opt/v0l0v/apps/puntodevista"
 cd "$DIR"
 
+# Función de alerta en caso de fallo
+on_error() {
+  local exit_code=$?
+  local line_no=$1
+  echo "❌ Error en línea $line_no (código de salida: $exit_code)"
+  ./venv/bin/python3 send_alert.py "Falló la ejecución diaria de PDV en la línea $line_no (código: $exit_code)" || true
+}
+trap 'on_error $LINENO' ERR
+
 FECHA_LOG=$(date '+%Y-%m-%d %H:%M:%S')
 echo "========================================"
 echo "[$FECHA_LOG] Arrancando ejecución diaria de Punto de Vista"
