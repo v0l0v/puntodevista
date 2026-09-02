@@ -52,7 +52,14 @@ GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_M
 TTS_ENGINE = os.environ.get('TTS_ENGINE', 'kokoro')
 TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-AlvaroNeural')
 TTS_RATE = os.environ.get('TTS_RATE', '-3%')
-KOKORO_VOICE = os.environ.get('KOKORO_VOICE', 'em_alex')
+
+# Trío de locutores de Punto de Vista
+VOICE_CAST = {
+    'ROBERTO': 'em_alex',    # Conductor principal y noticias
+    'BEATRIZ': 'ef_dora',    # Análisis central y linaje histórico
+    'NICOLAS': 'em_santa',   # Reto práctico y taller creativo
+}
+
 KOKORO_ONNX = os.path.join(DIR, 'kokoro_models', 'kokoro-v1.0.onnx')
 KOKORO_VOICES = os.path.join(DIR, 'kokoro_models', 'voices-v1.0.bin')
 
@@ -636,8 +643,12 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
 - Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:500]}
 """
 
-    return f"""Eres el guionista y la voz única de 'Punto de vista', el podcast cultural y diario de fotografía.
-Voz y personalidad: Roberto (narrador único, cercano, apasionado, lúcido, con ritmo de radio cultural de máxima calidad).
+    return f"""Eres el equipo de redacción y locución de 'Punto de vista', el podcast diario de cultura visual y fotografía.
+Equipo de locutores:
+- ROBERTO (Conductor principal): Cercano, dinámico, culto, con excelente ritmo periodístico. Abre el podcast, repasa las noticias del día, presenta a los compañeros y hace el cierre.
+- BEATRIZ (Especialista en Historia y Crítica): Lúcida, apasionada y analítica. Narra la noticia y proyecto central de la jornada y profundiza en el Linaje Visual conectando con el archivo histórico.
+- NICOLÁS (Maestro de Taller y Práctica): Práctico, motivador, técnico y reflexivo. Presenta el reto creativo del día para salir a hacer fotos.
+
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
 
 MATERIAL DE LAS ÚLTIMAS 24 HORAS:
@@ -660,51 +671,54 @@ Un título sugerente, poético y periodístico en español para el episodio de h
 
 SEGUNDA SECCIÓN:
 Un resumen conciso en 3 párrafos para el feed y redes sociales destacando:
-1. El panorama general de las noticias de hoy.
-2. El análisis del proyecto protagonista y su conexión histórica.
-3. El reto creativo del día.
+1. El panorama general de las noticias de hoy (repasado por Roberto).
+2. El análisis del proyecto protagonista y su conexión histórica (analizado por Beatriz).
+3. El reto creativo del día (presentado por Nicolás).
 
-TERCERA SECCIÓN (GUION LOCUTABLE PARA ROBERTO):
-Escribe el guion completo para ser leído en voz alta por Roberto con las pausas exactas ---PAUSA---.
+TERCERA SECCIÓN (GUION LOCUTABLE CORAL):
+Escribe el guion completo indicando al inicio de cada intervención la etiqueta del locutor: [ROBERTO], [BEATRIZ] o [NICOLAS], e incluyendo las pausas musicales ---PAUSA--- entre actos.
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
-- SOLO TEXTO PARA LEER EN VOZ ALTA. Cero acotaciones tipo (música alegre), cero asteriscos, corchetes o etiquetas de voz.
-- RIGOR FACTUAL Y VERACIDAD: NUNCA INVENTES NADA. Todo lo que digas debe basarse estrictamente en los datos reales del material provisto. Si un proyecto es breve, sé fiel a su contenido real sin añadir ficción.
+- FORMATO DE DIÁLOGO: Cada cambio de voz DEBE empezar exactamente en una línea nueva con [ROBERTO], [BEATRIZ] o [NICOLAS].
+- COLABORACIÓN Y TRANSICIONES: Los locutores deben interactuar con naturalidad, saludarse brevemente al darse paso y cerrar con fluidez radiofónica.
+- RIGOR FACTUAL: NUNCA INVENTES DATOS. Todo se basa estrictamente en el material provisto.
 - PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
-  * Escribe oraciones naturales y continuas separadas únicamente por puntos y comas.
-  * PROHIBIDO usar guiones largos o rayas (—), guiones aislados (-), dos puntos (:), puntos suspensivos (...) o paréntesis (...). Si necesitas hacer un inciso o aclaración, usa comas simples.
+  * Oraciones continuas separadas por puntos y comas.
+  * PROHIBIDO usar guiones largos (—), dos puntos (:), puntos suspensivos (...) o paréntesis (...).
 - FONÉTICA:
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
   * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
   * Escribe "la revista Buum" (para Booooooom).
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
-- TRADUCCIÓN: Títulos de series/obras → traduce al español ("Viaje a la noche", no "Night Journey"). Nombres propios → mantén el original.
-- CORTINILLAS MUSICALES: Coloca la línea exacta ---PAUSA--- entre cada uno de los actos para que el sistema mezcle la música.
+- TRADUCCIÓN: Títulos de series/obras → traduce al español. Nombres propios → mantén original.
 
 ESTRUCTURA DE LOS 4 ACTOS:
 
-1. ACTO 1: APERTURA & REPASO EDITORIAL DE LAS ÚLTIMAS 24 HORAS (~4 A 5 MINUTOS)
-   - Apertura cálida con gancho: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
-   - Lanza una frase intrigante que despierte el apetito sobre el proyecto principal de hoy.
-   - RECORRIDO EDITORIAL POR LAS PUBLICACIONES: Recorre las noticias de las últimas 24 horas agrupadas por medio.
-   - REGLA DE COBERTURA: Dedica aproximadamente 30 segundos (unas 50 a 75 palabras) a cada noticia importante que tenga contenido real. Explica con claridad quién es el fotógrafo o fotógrafa, el tema, la técnica o cámara empleada y qué aporta a la escena visual actual.
+1. ACTO 1: APERTURA & NOTICIAS DEL DÍA ([ROBERTO]) (~4 A 5 MINUTOS)
+   - [ROBERTO]: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
+   - Lanza una frase intrigante sobre el tema central que analizará luego Beatriz.
+   - Recorrido editorial por las publicaciones de las últimas 24 horas dedicando unos 30-45 segundos a cada autor y medio.
+   - Al final del repaso, Roberto da paso con complicidad a Beatriz: "...Y para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
    ---PAUSA---
 
-2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL (~3 MINUTOS)
-   - Roberto se detiene en el PROYECTO PROTAGONISTA de la jornada. Profundiza en la mirada del autor, la atmósfera, la elección de la luz, el grano, el formato y el dilema estético o documental.
-   - LINAJE VISUAL (CONEXIÓN CON ARCHIVE.DB): Roberto conecta esta obra con el proyecto histórico de referencia ({historical.get('title') if historical else 'el archivo clásico'}), explicando de dónde bebe esta mirada, qué ecos del pasado rescata y cómo dialogan ambas obras a través del tiempo ("Porque ninguna mirada nace en el vacío...").
+2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~3 MINUTOS)
+   - [BEATRIZ]: Saluda a Roberto y a los oyentes: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
+   - Beatriz se adentra en el PROYECTO PROTAGONISTA. Analiza la mirada, la luz, la técnica y el dilema estético.
+   - Beatriz conecta con el LINAJE VISUAL ({historical.get('title') if historical else 'el archivo histórico'}): "Porque ninguna mirada nace en el vacío...", explicando los ecos históricos y la evolución del medio.
+   - Al concluir, Beatriz y Roberto dan paso a Nicolás para el reto: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
    ---PAUSA---
 
-3. ACTO 3: DISPARADOR CREATIVO (RETO PRÁCTICO DE TALLER) (~2 MINUTOS)
-   - Roberto propone un ejercicio fotográfico concreto, tangible e inspirador para salir hoy a disparar (en la calle o en casa).
-   - Instrucciones precisas: qué buscar en el sujeto o la luz, qué restricción técnica o formal imponerse (ej: solo una focal fija, jugar con contraluces o reflejos, etc.) y qué reflexión interior hacerse antes del clic.
-   - (Si hay niusleter o mención comunitaria, integrarla con intriga y sin spoilers).
+3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~2 MINUTOS)
+   - [NICOLAS]: Saluda con energía de taller: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..."
+   - Nicolás detalla el RETO FOTOGRÁFICO DE HOY: instrucciones precisas de composición, luz o restricción técnica, y la pregunta que hacerse antes del disparo.
    ---PAUSA---
 
-4. ACTO 4: CIERRE Y DESPEDIDA (~45 SEGUNDOS)
-   - Roberto despide el episodio con cercanía, agradeciendo a los autores y medios originales, e invitando a salir a hacer fotos: "Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!"
+4. ACTO 4: CIERRE Y DESPEDIDA ([ROBERTO] & [BEATRIZ]) (~45 SEGUNDOS)
+   - [ROBERTO]: "Fantástico reto el de Nicolás para hoy."
+   - [BEATRIZ]: Añade una última reflexión inspiradora invitando a salir a mirar el mundo.
+   - [ROBERTO]: Cierra despidiendo el episodio: "Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!"
 
-DURACIÓN TOTAL ESTIMADA: ~1100 a 1450 palabras (~8 a 10 minutos de locución fluida y pausada)."""
+DURACIÓN TOTAL ESTIMADA: ~1100 a 1450 palabras (~8 a 10 minutos de locución fluida)."""
 
 
 def parse_summary(summary):
@@ -835,40 +849,71 @@ def generate_audio(text, out_path, episode_date=None):
                 import soundfile as sf
                 from kokoro_onnx import Kokoro
                 kokoro_instance = Kokoro(KOKORO_ONNX, KOKORO_VOICES)
-                print(f'  🎙️ Usando motor Kokoro-82M ({KOKORO_VOICE}) en local...')
+                print(f'  🎙️ Usando motor Kokoro-82M con reparto coral (Roberto: {VOICE_CAST["ROBERTO"]}, Beatriz: {VOICE_CAST["BEATRIZ"]}, Nicolás: {VOICE_CAST["NICOLAS"]})...')
             except Exception as ek:
                 print(f'  ⚠️ No se pudo inicializar Kokoro ({ek}), usando Edge-TTS...')
 
         for i, b in enumerate(blocks):
-            wav_out = os.path.join(tmp_dir, f'v_{i}.wav')
-            synthesized = False
+            wav_block = os.path.join(tmp_dir, f'v_{i}.wav')
             
-            if kokoro_instance:
-                try:
-                    samples, sr = kokoro_instance.create(b, voice=KOKORO_VOICE, speed=1.0, lang="es")
-                    sf.write(wav_out, samples, sr)
-                    # Convertir a 44100Hz estéreo para concordar con la música
-                    wav_44k = os.path.join(tmp_dir, f'v_44k_{i}.wav')
-                    subprocess.run(['ffmpeg', '-y', '-i', wav_out, '-ar', '44100', '-ac', '2', wav_44k], check=True, capture_output=True, timeout=60)
-                    voice_files.append(wav_44k)
-                    synthesized = True
-                except Exception as ex_k:
-                    print(f'  ⚠️ Fallo en bloque {i} con Kokoro: {ex_k}, usando fallback Edge-TTS...')
+            # Parsear los turnos de diálogo dentro del bloque: [ROBERTO], [BEATRIZ], [NICOLAS]
+            dialogue_turns = []
+            current_speaker = 'ROBERTO'
+            pattern = re.compile(r'\[(ROBERTO|BEATRIZ|NICOLAS)\]', re.IGNORECASE)
+            
+            splits = pattern.split(b)
+            if len(splits) == 1:
+                dialogue_turns.append((current_speaker, splits[0].strip()))
+            else:
+                for idx_s in range(1, len(splits), 2):
+                    speaker_tag = splits[idx_s].upper()
+                    turn_text = splits[idx_s + 1].strip()
+                    if turn_text:
+                        dialogue_turns.append((speaker_tag, turn_text))
 
-            if not synthesized:
-                raw_mp3 = os.path.join(tmp_dir, f'v_raw_{i}.mp3')
-                subprocess.run([
-                    'edge-tts',
-                    '--voice', TTS_VOICE,
-                    f'--rate={TTS_RATE}',
-                    '--text', b,
-                    '--write-media', raw_mp3
-                ], check=True, capture_output=True, text=True, timeout=120)
-                subprocess.run([
-                    'ffmpeg', '-y', '-i', raw_mp3,
-                    '-ar', '44100', '-ac', '2', wav_out
-                ], check=True, capture_output=True, timeout=60)
-                voice_files.append(wav_out)
+            turn_wavs = []
+            for t_idx, (speaker, turn_txt) in enumerate(dialogue_turns):
+                t_wav = os.path.join(tmp_dir, f'b_{i}_t_{t_idx}.wav')
+                voice_id = VOICE_CAST.get(speaker, 'em_alex')
+                synthesized = False
+
+                if kokoro_instance:
+                    try:
+                        samples, sr = kokoro_instance.create(turn_txt, voice=voice_id, speed=1.0, lang="es")
+                        sf.write(t_wav, samples, sr)
+                        t_wav_44k = os.path.join(tmp_dir, f'b_{i}_t_{t_idx}_44k.wav')
+                        subprocess.run(['ffmpeg', '-y', '-i', t_wav, '-ar', '44100', '-ac', '2', t_wav_44k], check=True, capture_output=True, timeout=60)
+                        turn_wavs.append(t_wav_44k)
+                        synthesized = True
+                    except Exception as ex_k:
+                        print(f'  ⚠️ Error Kokoro con {speaker} ({voice_id}): {ex_k}')
+
+                if not synthesized:
+                    fallback_voice = 'es-ES-ElviraNeural' if speaker == 'BEATRIZ' else ('es-ES-AlvaroNeural' if speaker == 'ROBERTO' else 'es-ES-ManuelNeural')
+                    raw_mp3 = os.path.join(tmp_dir, f'b_{i}_t_{t_idx}_raw.mp3')
+                    subprocess.run([
+                        'edge-tts',
+                        '--voice', fallback_voice,
+                        f'--rate={TTS_RATE}',
+                        '--text', turn_txt,
+                        '--write-media', raw_mp3
+                    ], check=True, capture_output=True, text=True, timeout=120)
+                    subprocess.run([
+                        'ffmpeg', '-y', '-i', raw_mp3,
+                        '-ar', '44100', '-ac', '2', t_wav
+                    ], check=True, capture_output=True, timeout=60)
+                    turn_wavs.append(t_wav)
+
+            # Concatenar turnos del bloque
+            if len(turn_wavs) == 1:
+                voice_files.append(turn_wavs[0])
+            elif len(turn_wavs) > 1:
+                concat_list = os.path.join(tmp_dir, f'concat_{i}.txt')
+                with open(concat_list, 'w') as f_c:
+                    for tw in turn_wavs:
+                        f_c.write(f"file '{tw}'\n")
+                subprocess.run(['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', concat_list, '-c', 'copy', wav_block], check=True, capture_output=True, timeout=60)
+                voice_files.append(wav_block)
 
         # 1. Intro musical (12s, fade in 1.5s, fade out 2.5s)
         intro_wav = os.path.join(tmp_dir, 'intro.wav')
