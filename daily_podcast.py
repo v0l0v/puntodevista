@@ -1116,9 +1116,7 @@ def main():
         if os.environ.get('SKIP_TELEGRAM'):
             print('  SKIP_TELEGRAM=1, omitiendo Telegram')
         else:
-            caption = f'🎙️ {fmt_fecha_es(today)}\n{clean_text(podcast_title)}\n\n{resumen}'
-            if len(caption) > 1024:
-                caption = caption[:1021] + '...'
+            caption = f'🎙️ {fmt_fecha_es(today)}\n{clean_text(podcast_title)}'
             audio_filename = f'Punto de vista - {today.isoformat()}.mp3'
             send_telegram_audio(audio_path, caption, audio_filename)
             print('  ✅ Audio enviado a Telegram')
