@@ -951,18 +951,25 @@ def send_telegram(text, parse_mode='HTML'):
         return None
 
 
-def send_telegram_audio(audio_path, caption='', filename='podcast.mp3'):
+def send_telegram_audio(audio_path, caption='', filename='podcast.mp3', cover_path=None, title='', performer='Punto de vista', duration=0):
     if not TG_TOKEN or not TG_CHAT_ID:
         return None
     url = f'https://api.telegram.org/bot{TG_TOKEN}/sendAudio'
     try:
-        with open(audio_path, 'rb') as f:
-            files = {'audio': (filename, f, 'audio/mpeg')}
-            data = {'chat_id': TG_CHAT_ID}
-            if caption:
-                data['caption'] = caption
-            resp = requests.post(url, data=data, files=files, timeout=120)
-            return resp.json()
+        files = {'audio': (filename, open(audio_path, 'rb'), 'audio/mpeg')}
+        if cover_path and os.path.exists(cover_path):
+            files['thumbnail'] = ('cover.jpg', open(cover_path, 'rb'), 'image/jpeg')
+        data = {'chat_id': TG_CHAT_ID}
+        if caption:
+            data['caption'] = caption
+        if title:
+            data['title'] = title
+        if performer:
+            data['performer'] = performer
+        if duration:
+            data['duration'] = int(duration)
+        resp = requests.post(url, data=data, files=files, timeout=120)
+        return resp.json()
     except requests.RequestException as e:
         print(f'  Error Telegram audio: {e}')
         return None
@@ -1118,7 +1125,18 @@ def main():
         else:
             caption = f'🎙️ {fmt_fecha_es(today)}\n{clean_text(podcast_title)}'
             audio_filename = f'Punto de vista - {today.isoformat()}.mp3'
-            send_telegram_audio(audio_path, caption, audio_filename)
+            cover_file = os.path.join(DIR, f'podcast-cover-{today.isoformat()}.jpg')
+            if not os.path.exists(cover_file):
+                cover_file = os.path.join(DIR, 'assets', 'covers', f'podcast-cover-{today.isoformat()}.jpg')
+            send_telegram_audio(
+                audio_path,
+                caption=caption,
+                filename=audio_filename,
+                cover_path=cover_file,
+                title=clean_text(podcast_title),
+                performer='Punto de vista',
+                duration=duration
+            )
             print('  ✅ Audio enviado a Telegram')
     else:
         print('  ❌ Error al generar audio')
