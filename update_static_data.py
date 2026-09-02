@@ -636,6 +636,20 @@ def main():
                 if data.get('content'):
                     item['content'] = data['content']
 
+    # 9i. Traducción inteligente de artículos al español (Gemini)
+    try:
+        from translator import translate_article_entry
+        print('  9i. Traducción inteligente al español de artículos nuevos...')
+        for src in get_active_sources():
+            s_id = src['id']
+            if s_id in source_items and source_items[s_id]:
+                # Traducir los artículos más recientes
+                for it in source_items[s_id][:15]:
+                    translate_article_entry(it)
+        print('     ✅ Traducción completada con éxito')
+    except Exception as e_trans:
+        print(f'     ⚠️ Error en traducción automática: {e_trans}')
+
     all_entries = []
     saved_names = []
     for src in get_active_sources():

@@ -49,8 +49,12 @@ GEMINI_KEY = _cfg('GEMINI_KEY')
 GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-3.6-flash')
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
+TTS_ENGINE = os.environ.get('TTS_ENGINE', 'kokoro')
 TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-AlvaroNeural')
 TTS_RATE = os.environ.get('TTS_RATE', '-3%')
+KOKORO_VOICE = os.environ.get('KOKORO_VOICE', 'em_alex')
+KOKORO_ONNX = os.path.join(DIR, 'kokoro_models', 'kokoro-v1.0.onnx')
+KOKORO_VOICES = os.path.join(DIR, 'kokoro_models', 'voices-v1.0.bin')
 
 MAX_RETRIES = 5
 RETRY_DELAY = 15
@@ -825,21 +829,46 @@ def generate_audio(text, out_path, episode_date=None):
 
     try:
         voice_files = []
+        kokoro_instance = None
+        if TTS_ENGINE == 'kokoro' and os.path.exists(KOKORO_ONNX) and os.path.exists(KOKORO_VOICES):
+            try:
+                import soundfile as sf
+                from kokoro_onnx import Kokoro
+                kokoro_instance = Kokoro(KOKORO_ONNX, KOKORO_VOICES)
+                print(f'  🎙️ Usando motor Kokoro-82M ({KOKORO_VOICE}) en local...')
+            except Exception as ek:
+                print(f'  ⚠️ No se pudo inicializar Kokoro ({ek}), usando Edge-TTS...')
+
         for i, b in enumerate(blocks):
-            raw_mp3 = os.path.join(tmp_dir, f'v_raw_{i}.mp3')
             wav_out = os.path.join(tmp_dir, f'v_{i}.wav')
-            subprocess.run([
-                'edge-tts',
-                '--voice', TTS_VOICE,
-                f'--rate={TTS_RATE}',
-                '--text', b,
-                '--write-media', raw_mp3
-            ], check=True, capture_output=True, text=True, timeout=120)
-            subprocess.run([
-                'ffmpeg', '-y', '-i', raw_mp3,
-                '-ar', '44100', '-ac', '2', wav_out
-            ], check=True, capture_output=True, timeout=60)
-            voice_files.append(wav_out)
+            synthesized = False
+            
+            if kokoro_instance:
+                try:
+                    samples, sr = kokoro_instance.create(b, voice=KOKORO_VOICE, speed=1.0, lang="es")
+                    sf.write(wav_out, samples, sr)
+                    # Convertir a 44100Hz estéreo para concordar con la música
+                    wav_44k = os.path.join(tmp_dir, f'v_44k_{i}.wav')
+                    subprocess.run(['ffmpeg', '-y', '-i', wav_out, '-ar', '44100', '-ac', '2', wav_44k], check=True, capture_output=True, timeout=60)
+                    voice_files.append(wav_44k)
+                    synthesized = True
+                except Exception as ex_k:
+                    print(f'  ⚠️ Fallo en bloque {i} con Kokoro: {ex_k}, usando fallback Edge-TTS...')
+
+            if not synthesized:
+                raw_mp3 = os.path.join(tmp_dir, f'v_raw_{i}.mp3')
+                subprocess.run([
+                    'edge-tts',
+                    '--voice', TTS_VOICE,
+                    f'--rate={TTS_RATE}',
+                    '--text', b,
+                    '--write-media', raw_mp3
+                ], check=True, capture_output=True, text=True, timeout=120)
+                subprocess.run([
+                    'ffmpeg', '-y', '-i', raw_mp3,
+                    '-ar', '44100', '-ac', '2', wav_out
+                ], check=True, capture_output=True, timeout=60)
+                voice_files.append(wav_out)
 
         # 1. Intro musical (12s, fade in 1.5s, fade out 2.5s)
         intro_wav = os.path.join(tmp_dir, 'intro.wav')
