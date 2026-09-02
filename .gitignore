@@ -12,3 +12,9 @@ archive.db*
 venv/
 .venv/
 tmp_tts_test/
+tmp_exec/
+kokoro_models/
+tts_comparison/
+translations_cache.json
+test_*.py
+test_*.txt
