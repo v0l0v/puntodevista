@@ -6,7 +6,7 @@
 <atom:link href="https://v0l0v.github.io/puntodevista/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Wed, 02 Sep 2026 12:11:56 +0000</lastBuildDate>
+<lastBuildDate>Wed, 02 Sep 2026 12:31:30 +0000</lastBuildDate>
 <image><url>https://v0l0v.github.io/puntodevista/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://v0l0v.github.io/puntodevista/</link></image>
 <itunes:image href="https://v0l0v.github.io/puntodevista/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1175,25 +1175,25 @@ Para el reto creativo de la jornada, te invitamos a reflexionar sobre la ausenci
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 30 · Entre la ilusión de las apariencias y la memoria de la materia</title>
+    <title>Episodio 30 · El engaño de las apariencias y el arte del tiempo lento</title>
     <link>https://v0l0v.github.io/puntodevista/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3</guid>
     <pubDate>Wed, 02 Sep 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[El panorama fotográfico de hoy nos lleva por un recorrido vibrante que abarca desde archivos históricos de aviación y proyectos analógicos familiares hasta importantes convocatorias internacionales como el Premio Leica Oskar Barnack y el despliegue del proyecto ambulante Lux Tour por Francia. Además, exploramos relatos íntimos de autorretratos a lo largo de décadas, crónicas urbanas bajo condiciones extremas y publicaciones que rinden tributo a maestros del género documental.
+    <description><![CDATA[En la edición de hoy repasamos una intensa jornada fotográfica marcada por grandes certámenes internacionales, libros sobre el crecimiento familiar y diarios analógicos de calle. Nuestro foco principal se detiene en la figura del maestro japonés Hiroshi Sugimoto y su escepticismo radical ante las apariencias visuales, conectando su filosofía con el valor del tiempo en el proceso fotográfico.
 
-El análisis principal se centra en la figura de Hiroshi Sugimoto a través del perfil publicado en Aperture, donde se desentraña su escepticismo fundamental ante la realidad visible y su formación entre Tokio, la Unión Soviética y Los Ángeles. Conectamos su enfoque conceptual con una joya del archivo de Emulsive sobre el revelador 510 Pyro y las reflexiones de 35mmc sobre el doble nacimiento de la fotografía analógica, subrayando el valor del proceso químico y la dilación del tiempo.
+Analizamos el perfil publicado por Aperture sobre Sugimoto y vinculamos su búsqueda estética con el rescate histórico de Emulsive sobre la alquimia del revelador 510 Pyro, un diálogo entre el pensamiento conceptual y la permanencia del negativo.
 
-El reto creativo de la jornada invita a los oyentes a ejercitar la observación en la penumbra urbana, componiendo escenarios de sombra profunda y luz aislada para encontrar orden y armonía geométrica en medio del caos cotidiano.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3" length="12482712" type="audio/mpeg"/>
+Para el taller práctico proponemos un reto de observación profunda inspirado en la luz extrema y la quietud, invitando a los oyentes a medir para las altas luces en espacios de sombra profunda para hallar orden dentro del caos cotidiano.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3" length="11619864" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-02.jpg"/>
-    <itunes:duration>8:40</itunes:duration>
-    <itunes:title>Episodio 30 · Entre la ilusión de las apariencias y la memoria de la materia</itunes:title>
+    <itunes:duration>8:04</itunes:duration>
+    <itunes:title>Episodio 30 · El engaño de las apariencias y el arte del tiempo lento</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[El panorama fotográfico de hoy nos lleva por un recorrido vibrante que abarca desde archivos históricos de aviación y proyectos analógicos familiares hasta importantes convocatorias internacionales como el Premio Leica Oskar Barnack y el despliegue del proyecto ambulante Lux Tour por Francia. Además, exploramos relatos íntimos de autorretratos a lo largo de décadas, crónicas urbanas bajo condiciones extremas y publicaciones que rinden tributo a maestros del género documental.
+    <itunes:summary><![CDATA[En la edición de hoy repasamos una intensa jornada fotográfica marcada por grandes certámenes internacionales, libros sobre el crecimiento familiar y diarios analógicos de calle. Nuestro foco principal se detiene en la figura del maestro japonés Hiroshi Sugimoto y su escepticismo radical ante las apariencias visuales, conectando su filosofía con el valor del tiempo en el proceso fotográfico.
 
-El análisis principal se centra en la figura de Hiroshi Sugimoto a través del perfil publicado en Aperture, donde se desentraña su escepticismo fundamental ante la realidad visible y su formación entre Tokio, la Unión Soviética y Los Ángeles. Conectamos su enfoque conceptual con una joya del archivo de Emulsive sobre el revelador 510 Pyro y las reflexiones de 35mmc sobre el doble nacimiento de la fotografía analógica, subrayando el valor del proceso químico y la dilación del tiempo.
+Analizamos el perfil publicado por Aperture sobre Sugimoto y vinculamos su búsqueda estética con el rescate histórico de Emulsive sobre la alquimia del revelador 510 Pyro, un diálogo entre el pensamiento conceptual y la permanencia del negativo.
 
-El reto creativo de la jornada invita a los oyentes a ejercitar la observación en la penumbra urbana, componiendo escenarios de sombra profunda y luz aislada para encontrar orden y armonía geométrica en medio del caos cotidiano.]]></itunes:summary>
+Para el taller práctico proponemos un reto de observación profunda inspirado en la luz extrema y la quietud, invitando a los oyentes a medir para las altas luces en espacios de sombra profunda para hallar orden dentro del caos cotidiano.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
