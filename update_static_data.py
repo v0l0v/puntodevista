@@ -358,9 +358,21 @@ def update_article_cache(filename, items, scrape_fn):
         attempts += 1
         data = scrape_fn(url)
         if data and data.get('status') == 'ok':
+            # Traducir contenido HTML al español para artículos nuevos
+            try:
+                from translator import translate_text
+                if data.get('content') and not data.get('translated'):
+                    translated_content = translate_text(data['content'], is_html=True)
+                    if translated_content and len(translated_content) > 30:
+                        data['content_original'] = data['content']
+                        data['content'] = translated_content
+                        data['translated'] = True
+            except Exception as e_trans:
+                print(f'    ⚠️ Error traduciendo artículo {url}: {e_trans}')
+
             cache[url] = data
             new += 1
-            print(f'    + {url.split("/")[-1][:50]}')
+            print(f'    + {url.split("/")[-1][:50]} (traducido ES)')
         else:
             print(f'    - error {url.split("/")[-1][:50]}')
     if new:

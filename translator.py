@@ -20,9 +20,7 @@ GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
 GEMINI_MODELS = [
     os.environ.get('GEMINI_MODEL'),
     'gemini-3.5-flash-lite',
-    'gemini-3-flash-preview',
-    'gemini-3.7-flash',
-    'gemini-flash-latest'
+    'gemini-3.6-flash',
 ]
 GEMINI_MODELS = [m for m in GEMINI_MODELS if m]
 
@@ -77,10 +75,11 @@ def _hash_key(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 def translate_text(text, is_html=False):
-    if not text or not text.strip():
+    if not text or not str(text).strip():
         return text
+    text_str = str(text).strip()
     load_cache()
-    h = _hash_key(text)
+    h = _hash_key(text_str)
     if h in _CACHE and _CACHE[h]:
         val = _CACHE[h]
         if not val.startswith("Aquí tienes") and not val.startswith("La traducción") and not "1." in val:
@@ -91,11 +90,11 @@ def translate_text(text, is_html=False):
             "Eres un traductor y editor literario especializado en fotografía y artes visuales.\n"
             "Traduce el siguiente contenido HTML al español de forma natural, culta y fluida.\n"
             "REGLAS OBLIGATORIAS:\n"
-            "1. Conserva exactamente todas las etiquetas HTML (<img>, <a>, <figure>, <figcaption>, <p>, <div>, clases, etc.).\n"
-            "2. No alteres las URLs de imágenes ni los enlaces href.\n"
-            "3. Traduce los textos descriptivos, pies de foto y párrafos con máxima fidelidad y naturalidad editorial.\n"
+            "1. Conserva exactamente todas las etiquetas HTML (<img>, <a>, <figure>, <figcaption>, <p>, <div>, <span>, <h2>, <h3>, <ul>, <li>, clases y atributos).\n"
+            "2. No alteres ninguna URL de imágenes (src), enlaces (href) ni identificadores.\n"
+            "3. Traduce todos los textos descriptivos, pies de foto, citas y párrafos con máxima fidelidad y naturalidad editorial al español.\n"
             "4. Devuelve ÚNICAMENTE el HTML traducido, sin bloques de código ```html ni texto introductorio.\n\n"
-            f"{text[:4000]}"
+            f"{text_str[:12000]}"
         )
     else:
         prompt = (
@@ -103,7 +102,7 @@ def translate_text(text, is_html=False):
             "REGLAS CRÍTICAS:\n"
             "- Devuelve EXCLUSIVAMENTE el texto traducido.\n"
             "- No incluyas explicaciones, notas, alternativas ni comillas adicionales.\n\n"
-            f"{text}"
+            f"{text_str}"
         )
 
     res = call_gemini(prompt)
