@@ -24,6 +24,12 @@ from pathlib import Path
 import requests
 
 DIR = os.path.dirname(os.path.abspath(__file__))
+# Asegurar TMPDIR en directorio con permisos de ejecucion para phonemizer / libespeak-ng
+if not os.environ.get('TMPDIR'):
+    user_tmp = os.path.join(DIR, 'tmp_audio')
+    os.makedirs(user_tmp, exist_ok=True)
+    os.environ['TMPDIR'] = user_tmp
+
 OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = os.path.join(DIR, 'podcast_meta.json')
@@ -801,8 +807,13 @@ def clean_text(t):
     t = re.sub(r'\.{2,}', '.', t)
     # - Dos puntos y punto y coma -> espacio (no coma: evitar pausa artificial)
     t = re.sub(r'[:;]', ' ', t)
-    # - Paréntesis, corchetes y comillas tipográficas -> eliminados (manteniendo texto interno)
+    # - Paréntesis, corchetes, llaves y comillas tipográficas -> eliminados (protegiendo tags de locutor y pausa)
+    valid_tags = ['[ROBERTO]', '[BEATRIZ]', '[NICOLAS]', '[PAUSA]', '---PAUSA---']
+    for idx, tag in enumerate(valid_tags):
+        t = re.sub(re.escape(tag), f'__TAG_{idx}__', t, flags=re.IGNORECASE)
     t = re.sub(r'[(){}\[\]"«»""]', '', t)
+    for idx, tag in enumerate(valid_tags):
+        t = t.replace(f'__TAG_{idx}__', tag)
 
     # 5. Normalizar puntuaciones repetidas y espacios
     t = re.sub(r',\s*,+', ',', t)
@@ -869,6 +880,8 @@ def generate_audio(text, out_path, episode_date=None):
             if len(splits) == 1:
                 dialogue_turns.append((current_speaker, splits[0].strip()))
             else:
+                if splits[0].strip():
+                    dialogue_turns.append((current_speaker, splits[0].strip()))
                 for idx_s in range(1, len(splits), 2):
                     speaker_tag = splits[idx_s].upper()
                     turn_text = splits[idx_s + 1].strip()

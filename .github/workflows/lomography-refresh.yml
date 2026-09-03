@@ -1,10 +1,6 @@
 name: Refrescar Lomography
 
 on:
-  schedule:
-    # Cada 2 horas en horas impares UTC (01,03,...,23): evita chocar con el
-    # digest de las 04:00, que ya scrapea la revista. ~12 refrescos/día.
-    - cron: '0 1-23/2 * * *'
   workflow_dispatch:
 
 concurrency:
