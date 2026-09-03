@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Thu, 03 Sep 2026 12:09:05 +0000</lastBuildDate>
+<lastBuildDate>Thu, 03 Sep 2026 12:31:16 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1197,31 +1197,25 @@ Para el taller práctico proponemos un reto de observación profunda inspirado e
     <itunes:explicit>false</itunes:explicit>
   </item>
   <item>
-    <title>Episodio 31 · Lo que la imagen no muestra: las huellas invisibles de la memoria</title>
+    <title>Episodio 31 · Donde termina lo visible: retratos de lo invisible y grietas del tiempo</title>
     <link>https://puntodevista.click/</link>
     <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-03.mp3</guid>
     <pubDate>Thu, 03 Sep 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Lo que la imagen no muestra: las huellas invisibles de la memoria
+    <description><![CDATA[El episodio de hoy aborda la rica actualidad de la cultura visual contemporánea, comenzando por el regreso del festival La Nuu a Rubí para explorar el retrato y la identidad. Recorremos además los proyectos documentales de Ron Tarver sobre los cowboys negros en los Estados Unidos, la mirada chicana y latina de Los Ángeles en el museo J. Paul Getty, y las publicaciones recientes de MACK Books junto a las reflexiones sobre la fotografía de calle en el ámbito analógico.
 
----SUMMARY---
-En el panorama cultural de hoy repasamos el regreso del festival La Nuu en Rubí con el retrato contemporáneo como eje central, las perspectivas chicanas en el Museo Getty de Los Ángeles y la epopeya visual de los vaqueros negros documentada por Ron Tarver; además, recorremos el viaje por los Balcanes de Irina Rozovsky, los diarios analógicos de Lomography, el uso de la película ortocromática Washi F y las profundas meditaciones sobre las fotos que no llegamos a tomar en Vietnam, junto a una sugerente reflexión enviada por correo sobre nuestras aspiraciones y el paso del tiempo.
+En el bloque central, Beatriz desentraña la obra y filosofía de Sandrine Arons a través del cuestionario publicado en el Ojo de la Fotografía, el O-D-L-P. Analizamos cómo su propuesta trasciende la mera documentación para poner a prueba la realidad y explorar aquello que la imagen no muestra. Conectamos este enfoque con el linaje histórico del revelado químico, rescatando la experiencia de Chris Chinnock con el revelador Pyro 510 de la memoria de EMULSIVE.
 
-En el bloque central, Beatriz analiza la obra de Sandrine Arons a través de la entrevista publicada en el Ojo de la Fotografía, un proyecto que cuestiona los límites de lo visible para adentrarse en la memoria, la ausencia y la fragmentación de la identidad. Conectamos esta búsqueda con la joya de archivo de Ain't-Bad dedicada al artista francés Baptiste Penetticobra, trazando un linaje visual sobre cómo la puesta en escena y la abstracción desafían nuestra percepción de lo real.
-
-Finalmente, Nicolás nos traslada al taller práctico con un reto de composición enfocado en la luz y las sombras recortadas; nos invita a salir a la calle para fotografiar aquello que no se ve directamente, obligando al espectador a completar el relato mediante el juego del fuera de campo y la penumbra.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-03.mp3" length="9655127" type="audio/mpeg"/>
+Por último, Nicolás toma el testigo desde el taller para proponernos un desafío práctico basado en la sugerencia y la presencia imprecisa. El reto creativo de la jornada nos invita a salir a la calle para fotografiar el entorno trabajando con sombras y elementos indirectos, buscando que lo invisible sea el verdadero protagonista de la toma.]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-03.mp3" length="9403415" type="audio/mpeg"/>
     <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-03.jpg"/>
-    <itunes:duration>6:42</itunes:duration>
-    <itunes:title>Episodio 31 · Lo que la imagen no muestra: las huellas invisibles de la memoria</itunes:title>
+    <itunes:duration>6:31</itunes:duration>
+    <itunes:title>Episodio 31 · Donde termina lo visible: retratos de lo invisible y grietas del tiempo</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Lo que la imagen no muestra: las huellas invisibles de la memoria
+    <itunes:summary><![CDATA[El episodio de hoy aborda la rica actualidad de la cultura visual contemporánea, comenzando por el regreso del festival La Nuu a Rubí para explorar el retrato y la identidad. Recorremos además los proyectos documentales de Ron Tarver sobre los cowboys negros en los Estados Unidos, la mirada chicana y latina de Los Ángeles en el museo J. Paul Getty, y las publicaciones recientes de MACK Books junto a las reflexiones sobre la fotografía de calle en el ámbito analógico.
 
----SUMMARY---
-En el panorama cultural de hoy repasamos el regreso del festival La Nuu en Rubí con el retrato contemporáneo como eje central, las perspectivas chicanas en el Museo Getty de Los Ángeles y la epopeya visual de los vaqueros negros documentada por Ron Tarver; además, recorremos el viaje por los Balcanes de Irina Rozovsky, los diarios analógicos de Lomography, el uso de la película ortocromática Washi F y las profundas meditaciones sobre las fotos que no llegamos a tomar en Vietnam, junto a una sugerente reflexión enviada por correo sobre nuestras aspiraciones y el paso del tiempo.
+En el bloque central, Beatriz desentraña la obra y filosofía de Sandrine Arons a través del cuestionario publicado en el Ojo de la Fotografía, el O-D-L-P. Analizamos cómo su propuesta trasciende la mera documentación para poner a prueba la realidad y explorar aquello que la imagen no muestra. Conectamos este enfoque con el linaje histórico del revelado químico, rescatando la experiencia de Chris Chinnock con el revelador Pyro 510 de la memoria de EMULSIVE.
 
-En el bloque central, Beatriz analiza la obra de Sandrine Arons a través de la entrevista publicada en el Ojo de la Fotografía, un proyecto que cuestiona los límites de lo visible para adentrarse en la memoria, la ausencia y la fragmentación de la identidad. Conectamos esta búsqueda con la joya de archivo de Ain't-Bad dedicada al artista francés Baptiste Penetticobra, trazando un linaje visual sobre cómo la puesta en escena y la abstracción desafían nuestra percepción de lo real.
-
-Finalmente, Nicolás nos traslada al taller práctico con un reto de composición enfocado en la luz y las sombras recortadas; nos invita a salir a la calle para fotografiar aquello que no se ve directamente, obligando al espectador a completar el relato mediante el juego del fuera de campo y la penumbra.]]></itunes:summary>
+Por último, Nicolás toma el testigo desde el taller para proponernos un desafío práctico basado en la sugerencia y la presencia imprecisa. El reto creativo de la jornada nos invita a salir a la calle para fotografiar el entorno trabajando con sombras y elementos indirectos, buscando que lo invisible sea el verdadero protagonista de la toma.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
