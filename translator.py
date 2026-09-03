@@ -17,8 +17,14 @@ if os.path.exists(cfg_file):
         pass
 
 GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
-GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-3.6-flash')
-GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
+GEMINI_MODELS = [
+    os.environ.get('GEMINI_MODEL'),
+    'gemini-3.5-flash-lite',
+    'gemini-3-flash-preview',
+    'gemini-3.7-flash',
+    'gemini-flash-latest'
+]
+GEMINI_MODELS = [m for m in GEMINI_MODELS if m]
 
 CACHE_FILE = os.path.join(DIR, 'translations_cache.json')
 _CACHE = {}
@@ -40,37 +46,45 @@ def save_cache():
     except Exception as e:
         print(f"⚠️ Error guardando caché de traducción: {e}")
 
-def call_gemini(prompt, max_retries=3):
+def call_gemini(prompt, max_retries=2):
     if not GEMINI_KEY:
         return None
     body = {
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
-            'temperature': 0.2,
+            'temperature': 0.1,
             'maxOutputTokens': 8192,
         }
     }
     data = json.dumps(body).encode('utf-8')
-    req = urllib.request.Request(GEMINI_URL, data=data, headers={'Content-Type': 'application/json'})
-    for attempt in range(max_retries):
-        try:
-            with urllib.request.urlopen(req, timeout=45) as resp:
-                result = json.loads(resp.read().decode('utf-8'))
-                return result['candidates'][0]['content']['parts'][0]['text'].strip()
-        except Exception as e:
-            if attempt < max_retries - 1:
-                time.sleep(2 * (attempt + 1))
-            else:
-                print(f"⚠️ Error API traducción Gemini: {e}")
-                return None
+
+    for model_name in GEMINI_MODELS:
+        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
+        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+        for attempt in range(max_retries):
+            try:
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    result = json.loads(resp.read().decode('utf-8'))
+                    return result['candidates'][0]['content']['parts'][0]['text'].strip()
+            except Exception as e:
+                time.sleep(1 * (attempt + 1))
+    print(f"⚠️ Error API traducción Gemini en todos los modelos de respaldo")
+    return None
+
+import hashlib
+
+def _hash_key(text):
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 def translate_text(text, is_html=False):
     if not text or not text.strip():
         return text
     load_cache()
-    h = str(hash(text))
-    if h in _CACHE:
-        return _CACHE[h]
+    h = _hash_key(text)
+    if h in _CACHE and _CACHE[h]:
+        val = _CACHE[h]
+        if not val.startswith("Aquí tienes") and not val.startswith("La traducción") and not "1." in val:
+            return val
 
     if is_html:
         prompt = (
@@ -81,23 +95,26 @@ def translate_text(text, is_html=False):
             "2. No alteres las URLs de imágenes ni los enlaces href.\n"
             "3. Traduce los textos descriptivos, pies de foto y párrafos con máxima fidelidad y naturalidad editorial.\n"
             "4. Devuelve ÚNICAMENTE el HTML traducido, sin bloques de código ```html ni texto introductorio.\n\n"
-            f"{text}"
+            f"{text[:4000]}"
         )
     else:
         prompt = (
-            "Traduce el siguiente titular o resumen de fotografía al español de forma natural y atractiva.\n"
-            "Devuelve ÚNICAMENTE la traducción, sin comillas ni explicaciones:\n\n"
+            "Eres un editor fotográfico profesional. Traduce el siguiente titular o resumen al español de forma directa, elegante y natural.\n"
+            "REGLAS CRÍTICAS:\n"
+            "- Devuelve EXCLUSIVAMENTE el texto traducido.\n"
+            "- No incluyas explicaciones, notas, alternativas ni comillas adicionales.\n\n"
             f"{text}"
         )
 
     res = call_gemini(prompt)
     if res:
-        # Limpiar si devolvió markdown
+        # Limpiar si devolvió markdown o comillas envolventes
         clean_res = re.sub(r'^```html\s*', '', res, flags=re.IGNORECASE)
-        clean_res = re.sub(r'\s*```$', '', clean_res)
-        _CACHE[h] = clean_res.strip()
+        clean_res = re.sub(r'\s*```$', '', clean_res).strip()
+        clean_res = re.sub(r'^["«\']|["»\']$', '', clean_res).strip()
+        _CACHE[h] = clean_res
         save_cache()
-        return clean_res.strip()
+        return clean_res
     return text
 
 def translate_article_entry(entry):

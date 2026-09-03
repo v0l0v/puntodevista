@@ -136,6 +136,29 @@ def main():
             if isinstance(data, dict) and data.get('thumbnail'):
                 item['thumbnail'] = data['thumbnail']
 
+    print('  6g. Traducción automática de artículos al español...')
+    try:
+        from translator import translate_article_entry
+        sources_to_translate = [
+            ('colossal', colossal),
+            ('lomography', lomo),
+            ('booooooom', boom),
+            ('tpj', tpj),
+            ('swan', swan),
+            ('huck', huck),
+            ('lensculture', lensculture),
+            ('odlp', odlp),
+            ('magnum', magnum),
+            ('shootitwithfilm', shootit),
+        ]
+        for src_name, src_items in sources_to_translate:
+            if src_items:
+                for it in src_items[:15]:
+                    translate_article_entry(it)
+        print('     ✅ Traducción completada con éxito')
+    except Exception as e_trans:
+        print(f'     ⚠️ Error en traducción automática: {e_trans}')
+
     all_entries = sorted(colossal + lomo + boom + tpj + swan + huck + lensculture + odlp + magnum + shootit,
                          key=lambda x: x.get('_parsedDate') or x.get('date') or '',
                          reverse=True)
@@ -155,7 +178,7 @@ def main():
     try:
         subprocess.run(
             ['git', 'add', 'lomography.json', 'booooooom.json', 'tpj.json', 'swan.json', 'huck.json', 'lensculture.json', 'odlp.json', 'magnum.json', 'shootitwithfilm.json', 'feeds.json',
-             'lomography_articles.json', 'booooooom_articles.json', 'swan_articles.json', 'lensculture_articles.json', 'odlp_articles.json', 'magnum_articles.json'],
+             'lomography_articles.json', 'booooooom_articles.json', 'swan_articles.json', 'lensculture_articles.json', 'odlp_articles.json', 'magnum_articles.json', 'translations_cache.json'],
             capture_output=True, text=True, cwd=DIR
         )
         res = subprocess.run(
