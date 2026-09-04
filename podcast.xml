@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 04 Sep 2026 07:08:10 +0000</lastBuildDate>
+<lastBuildDate>Fri, 04 Sep 2026 21:23:43 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1216,6 +1216,20 @@ Por último, Nicolás toma el testigo desde el taller para proponernos un desaf�
 En el bloque central, Beatriz desentraña la obra y filosofía de Sandrine Arons a través del cuestionario publicado en el Ojo de la Fotografía, el O-D-L-P. Analizamos cómo su propuesta trasciende la mera documentación para poner a prueba la realidad y explorar aquello que la imagen no muestra. Conectamos este enfoque con el linaje histórico del revelado químico, rescatando la experiencia de Chris Chinnock con el revelador Pyro 510 de la memoria de EMULSIVE.
 
 Por último, Nicolás toma el testigo desde el taller para proponernos un desafío práctico basado en la sugerencia y la presencia imprecisa. El reto creativo de la jornada nos invita a salir a la calle para fotografiar el entorno trabajando con sombras y elementos indirectos, buscando que lo invisible sea el verdadero protagonista de la toma.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 32 · La memoria revelada: entre la luz de los orígenes y el ciclo de la vida</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-04.mp3</guid>
+    <pubDate>Fri, 04 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[La memoria revelada: entre la luz de los orígenes y el ciclo de la vida]]></description>
+    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-04.mp3" length="9042785" type="audio/mpeg"/>
+    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-04.jpg"/>
+    <itunes:duration>6:16</itunes:duration>
+    <itunes:title>Episodio 32 · La memoria revelada: entre la luz de los orígenes y el ciclo de la vida</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[La memoria revelada: entre la luz de los orígenes y el ciclo de la vida]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
