@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Fri, 04 Sep 2026 21:23:43 +0000</lastBuildDate>
+<lastBuildDate>Fri, 04 Sep 2026 23:09:37 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -17,11 +17,11 @@
   <item>
     <title>Episodio 1 · 3 de agosto de 2026</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-03.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-03.mp3</guid>
     <pubDate>Mon, 03 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Collecting Mailbox Memories: Stories from the Lomographers’ Print Exchange Recupera la nostalgia de enviar y recibir copias físicas de tus fotos analógicas, creando conexiones tangibles entre fotógrafos de distintos continentes. Es una invitación a explorar el soporte físico y la narrativa personal que hay detrás de cada sobre que llega al buzón. Recap: Birmingham Design Festival LomoWalk Explora el lado más experimental de la fotografía callejera con este resumen del paseo fotográfico por el barrio creativo de Digbeth. Con cámaras LomoApparat y lentes de caleidoscopio, los participantes capturaron el vibrante arte urbano de Birmingham a través de exposiciones múltiples y colores irreales.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-03.mp3" length="577872" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-03.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-03.mp3" length="577872" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-03.jpg"/>
     <itunes:duration>1:36</itunes:duration>
     <itunes:title>Episodio 1 · 3 de agosto de 2026</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -31,7 +31,7 @@
   <item>
     <title>Episodio 2 · Fotografiar lo invisible: entre el sueño, el azar y la memoria</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-04.mp3</guid>
     <pubDate>Tue, 04 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Viaje nocturno: la fotografía que emerge de los sueños
 La fotógrafa Susan kae Grant nos invita a explorar el inconsciente en su libro "Viaje nocturno", donde recrea imágenes de su propio ciclo de sueño REM. A través de siluetas borrosas y sombras misteriosas en blanco y negro, la artista demuestra cómo el mundo onírico puede convertirse en una fuente inagotable de inspiración visual. Una obra fascinante que desibuja los límites entre la ciencia, el descanso y el arte.
@@ -44,8 +44,8 @@ La entrañable dupla formada por la abuela Kinso, de 96 años, y su nieta Yan-Ha
 
 Pálido: un viaje fotográfico por los paisajes de la mente
 La fotógrafa Gabrielle Duplantier nos presenta su fotolibro "Pálido", un viaje puramente inventado por la mente a través de imágenes, personas y recuerdos que la habitan. Con una atmósfera etérea y sugerente, Duplantier nos enseña a utilizar la cámara para proyectar nuestro mundo interior y construir realidades poéticas que van más allá de lo meramente visible.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-04.mp3" length="1266480" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-04.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-04.mp3" length="1266480" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-04.jpg"/>
     <itunes:duration>3:31</itunes:duration>
     <itunes:title>Episodio 2 · Fotografiar lo invisible: entre el sueño, el azar y la memoria</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -65,7 +65,7 @@ La fotógrafa Gabrielle Duplantier nos presenta su fotolibro "Pálido", un viaje
   <item>
     <title>Episodio 3 · El latido de la calle: de felinos neoyorquinos a la mirada chicana</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-05.mp3</guid>
     <pubDate>Wed, 05 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Gatos de bodega de Nueva York (Colossal)
 El nuevo fotolibro de Dan Rimada y Gulce Kilkis rinde homenaje a los entrañables felinos que habitan en los comercios de Nueva York, capturando su vida cotidiana entre estanterías. Más allá de las tiernas imágenes, este proyecto busca visibilizar su situación legal y promover reformas que protejan a estos carismáticos guardianes de cuatro patas.
@@ -81,8 +81,8 @@ Una gran exposición en el Centro Cheech Marin recorre seis décadas de fotograf
 
 Novedades y convocatorias en el mundo de la fotografía (L'Œil de la Photographie)
 El panorama fotográfico se llena de oportunidades con los finalistas de los premios de fotografía urbana URBAN, las becas de la Fundación Lucie y el premio de la unión de fotógrafos profesionales para fomentar la diversidad. Además, destacan propuestas como el fotolibro SACA 1504 de Manuel Naranjo Martell y un taller exclusivo con el renombrado Christopher Morris en Trieste.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-05.mp3" length="1227456" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-05.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-05.mp3" length="1227456" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-05.jpg"/>
     <itunes:duration>3:24</itunes:duration>
     <itunes:title>Episodio 3 · El latido de la calle: de felinos neoyorquinos a la mirada chicana</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -105,7 +105,7 @@ El panorama fotográfico se llena de oportunidades con los finalistas de los pre
   <item>
     <title>Episodio 4 · Entre escenarios eléctricos y la magia de lo cotidiano: un viaje por la mirada analógica</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-07.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-07.mp3</guid>
     <pubDate>Fri, 07 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[--
 Lomography Community Recap: July 2026
@@ -121,8 +121,8 @@ Château de Gréoux: Hans Silvester: Jean Giono et la Photo
 Hans Silvester une su lente a la prosa de Jean Giono en una exposición que celebra la conexión con la tierra. Una invitación a redescubrir el paisaje a través de una mirada incansable y profundamente literaria.
 
 **The Hulett Collection: Alain Lab]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-07.mp3" length="463536" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-07.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-07.mp3" length="463536" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-07.jpg"/>
     <itunes:duration>1:17</itunes:duration>
     <itunes:title>Episodio 4 · Entre escenarios eléctricos y la magia de lo cotidiano: un viaje por la mirada analógica</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -145,7 +145,7 @@ Hans Silvester une su lente a la prosa de Jean Giono en una exposición que cele
   <item>
     <title>Episodio 5 · El arte de ralentizar la mirada y capturar lo invisible</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-08.mp3</guid>
     <pubDate>Sat, 08 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Levana Cynthia on Travel & Photography with the Petzval Art Lens
 La fotógrafa de bodas Levana Cynthia viaja a la India y a Estados Unidos para probar la lente artística Petzval de 55 milímetros. Su característico efecto de desenfoque y el enfoque manual la invitaron a bajar el ritmo en entornos caóticos, logrando capturas oníricas impregnadas de paz. Una gran inspiración para experimentar con ópticas que transforman nuestra percepción del entorno.
@@ -173,8 +173,8 @@ Su proyecto sobre Varosha, titulado "Famagusta: el dolor de la nostalgia", abord
 
 Nikita Dankin
 La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión latente entre lo que se oculta y lo que se muestra. Utilizando la oscuridad, encuadres muy cerrados y gestos contenidos, el autor crea una atmósfera de misterio e introspección. Una lección magistral sobre cómo usar las sombras para revelar la psicología del sujeto.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-08.mp3" length="1161504" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-08.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-08.mp3" length="1161504" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-08.jpg"/>
     <itunes:duration>3:13</itunes:duration>
     <itunes:title>Episodio 5 · El arte de ralentizar la mirada y capturar lo invisible</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -209,12 +209,12 @@ La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión 
   <item>
     <title>Episodio 6 · Del Grand Tour a la cámara de bolsillo: el viaje que inventó la fotografía de viajes</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-09.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-09.mp3</guid>
     <pubDate>Sun, 09 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El Grand Tour y los orígenes de la fotografía de viajes
 ¿Sabías que antes de las cámaras la única forma de recordar un viaje era pintándolo? Este fascinante recorrido histórico nos lleva desde los aristocráticos viajes del "Grand Tour" europeo en el siglo dieciocho hasta la revolución de las primeras cámaras portátiles de Kodak. Una inspiradora mirada a cómo el deseo de explorar el mundo dio forma al arte de documentar nuestras aventuras.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-09.mp3" length="1059408" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-09.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-09.mp3" length="1059408" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-09.jpg"/>
     <itunes:duration>2:56</itunes:duration>
     <itunes:title>Episodio 6 · Del Grand Tour a la cámara de bolsillo: el viaje que inventó la fotografía de viajes</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -225,7 +225,7 @@ La serie de retratos "Nocturno" de Nikita Dankin se construye sobre la tensión 
   <item>
     <title>Episodio 7 · Miradas del pasado, noches eléctricas y el arte de cuestionar la realidad</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-10.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-10.mp3</guid>
     <pubDate>Mon, 10 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[‘Remember Me’ de la National Gallery of Art
 Esta exposición rescata el autorretrato y la autoexpresión de la comunidad afroamericana en los inicios de la fotografía a través de daguerrotipos y ambrotipos. Una muestra fascinante que nos inspira a entender el retrato no solo como un registro estético, sino como una poderosa herramienta de identidad, dignidad y resistencia histórica.
@@ -241,8 +241,8 @@ El fotolibro "Tokyo-Koza" de Keizō Kitajima captura la vibrante y caótica vida
 
 Joyas fotográficas en L'Œil de la Photographie
 Desde las reflexiones visuales de Klavdij Sluban y el activismo ecológico de Peter Beard, hasta las provocaciones de Oliviero Toscani y la elegancia minimalista de Noell Oszvald. Esta recopilación de exposiciones y monografías nos recuerda que la fotografía es un medio infinito para cuestionar el mundo, desafiar los límites del formato y capturar la memoria colectiva.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-10.mp3" length="1164240" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-10.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-10.mp3" length="1164240" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-10.jpg"/>
     <itunes:duration>3:14</itunes:duration>
     <itunes:title>Episodio 7 · Miradas del pasado, noches eléctricas y el arte de cuestionar la realidad</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -265,7 +265,7 @@ Desde las reflexiones visuales de Klavdij Sluban y el activismo ecológico de Pe
   <item>
     <title>Episodio 8 · Capturando el alma de la noche y la memoria de las calles</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-11.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-11.mp3</guid>
     <pubDate>Tue, 11 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Joel Byron y la magia imperfecta del Petzval 55 mm en Brighton
 El realizador Joel Byron captura la energía de un concierto de reggae utilizando una lente Petzval de Lomography, abrazando sus destellos y desenfoques únicos. Su experiencia nos invita a soltar el control técnico para dejar que la luz y el ambiente interpreten la escena de forma orgánica. Una gran fuente de inspiración para perderle el miedo a la imperfección.
@@ -278,8 +278,8 @@ El nuevo libro de Amelia Abraham recopila cincuenta años de fotografía de la v
 
 Identidad, memoria y homenajes en el ojo de la fotografía
 Esta edición destaca el trabajo de Jeremy Dennis sobre la identidad indígena Shinnecock, las ciudades abandonadas de Jean-Marc Yersin y un emotivo tributo al fotógrafo de Magnum Erich Hartmann. Una variedad de miradas que exploran la memoria histórica, el territorio y la experimentación química en el laboratorio.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-11.mp3" length="1066176" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-11.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-11.mp3" length="1066176" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-11.jpg"/>
     <itunes:duration>2:57</itunes:duration>
     <itunes:title>Episodio 8 · Capturando el alma de la noche y la memoria de las calles</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -299,7 +299,7 @@ Esta edición destaca el trabajo de Jeremy Dennis sobre la identidad indígena S
   <item>
     <title>Episodio 9 · De la belleza del desecho a los misterios del Sol</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-12.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-12.mp3</guid>
     <pubDate>Wed, 12 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Retratos renacentistas con materiales cotidianos por Suzanne Jongmans
 La artista Suzanne Jongmans transforma residuos cotidianos como embalajes de plástico y mallas de fruta en majestuosos ropajes de estilo renacentista. Sus fotografías fusionan la estética clásica con debates contemporáneos sobre la feminidad y el consumo, invitándonos a reflexionar sobre el valor que otorgamos a lo que desechamos.
@@ -330,8 +330,8 @@ Una mirada a los archivos históricos para recordar la exposición dedicada a la
 
 Margaret Bourke-White y Li Osborne: contrastes entre bambalinas
 Esta muestra histórica reúne las fascinantes imágenes de camerinos de bailarinas de cabaret de Margaret Bourke-White junto al expresivo trabajo teatral de Li Osborne. Un diálogo visual que celebra la fuerza y la teatralidad femenina a través de dos miradas pioneras.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-12.mp3" length="1345968" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-12.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-12.mp3" length="1345968" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-12.jpg"/>
     <itunes:duration>3:44</itunes:duration>
     <itunes:title>Episodio 9 · De la belleza del desecho a los misterios del Sol</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -369,7 +369,7 @@ Esta muestra histórica reúne las fascinantes imágenes de camerinos de bailari
   <item>
     <title>Episodio 10 · La luz del eclipse y el grito de la imagen</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-13.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-13.mp3</guid>
     <pubDate>Thu, 13 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[¡Sube el volumen! El arte como motor de cambio social
 La nueva exposición del Museo de Arte Nasher celebra la democracia y la libertad de expresión a través de poderosas imágenes de activismo en Estados Unidos. Desde las marchas por los derechos civiles de Spider Martin hasta la crudeza urbana de Bruce Davidson, esta muestra nos recuerda que la fotografía es una herramienta indispensable para sacudir conciencias.
@@ -385,8 +385,8 @@ La fotógrafa Ella Glossop retrata la mágica reunión de miles de personas en P
 
 Arles y la magia cósmica en el ojo de la fotografía
 La prestigiosa revista nos acerca al trabajo de Aman Alam en el festival de Arles con su obra Ozymandias, y a la cobertura del histórico eclipse solar del 12 de agosto por Jacques Revon. Un recorrido visual que conecta la memoria histórica, la astronomía y el arte contemporáneo más vanguardista.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-13.mp3" length="995472" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-13.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-13.mp3" length="995472" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-13.jpg"/>
     <itunes:duration>2:45</itunes:duration>
     <itunes:title>Episodio 10 · La luz del eclipse y el grito de la imagen</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -409,15 +409,15 @@ La prestigiosa revista nos acerca al trabajo de Aman Alam en el festival de Arle
   <item>
     <title>Episodio 11 · Destellos nocturnos y la mirada revolucionaria de las mujeres en la fotografía</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-14.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-14.mp3</guid>
     <pubDate>Fri, 14 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Grandes mujeres fotógrafas: dos siglos de historia y revolución visual
 Un nuevo libro de la editorial Phaidon celebra el legado de más de doscientas cincuenta fotógrafas de sesenta y ocho países que han transformado nuestra forma de ver el mundo. A través de retratos, fotoperiodismo y paisajes conceptuales, esta obra es una fuente inagotable de inspiración que reivindica la mirada femenina a lo largo de doscientos años. Una invitación perfecta para redescubrir la historia de la fotografía desde una perspectiva más justa y diversa.
 
 Bajo el brillo del neón: la magia de la fotografía analógica nocturna
 La comunidad de Lomography nos invita a perdernos en la noche y capturar la vibrante energía de las calles iluminadas por carteles de neón. Utilizando técnicas como la doble exposición o el modo de exposición prolongada, este desafío fotográfico nos anima a abrazar las luces de la ciudad sin intentar controlarlas, retratando emociones puras e improvisadas. Es el empujón perfecto para salir con tu cámara analógica cuando el sol se oculta y dejarte llevar por el misterio nocturno.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-14.mp3" length="969120" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-14.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-14.mp3" length="969120" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-14.jpg"/>
     <itunes:duration>2:41</itunes:duration>
     <itunes:title>Episodio 11 · Destellos nocturnos y la mirada revolucionaria de las mujeres en la fotografía</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -431,7 +431,7 @@ La comunidad de Lomography nos invita a perdernos en la noche y capturar la vibr
   <item>
     <title>Episodio 12 · El tiempo en un fotograma: de piscinas veraniegas a dimensiones surrealistas</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-15.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-15.mp3</guid>
     <pubDate>Sat, 15 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Lomography Magazine: El verano analógico de Cassie McCoy
 La fotógrafa Cassie McCoy utiliza una cámara de medio fotograma para inmortalizar una tarde de piscina con amigos llena de risas y espontaneidad. Su serie nos enseña a valorar la imperfección y a usar el flash a plena luz del día para capturar la frescura de los momentos cotidianos.
@@ -456,8 +456,8 @@ El fotógrafo retrata los carruseles que habitan las plazas públicas, girando l
 
 The Eye of Photography: Exposiciones múltiples de Brandy Eve Allen
 La artista crea composiciones únicas exponiendo varias veces el mismo fotograma de película en diferentes lugares y momentos. El resultado es un collage poético de encuentros y paisajes que desafía la linealidad temporal.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-15.mp3" length="1163952" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-15.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-15.mp3" length="1163952" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-15.jpg"/>
     <itunes:duration>3:13</itunes:duration>
     <itunes:title>Episodio 12 · El tiempo en un fotograma: de piscinas veraniegas a dimensiones surrealistas</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -489,12 +489,12 @@ La artista crea composiciones únicas exponiendo varias veces el mismo fotograma
   <item>
     <title>Episodio 13 · El silencio creativo y el lienzo en blanco</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-16.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-16.mp3</guid>
     <pubDate>Sun, 16 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El lienzo en blanco del domingo
 Hoy no se han publicado nuevos artículos en nuestras fuentes habituales, lo que nos brinda el momento perfecto para pausar y reflexionar. Aprovecha este silencio mediático para salir a fotografiar sin influencias externas y redescubrir tu propio estilo a través de tu archivo personal.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-16.mp3" length="2625191" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-16.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-16.mp3" length="2625191" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-16.jpg"/>
     <itunes:duration>1:49</itunes:duration>
     <itunes:title>Episodio 13 · El silencio creativo y el lienzo en blanco</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -505,7 +505,7 @@ Hoy no se han publicado nuevos artículos en nuestras fuentes habituales, lo que
   <item>
     <title>Episodio 14 · Miradas sin fronteras: de la resiliencia en Afganistán a la luz mística de Thierry Valencin</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-17.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-17.mp3</guid>
     <pubDate>Mon, 17 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[The Questionnaire : Daniel Malikyar by Carole Schmitz
 Daniel Malikyar nos invita a redescubrir Afganistán más allá de las típicas imágenes de conflicto, reclamando el derecho a capturar su verdadera esencia. A través de un cuestionario íntimo, el fotógrafo comparte cómo su cámara busca retratar la belleza, la resiliencia y la vida cotidiana de su tierra natal.
@@ -521,8 +521,8 @@ Desde los idílicos paisajes de la Toscana, el festival Cortona en movimiento re
 
 RRB PhotoBooks : David Hurn : Photographs 1955 – 2022
 Este fotolibro recopila casi setenta años de la brillante trayectoria del fotógrafo de Magnum, David Hurn. Una joya documental que nos permite repasar la historia reciente a través de una mirada honesta, tierna y profundamente conectada con la vida cotidiana.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-17.mp3" length="4863835" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-17.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-17.mp3" length="4863835" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-17.jpg"/>
     <itunes:duration>3:22</itunes:duration>
     <itunes:title>Episodio 14 · Miradas sin fronteras: de la resiliencia en Afganistán a la luz mística de Thierry Valencin</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -545,7 +545,7 @@ Este fotolibro recopila casi setenta años de la brillante trayectoria del fotó
   <item>
     <title>Episodio 15 · Miradas que desafían el tiempo y la distancia</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-18.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-18.mp3</guid>
     <pubDate>Tue, 18 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Jeremy Dennis: La fotografía como memoria y reflexión sobre la presencia nativa
 A través de su lente, este fotógrafo de la nación indígena Shinnecock explora la identidad y la memoria de los pueblos originarios. Sus imágenes son un poderoso recordatorio de la persistencia cultural y un llamado a reflexionar sobre la historia que pisamos. Una obra imprescindible para entender el territorio desde la sensibilidad y el respeto.
@@ -564,8 +564,8 @@ El trabajo de esta pareja estadounidense nos sumerge en un universo surrealista 
 
 Archivos: El cuestionario a Alexandre de Metz
 Una reveladora entrevista que explora el instinto visual de uno de los fundadores de YellowKorner. Alexandre de Metz comparte su agudo sentido de la estética y su pasión por descubrir y democratizar el arte fotográfico. Un soplo de motivación para confiar en nuestra propia intuición a la hora de capturar y valorar imágenes.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-18.mp3" length="5300974" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-18.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-18.mp3" length="5300974" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-18.jpg"/>
     <itunes:duration>3:40</itunes:duration>
     <itunes:title>Episodio 15 · Miradas que desafían el tiempo y la distancia</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -591,7 +591,7 @@ Una reveladora entrevista que explora el instinto visual de uno de los fundadore
   <item>
     <title>Episodio 16 · El latido de la luz: celebrando el día mundial de la fotografía y el arte de mirar la calle</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-19.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-19.mp3</guid>
     <pubDate>Wed, 19 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Dublín / El Centro Internacional de la Imagen – Mujeres en el foco x Nikon 2025
 Esta exposición internacional celebra y visibiliza la mirada de las fotógrafas de todo el mundo, destacando narrativas visuales diversas y poderosas. A través de una amplia variedad de técnicas que van desde el retrato documental hasta la fotografía conceptual, las artistas exploran la identidad y la resiliencia humana. La muestra invita al espectador a reflexionar sobre la equidad de género en el arte y el impacto de la perspectiva femenina en la documentación del mundo contemporáneo.
@@ -616,8 +616,8 @@ La fundación anuncia el apoyo a cuarenta y cinco proyectos institucionales que 
 
 Fotonistas por Ana Arbonés
 ¿Quieres descubrir por qué la fotografía de calle es mucho más que pulsar un botón y por qué todo el mundo se divierte aprendiendo con Rober Tomás? Ana nos trae hoy una refrescante dosis de realidad sobre el proceso de aprendizaje práctico y la importancia de salir a la calle a escribir con luz sin miedo a equivocarse. Te invitamos a suscribirte a su Fotoletter en fotonistas.com para no perderte sus sabios consejos diarios y descubrir el código secreto que transformará tu mirada.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-19.mp3" length="7094027" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-19.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-19.mp3" length="7094027" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-19.jpg"/>
     <itunes:duration>4:55</itunes:duration>
     <itunes:title>Episodio 16 · El latido de la luz: celebrando el día mundial de la fotografía y el arte de mirar la calle</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -649,7 +649,7 @@ Fotonistas por Ana Arbonés
   <item>
     <title>Episodio 17 · El arte de detenerse: del neón de Yoshiwara a la magia del retrato analógico</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-20.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-20.mp3</guid>
     <pubDate>Thu, 20 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[--
 Four Shortlisted Artists Stand to Win the Winston Taylor Photo Portrait Prize 2026
@@ -666,8 +666,8 @@ El artículo narra la experiencia de viajar y fotografiar con película analógi
 
 ¿Te ha pasado? (Fotonistas)
 ¿Alguna vez has sentido que nadie a tu alrededor entiende tu obsesión por la fotografía o por qué pasas frío esperando esa toma perfecta? Ana Arbonés plantea una bellísima reflexión sobre el verdadero motor de nuestra pasión y te invita a unirte a su Fotoletter en fotonistas.com para descubrir por qué los locos son en realidad los que no saben lo que se están perdiendo.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-20.mp3" length="7470189" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-20.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-20.mp3" length="7470189" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-20.jpg"/>
     <itunes:duration>5:11</itunes:duration>
     <itunes:title>Episodio 17 · El arte de detenerse: del neón de Yoshiwara a la magia del retrato analógico</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -691,7 +691,7 @@ El artículo narra la experiencia de viajar y fotografiar con película analógi
   <item>
     <title>Episodio 18 · La poética del error analógico y los ecos de la memoria urbana</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-21.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-21.mp3</guid>
     <pubDate>Fri, 21 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Two Days, Two Styles with Green (midori.pix) and the Lomo MC-A
 El fotógrafo de retratos Green experimenta con la cámara analógica compacta Lomo MC-A en dos entornos urbanos de Bangkok radicalmente distintos: el histórico barrio de Talad Noi y el bullicioso mercado de peces de Chatuchak. Utilizando películas de color saturado y jugando con subexposiciones deliberadas, el autor logra capturar desde la calidez de la luz de la tarde sobre muros envejecidos hasta atmósferas cinematográficas de estética misteriosa bajo luces de neón. Este ensayo visual nos invita a desprendernos de la obsesión por la nitidez perfecta de las cámaras digitales para abrazar el error, la espontaneidad y la magia del formato analógico.
@@ -719,8 +719,8 @@ La fotógrafa albanesa Erjola Zhuka presenta su primera exposición individual e
 
 Fotonistas (Newsletter)
 ¿Sientes un vacío creativo cada vez que miras tu cámara de fotos y te limitas a pulsar el botón sin un propósito claro? Ana de Fotonistas nos propone hoy dejar de poner excusas sobre la falta de tiempo y nos reta a alinear la cabeza, el ojo y el corazón en cada disparo; suscríbete ya a su Fotoletter en fotonistas.com para descubrir cómo empezar a hacer fotos de calle de verdad.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-21.mp3" length="6667027" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-21.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-21.mp3" length="6667027" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-21.jpg"/>
     <itunes:duration>4:37</itunes:duration>
     <itunes:title>Episodio 18 · La poética del error analógico y los ecos de la memoria urbana</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -755,7 +755,7 @@ Fotonistas (Newsletter)
   <item>
     <title>Episodio 19 · El color como trinchera y la cámara como revólver</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-22.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-22.mp3</guid>
     <pubDate>Sat, 22 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Half-Frame Stories with the Half-frame Simple Use Through the Lens of Guy (@dopamine.51)
 El fotógrafo Guy explora el casco antiguo de Bangkok capturando las luces y sombras del atardecer con una cámara de medio formato recargable de Lomography. Utilizando película de blanco y negro de ISO 400, el autor compone dípticos visuales que dialogan entre sí para narrar una historia urbana continua. Este proyecto demuestra cómo las limitaciones técnicas y el formato de medio cuadro potencian la creatividad y relajan a los sujetos frente a la lente.
@@ -783,8 +783,8 @@ Esta joya del archivo nos transporta al emocionante lanzamiento de la HARMAN Pho
 
 La cámara siempre a punto por Ana de Fotonistas
 Ana plantea hoy una analogía tan divertida como certera: llevar la cámara lista y desenfundada como si fuera el revólver de un pistolero en el Salvaje Oeste para no perder jamás ese instante decisivo. ¿Quieres saber cómo evitar que se te escapen las mejores fotos de la calle por culpa de un despiste técnico? Te invitamos a descubrir sus reflexiones completas suscribiéndote a su Fotoletter diaria en fotonistas.com.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-22.mp3" length="8324583" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-22.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-22.mp3" length="8324583" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-22.jpg"/>
     <itunes:duration>5:46</itunes:duration>
     <itunes:title>Episodio 19 · El color como trinchera y la cámara como revólver</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -819,7 +819,7 @@ Ana plantea hoy una analogía tan divertida como certera: llevar la cámara list
   <item>
     <title>Episodio 20 · La luz que resiste al tiempo: de los neones de Hong Kong a la poesía del alma analógica</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-23.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-23.mp3</guid>
     <pubDate>Sun, 23 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Capturing the Invisible City: @filmlifeww on Recording the Lingering Warmth of Hong Kong with the Lomo MC-A
 Este proyecto documental busca preservar la memoria colectiva y la identidad cultural de un Hong Kong en constante desaparición, capturando elementos cotidianos como los icónicos carteles de neón y los andamios de bambú. Utilizando la cámara compacta Lomo MC-A con películas de ISO 400 y 800, el fotógrafo logra un estilo de calle de alto contraste, dinámico y con una gran riqueza tonal en escenas nocturnas. La serie invita a los creadores a mirar con mayor sensibilidad su entorno diario, utilizando la fotografía como una herramienta activa de conservación histórica.
@@ -835,8 +835,8 @@ Esta joya del archivo de Ain't-Bad nos invita a redescubrir la obra del artista 
 
 Travelogue: Fujicolor in Paris on a Nikon L35AF
 Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada escapada invernal a París documentada de la manera más sencilla y espontánea posible. Utilizando una cámara compacta Nikon L35AF y película Fujicolor, el autor captura la atmósfera fría pero romántica de las calles parisinas con una estética directa y cargada de nostalgia analógica. El artículo es una hermosa lección sobre cómo la simplicidad del equipo nos permite conectar de forma más libre y honesta con el entorno que nos rodea.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-23.mp3" length="7276232" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-23.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-23.mp3" length="7276232" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-23.jpg"/>
     <itunes:duration>5:03</itunes:duration>
     <itunes:title>Episodio 20 · La luz que resiste al tiempo: de los neones de Hong Kong a la poesía del alma analógica</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -859,7 +859,7 @@ Rescatado del archivo de EMULSIVE, este diario de viaje narra una inesperada esc
   <item>
     <title>Episodio 21 · El umbral de lo invisible, diarios instantáneos y la memoria del color</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-24.mp3</guid>
     <pubDate>Mon, 24 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Lomography Magazine: Drawing Memories: Inside Émilie Gleason's Analogue Journal
 El proyecto explora la fusión del cómic y la fotografía instantánea analógica para documentar la vida cotidiana y la maternidad en un diario de viaje interactivo.
@@ -898,8 +898,8 @@ Muestra el valor terapéutico del acto fotográfico como refugio emocional para 
 
 Fotonistas (Newsletter de Ana Arbonés)
 ¿Sabías que una de las fotografías más icónicas de la Gran Depresión sufrió un retoque directo en el laboratorio que alteró su composición original? Ana Arbonés plantea una fascinante provocación sobre la delgada línea entre la verdad fotográfica y la edición personal, invitándote a descubrir por qué procesar tus imágenes es esencial para definir tu voz; suscríbete a su Fotoletter en fotonistas.com para descubrir toda la historia.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-24.mp3" length="11229165" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-24.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-24.mp3" length="11229165" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-24.jpg"/>
     <itunes:duration>7:47</itunes:duration>
     <itunes:title>Episodio 21 · El umbral de lo invisible, diarios instantáneos y la memoria del color</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -945,7 +945,7 @@ Fotonistas (Newsletter de Ana Arbonés)
   <item>
     <title>Episodio 22 · Luces en rotación, capas de ilusión y el poder ético de la mirada</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-25.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-25.mp3</guid>
     <pubDate>Tue, 25 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Europe’s Carousels Eternally Whirl in Luca Battaglia’s Nostalgic Photos (Colossal)
 Luca Battaglia explora la nostalgia de los carruseles europeos convirtiendo atracciones urbanas cotidianas en enigmáticas esculturas de luz. Utilizando filtros de densidad neutra (ND256 y ND1000) y largas exposiciones de entre 20 y 30 segundos, el fotógrafo disuelve las formas tangibles en patrones abstractos y estelas luminosas de apariencia futurista. El proyecto invita a reflexionar sobre la memoria infantil, la transformación del espacio público y la capacidad de la fotografía para suspender el tiempo.
@@ -967,8 +967,8 @@ Un viaje invernal por la histórica Ruta 66 captado en solo cinco fotogramas a t
 
 Newsletter de Fotonistas (Ana Arbonés)
 ¿Hasta qué punto el procesado de una fotografía editorial cruza la línea entre la atmósfera artística y la manipulación de la verdad periodística? Ana plantea una provocadora controversia histórica que cambiará para siempre tu forma de mirar las portadas icónicas; suscríbete a su Fotoletter en fotonistas.com para descubrir el secreto.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-25.mp3" length="10905040" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-25.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-25.mp3" length="10905040" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-25.jpg"/>
     <itunes:duration>7:34</itunes:duration>
     <itunes:title>Episodio 22 · Luces en rotación, capas de ilusión y el poder ético de la mirada</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -997,15 +997,15 @@ Newsletter de Fotonistas (Ana Arbonés)
   <item>
     <title>Episodio 23 · El ojo del cazador paciente: de la primera cámara fusil a la mirada del depredador</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-26.mp3</guid>
     <pubDate>Wed, 26 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El panorama fotográfico de hoy viaja desde las calles soleadas de Los Ángeles con los divertidos retratos de perros en coches rescatados por el Ojo de la Fotografía, hasta la profunda resiliencia de los refugiados ucranianos mayores de sesenta años en Bratislava documentada por LensCulture. Recorremos también los tonos analógicos de Lomography en Berlín Este, los ensayos estivales de la revista Buum y la emotiva historia intergeneracional que nos trae la publicación Shoot It With Film.
 
 En el bloque central nos detenemos en el influyente certamen Fotógrafo de Vida Silvestre del Año, seleccionado por el Magazine de arte online Colosal, prestando especial atención a una sobrecogedora imagen de un oso polar tomada desde el punto de vista exacto de una foca bajo el hielo. Conectamos esta mirada contemporánea con el archivo histórico de Kosmo Foto para descubrir la extraordinaria cámara fusil inventada tras la Primera Guerra Mundial por Cherry Kearton, el primer fotógrafo profesional de fauna de la historia.
 
 Como reto creativo del día, Roberto propone romper la perspectiva habitual trabajando el contrapicado extremo o el punto de vista del observado, obligándonos a cambiar la escala de poder en la escena y la relación física entre el fotógrafo y el sujeto.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-26.mp3" length="10638936" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-26.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-26.mp3" length="10638936" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-26.jpg"/>
     <itunes:duration>7:23</itunes:duration>
     <itunes:title>Episodio 23 · El ojo del cazador paciente: de la primera cámara fusil a la mirada del depredador</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1019,15 +1019,15 @@ Como reto creativo del día, Roberto propone romper la perspectiva habitual trab
   <item>
     <title>Episodio 24 · Entre la nitidez del recuerdo y la libertad del desenfoque</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-27.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-27.mp3</guid>
     <pubDate>Thu, 27 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El panorama fotográfico de hoy nos lleva por un fascinante viaje entre la memoria clásica y la experimentación contemporánea. Destacan la gran retrospectiva dedicada a Robert Doisneau en Lyon, la mirada salvaje de los hermanos Grammatico premiados en el concurso de vida silvestre y las reflexiones sobre la fotografía de concierto y las cámaras de bolsillo de la mano de diversos medios especializados.
 
 En nuestro espacio central analizamos la reciente experimentación visual de Emma Cortijo a través del objetivo de autor Joseph Petzval de veintisiete milímetros, observando cómo la luz, el movimiento y la estética analógica dialogan con la narrativa digital. Conectamos este trabajo con una joya del archivo histórico sobre la captura industrial en formato medio de Ernst-Jan de Vries.
 
 Terminamos con un reto de taller práctico que invita a los oyentes a salir a la calle a explorar los límites del fondo desenfocado y el movimiento, junto a una breve reflexión sobre la ética y la poética de la edición en la imagen contemporánea.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-27.mp3" length="10307159" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-27.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-27.mp3" length="10307159" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-27.jpg"/>
     <itunes:duration>7:09</itunes:duration>
     <itunes:title>Episodio 24 · Entre la nitidez del recuerdo y la libertad del desenfoque</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1041,7 +1041,7 @@ Terminamos con un reto de taller práctico que invita a los oyentes a salir a la
   <item>
     <title>Episodio 25 · El eco del obturador entre el césped, la masa y la memoria privada</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-28.mp3</guid>
     <pubDate>Fri, 28 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El eco del obturador entre el césped, la masa y la memoria privada
 
@@ -1052,8 +1052,8 @@ Este viernes recorremos un mapa visual vertiginoso que abarca desde la energía 
 En nuestro tema principal, nos sumergimos en las tripas del fotoperiodismo deportivo a través de un emotivo testimonio en 35mmc, donde su autor relata cómo su pasión nacida en los años setenta con una Minolta SRT 101 lo llevó a cubrir la Copa del Mundo a pie de campo. Conectamos esta experiencia con las joyas de archivo de EMULSIVE y Ain't-Bad para reflexionar sobre el uso de la fotografía analógica como ancla emocional.
 
 Para cerrar el episodio, planteamos un reto práctico de taller enfocado en capturar la escala multitudinaria y la intimidad en eventos públicos, invitando a la comunidad a buscar las historias humanas que habitan en los márgenes de la gran escena.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-28.mp3" length="9247841" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-28.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-28.mp3" length="9247841" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-28.jpg"/>
     <itunes:duration>6:25</itunes:duration>
     <itunes:title>Episodio 25 · El eco del obturador entre el césped, la masa y la memoria privada</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1071,7 +1071,7 @@ Para cerrar el episodio, planteamos un reto práctico de taller enfocado en capt
   <item>
     <title>Episodio 26 · La arquitectura del encierro, escenarios nocturnos y la memoria de las olas</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-29.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-29.mp3</guid>
     <pubDate>Sat, 29 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[La arquitectura del encierro, escenarios nocturnos y la memoria de las olas
 ---
@@ -1080,8 +1080,8 @@ En la edición de hoy recorremos un panorama editorial cargado de experimentaci�
 En el bloque central nos adentramos en el sobrecogedor proyecto de Kristina Rozhkova publicado en Huck Magazine, titulado Sensación visceral. A través de sus imágenes, la autora reflexiona sobre su detención en Rusia durante el año 2024 y las opresivas dinámicas de poder. Conectamos este trabajo con una joya del archivo de Ain't-Bad centrada en el artista Brad Kahlhamer y sus búsquedas sobre las identidades atrapadas en sistemas culturales complejos.
 
 Finalizamos con un desafío práctico diseñado para llevar la narrativa del confinamiento y el límite espacial a vuestra propia práctica fotográfica diaria, explorando encuadres verticales, sombras bloqueantes y barreras físicas en el entorno urbano o doméstico.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-29.mp3" length="9274983" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-29.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-29.mp3" length="9274983" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-29.jpg"/>
     <itunes:duration>6:26</itunes:duration>
     <itunes:title>Episodio 26 · La arquitectura del encierro, escenarios nocturnos y la memoria de las olas</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1097,7 +1097,7 @@ Finalizamos con un desafío práctico diseñado para llevar la narrativa del con
   <item>
     <title>Episodio 27 · Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-30.mp3</guid>
     <pubDate>Sun, 30 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana
 ---
@@ -1109,8 +1109,8 @@ En nuestro análisis central nos detenemos en el proyecto de Nur Aishah Kenton, 
 
 Finalizamos con una propuesta práctica pensada para el taller de hoy. El ejercicio invita a construir una secuencia de tres imágenes basada en la cercanía afectiva y en la observación pausada, imponiendo restricciones formales que permitan transformar un detalle cotidiano en una declaración poética.
 ---]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-30.mp3" length="8956424" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-30.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-30.mp3" length="8956424" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-30.jpg"/>
     <itunes:duration>6:13</itunes:duration>
     <itunes:title>Episodio 27 · Entre el afecto íntimo y la poesía del carrete: historias bordadas en la luz cotidiana</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1129,15 +1129,15 @@ Finalizamos con una propuesta práctica pensada para el taller de hoy. El ejerci
   <item>
     <title>Episodio 28 · Horizontes expandidos y la geometría del tiempo: el paisaje reconfigurado</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-31.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-08-31.mp3</guid>
     <pubDate>Mon, 31 Aug 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El paisaje del día se viste de luto y de nuevas perspectivas en nuestro recorrido diario por la fotografía contemporánea. Hoy despedimos a dos grandes referentes que han dejado una huella imborrable en la cultura visual, mientras nos adentramos en propuestas que desafían las fronteras físicas de la mirada analógica. Desde los homenajes al gran maestro del color Franco Fontana y la triste partida del director de Visa pour l'image Jean-François Leroy, hasta las reflexiones íntimas de Camille Farrah Lenain y las denuncias visuales de Sasha Velichko, la jornada se presenta cargada de profundidad y memoria.
 
 Analizamos en detalle la propuesta publicada en 35mmc sobre cómo repensar el formato panorámico sin depender exclusivamente de grandes angulares, alterando las proporciones del encuadre y la escala con lentes de focal más larga. Conectamos este enfoque con una joya del archivo de Emulsive centrada en las solargrafías de faros de la costa este estadounidense, un ejercicio de paciencia extrema que dialoga directamente con la modificación del tiempo y la percepción del espacio.
 
 Como cada jornada, cerramos con una propuesta práctica pensada para el taller personal de cada fotógrafo, invitando a salir a la calle para poner a prueba los límites del encuadre, alterar la relación de aspecto habitual y observar cómo la geometría y el tiempo transforman la realidad en poesía visual.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-08-31.mp3" length="12394989" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-08-31.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-08-31.mp3" length="12394989" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-08-31.jpg"/>
     <itunes:duration>8:36</itunes:duration>
     <itunes:title>Episodio 28 · Horizontes expandidos y la geometría del tiempo: el paisaje reconfigurado</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1151,7 +1151,7 @@ Como cada jornada, cerramos con una propuesta práctica pensada para el taller p
   <item>
     <title>Episodio 29 · El rastro de la memoria y la fuerza del Norte analógico</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-01.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-01.mp3</guid>
     <pubDate>Tue, 01 Sep 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El rastro de la memoria y la fuerza del Norte analógico
 ---SUMMARY---
@@ -1160,8 +1160,8 @@ El panorama fotográfico de hoy amanece marcado por un sentido tributo en el fot
 En nuestro tema central nos adentramos en el archivo del legendario Chris Killip a través del nuevo libro publicado sobre su obra en el norte de Inglaterra, editado por Mark Holborn cuatro décadas después del emblemático trabajo en la costa británica. Conectamos esta poderosa mirada documental con una joya de archivo de la comunidad analógica, donde la paciencia extrema de las solarigrafías registradas en faros de la costa este norteamericana rescata la misma noción de constancia y resistencia ante el paso del tiempo.
 
 Para el reto creativo de la jornada, te invitamos a reflexionar sobre la ausencia y la huella inspirándonos en el trabajo conceptual sobre sucesos acabados, saliendo a fotografiar escenarios cotidianos justo después de que la acción principal haya terminado, buscando los sutiles ecos que permanecen en el espacio.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-01.mp3" length="12116944" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-01.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-01.mp3" length="12116944" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-01.jpg"/>
     <itunes:duration>8:24</itunes:duration>
     <itunes:title>Episodio 29 · El rastro de la memoria y la fuerza del Norte analógico</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1177,15 +1177,15 @@ Para el reto creativo de la jornada, te invitamos a reflexionar sobre la ausenci
   <item>
     <title>Episodio 30 · El engaño de las apariencias y el arte del tiempo lento</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-02.mp3</guid>
     <pubDate>Wed, 02 Sep 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[En la edición de hoy repasamos una intensa jornada fotográfica marcada por grandes certámenes internacionales, libros sobre el crecimiento familiar y diarios analógicos de calle. Nuestro foco principal se detiene en la figura del maestro japonés Hiroshi Sugimoto y su escepticismo radical ante las apariencias visuales, conectando su filosofía con el valor del tiempo en el proceso fotográfico.
 
 Analizamos el perfil publicado por Aperture sobre Sugimoto y vinculamos su búsqueda estética con el rescate histórico de Emulsive sobre la alquimia del revelador 510 Pyro, un diálogo entre el pensamiento conceptual y la permanencia del negativo.
 
 Para el taller práctico proponemos un reto de observación profunda inspirado en la luz extrema y la quietud, invitando a los oyentes a medir para las altas luces en espacios de sombra profunda para hallar orden dentro del caos cotidiano.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-02.mp3" length="11619864" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-02.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-02.mp3" length="11619864" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-02.jpg"/>
     <itunes:duration>8:04</itunes:duration>
     <itunes:title>Episodio 30 · El engaño de las apariencias y el arte del tiempo lento</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1199,15 +1199,15 @@ Para el taller práctico proponemos un reto de observación profunda inspirado e
   <item>
     <title>Episodio 31 · Donde termina lo visible: retratos de lo invisible y grietas del tiempo</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-03.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-03.mp3</guid>
     <pubDate>Thu, 03 Sep 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[El episodio de hoy aborda la rica actualidad de la cultura visual contemporánea, comenzando por el regreso del festival La Nuu a Rubí para explorar el retrato y la identidad. Recorremos además los proyectos documentales de Ron Tarver sobre los cowboys negros en los Estados Unidos, la mirada chicana y latina de Los Ángeles en el museo J. Paul Getty, y las publicaciones recientes de MACK Books junto a las reflexiones sobre la fotografía de calle en el ámbito analógico.
 
 En el bloque central, Beatriz desentraña la obra y filosofía de Sandrine Arons a través del cuestionario publicado en el Ojo de la Fotografía, el O-D-L-P. Analizamos cómo su propuesta trasciende la mera documentación para poner a prueba la realidad y explorar aquello que la imagen no muestra. Conectamos este enfoque con el linaje histórico del revelado químico, rescatando la experiencia de Chris Chinnock con el revelador Pyro 510 de la memoria de EMULSIVE.
 
 Por último, Nicolás toma el testigo desde el taller para proponernos un desafío práctico basado en la sugerencia y la presencia imprecisa. El reto creativo de la jornada nos invita a salir a la calle para fotografiar el entorno trabajando con sombras y elementos indirectos, buscando que lo invisible sea el verdadero protagonista de la toma.]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-03.mp3" length="9403415" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-03.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-03.mp3" length="9403415" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-03.jpg"/>
     <itunes:duration>6:31</itunes:duration>
     <itunes:title>Episodio 31 · Donde termina lo visible: retratos de lo invisible y grietas del tiempo</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
@@ -1221,11 +1221,11 @@ Por último, Nicolás toma el testigo desde el taller para proponernos un desaf�
   <item>
     <title>Episodio 32 · La memoria revelada: entre la luz de los orígenes y el ciclo de la vida</title>
     <link>https://puntodevista.click/</link>
-    <guid isPermaLink="true">https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-04.mp3</guid>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-04.mp3</guid>
     <pubDate>Fri, 04 Sep 2026 05:00:00 +0000</pubDate>
     <description><![CDATA[La memoria revelada: entre la luz de los orígenes y el ciclo de la vida]]></description>
-    <enclosure url="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-2026-09-04.mp3" length="9042785" type="audio/mpeg"/>
-    <itunes:image href="https://github.com/v0l0v/puntodevista/releases/download/episodios/podcast-cover-2026-09-04.jpg"/>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-04.mp3" length="9042785" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-04.jpg"/>
     <itunes:duration>6:16</itunes:duration>
     <itunes:title>Episodio 32 · La memoria revelada: entre la luz de los orígenes y el ciclo de la vida</itunes:title>
     <itunes:author>Punto de vista</itunes:author>

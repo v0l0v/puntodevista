@@ -5,7 +5,7 @@ from email.utils import format_datetime
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 SITE = 'https://puntodevista.click'
-RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios'
+PODCAST_URL = f'{SITE}/podcast'
 COVER = f'{SITE}/podcast-cover.jpg'
 META_PATH = os.path.join(DIR, 'podcast_meta.json')
 OUT_PATH = os.path.join(DIR, 'podcast.xml')
@@ -56,9 +56,9 @@ def item_lines(entry, num):
     ptitle = (entry.get('podcast_title') or '').strip()
     title = f'Episodio {num} · {ptitle}' if ptitle else f'Episodio {num} · {fmt_es(date_str)}'
     desc = entry.get('description') or ''
-    ep_cover = f'{RELEASE}/podcast-cover-{date_str}.jpg'
+    ep_cover = f'{PODCAST_URL}/podcast-cover-{date_str}.jpg'
     dur = fmt_duration(entry.get('duration'))
-    url = f'{RELEASE}/podcast-{date_str}.mp3'
+    url = f'{PODCAST_URL}/podcast-{date_str}.mp3'
     size = int(entry.get('size') or 0)
     lines = [
         '  <item>',

@@ -119,7 +119,15 @@ def main():
     subtitle = sys.argv[3] if len(sys.argv) > 3 else None
     create_cover(day_image_path, date_str, out_path, subtitle)
 
-    # Copiar también a assets/covers/ para disponibilidad estática y desarrollo local
+    # Copiar también a podcast/ y assets/covers/ para disponibilidad estática y feeds
+    podcast_dir = os.path.join(DIR, 'podcast')
+    os.makedirs(podcast_dir, exist_ok=True)
+    podcast_cover_path = os.path.join(podcast_dir, out_name)
+    try:
+        shutil.copy2(out_path, podcast_cover_path)
+    except Exception:
+        pass
+
     assets_covers_dir = os.path.join(DIR, 'assets', 'covers')
     os.makedirs(assets_covers_dir, exist_ok=True)
     assets_cover_path = os.path.join(assets_covers_dir, out_name)

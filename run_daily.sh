@@ -33,32 +33,9 @@ echo "[2/4] Actualizando cachés de artículos..."
 echo "[3/4] Generando podcast y enviando a Telegram..."
 ./venv/bin/python3 daily_podcast.py
 
-# 5. Publicar en GitHub Releases y regenerar feed RSS
-echo "[4/4] Publicando Release y actualizando Feed RSS..."
-DATE=$(date +%F)
-MP3="podcast/podcast-${DATE}.mp3"
-COVER="podcast-cover-${DATE}.jpg"
-
-if [ -f "$MP3" ]; then
-  gh release upload episodios "$MP3" --clobber 2>/dev/null || echo "Aviso: Release upload ignorado si gh no está autenticado"
-fi
-
-if [ -f "$COVER" ]; then
-  gh release upload episodios "$COVER" --clobber 2>/dev/null || true
-elif [ -f "podcast-cover-${DATE}.png" ]; then
-  gh release upload episodios "podcast-cover-${DATE}.png" --clobber 2>/dev/null || true
-fi
-
+# 5. Regenerar feed RSS (servido directamente por el VPS)
+echo "[4/4] Actualizando Feed RSS..."
 ./venv/bin/python3 generate_podcast_feed.py
 
-# 6. Sincronizar cambios a GitHub
-git add resumenes podcast_meta.json podcast.xml *.json 2>/dev/null || true
-git commit -m "chore: daily digest & podcast $(date +%F) [vps]" || echo "Nada que commitear"
-
-for i in 1 2 3; do
-  git pull --rebase origin main || true
-  git push origin main && break || sleep 5
-done
-
 FECHA_FIN=$(date '+%Y-%m-%d %H:%M:%S')
-echo "[$FECHA_FIN] Proceso diario completado con éxito."
+echo "[$FECHA_FIN] Proceso diario completado con éxito 100% autónomo en el VPS."
