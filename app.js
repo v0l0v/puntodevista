@@ -1521,11 +1521,11 @@ function renderBoomArticle(body, entry, data) {
   body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
 }
 
-function renderTpjArticle(body, entry) {
-  const content = cleanContent(entry.content || '');
-  const images = extractImages(content);
-  const socialLinks = extractSocialLinks(content);
-  const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+function renderTpjArticle(body, entry, data) {
+  const content = (data && data.content) ? data.content : cleanContent(entry.content || '');
+  const images = (data && data.images && data.images.length) ? data.images : extractImages(content);
+  const socialLinks = (data && data.credits && data.credits.length) ? data.credits.map(c => ({ url: c.url, text: c.name, platform: 'instagram' })) : extractSocialLinks(content);
+  const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + (l.platform || 'link') + '">' + l.text + '</a>').join('') + '</div>' : '';
   body.innerHTML = `
     <div class="modal-tools">
       ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
@@ -1547,7 +1547,7 @@ function renderTpjArticle(body, entry) {
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || i.alt || '' })));
 }
 
 function renderSwanArticle(body, entry, data) {
@@ -1803,6 +1803,24 @@ async function openModal(cardOrEntry, directSource) {
 
   // The Photographic Journal
   if (source === 'tpj') {
+    let data = null;
+    try {
+      const resp = await fetch(`/api/tpj/article?url=${encodeURIComponent(entry.link)}`);
+      const d = await resp.json();
+      if (d.status === 'ok') data = d;
+    } catch {}
+    if (!data) {
+      try {
+        const resp = await fetch('tpj_articles.json');
+        const cache = await resp.json();
+        const cached = (cache.articles || cache)[entry.link];
+        if (cached && cached.status === 'ok') data = cached;
+      } catch {}
+    }
+    if (data) {
+      renderTpjArticle(body, entry, data);
+      return;
+    }
     renderTpjArticle(body, entry);
     return;
   }

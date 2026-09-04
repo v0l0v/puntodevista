@@ -666,16 +666,26 @@ def scrape_magnum_article(url):
     if url in MAGNUM_ARTICLE_CACHE and now - MAGNUM_ARTICLE_CACHE[url]['time'] < 300:
         return MAGNUM_ARTICLE_CACHE[url]['data']
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
         with urllib.request.urlopen(req, timeout=15) as resp:
             html_data = resp.read().decode('utf-8', errors='ignore')
     except Exception as e:
         print('Error fetching magnum article:', e)
         return None
-        
-    rte_blocks = re.findall(r'<div class="rte">(.*?)</div>', html_data, re.DOTALL)
+
+    # Título, lead e intro
+    title_m = re.search(r'<h1[^>]*>(.*?)</h1>', html_data, re.DOTALL)
+    lead_m = re.search(r'class=[\"\'](?:b-story-intro__lead|story-subtitle|story-lead)[\"\'][^>]*>(.*?)</div>', html_data, re.DOTALL)
+    
     content_parts = []
-    for block in rte_blocks:
+    if lead_m:
+        lead_txt = html.unescape(re.sub(r'<[^>]+>', '', lead_m.group(1))).strip()
+        if lead_txt:
+            content_parts.append(f"**{lead_txt}**")
+
+    # Extraer bloques de texto enriquecido (RTE) y citas
+    blocks_text = re.findall(r'<(?:div class=[\"\']rte[\"\']|blockquote[^>]*)>(.*?)</(?:div|blockquote)>', html_data, re.DOTALL)
+    for block in blocks_text:
         text = block.strip()
         text = re.sub(r'</?p>', '\n\n', text)
         text = re.sub(r'</?strong>', '**', text)
@@ -683,35 +693,103 @@ def scrape_magnum_article(url):
         text = re.sub(r'<a href="([^"]+)"[^>]*>(.*?)</a>', r'[\2](\1)', text)
         text = re.sub(r'<[^>]+>', '', text)
         text = html.unescape(text)
-        content_parts.append(text.strip())
-        
+        if text.strip():
+            content_parts.append(text.strip())
+
     content_md = '\n\n'.join([p for p in content_parts if p])
     content = md_to_html(content_md)
-    
+
+    # Imágenes con pies de foto descriptivos y copyright completos de Magnum
     images = []
-    blocks = html_data.split('class="story-big-image')
-    for b in blocks[1:]:
-        img_match = re.search(r'src="([^"]+)"', b)
+    blocks_img = re.split(r'class=[\"\'](?:story-big-image|story-grid-image|story-image)', html_data)
+    for b in blocks_img[1:]:
+        img_match = re.search(r'src=[\"\']([^\"\']+)[\"\']', b)
         if img_match:
             img_url = img_match.group(1)
-            cap_match = re.search(r'class="b-caption__text"[^>]*>(.*?)</div>', b, re.DOTALL)
+            cap_match = re.search(r'class=[\"\']b-caption__text[\"\'][^>]*>(.*?)</div>', b, re.DOTALL)
+            cred_match = re.search(r'class=[\"\']b-caption__credit[\"\'][^>]*>(.*?)</span>', b, re.DOTALL)
             caption = ''
             if cap_match:
-                caption = re.sub(r'<[^>]+>', '', cap_match.group(1))
-                caption = html.unescape(caption).strip()
-            images.append({'url': img_url, 'alt': caption})
-            
+                caption = html.unescape(re.sub(r'<[^>]+>', '', cap_match.group(1))).strip()
+            if cred_match:
+                credit = html.unescape(re.sub(r'<[^>]+>', '', cred_match.group(1))).strip()
+                caption = f"{caption} ({credit})" if caption and credit else (caption or credit)
+            images.append({'url': img_url, 'alt': caption, 'caption': caption})
+
     seen_urls = set()
     unique_images = []
     for img in images:
         if img['url'] not in seen_urls:
             seen_urls.add(img['url'])
             unique_images.append(img)
-            
+
     thumbnail = unique_images[0]['url'] if unique_images else ''
     data = {'status': 'ok', 'content': content, 'images': unique_images, 'credits': [], 'thumbnail': thumbnail}
     MAGNUM_ARTICLE_CACHE[url] = {'data': data, 'time': now}
     return data
+
+
+TPJ_ARTICLE_CACHE = {}
+
+
+def scrape_tpj_article(url):
+    now = time.time()
+    if url in TPJ_ARTICLE_CACHE and now - TPJ_ARTICLE_CACHE[url]['time'] < 300:
+        return TPJ_ARTICLE_CACHE[url]['data']
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html_page = resp.read().decode('utf-8', errors='ignore')
+
+        cover_m = re.search(r'class=[\"\']cover[\"\'][^>]*style=[\"\'][^\"\']*url\((https?[^)]+)\)', html_page)
+        cover_img = cover_m.group(1) if cover_m else ''
+
+        by_m = re.search(r'<ul class=[\"\']staff[\"\']>\s*<li>\s*(?:by\s+)?(.*?)</li>', html_page, re.DOTALL)
+        author = html.unescape(re.sub(r'<[^>]+>', '', by_m.group(1))).strip() if by_m else ''
+
+        sec_m = re.search(r'<section class=[\"\'](?:essay|interview|feature)[^\"\']*[\"\']>(.*?)(?:<div class=[\"\']footer|<footer)', html_page, re.DOTALL)
+        sec_html = sec_m.group(1) if sec_m else html_page
+
+        images = []
+        seen = set()
+        if cover_img:
+            seen.add(cover_img)
+            images.append({'url': cover_img, 'alt': 'Cover', 'caption': 'Cover'})
+
+        for im in re.finditer(r'<img[^>]+src=[\"\'](https?://thephotographicjournal\.com/wp-content/uploads/[^\"\']+)[\"\']', sec_html):
+            u = im.group(1)
+            clean_u = re.sub(r'-\d+x\d+(\.[a-zA-Z]+)$', r'\1', u)
+            if clean_u not in seen:
+                seen.add(clean_u)
+                alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im.group(0))
+                images.append({'url': clean_u, 'alt': alt_m.group(1) if alt_m else '', 'caption': ''})
+
+        credits = []
+        if author:
+            credits.append({'name': author, 'url': url})
+        for sm in re.finditer(r'<a[^>]+href=[\"\'](https?://(?:www\.)?instagram\.com/[^\"\']+)[\"\'][^>]*>(.*?)</a>', sec_html, re.I):
+            credits.append({'name': re.sub(r'<[^>]+>', '', sm.group(2)).strip(), 'url': sm.group(1)})
+
+        clean_html = re.sub(r'<script[^>]*>.*?</script>', '', sec_html, flags=re.DOTALL | re.I)
+        clean_html = re.sub(r'<style[^>]*>.*?</style>', '', clean_html, flags=re.DOTALL | re.I)
+        clean_text = re.sub(r'<[^>]+>', ' ', clean_html)
+        clean_text = html.unescape(re.sub(r'\s+', ' ', clean_text).strip())
+
+        thumbnail = images[0]['url'] if images else ''
+        data = {
+            'status': 'ok',
+            'content': clean_html,
+            'clean_text': clean_text,
+            'images': images,
+            'credits': credits,
+            'thumbnail': thumbnail,
+            'photographer': author
+        }
+        TPJ_ARTICLE_CACHE[url] = {'data': data, 'time': now}
+        return data
+    except Exception as e:
+        print(f'Error scraping TPJ {url}: {e}')
+        return None
 
 
 SWAN_ARTICLE_CACHE = {}
@@ -741,11 +819,8 @@ def scrape_swan_article(url):
     if not md:
         return None
 
-    m = re.search(r'^#{1,6}\s+', md, re.MULTILINE)
-    content_md = md[m.start():] if m else md
-    content_md = re.sub(r'^#{1,6}[^\n]*\n?', '', content_md, count=1)
-    content_md = re.sub(r'^BY\s+\[[^\]]*\]\([^)]*\)\n?', '', content_md, flags=re.MULTILINE)
-
+    idx = md.find('### Related Content')
+    content_md = md[:idx] if idx != -1 else md
     cut = len(content_md)
     for pat in (
         r'^Subscribe to our',
@@ -773,7 +848,7 @@ def scrape_swan_article(url):
         if img_url.startswith('<') or img_url in seen_urls:
             continue
         seen_urls.add(img_url)
-        images.append({'url': img_url, 'alt': im.group(1)})
+        images.append({'url': img_url, 'alt': im.group(1), 'caption': im.group(1)})
 
     data = {'status': 'ok', 'content': md_to_html(content_md), 'images': images,
             'credits': [], 'thumbnail': swan_og_image(url)}
@@ -789,26 +864,71 @@ ARTICLE_GENERIC_CACHE = {}
 def extract_html_article_payload(html_page, url, source_id=''):
     content_html = ''
     images = []
+    seen_imgs = set()
     
     if source_id == '35mmc' or '35mmc.com' in url:
         m = re.search(r'<div class=[\"\']text-content[\"\']>(.*?)(?:<div class=[\"\']author-details|<div class=[\"\']post-closer|<footer)', html_page, re.DOTALL)
         if m:
             content_html = m.group(1)
-        m_head = re.search(r'<img[^>]+class=[\"\'][^\"\']*main-post-image[^\"\']*[\"\'][^>]+src=[\"\']([^\"\']+)[\"\']', html_page)
-        if m_head:
-            images.append({'url': m_head.group(1), 'alt': 'Main Post Image'})
-    elif source_id == 'emulsive' or 'emulsive.org' in url:
-        m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)</div>\s*<!-- \.?entry-content', html_page, re.DOTALL)
-        if not m:
-            m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)(?:<footer|<div id=[\"\']comments[\"\'])', html_page, re.DOTALL)
-        if m:
-            content_html = m.group(1)
+        
+        # Extraer figuras con máxima resolución de srcset y sus figcaptions
+        for f in re.finditer(r'<figure[^>]*>(.*?)</figure>', html_page, re.DOTALL):
+            f_html = f.group(1)
+            srcset_m = re.search(r'srcset=[\"\']([^\"\']+)[\"\']', f_html)
+            src_m = re.search(r'src=[\"\']([^\"\']+)[\"\']', f_html)
+            cap_m = re.search(r'<figcaption[^>]*>(.*?)</figcaption>', f_html, re.DOTALL)
+            
+            img_u = None
+            if srcset_m:
+                img_u = srcset_m.group(1).split(',')[-1].strip().split(' ')[0]
+            elif src_m:
+                img_u = src_m.group(1)
+            if img_u:
+                img_u = re.sub(r'-\d+x\d+(\.[a-zA-Z]+)$', r'\1', img_u)
+                if img_u not in seen_imgs:
+                    seen_imgs.add(img_u)
+                    caption = html.unescape(re.sub(r'<[^>]+>', '', cap_m.group(1))).strip() if cap_m else ''
+                    images.append({'url': img_u, 'alt': caption, 'caption': caption})
+
     elif source_id == 'huck' or 'huckmag.com' in url:
         m = re.search(r'<div class=[\"\'][^\"\']*(?:article__body|article-body|story-body)[^\"\']*[\"\']>(.*?)(?:<aside|<footer|<div class=[\"\']share)', html_page, re.DOTALL)
         if m:
             content_html = m.group(1)
+        
+        # Standfirst / subtítulo
+        lead_m = re.search(r'class=[\"\'][^\"\']*standfirst[^\"\']*[\"\'][^>]*>(.*?)</div>', html_page, re.DOTALL)
+        if lead_m:
+            lead_t = html.unescape(re.sub(r'<[^>]+>', '', lead_m.group(1))).strip()
+            if lead_t:
+                content_html = f"<p><strong>{lead_t}</strong></p>\n" + content_html
+
+        # Extraer todas las fotos en alta resolución de CDN Huck
+        for im_h in re.finditer(r'<img[^>]+src=[\"\'](https://tco-london\.transforms\.svdcdn\.com/production/tco/images/[^\"\']+)[\"\']', html_page):
+            raw_u = im_h.group(1).replace('&amp;', '&')
+            clean_u = re.sub(r'\?.*', '?w=1800&q=85&auto=format', raw_u)
+            if clean_u not in seen_imgs:
+                seen_imgs.add(clean_u)
+                alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im_h.group(0))
+                images.append({'url': clean_u, 'alt': alt_m.group(1) if alt_m else '', 'caption': ''})
+
     elif source_id == 'phroom' or 'phroom' in url:
         m = re.search(r'<div class=[\"\'][^\"\']*(?:entry-content|post-content)[^\"\']*[\"\']>(.*?)(?:<footer|<div class=[\"\']sharedaddy)', html_page, re.DOTALL)
+        if m:
+            content_html = m.group(1)
+        
+        # Extraer todas las imágenes no comprimidas
+        for im_p in re.finditer(r'<img[^>]+(?:data-orig-file|data-large-file|src)=[\"\'](https?://[^\"\']+\.(?:jpg|jpeg|png|webp))[\"\']', html_page):
+            u_p = im_p.group(1)
+            if not any(ign in u_p.lower() for ign in ['logo', 'avatar', 'banner', 'icon']):
+                clean_p = re.sub(r'-\d+x\d+(\.[a-zA-Z]+)$', r'\1', u_p)
+                if clean_p not in seen_imgs:
+                    seen_imgs.add(clean_p)
+                    images.append({'url': clean_p, 'alt': '', 'caption': ''})
+
+    elif source_id == 'emulsive' or 'emulsive.org' in url:
+        m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)</div>\s*<!-- \.?entry-content', html_page, re.DOTALL)
+        if not m:
+            m = re.search(r'<div class=[\"\'][^\"\']*entry-content[^\"\']*[\"\']>(.*?)(?:<footer|<div id=[\"\']comments[\"\'])', html_page, re.DOTALL)
         if m:
             content_html = m.group(1)
 
@@ -820,16 +940,16 @@ def extract_html_article_payload(html_page, url, source_id=''):
             m_main = re.search(r'<main[^>]*>(.*?)</main>', html_page, re.DOTALL | re.IGNORECASE)
             content_html = m_main.group(1) if m_main else html_page
 
-    # Extraer imágenes
-    seen_imgs = {img['url'] for img in images}
-    for im in re.finditer(r'<img[^>]+src=[\"\'](https?://[^\"\']+\.(?:jpg|jpeg|png|webp|avif)(?:\?[^\"\']*)?)[\"\']', content_html, re.I):
-        u = im.group(1)
-        if not any(ign in u.lower() for ign in ['avatar', 'icon', 'logo', 'badge', 'emoji', 'pixel', 'advert', 'banner', 'button', 'track']):
-            if u not in seen_imgs:
-                seen_imgs.add(u)
-                alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im.group(0))
-                alt = alt_m.group(1) if alt_m else ''
-                images.append({'url': u, 'alt': alt})
+    # Extraer imágenes genéricas restantes si no se encontraron antes
+    if not images:
+        for im in re.finditer(r'<img[^>]+src=[\"\'](https?://[^\"\']+\.(?:jpg|jpeg|png|webp|avif)(?:\?[^\"\']*)?)[\"\']', content_html, re.I):
+            u = im.group(1)
+            if not any(ign in u.lower() for ign in ['avatar', 'icon', 'logo', 'badge', 'emoji', 'pixel', 'advert', 'banner', 'button', 'track']):
+                if u not in seen_imgs:
+                    seen_imgs.add(u)
+                    alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im.group(0))
+                    alt = alt_m.group(1) if alt_m else ''
+                    images.append({'url': u, 'alt': alt, 'caption': alt})
 
     # Limpieza de scripts y estilos
     clean_html = re.sub(r'<script[^>]*>.*?</script>', '', content_html, flags=re.DOTALL | re.I)
@@ -924,6 +1044,8 @@ def scrape_generic_article(url, source_id=''):
     if url in ARTICLE_GENERIC_CACHE and now - ARTICLE_GENERIC_CACHE[url]['time'] < 300:
         return ARTICLE_GENERIC_CACHE[url]['data']
 
+    if source_id == 'tpj' or 'thephotographicjournal.com' in url:
+        return scrape_tpj_article(url)
     if source_id == '35mmc' or '35mmc.com' in url:
         return scrape_35mmc_article(url)
     if source_id == 'emulsive' or 'emulsive.org' in url:
@@ -1077,6 +1199,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except Exception as e:
                 data = json.dumps({'status': 'error', 'message': str(e)})
             self.wfile.write(data.encode())
+        elif parsed.path == '/api/tpj/article':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            qs = urllib.parse.parse_qs(parsed.query)
+            url = qs.get('url', [None])[0]
+            if not url:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'missing url'}).encode())
+                return
+            data = scrape_tpj_article(url)
+            if data is None:
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'error scraping article'}).encode())
+            else:
+                self.wfile.write(json.dumps(data).encode())
         elif parsed.path == '/api/swan/article':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

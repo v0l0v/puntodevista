@@ -14,7 +14,7 @@ from server import (firecrawl_scrape, parse_magazine_list, scrape_lomography_art
                     scrape_booooooom_article, scrape_swan_article, scrape_lensculture_article,
                     scrape_lensculture, scrape_odlp_article, scrape_odlp, scrape_magnum_article,
                     scrape_magnum, scrape_35mmc_article, scrape_emulsive_article,
-                    scrape_huck_article, scrape_phroom_article, scrape_generic_article)
+                    scrape_huck_article, scrape_phroom_article, scrape_tpj_article, scrape_generic_article)
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -435,6 +435,10 @@ def update_phroom_articles(items):
     return update_article_cache('phroom_articles.json', items, scrape_phroom_article)
 
 
+def update_tpj_articles(items):
+    return update_article_cache('tpj_articles.json', items, scrape_tpj_article)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Genera datos estáticos (feeds + caches de artículos).')
     parser.add_argument('--keep-lomo', action='store_true',
@@ -559,6 +563,20 @@ def main():
         data = magnum_cache.get(item.get('link'))
         if isinstance(data, dict) and data.get('thumbnail'):
             item['thumbnail'] = data['thumbnail']
+
+    print('  9d2. The Photographic Journal articles (cache)...')
+    purge_bad_articles('tpj_articles.json')
+    new_tpj_articles = update_tpj_articles(tpj[:10])
+    tpj_cache = load_article_cache('tpj_articles.json')
+    print(f'     {new_tpj_articles} nuevos | {len(tpj_cache)} en cache')
+
+    for item in tpj:
+        data = tpj_cache.get(item.get('link'))
+        if isinstance(data, dict):
+            if data.get('thumbnail'):
+                item['thumbnail'] = data['thumbnail']
+            if data.get('photographer'):
+                item['photographer'] = data['photographer']
 
     source_items = {
         'colossal': colossal,
