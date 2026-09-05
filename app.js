@@ -45,8 +45,7 @@ let SOURCE_LABELS = {
   '1854': 'British Journal of Photography',
   clavoardiendo: 'Clavoardiendo Magazine'
 };
-const SOURCES_KEY = 'feedfoto.sources';
-const PODCAST_RELEASE = 'https://github.com/v0l0v/puntodevista/releases/download/episodios';
+const PODCAST_URL = 'podcast';
 const PODCAST_COVER = 'podcast-cover.jpg';
 
 let __allChecked = true;
@@ -608,7 +607,7 @@ async function fetchPodcastMeta() {
         duration: e.duration,
         images: e.images || [],
         image: e.image || PODCAST_COVER,
-        link: `${PODCAST_RELEASE}/podcast-${e.date}.mp3`,
+        link: `${PODCAST_URL}/podcast-${e.date}.mp3`,
         is_podcast_entry: true
       };
     });
@@ -640,7 +639,7 @@ function setPodcastImage(imgEl, entry) {
     this.onerror = null;
   };
 
-  const releaseCover = `${PODCAST_RELEASE}/podcast-cover-${date}.jpg`;
+  const releaseCover = `${PODCAST_URL}/podcast-cover-${date}.jpg`;
   imgEl.src = releaseCover;
 }
 
