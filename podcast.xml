@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sat, 05 Sep 2026 07:03:05 +0000</lastBuildDate>
+<lastBuildDate>Sat, 05 Sep 2026 11:23:59 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1230,6 +1230,20 @@ Por último, Nicolás toma el testigo desde el taller para proponernos un desaf�
     <itunes:title>Episodio 32 · La memoria revelada: entre la luz de los orígenes y el ciclo de la vida</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[La memoria revelada: entre la luz de los orígenes y el ciclo de la vida]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 33 · Entre el aula y el archivo: la lección viva de la imagen</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-05.mp3</guid>
+    <pubDate>Sat, 05 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Entre el aula y el archivo: la lección viva de la imagen]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-05.mp3" length="9678759" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-05.jpg"/>
+    <itunes:duration>6:43</itunes:duration>
+    <itunes:title>Episodio 33 · Entre el aula y el archivo: la lección viva de la imagen</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Entre el aula y el archivo: la lección viva de la imagen]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
