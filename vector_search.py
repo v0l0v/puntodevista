@@ -259,7 +259,7 @@ def find_visual_lineage(primary_article_id, limit=3, db_path=None):
         src = cur_art['source'] if cur_art else ''
 
         # Buscar vecinos más cercanos con k suficiente para filtrar la misma fuente y el mismo artículo
-        k_val = max(25, limit * 6)
+        k_val = max(150, limit * 25)
         sql = """
         SELECT
             a.id,
