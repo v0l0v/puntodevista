@@ -12,6 +12,8 @@ from update_static_data import (fetch_colossal, fetch_lomography, fetch_booooooo
                                 fetch_odlp, update_odlp_articles, fetch_magnum, update_magnum_articles,
                                 fetch_shootitwithfilm)
 
+from data_paths import get_data_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -19,7 +21,8 @@ def save_payload(filename, items, all_entries):
     payload = {'items': items, 'count': len(items), 'updated': date.today().isoformat()}
     if filename == 'feeds.json':
         payload = {'items': all_entries, 'count': len(all_entries), 'updated': date.today().isoformat()}
-    with open(os.path.join(DIR, filename), 'w') as f:
+    dest_path = get_data_path(filename)
+    with open(dest_path, 'w') as f:
         json.dump(payload, f, ensure_ascii=False)
     print(f'  Guardado {filename} ({len(items)})')
 
@@ -178,8 +181,7 @@ def main():
     print('  7. Subiendo a GitHub...')
     try:
         subprocess.run(
-            ['git', 'add', 'lomography.json', 'booooooom.json', 'tpj.json', 'swan.json', 'huck.json', 'lensculture.json', 'odlp.json', 'magnum.json', 'shootitwithfilm.json', 'feeds.json',
-             'lomography_articles.json', 'booooooom_articles.json', 'swan_articles.json', 'lensculture_articles.json', 'odlp_articles.json', 'magnum_articles.json', 'translations_cache.json'],
+            ['git', 'add', 'data/'],
             capture_output=True, text=True, cwd=DIR
         )
         res = subprocess.run(

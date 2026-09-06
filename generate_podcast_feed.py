@@ -3,11 +3,13 @@ import os
 from datetime import datetime, timezone
 from email.utils import format_datetime
 
+from data_paths import get_data_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 SITE = 'https://puntodevista.click'
 PODCAST_URL = f'{SITE}/podcast'
 COVER = f'{SITE}/podcast-cover.jpg'
-META_PATH = os.path.join(DIR, 'podcast_meta.json')
+META_PATH = get_data_path('podcast_meta.json')
 OUT_PATH = os.path.join(DIR, 'podcast.xml')
 
 MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',

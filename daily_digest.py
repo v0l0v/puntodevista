@@ -14,6 +14,7 @@ from update_static_data import (fetch_booooooom, fetch_tpj, fetch_swan, fetch_hu
 from fetch_email_newsletter import fetch_email_newsletters
 
 from sources_config import get_active_sources, get_source_label
+from data_paths import get_data_path
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
@@ -128,7 +129,7 @@ def fetch_colossal_articles():
     posts = [p for p in all_posts if is_within_24h(p.get('date_gmt') or p.get('date'), TODAY)]
     if not posts:
         try:
-            with open(os.path.join(DIR, 'feeds.json'), encoding='utf-8') as f:
+            with open(get_data_path('feeds.json'), encoding='utf-8') as f:
                 feeds = json.load(f).get('items', [])
             for a in feeds:
                 if a.get('_source') == 'colossal' and is_within_24h(a.get('_parsedDate') or a.get('date'), TODAY):
@@ -283,7 +284,7 @@ def process_rss_item(a, label):
 
     # Enriquecer artículos cuyo contenido sea solo un extracto breve
     if link and (len(content) < 500 or source_id in ('35mmc', 'emulsive', 'huck', 'phroom', 'casualphotophile')):
-        cache_file = os.path.join(DIR, f'{source_id}_articles.json')
+        cache_file = get_data_path(f'{source_id}_articles.json')
         cached = None
         if os.path.exists(cache_file):
             try:
@@ -339,7 +340,7 @@ def pick_day_image(items_by_source):
 
     # Fallback 1: buscar en feeds.json fotos de artículos recientes
     try:
-        feeds_path = os.path.join(DIR, 'feeds.json')
+        feeds_path = get_data_path('feeds.json')
         if os.path.exists(feeds_path):
             with open(feeds_path, encoding='utf-8') as f:
                 feeds = json.load(f).get('items', [])

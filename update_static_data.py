@@ -25,6 +25,7 @@ RSS_HEADERS = {
 }
 
 from sources_config import load_sources_config, get_active_sources, get_source_by_id
+from data_paths import get_data_path, get_data_dir
 
 def _src_prop(src_id, prop, default):
     s = get_source_by_id(src_id)
@@ -328,7 +329,7 @@ def fetch_shootitwithfilm():
 
 def load_previous_items(filename):
     try:
-        with open(os.path.join(DIR, filename)) as f:
+        with open(get_data_path(filename)) as f:
             old = json.load(f).get('items', [])
         if old:
             print(f'     scrape vacío → conservando {len(old)} previos de {filename}')
@@ -339,7 +340,7 @@ def load_previous_items(filename):
 
 def load_article_cache(filename):
     try:
-        with open(os.path.join(DIR, filename)) as f:
+        with open(get_data_path(filename)) as f:
             return json.load(f).get('articles', {})
     except Exception:
         return {}
@@ -376,7 +377,8 @@ def update_article_cache(filename, items, scrape_fn):
         else:
             print(f'    - error {url.split("/")[-1][:50]}')
     if new:
-        with open(os.path.join(DIR, filename), 'w') as f:
+        dest_path = get_data_path(filename)
+        with open(dest_path, 'w') as f:
             json.dump({'updated': date.today().isoformat(), 'articles': cache}, f, ensure_ascii=False)
     return new
 
@@ -687,7 +689,7 @@ def main():
         items = source_items.get(s_id, [])
         all_entries.extend(items)
         fname = f'{s_id}.json'
-        with open(os.path.join(DIR, fname), 'w', encoding='utf-8') as f:
+        with open(get_data_path(fname), 'w', encoding='utf-8') as f:
             json.dump({'items': items, 'count': len(items), 'updated': ts}, f, ensure_ascii=False)
         saved_names.append(fname)
 
@@ -701,15 +703,13 @@ def main():
     except Exception as e:
         print(f'  ⚠️ Error sincronizando archivo histórico: {e}')
         all_entries.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
-        with open(os.path.join(DIR, 'feeds.json'), 'w', encoding='utf-8') as f:
+        with open(get_data_path('feeds.json'), 'w', encoding='utf-8') as f:
             json.dump({'items': all_entries, 'count': len(all_entries), 'updated': ts}, f, ensure_ascii=False)
 
     print('  10. Subiendo a GitHub...')
     try:
-        json_files = [f"{s['id']}.json" for s in get_active_sources()] + ['feeds.json', 'sources.json']
-        cache_files = [f"{s['id']}_articles.json" for s in get_active_sources() if os.path.exists(os.path.join(DIR, f"{s['id']}_articles.json"))]
         result = subprocess.run(
-            ['git', 'add'] + json_files + cache_files,
+            ['git', 'add', 'data/'],
             capture_output=True, text=True, cwd=DIR
         )
         result = subprocess.run(

@@ -27,7 +27,7 @@ echo ">> 4b. Sincronizando base de datos historica (SQLite FTS5 + Vectores)..."
 python3 sync_archive.py || echo "⚠️ Warning: sync_archive reporto advertencia"
 
 echo ">> 5. Sincronizando respaldo con GitHub..."
-git add resumenes/ podcast_meta.json podcast.xml assets/covers/ 2>/dev/null || true
+git add resumenes/ data/ podcast.xml assets/covers/ 2>/dev/null || true
 git commit -m "chore(auto): daily update $(date +%F)" || echo "Nada nuevo que commitear"
 for i in 1 2 3; do
   git pull --rebase --autostash origin main 2>/dev/null || true

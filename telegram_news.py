@@ -7,8 +7,10 @@ from datetime import date
 
 import requests
 
+from data_paths import get_data_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
-STATE_PATH = os.path.join(DIR, 'telegram_sent.json')
+STATE_PATH = get_data_path('telegram_sent.json')
 
 CONFIG = {}
 try:
@@ -55,7 +57,7 @@ def get_image(item):
 
 def load_feeds():
     try:
-        with open(os.path.join(DIR, 'feeds.json'), encoding='utf-8') as f:
+        with open(get_data_path('feeds.json'), encoding='utf-8') as f:
             return json.load(f).get('items', [])
     except Exception:
         return []

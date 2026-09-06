@@ -1,8 +1,10 @@
 import json
 import os
 
+from data_paths import get_data_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
-SOURCES_FILE = os.path.join(DIR, 'sources.json')
+SOURCES_FILE = get_data_path('sources.json')
 
 def load_sources_config():
     """Carga la lista completa de fuentes configuradas en sources.json."""

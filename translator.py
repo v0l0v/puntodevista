@@ -25,7 +25,9 @@ GEMINI_MODELS = [
 ]
 GEMINI_MODELS = [m for m in GEMINI_MODELS if m]
 
-CACHE_FILE = os.path.join(DIR, 'translations_cache.json')
+from data_paths import get_data_path
+
+CACHE_FILE = get_data_path('translations_cache.json')
 _CACHE = {}
 
 def load_cache():

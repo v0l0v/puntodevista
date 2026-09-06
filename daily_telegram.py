@@ -11,11 +11,12 @@ from datetime import date, datetime
 from pathlib import Path
 
 import requests
+from data_paths import get_data_path
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
-META_PATH = os.path.join(DIR, 'podcast_meta.json')
+META_PATH = get_data_path('podcast_meta.json')
 
 CONFIG = {}
 try:

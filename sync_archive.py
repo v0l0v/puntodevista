@@ -9,6 +9,7 @@ import os
 import re
 from pathlib import Path
 from archive_db import get_connection, init_db, upsert_article, upsert_podcast, get_stats
+from data_paths import get_data_path, get_data_dir
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 RESUMENES_DIR = os.path.join(DIR, 'resumenes')
@@ -22,7 +23,7 @@ def clean_html_tags(text):
 
 def sync_podcasts(conn):
     """Ingesta de podcasts desde podcast_meta.json y archivos en resumenes/."""
-    meta_path = os.path.join(DIR, 'podcast_meta.json')
+    meta_path = get_data_path('podcast_meta.json')
     if not os.path.exists(meta_path):
         return 0
 
@@ -62,7 +63,7 @@ def sync_podcasts(conn):
 
 def sync_feeds_json(conn):
     """Ingesta de artículos desde feeds.json."""
-    feeds_path = os.path.join(DIR, 'feeds.json')
+    feeds_path = get_data_path('feeds.json')
     if not os.path.exists(feeds_path):
         return 0
 
@@ -82,7 +83,14 @@ def sync_feeds_json(conn):
 def sync_source_json_files(conn):
     """Ingesta desde todos los archivos de fuente individuales."""
     count = 0
-    json_files = list(Path(DIR).glob('*.json'))
+    seen_files = set()
+    json_files = []
+    for d in [get_data_dir(), DIR]:
+        if os.path.exists(d):
+            for p in Path(d).glob('*.json'):
+                if p.name not in seen_files:
+                    seen_files.add(p.name)
+                    json_files.append(p)
     ignore_files = {'feeds.json', 'podcast_meta.json', 'config.json', 'config.example.json', 'sources.json', 'telegram_sent.json'}
 
     for p in json_files:
@@ -177,7 +185,7 @@ def export_full_feeds_json():
             elif not isinstance(raw_tags, list):
                 item['tags'] = []
 
-        feeds_path = os.path.join(DIR, 'feeds.json')
+        feeds_path = get_data_path('feeds.json')
         with open(feeds_path, 'w', encoding='utf-8') as f:
             json.dump({'items': items, 'count': len(items), 'updated': json_files_date()}, f, ensure_ascii=False)
         print(f"   ✓ feeds.json generado con éxito conteniendo {len(items)} artículos históricos con etiquetas.")
