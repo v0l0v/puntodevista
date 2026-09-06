@@ -1,3 +1,0 @@
-file '/home/victor/proyectos/foto/tmp_audio_render/b3_t0_44k.wav'
-file '/home/victor/proyectos/foto/tmp_audio_render/b3_t1_44k.wav'
-file '/home/victor/proyectos/foto/tmp_audio_render/b3_t2_44k.wav'
