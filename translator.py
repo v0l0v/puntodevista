@@ -17,13 +17,14 @@ from data_paths import get_data_path
 logger = logging.getLogger('pdv.translator')
 
 GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3.1-flash-lite-preview')
+_PREFERRED_MODEL = get_gemini_model('gemini-3.6-flash')
 
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
+    'gemini-3.6-flash',
+    'gemini-3.5-flash',
+    'gemini-3.7-flash',
     'gemini-3.1-flash-lite-preview',
-    'gemini-flash-latest',
-    'gemini-flash-lite-latest',
 ]
 # Eliminar duplicados preservando el orden
 GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
@@ -193,13 +194,21 @@ def translate_article_entry(entry):
     if not entry or entry.get('translated'):
         return entry
 
+    translated_any = False
     title = entry.get('title')
     if title:
-        entry['title'] = translate_text(title, is_html=False)
+        tr_title = translate_text(title, is_html=False)
+        if tr_title and tr_title.strip() != title.strip():
+            entry['title'] = tr_title
+            translated_any = True
 
     content = entry.get('content')
     if content and len(content) > 40:
-        entry['content'] = translate_text(content, is_html=True)
+        tr_content = translate_text(content, is_html=True)
+        if tr_content and tr_content.strip() != content.strip():
+            entry['content'] = tr_content
+            translated_any = True
 
-    entry['translated'] = True
+    if translated_any:
+        entry['translated'] = True
     return entry
