@@ -178,37 +178,41 @@ def main():
     save_payload('shootitwithfilm.json', shootit, all_entries)
     save_payload('feeds.json', all_entries, all_entries)
 
-    print('  7. Subiendo a GitHub...')
-    try:
-        subprocess.run(
-            ['git', 'add', 'data/'],
-            capture_output=True, text=True, cwd=DIR
-        )
-        res = subprocess.run(
-            ['git', 'commit', '-m', f'chore: update static feeds {ts}'],
-            capture_output=True, text=True, cwd=DIR
-        )
-        if 'nothing to commit' in res.stdout:
-            print('     Sin cambios')
-            return
-        if res.returncode != 0 and 'nothing to commit' not in (res.stdout + res.stderr):
-            print(f'     ⚠️ Error commit: {res.stderr[:300]}')
-            return
-        
-        # Reintentos con rebase para evitar colisiones en CI
-        pushed = False
-        for attempt in range(4):
-            pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
-            push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
-            if push.returncode == 0:
-                print('     ✅ Push a GitHub OK')
-                pushed = True
-                break
-            time.sleep(3 * (attempt + 1))
-        if not pushed:
-            print(f'     ⚠️ Push fallido tras reintentos')
-    except Exception as e:
-        print(f'     ⚠️ Git error: {e}')
+    should_push = '--push' in sys.argv or os.environ.get('PUSH_TO_GITHUB') == '1'
+    if should_push:
+        print('  7. Subiendo a GitHub...')
+        try:
+            subprocess.run(
+                ['git', 'add', 'data/'],
+                capture_output=True, text=True, cwd=DIR
+            )
+            res = subprocess.run(
+                ['git', 'commit', '-m', f'chore: update static feeds {ts}'],
+                capture_output=True, text=True, cwd=DIR
+            )
+            if 'nothing to commit' in res.stdout:
+                print('     Sin cambios')
+                return
+            if res.returncode != 0 and 'nothing to commit' not in (res.stdout + res.stderr):
+                print(f'     ⚠️ Error commit: {res.stderr[:300]}')
+                return
+            
+            # Reintentos con rebase para evitar colisiones en CI
+            pushed = False
+            for attempt in range(4):
+                pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
+                push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
+                if push.returncode == 0:
+                    print('     ✅ Push a GitHub OK')
+                    pushed = True
+                    break
+                time.sleep(3 * (attempt + 1))
+            if not pushed:
+                print(f'     ⚠️ Push fallido tras reintentos')
+        except Exception as e:
+            print(f'     ⚠️ Git error: {e}')
+    else:
+        print('  7. Archivos de datos actualizados en data/ (respaldo GitHub centralizado a las 07:30).')
 
 
 if __name__ == '__main__':
