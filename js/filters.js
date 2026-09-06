@@ -165,6 +165,21 @@ export function saveSources() {
   localStorage.setItem(SOURCES_KEY, JSON.stringify([...state.sources]));
 }
 
+export async function loadSourcesConfig() {
+  try {
+    const resp = await fetch('sources.json', { cache: 'no-store' });
+    const data = await resp.json();
+    if (Array.isArray(data) && data.length) {
+      state.allSources = data.filter(s => s.enabled !== false).map(s => s.id);
+      for (const s of data) {
+        if (s.name) state.sourceLabels[s.id] = s.name;
+      }
+      window.__allSources = state.allSources;
+      window.__sourceLabels = state.sourceLabels;
+    }
+  } catch {}
+}
+
 export function getReadCounts() {
   try {
     return JSON.parse(localStorage.getItem('feedfoto.read_counts')) || {};

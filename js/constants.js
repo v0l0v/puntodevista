@@ -23,9 +23,9 @@ export const CLICK_OPEN = ['assets/mp3/click1.mp3', 'assets/mp3/click2.mp3', 'as
 
 export const PODCAST_URL = 'podcast';
 export const PODCAST_COVER = 'podcast-cover.jpg';
-export const SOURCES_KEY = 'pdv_sources';
-export const CACHED_ENTRIES_KEY = 'pdv_cached_entries';
-export const READ_COUNTS_KEY = 'pdv_read_counts';
+export const SOURCES_KEY = 'feedfoto.sources';
+export const CACHED_ENTRIES_KEY = 'feedfoto.cached_entries';
+export const READ_COUNTS_KEY = 'feedfoto.read_counts';
 
 export const DEFAULT_SOURCES = [
   'colossal', 'lomography', 'booooooom', 'tpj', 'huck', 'lensculture', 'odlp', 'magnum', 'shootitwithfilm',
@@ -57,3 +57,12 @@ export const DEFAULT_SOURCE_LABELS = {
   '1854': 'British Journal of Photography',
   clavoardiendo: 'Clavoardiendo Magazine'
 };
+
+// Alias para compatibilidad con código que use ALL_SOURCES y SOURCE_LABELS
+export const ALL_SOURCES = DEFAULT_SOURCES;
+export const SOURCE_LABELS = DEFAULT_SOURCE_LABELS;
+
+// Window bindings
+window.ALL_SOURCES = ALL_SOURCES;
+window.SOURCE_LABELS = SOURCE_LABELS;
+window.REFRESH_MS = REFRESH_MS;
