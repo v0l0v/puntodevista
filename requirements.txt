@@ -1,0 +1,27 @@
+# ==============================================================================
+# Punto de Vista (puntodevista.click) - Dependencias del Proyecto
+# ==============================================================================
+
+# --- Síntesis de Voz y Motor de Audio (Kokoro-82M TTS) ---
+kokoro-onnx>=0.6.1
+onnxruntime>=1.20.0
+soundfile>=0.13.0
+phonemizer>=3.3.0
+espeakng-loader>=0.2.0
+edge-tts>=7.0.0
+mutagen>=1.47.0
+
+# --- Base de Datos, FTS5 y Búsqueda Vectorial ---
+sqlite-vec>=0.1.6
+
+# --- Procesamiento de Imágenes y Generación de Carátulas ---
+Pillow>=10.0.0
+
+# --- Scrapers, HTTP y Parseo Web ---
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+urllib3>=2.0.0
+PySocks>=1.7.1
+
+# --- Utilidades y Formato ---
+tabulate>=0.9.0
