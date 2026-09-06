@@ -15,32 +15,13 @@ import time
 import requests
 import sqlite_vec
 from data_paths import get_db_path
+from config import get_gemini_key, ensure_warp_proxy
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DB_PATH = get_db_path()
-CONFIG_PATH = os.path.join(DIR, 'config.json')
 
-def _ensure_warp_proxy():
-    if 'HTTPS_PROXY' not in os.environ:
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.settimeout(0.2)
-                if s.connect_ex(('127.0.0.1', 40000)) == 0:
-                    os.environ['HTTPS_PROXY'] = 'socks5h://127.0.0.1:40000'
-        except Exception:
-            pass
-
-_ensure_warp_proxy()
-
-CONFIG = {}
-if os.path.exists(CONFIG_PATH):
-    try:
-        with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
-            CONFIG = json.load(f)
-    except Exception:
-        pass
-
-GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
+ensure_warp_proxy()
+GEMINI_KEY = get_gemini_key()
 EMBEDDING_MODEL = 'gemini-embedding-001'
 EMBED_DIM = 3072
 

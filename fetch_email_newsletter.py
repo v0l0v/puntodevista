@@ -33,9 +33,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _load_config():
-    with open(os.path.join(DIR, 'config.json'), encoding='utf-8') as f:
-        return json.load(f)
+from config import get_email_config
 
 
 def _decode_str(value):
@@ -169,16 +167,11 @@ def fetch_email_newsletters(target_date: date | None = None, hours: int = 24) ->
     if target_date is None:
         target_date = date.today()
 
-    cfg = _load_config()
-    email_cfg = cfg.get('email')
-    if not email_cfg:
-        print('  [email] No hay configuración de email en config.json — saltando.')
-        return []
-
+    email_cfg = get_email_config()
     address = email_cfg.get('address', '')
     app_password = email_cfg.get('app_password', '')
     if not address or not app_password:
-        print('  [email] Faltan "address" o "app_password" en config.json → saltando.')
+        print('  [email] Faltan "address" o "app_password" en configuración → saltando.')
         return []
 
     articles = []

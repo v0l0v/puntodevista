@@ -8,23 +8,12 @@ from datetime import date
 import requests
 
 from data_paths import get_data_path
+from config import get_telegram_creds, get_config
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 STATE_PATH = get_data_path('telegram_sent.json')
 
-CONFIG = {}
-try:
-    CONFIG = json.load(open(os.path.join(DIR, 'config.json')))
-except Exception:
-    pass
-
-
-def _cfg(key):
-    return os.environ.get(key) or CONFIG.get(key)
-
-
-TG_TOKEN = _cfg('TG_TOKEN')
-TG_CHAT_ID = _cfg('TG_CHAT_ID')
+TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
 
 SOURCES = {
     'colossal': 'Colossal · Fotografía',

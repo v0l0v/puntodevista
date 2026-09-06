@@ -24,20 +24,7 @@ def strip_jina_header(md):
     return JINA_HEADER_RE.sub('', md, count=1)
 
 
-def get_jina_key():
-    # 1. Intentar desde variable de entorno
-    key = os.environ.get('JINA_API_KEY')
-    if key:
-        return key
-    # 2. Intentar desde config.json local
-    try:
-        config_path = os.path.join(DIR, 'config.json')
-        if os.path.exists(config_path):
-            with open(config_path) as f:
-                return json.load(f).get('JINA_API_KEY')
-    except Exception:
-        pass
-    return None
+from config import get_jina_key
 
 
 def fetch_markdown(url, timeout=60, selector=None):

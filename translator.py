@@ -1,49 +1,80 @@
 #!/usr/bin/env python3
-"""Módulo de traducción inteligente de artículos para Punto de Vista usando Gemini API."""
+"""
+Módulo de traducción inteligente de artículos para Punto de Vista usando Gemini API.
+Incorpora Circuit Breaker para protección contra rate-limits (HTTP 429) y degradación elegante.
+"""
 import os
 import json
 import re
 import time
-import urllib.request
-
-DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG = {}
-cfg_file = os.path.join(DIR, 'config.json')
-if os.path.exists(cfg_file):
-    try:
-        with open(cfg_file, encoding='utf-8') as f:
-            CONFIG = json.load(f)
-    except Exception:
-        pass
-
-import socket
+import hashlib
 import requests
+import logging
 
-def _ensure_warp_proxy():
-    if 'HTTPS_PROXY' not in os.environ:
+from config import get_gemini_key, get_gemini_model, ensure_warp_proxy
+from data_paths import get_data_path
+
+logger = logging.getLogger('pdv.translator')
+
+GEMINI_KEY = get_gemini_key()
+_PREFERRED_MODEL = get_gemini_model('gemini-3.1-flash-lite-preview')
+
+GEMINI_MODELS = [
+    _PREFERRED_MODEL,
+    'gemini-3.1-flash-lite-preview',
+    'gemini-flash-latest',
+    'gemini-flash-lite-latest',
+]
+# Eliminar duplicados preservando el orden
+GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
+
+CACHE_FILE = get_data_path('translations_cache.json')
+CIRCUIT_FILE = get_data_path('.gemini_circuit.json')
+_CACHE = {}
+
+# ─── Circuit Breaker ─────────────────────────────────────────────────────────
+CIRCUIT_COOLDOWN_SECONDS = 300  # 5 minutos de pausa tras agotarse la cuota
+
+def is_circuit_open():
+    """Verifica si el Circuit Breaker está abierto (bloqueando llamadas a Gemini)."""
+    if not os.path.exists(CIRCUIT_FILE):
+        return False
+    try:
+        with open(CIRCUIT_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        until = data.get('blocked_until', 0)
+        remaining = until - time.time()
+        if remaining > 0:
+            return True
+        # El cooldown expiró, intentar recuperar
+        return False
+    except Exception:
+        return False
+
+def open_circuit(reason="Quota 429 exceeded"):
+    """Abre el circuito e impide peticiones durante el tiempo de cooldown."""
+    blocked_until = time.time() + CIRCUIT_COOLDOWN_SECONDS
+    try:
+        with open(CIRCUIT_FILE, 'w', encoding='utf-8') as f:
+            json.dump({
+                'state': 'OPEN',
+                'reason': reason,
+                'blocked_until': blocked_until,
+                'timestamp': time.time()
+            }, f, indent=2)
+        print(f"⚡ Circuit Breaker ACTIVADO: {reason}. Omitiendo traducciones durante {CIRCUIT_COOLDOWN_SECONDS // 60} min para evitar bloqueos.")
+    except Exception as e:
+        logger.warning(f"Error escribiendo estado de Circuit Breaker: {e}")
+
+def close_circuit():
+    """Cierra el circuito tras una llamada exitosa."""
+    if os.path.exists(CIRCUIT_FILE):
         try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.settimeout(0.2)
-                if s.connect_ex(('127.0.0.1', 40000)) == 0:
-                    os.environ['HTTPS_PROXY'] = 'socks5h://127.0.0.1:40000'
+            os.remove(CIRCUIT_FILE)
         except Exception:
             pass
 
-_ensure_warp_proxy()
-
-GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
-GEMINI_MODELS = [
-    os.environ.get('GEMINI_MODEL'),
-    'gemini-flash-lite-latest',
-    'gemini-flash-latest',
-]
-GEMINI_MODELS = [m for m in GEMINI_MODELS if m]
-
-from data_paths import get_data_path
-
-CACHE_FILE = get_data_path('translations_cache.json')
-_CACHE = {}
-
+# ─── Caché de Traducciones ───────────────────────────────────────────────────
 def load_cache():
     global _CACHE
     if os.path.exists(CACHE_FILE):
@@ -59,12 +90,19 @@ def save_cache():
         with open(CACHE_FILE, 'w', encoding='utf-8') as f:
             json.dump(_CACHE, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"⚠️ Error guardando caché de traducción: {e}")
+        logger.warning(f"Error guardando caché de traducción: {e}")
 
 def call_gemini(prompt, max_retries=2):
+    """
+    Invoca la API de Gemini con rotación de modelos y protección Circuit Breaker.
+    """
     if not GEMINI_KEY:
         return None
-    _ensure_warp_proxy()
+
+    if is_circuit_open():
+        return None
+
+    ensure_warp_proxy()
     body = {
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
@@ -73,24 +111,36 @@ def call_gemini(prompt, max_retries=2):
         }
     }
 
+    quota_exhausted_count = 0
+
     for model_name in GEMINI_MODELS:
         url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
         for attempt in range(max_retries):
             try:
-                resp = requests.post(url, json=body, timeout=30)
+                resp = requests.post(url, json=body, timeout=25)
                 if resp.status_code == 200:
+                    close_circuit()
                     res_json = resp.json()
                     candidates = res_json.get('candidates', [])
                     if candidates and 'content' in candidates[0]:
                         parts = candidates[0]['content'].get('parts', [])
                         if parts and 'text' in parts[0]:
                             return parts[0]['text'].strip()
+                elif resp.status_code == 429:
+                    quota_exhausted_count += 1
+                    break  # No reintentar en bucle el mismo modelo si la cuota está agotada
+                elif resp.status_code == 404:
+                    break  # Modelo no soportado en esta versión de API
             except Exception:
-                time.sleep(1 * (attempt + 1))
-    print(f"⚠️ Error API traducción Gemini en todos los modelos de respaldo")
-    return None
+                time.sleep(0.5 * (attempt + 1))
 
-import hashlib
+    # Si todos los modelos consultados fallaron por límite de cuota (429), abrir Circuit Breaker
+    if quota_exhausted_count >= len(GEMINI_MODELS):
+        open_circuit("Cuota de Gemini API agotada (HTTP 429 en todos los modelos)")
+    else:
+        logger.warning("Traducción no completada: todos los modelos de respaldo devolvieron error.")
+
+    return None
 
 def _hash_key(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
@@ -128,7 +178,6 @@ def translate_text(text, is_html=False):
 
     res = call_gemini(prompt)
     if res:
-        # Limpiar si devolvió markdown o comillas envolventes
         clean_res = re.sub(r'^```html\s*', '', res, flags=re.IGNORECASE)
         clean_res = re.sub(r'\s*```$', '', clean_res).strip()
         clean_res = re.sub(r'^["«\']|["»\']$', '', clean_res).strip()
@@ -138,33 +187,19 @@ def translate_text(text, is_html=False):
     return text
 
 def translate_article_entry(entry):
-    """Traduce un objeto de artículo (title, excerpt, content) respetando el original."""
-    if not entry:
+    """
+    Traduce una entrada de artículo si no ha sido traducida previamente.
+    """
+    if not entry or entry.get('translated'):
         return entry
-    
-    # Guardar originales si no existen
-    if 'title_original' not in entry:
-        entry['title_original'] = entry.get('title', '')
-    if 'excerpt_original' not in entry and entry.get('excerpt'):
-        entry['excerpt_original'] = entry.get('excerpt', '')
-    if 'content_original' not in entry and entry.get('content'):
-        entry['content_original'] = entry.get('content', '')
 
-    # Traducir título
-    if entry.get('title'):
-        entry['title'] = translate_text(entry['title'], is_html=False)
-    
-    # Traducir excerpt
-    if entry.get('excerpt'):
-        entry['excerpt'] = translate_text(entry['excerpt'], is_html=False)
+    title = entry.get('title')
+    if title:
+        entry['title'] = translate_text(title, is_html=False)
 
-    # Traducir content completo si existe
-    if entry.get('content') and len(entry['content']) > 30:
-        entry['content'] = translate_text(entry['content'], is_html=True)
+    content = entry.get('content')
+    if content and len(content) > 40:
+        entry['content'] = translate_text(content, is_html=True)
 
+    entry['translated'] = True
     return entry
-
-if __name__ == '__main__':
-    t_test = "A look into the darkroom alchemy of large format monochrome film."
-    print("Original:", t_test)
-    print("Traducido:", translate_text(t_test))

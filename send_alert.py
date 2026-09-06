@@ -5,18 +5,10 @@ import sys
 import json
 import requests
 
-DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG = {}
-config_path = os.path.join(DIR, 'config.json')
-if os.path.exists(config_path):
-    try:
-        with open(config_path, encoding='utf-8') as f:
-            CONFIG = json.load(f)
-    except Exception:
-        pass
+from config import get_telegram_creds
 
-TG_TOKEN = os.environ.get('TG_TOKEN') or CONFIG.get('TG_TOKEN')
-TG_CHAT_ID = os.environ.get('TG_CHAT_ID') or CONFIG.get('TG_CHAT_ID')
+DIR = os.path.dirname(os.path.abspath(__file__))
+TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
 
 def send_alert(message):
     if not TG_TOKEN or not TG_CHAT_ID:

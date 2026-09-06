@@ -33,18 +33,11 @@ VOICES = {
     'CLARA':   {'voice': 'es-ES-XimenaNeural', 'rate': '-3%'}
 }
 
-def load_config():
-    if os.path.exists(CONFIG_PATH):
-        try:
-            with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
+from config import get_gemini_key, get_gemini_model, ensure_warp_proxy
 
-CONFIG = load_config()
-GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-2.5-flash'
+ensure_warp_proxy()
+GEMINI_KEY = get_gemini_key()
+GEMINI_MODEL = get_gemini_model('gemini-2.5-flash')
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
 def gemini_generate(prompt, max_tokens=6000, temperature=0.7):

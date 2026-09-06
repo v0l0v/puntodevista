@@ -17,23 +17,15 @@ from pathlib import Path
 
 from data_paths import get_db_path
 
+from config import get_gemini_key, get_gemini_model, ensure_warp_proxy
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
 DB_PATH = get_db_path()
-CONFIG_PATH = os.path.join(DIR, 'config.json')
 
-def load_config():
-    if os.path.exists(CONFIG_PATH):
-        try:
-            with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
-
-CONFIG = load_config()
-GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-3.5-flash'
+ensure_warp_proxy()
+GEMINI_KEY = get_gemini_key()
+GEMINI_MODEL = get_gemini_model('gemini-3.5-flash')
 
 def gemini_generate(prompt, max_tokens=8192, temperature=0.6):
     if not GEMINI_KEY:

@@ -18,21 +18,11 @@ OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = get_data_path('podcast_meta.json')
 
-CONFIG = {}
-try:
-    CONFIG = json.load(open(os.path.join(DIR, 'config.json')))
-except Exception:
-    pass
+from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_config
 
-
-def _cfg(key):
-    return os.environ.get(key) or CONFIG.get(key)
-
-
-TG_TOKEN = _cfg('TG_TOKEN')
-TG_CHAT_ID = _cfg('TG_CHAT_ID')
-GEMINI_KEY = _cfg('GEMINI_KEY')
-GEMINI_MODEL = 'gemini-3.5-flash'
+TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
+GEMINI_KEY = get_gemini_key()
+GEMINI_MODEL = get_gemini_model('gemini-3.5-flash')
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
 
 MAX_RETRIES = 5
