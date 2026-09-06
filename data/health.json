@@ -1,0 +1,48 @@
+{
+  "status": "healthy",
+  "generated_at": "2026-09-06T19:48:30.058999+00:00",
+  "issues": [],
+  "pipeline": {
+    "last_feeds_update": "2026-09-06T18:39:44.365122+00:00",
+    "warp_proxy_active": false,
+    "circuit_breaker": {
+      "state": "CLOSED",
+      "reason": null,
+      "remaining_seconds": 0
+    }
+  },
+  "feeds": {
+    "total_entries": 382,
+    "sources_tracked": 10,
+    "sources_breakdown": {
+      "odlp": 132,
+      "booooooom": 7,
+      "colossal": 60,
+      "shootitwithfilm": 30,
+      "magnum": 30,
+      "lomography": 30,
+      "huck": 10,
+      "lensculture": 43,
+      "tpj": 30,
+      "swan": 10
+    }
+  },
+  "database": {
+    "articles_total": 1151,
+    "podcasts_total": 33,
+    "status": "ok"
+  },
+  "podcast": {
+    "total_episodes": 34,
+    "latest_date": "2026-09-06",
+    "status": "ok"
+  },
+  "system": {
+    "disk": {
+      "total_gb": 232.6,
+      "used_gb": 190.9,
+      "free_gb": 29.8,
+      "free_percent": 12.8
+    }
+  }
+}

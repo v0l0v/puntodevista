@@ -654,8 +654,44 @@ footer {
   justify-content: space-between;
   font-size: 0.55rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.15;
+  opacity: 0.25;
+}
+
+.health-indicator {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.health-indicator:hover {
+  opacity: 1 !important;
+}
+
+.health-dot {
+  font-size: 0.65rem;
+  line-height: 1;
+  color: #00ff66;
+  text-shadow: 0 0 6px rgba(0, 255, 102, 0.4);
+  transition: color 0.3s ease;
+}
+
+.health-dot.degraded {
+  color: #ffaa00;
+  text-shadow: 0 0 6px rgba(255, 170, 0, 0.4);
+}
+
+.health-dot.error {
+  color: #ff0100;
+  text-shadow: 0 0 6px rgba(255, 1, 0, 0.4);
 }
 
 /* ════════════════════════════════════════════════════════

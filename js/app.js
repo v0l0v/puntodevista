@@ -50,6 +50,10 @@ import {
   toggleFullscreen,
   initFullscreen
 } from './gallery.js';
+import {
+  fetchHealth,
+  openHealthModal
+} from './health.js';
 
 // API pública en window para extensiones, integraciones y handlers inline
 window.openArticleModal = function(entry) {
@@ -186,9 +190,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   initPodcastPlayers();
   initFullscreen();
   initCardTilt();
+  fetchHealth();
 
   setInterval(() => {
-    if (!document.hidden) refreshFeeds();
+    if (!document.hidden) {
+      refreshFeeds();
+      fetchHealth();
+    }
   }, REFRESH_MS);
 
   // Abrir panel si se llega desde otra página (?panel=date|sources)

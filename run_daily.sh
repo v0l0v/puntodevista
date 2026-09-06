@@ -66,7 +66,11 @@ $PYTHON generate_podcast_feed.py
 echo ">> [6/6] Indexando archivo histórico y vectores..."
 $PYTHON sync_archive.py || echo "⚠️ Advertencia en sync_archive (continuando)"
 
-# 12. Respaldo y sincronización de estado hacia GitHub
+# 12. Actualizar reporte de salud y observabilidad
+echo ">> Actualizando métricas de observabilidad (health.json)..."
+$PYTHON health_check.py || echo "⚠️ Advertencia en health_check (continuando)"
+
+# 13. Respaldo y sincronización de estado hacia GitHub
 echo ">> Sincronizando respaldo con GitHub..."
 git add resumenes/ data/ podcast.xml assets/covers/ 2>/dev/null || true
 git commit -m "chore(auto): daily update $(date +%F)" || echo "Nada nuevo que commitear"

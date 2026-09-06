@@ -38,4 +38,7 @@ $PYTHON update_lists.py
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Notificando novedades a Telegram..."
 $PYTHON telegram_news.py
 
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Actualizando métricas de salud y observabilidad..."
+$PYTHON health_check.py
+
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Ciclo de feeds completado."
