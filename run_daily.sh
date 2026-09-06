@@ -54,6 +54,10 @@ $PYTHON daily_digest.py
 echo ">> [3/6] Actualizando cachés de artículos..."
 $PYTHON update_static_data.py --keep-lomo || echo "⚠️ Advertencia en update_static_data (continuando)"
 
+# 8b. Saneamiento y traducción continua del archivo
+echo ">> Saneando y traduciendo artículos pendientes del archivo..."
+$PYTHON scripts/repair_all_translations.py --limit-per-source 8 --feeds-limit 20 || echo "⚠️ Advertencia en repair_all_translations (continuando)"
+
 # 9. Generar Podcast con Kokoro TTS y publicar en Telegram
 echo ">> [4/6] Generando podcast y publicando en Telegram..."
 $PYTHON daily_podcast.py
