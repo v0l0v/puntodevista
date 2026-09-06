@@ -1,50 +1,81 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 
-DIR="/opt/v0l0v/apps/puntodevista"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DIR"
 
-# Función de alerta en caso de fallo
+# 1. Protección contra ejecuciones solapadas (flock)
+LOCK_FILE="$DIR/.daily_runner.lock"
+exec 200>"$LOCK_FILE"
+if ! flock -n 200; then
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️ Proceso diario de Punto de Vista ya en ejecución. Saliendo sin solapar."
+  exit 0
+fi
+
+# 2. Selección de entorno de ejecución Python
+if [ -f "$DIR/venv/bin/python3" ]; then
+  PYTHON="$DIR/venv/bin/python3"
+else
+  PYTHON="python3"
+fi
+
+# 3. Directorio temporal seguro y ejecutable para Kokoro / libespeak-ng
+export TMPDIR="$DIR/tmp_audio"
+mkdir -p "$TMPDIR"
+
+# 4. Función de notificación en caso de error
 on_error() {
   local exit_code=$?
   local line_no=$1
   echo "❌ Error en línea $line_no (código de salida: $exit_code)"
-  ./venv/bin/python3 send_alert.py "Falló la ejecución diaria de PDV en la línea $line_no (código: $exit_code)" || true
+  $PYTHON send_alert.py "Falló la ejecución diaria de PDV en la línea $line_no (código: $exit_code)" || true
 }
 trap 'on_error $LINENO' ERR
 
 FECHA_LOG=$(date '+%Y-%m-%d %H:%M:%S')
-echo "========================================"
-echo "[$FECHA_LOG] Arrancando ejecución diaria de Punto de Vista"
-echo "========================================"
+echo "=========================================================="
+echo "=== [$FECHA_LOG] Arrancando ciclo diario Punto de Vista ==="
+echo "=========================================================="
 
-# Exportar proxy WARP para peticiones de Gemini si está disponible en VPS
+# 5. Enrutamiento SOCKS5 a través de WARP si está activo en el VPS
 if ss -tulpn 2>/dev/null | grep -q ':40000 '; then
   export HTTPS_PROXY="socks5h://127.0.0.1:40000"
 fi
 
-# 1. Asegurar repositorio actualizado
-git pull --rebase origin main || true
+# 6. Sincronización previa del repositorio
+echo ">> [1/6] Sincronizando estado con GitHub..."
+git pull --rebase --autostash origin main || true
 
-# 2. Generar Digest Diario
-echo "[1/5] Generando digest diario..."
-./venv/bin/python3 daily_digest.py
+# 7. Generar Digest Diario
+echo ">> [2/6] Generando digest diario..."
+$PYTHON daily_digest.py
 
-# 3. Actualizar cachés estáticos
-echo "[2/5] Actualizando cachés de artículos..."
-./venv/bin/python3 update_static_data.py --keep-lomo || true
+# 8. Actualizar cachés estáticos
+echo ">> [3/6] Actualizando cachés de artículos..."
+$PYTHON update_static_data.py --keep-lomo || echo "⚠️ Advertencia en update_static_data (continuando)"
 
-# 4. Generar Podcast y publicar a Telegram
-echo "[3/5] Generando podcast y enviando a Telegram..."
-./venv/bin/python3 daily_podcast.py
+# 9. Generar Podcast con Kokoro TTS y publicar en Telegram
+echo ">> [4/6] Generando podcast y publicando en Telegram..."
+$PYTHON daily_podcast.py
 
-# 5. Regenerar feed RSS (servido directamente por el VPS)
-echo "[4/5] Actualizando Feed RSS..."
-./venv/bin/python3 generate_podcast_feed.py
+# 10. Regenerar Feed RSS del Podcast
+echo ">> [5/6] Actualizando feed RSS (podcast.xml)..."
+$PYTHON generate_podcast_feed.py
 
-# 6. Sincronizar archivo histórico SQLite (FTS5 + vectores)
-echo "[5/5] Indexando base de datos histórica..."
-./venv/bin/python3 sync_archive.py || true
+# 11. Sincronizar archivo histórico SQLite (FTS5 + vectores sqlite-vec)
+echo ">> [6/6] Indexando archivo histórico y vectores..."
+$PYTHON sync_archive.py || echo "⚠️ Advertencia en sync_archive (continuando)"
+
+# 12. Respaldo y sincronización de estado hacia GitHub
+echo ">> Sincronizando respaldo con GitHub..."
+git add resumenes/ data/ podcast.xml assets/covers/ 2>/dev/null || true
+git commit -m "chore(auto): daily update $(date +%F)" || echo "Nada nuevo que commitear"
+for i in 1 2 3; do
+  git pull --rebase --autostash origin main 2>/dev/null || true
+  git push origin main 2>/dev/null && echo "✅ Respaldo sincronizado con GitHub" && break || sleep 5
+done
 
 FECHA_FIN=$(date '+%Y-%m-%d %H:%M:%S')
-echo "[$FECHA_FIN] Proceso diario completado con éxito 100% autónomo en el VPS."
+echo "=========================================================="
+echo "=== [$FECHA_FIN] Proceso diario completado con éxito ==="
+echo "=========================================================="

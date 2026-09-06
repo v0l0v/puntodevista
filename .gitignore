@@ -30,4 +30,6 @@ tmp_audio_render/
 *.sqlite*
 *.tmp
 *.bak
+*.lock
+*.pid
 .DS_Store
