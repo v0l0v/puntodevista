@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import subprocess
+import time
 from datetime import date
 
 from update_static_data import (fetch_colossal, fetch_lomography, fetch_booooooom,

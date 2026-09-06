@@ -19,6 +19,7 @@ if os.path.exists(cfg_file):
 GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
 GEMINI_MODELS = [
     os.environ.get('GEMINI_MODEL'),
+    'gemini-3.1-flash-lite',
     'gemini-3.5-flash-lite',
     'gemini-3.6-flash',
 ]

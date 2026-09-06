@@ -23,6 +23,9 @@ python3 daily_podcast.py || echo "⚠️ Warning: daily_podcast reporto adverten
 echo ">> 4. Regenerando Feed RSS..."
 python3 generate_podcast_feed.py || echo "⚠️ Warning: generate_podcast_feed reporto advertencia"
 
+echo ">> 4b. Sincronizando base de datos historica (SQLite FTS5 + Vectores)..."
+python3 sync_archive.py || echo "⚠️ Warning: sync_archive reporto advertencia"
+
 echo ">> 5. Sincronizando respaldo con GitHub..."
 git add resumenes/ podcast_meta.json podcast.xml assets/covers/ archive.db 2>/dev/null || true
 git commit -m "chore(auto): daily update $(date +%F)" || echo "Nada nuevo que commitear"

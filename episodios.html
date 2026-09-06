@@ -314,6 +314,7 @@ function ensureRadio(url) {
   if (current && current.url === url) return current;
   if (current) { current.audio.pause(); current.audio.src = ''; }
   const { player, btn, fill, time } = radioEls();
+  if (player) player.dataset.url = url;
   const audio = new Audio(url);
   audio.preload = 'none';
   audio.addEventListener('timeupdate', () => {
