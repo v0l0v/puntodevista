@@ -339,25 +339,45 @@ def parse_summary(summary):
     resumen = ''
     locutable = summary
     remaining = summary
-    if TITLE_MARKER in summary:
-        pre, post = summary.split(TITLE_MARKER, 1)
+
+    if TITLE_MARKER in remaining:
+        pre, post = remaining.split(TITLE_MARKER, 1)
         podcast_title = pre.strip()
         remaining = post
-    loc_parts = remaining.split(LOCUTABLE_MARKER, 1)
-    if len(loc_parts) == 2:
+
+    if LOCUTABLE_MARKER in remaining:
+        loc_parts = remaining.rsplit(LOCUTABLE_MARKER, 1)
         locutable = loc_parts[1].strip()
-        resumen = loc_parts[0].strip()
+        resumen_candidate = loc_parts[0].strip()
+        if not resumen:
+            resumen = resumen_candidate
     else:
         resumen = remaining.strip()
+
+    speaker_match = re.search(r'\[(ROBERTO|BEATRIZ|NICOLAS|CLARA)\]', locutable, re.IGNORECASE)
+    if speaker_match:
+        preamble = locutable[:speaker_match.start()].strip()
+        if preamble:
+            if not resumen or resumen == podcast_title:
+                resumen = preamble
+            locutable = locutable[speaker_match.start():].strip()
+
     if not podcast_title and resumen:
         for ln in resumen.split('\n'):
             ln = ln.strip()
-            if not ln:
+            if not ln or re.match(r'^---+', ln) or re.match(r'^#\s*Podcast\b', ln, re.IGNORECASE):
                 continue
-            if re.match(r'^---+', ln):
-                continue
-            podcast_title = ln
-            break
+            m_title = re.match(r'^(?:#+\s*)?(?:Título|Titulo):\s*(.+)', ln, re.IGNORECASE)
+            if m_title:
+                podcast_title = m_title.group(1).strip()
+                break
+            if not podcast_title:
+                podcast_title = ln
+                break
+
+    podcast_title = re.sub(r'^(?:#+\s*)?(?:Título|Titulo):\s*', '', podcast_title, flags=re.IGNORECASE).strip()
+    resumen = re.sub(r'^(?:---[A-Z_]+---\s*)+', '', resumen).strip()
+
     return podcast_title, resumen, locutable
 
 

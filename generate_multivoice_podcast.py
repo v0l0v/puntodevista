@@ -204,6 +204,7 @@ def parse_dialogue(script_text):
     blocks = []
     current_speaker = 'ROBERTO'
     current_lines = []
+    seen_speaker = False
 
     for line in script_text.split('\n'):
         l = line.strip()
@@ -211,17 +212,19 @@ def parse_dialogue(script_text):
             continue
         m = re.match(r'^\[(ROBERTO|BEATRIZ|CLARA)\]', l, re.IGNORECASE)
         if m:
-            if current_lines:
+            if seen_speaker and current_lines:
                 blocks.append((current_speaker, ' '.join(current_lines)))
-                current_lines = []
+            current_lines = []
             current_speaker = m.group(1).upper()
+            seen_speaker = True
             content = l[m.end():].strip().lstrip(':').strip()
             if content:
                 current_lines.append(content)
         else:
-            current_lines.append(l)
+            if seen_speaker:
+                current_lines.append(l)
 
-    if current_lines:
+    if seen_speaker and current_lines:
         blocks.append((current_speaker, ' '.join(current_lines)))
 
     return blocks

@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 06 Sep 2026 15:46:07 +0000</lastBuildDate>
+<lastBuildDate>Sun, 06 Sep 2026 22:52:21 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1251,13 +1251,21 @@ Por último, Nicolás toma el testigo desde el taller para proponernos un desaf�
     <link>https://puntodevista.click/</link>
     <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-06.mp3</guid>
     <pubDate>Sun, 06 Sep 2026 05:00:00 +0000</pubDate>
-    <description><![CDATA[Las huellas del norte: el archivo, la memoria y la mirada que perdura]]></description>
+    <description><![CDATA[El mundo de la fotografía se mueve hoy entre el homenaje a las grandes figuras del fotoperiodismo, como el sentido adiós a Jean-François Leroy, y la exploración técnica de las nuevas generaciones. Roberto repasa la actualidad global, desde el uso de cámaras Lomography en las giras musicales de Asian Glow hasta la reflexión sobre el mercado del cine y las películas experimentales.
+
+Beatriz se sumerge en el archivo de Chris Killip y su profunda vinculación con el norte británico, conectando esta mirada con el proyecto Northern Folkrore. Un análisis sobre cómo el entorno moldea al fotógrafo y cómo la persistencia en un lugar acaba revelando verdades invisibles.
+
+Nicolás propone un reto práctico inspirado en la paciencia y la observación del territorio. Además, el niusleter de Fotonistas trae una invitación para quienes buscan el paraíso en el Pirineo, recordándonos que el aprendizaje fotográfico es también una experiencia de comunidad.]]></description>
     <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-06.mp3" length="7587272" type="audio/mpeg"/>
     <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-06.jpg"/>
     <itunes:duration>5:16</itunes:duration>
     <itunes:title>Episodio 34 · Las huellas del norte: el archivo, la memoria y la mirada que perdura</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
-    <itunes:summary><![CDATA[Las huellas del norte: el archivo, la memoria y la mirada que perdura]]></itunes:summary>
+    <itunes:summary><![CDATA[El mundo de la fotografía se mueve hoy entre el homenaje a las grandes figuras del fotoperiodismo, como el sentido adiós a Jean-François Leroy, y la exploración técnica de las nuevas generaciones. Roberto repasa la actualidad global, desde el uso de cámaras Lomography en las giras musicales de Asian Glow hasta la reflexión sobre el mercado del cine y las películas experimentales.
+
+Beatriz se sumerge en el archivo de Chris Killip y su profunda vinculación con el norte británico, conectando esta mirada con el proyecto Northern Folkrore. Un análisis sobre cómo el entorno moldea al fotógrafo y cómo la persistencia en un lugar acaba revelando verdades invisibles.
+
+Nicolás propone un reto práctico inspirado en la paciencia y la observación del territorio. Además, el niusleter de Fotonistas trae una invitación para quienes buscan el paraíso en el Pirineo, recordándonos que el aprendizaje fotográfico es también una experiencia de comunidad.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>

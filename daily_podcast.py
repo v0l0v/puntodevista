@@ -657,21 +657,17 @@ PROYECTO PROTAGONISTA DEL DÍA:
 
 {hist_text}
 
-Debes estructurar tu respuesta en TRES SECCIONES obligatorias separadas por:
+Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plantilla obligatoria (sin añadir texto ni etiquetas antes de cada marcador):
+
+[Título sugerente, poético y periodístico en español en una sola línea, sin comillas ni prefijos]
 {TITLE_MARKER}
+[Resumen editorial conciso en 3 párrafos para el feed y redes sociales destacando:
+1. El panorama general de las noticias de hoy (Roberto).
+2. El análisis del proyecto protagonista y su conexión histórica (Beatriz).
+3. El reto creativo del día (Nicolás).]
 {LOCUTABLE_MARKER}
-
-PRIMERA SECCIÓN:
-Un título sugerente, poético y periodístico en español para el episodio de hoy (ej: "Entre luces de neón y la memoria del papel: ecos del linaje analógico"). Solo el título.
-
-SEGUNDA SECCIÓN:
-Un resumen conciso en 3 párrafos para el feed y redes sociales destacando:
-1. El panorama general de las noticias de hoy (repasado por Roberto).
-2. El análisis del proyecto protagonista y su conexión histórica (analizado por Beatriz).
-3. El reto creativo del día (presentado por Nicolás).
-
-TERCERA SECCIÓN (GUION LOCUTABLE CORAL):
-Escribe el guion completo indicando al inicio de cada intervención la etiqueta del locutor: [ROBERTO], [BEATRIZ] o [NICOLAS], e incluyendo las pausas musicales ---PAUSA--- entre actos.
+[ROBERTO]
+[Inicio directo del guion coral con el saludo de Roberto. Cada intervención empieza con [ROBERTO], [BEATRIZ] o [NICOLAS], e incluye las pausas musicales ---PAUSA--- entre actos.]
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 - FORMATO DE DIÁLOGO: Cada cambio de voz DEBE empezar exactamente en una línea nueva con [ROBERTO], [BEATRIZ] o [NICOLAS].
@@ -725,23 +721,50 @@ def parse_summary(summary):
     resumen = ''
     locutable = summary
     remaining = summary
-    if TITLE_MARKER in summary:
-        pre, post = summary.split(TITLE_MARKER, 1)
+
+    if TITLE_MARKER in remaining:
+        pre, post = remaining.split(TITLE_MARKER, 1)
         podcast_title = pre.strip()
         remaining = post
-    loc_parts = remaining.split(LOCUTABLE_MARKER, 1)
-    if len(loc_parts) == 2:
+
+    if LOCUTABLE_MARKER in remaining:
+        # Usamos rsplit para que locutable sea siempre lo que va tras el ÚLTIMO marcador
+        loc_parts = remaining.rsplit(LOCUTABLE_MARKER, 1)
         locutable = loc_parts[1].strip()
-        resumen = loc_parts[0].strip()
+        resumen_candidate = loc_parts[0].strip()
+        if not resumen:
+            resumen = resumen_candidate
     else:
         resumen = remaining.strip()
+
+    # Si locutable todavía contiene texto huérfano antes del primer locutor [ROBERTO|BEATRIZ|NICOLAS|CLARA]
+    speaker_match = re.search(r'\[(ROBERTO|BEATRIZ|NICOLAS|CLARA)\]', locutable, re.IGNORECASE)
+    if speaker_match:
+        preamble = locutable[:speaker_match.start()].strip()
+        if preamble:
+            # Si el resumen estaba vacío o solo tenía el título, recuperamos el preámbulo como resumen
+            if not resumen or resumen == podcast_title:
+                resumen = preamble
+            locutable = locutable[speaker_match.start():].strip()
+
     if not podcast_title and resumen:
         for ln in resumen.split('\n'):
             ln = ln.strip()
-            if not ln or re.match(r'^---+', ln):
+            if not ln or re.match(r'^---+', ln) or re.match(r'^#\s*Podcast\b', ln, re.IGNORECASE):
                 continue
-            podcast_title = ln
-            break
+            m_title = re.match(r'^(?:#+\s*)?(?:Título|Titulo):\s*(.+)', ln, re.IGNORECASE)
+            if m_title:
+                podcast_title = m_title.group(1).strip()
+                break
+            if not podcast_title:
+                podcast_title = ln
+                break
+
+    # Limpiar prefijos residuales de título tipo '# Título:' o '**Título:**'
+    podcast_title = re.sub(r'^(?:#+\s*)?(?:Título|Titulo):\s*', '', podcast_title, flags=re.IGNORECASE).strip()
+    # Limpiar posibles marcadores residuales al inicio del resumen
+    resumen = re.sub(r'^(?:---[A-Z_]+---\s*)+', '', resumen).strip()
+
     return podcast_title, resumen, locutable
 
 
@@ -867,10 +890,11 @@ def generate_audio(text, out_path, episode_date=None):
             
             splits = pattern.split(b)
             if len(splits) == 1:
-                dialogue_turns.append((current_speaker, splits[0].strip()))
-            else:
                 if splits[0].strip():
                     dialogue_turns.append((current_speaker, splits[0].strip()))
+            else:
+                # Si hay etiquetas de locutor en el bloque, descartamos splits[0]
+                # para asegurar que ningún preámbulo, metadato o resumen huérfano sea locutado.
                 for idx_s in range(1, len(splits), 2):
                     speaker_tag = splits[idx_s].upper()
                     turn_text = splits[idx_s + 1].strip()

@@ -33,3 +33,4 @@ tmp_audio_render/
 *.lock
 *.pid
 .DS_Store
+.*_circuit.json
