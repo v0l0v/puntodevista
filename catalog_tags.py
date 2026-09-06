@@ -11,9 +11,11 @@ import sqlite3
 import html
 import collections
 
+from data_paths import get_db_path, get_data_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(DIR, 'archive.db')
-FEEDS_PATH = os.path.join(DIR, 'feeds.json')
+DB_PATH = get_db_path()
+FEEDS_PATH = get_data_path('feeds.json')
 
 TAG_DEFINITIONS = {
     # ── GÉNEROS Y TEMÁTICAS NUCLEARES ──

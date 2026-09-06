@@ -17,9 +17,11 @@ import urllib.request
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from data_paths import get_db_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(DIR, 'resumenes')
-DB_PATH = os.path.join(DIR, 'archive.db')
+DB_PATH = get_db_path()
 CONFIG_PATH = os.path.join(DIR, 'config.json')
 
 def load_config():

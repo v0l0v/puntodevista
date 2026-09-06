@@ -16,12 +16,26 @@ if os.path.exists(cfg_file):
     except Exception:
         pass
 
+import socket
+import requests
+
+def _ensure_warp_proxy():
+    if 'HTTPS_PROXY' not in os.environ:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                if s.connect_ex(('127.0.0.1', 40000)) == 0:
+                    os.environ['HTTPS_PROXY'] = 'socks5h://127.0.0.1:40000'
+        except Exception:
+            pass
+
+_ensure_warp_proxy()
+
 GEMINI_KEY = os.environ.get('GEMINI_KEY') or CONFIG.get('GEMINI_KEY')
 GEMINI_MODELS = [
     os.environ.get('GEMINI_MODEL'),
-    'gemini-3.1-flash-lite',
-    'gemini-3.5-flash-lite',
-    'gemini-3.6-flash',
+    'gemini-flash-lite-latest',
+    'gemini-flash-latest',
 ]
 GEMINI_MODELS = [m for m in GEMINI_MODELS if m]
 
@@ -50,6 +64,7 @@ def save_cache():
 def call_gemini(prompt, max_retries=2):
     if not GEMINI_KEY:
         return None
+    _ensure_warp_proxy()
     body = {
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
@@ -57,17 +72,20 @@ def call_gemini(prompt, max_retries=2):
             'maxOutputTokens': 8192,
         }
     }
-    data = json.dumps(body).encode('utf-8')
 
     for model_name in GEMINI_MODELS:
         url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
-        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
         for attempt in range(max_retries):
             try:
-                with urllib.request.urlopen(req, timeout=30) as resp:
-                    result = json.loads(resp.read().decode('utf-8'))
-                    return result['candidates'][0]['content']['parts'][0]['text'].strip()
-            except Exception as e:
+                resp = requests.post(url, json=body, timeout=30)
+                if resp.status_code == 200:
+                    res_json = resp.json()
+                    candidates = res_json.get('candidates', [])
+                    if candidates and 'content' in candidates[0]:
+                        parts = candidates[0]['content'].get('parts', [])
+                        if parts and 'text' in parts[0]:
+                            return parts[0]['text'].strip()
+            except Exception:
                 time.sleep(1 * (attempt + 1))
     print(f"⚠️ Error API traducción Gemini en todos los modelos de respaldo")
     return None

@@ -24,3 +24,8 @@ def get_data_path(filename: str) -> str:
 def get_data_dir() -> str:
     """Devuelve la ruta absoluta al directorio data/."""
     return DATA_DIR
+
+
+def get_db_path() -> str:
+    """Devuelve la ruta canónica a archive.db (priorizando data/ y fallback a raíz)."""
+    return get_data_path('archive.db')

@@ -30,12 +30,12 @@ if not os.environ.get('TMPDIR'):
     os.makedirs(user_tmp, exist_ok=True)
     os.environ['TMPDIR'] = user_tmp
 
-from data_paths import get_data_path
+from data_paths import get_data_path, get_db_path
 
 OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = get_data_path('podcast_meta.json')
-DB_PATH = os.path.join(DIR, 'archive.db')
+DB_PATH = get_db_path()
 CONFIG_PATH = os.path.join(DIR, 'config.json')
 
 CONFIG = {}

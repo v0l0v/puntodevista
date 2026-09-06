@@ -7,16 +7,30 @@ atmósferas estéticas, proyectos conceptualmente afines y búsquedas híbridas 
 
 import json
 import os
+import socket
 import sqlite3
 import struct
 import sys
 import time
-import urllib.request
+import requests
 import sqlite_vec
+from data_paths import get_db_path
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(DIR, 'archive.db')
+DEFAULT_DB_PATH = get_db_path()
 CONFIG_PATH = os.path.join(DIR, 'config.json')
+
+def _ensure_warp_proxy():
+    if 'HTTPS_PROXY' not in os.environ:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                if s.connect_ex(('127.0.0.1', 40000)) == 0:
+                    os.environ['HTTPS_PROXY'] = 'socks5h://127.0.0.1:40000'
+        except Exception:
+            pass
+
+_ensure_warp_proxy()
 
 CONFIG = {}
 if os.path.exists(CONFIG_PATH):
@@ -31,8 +45,10 @@ EMBEDDING_MODEL = 'gemini-embedding-001'
 EMBED_DIM = 3072
 
 
-def get_connection(db_path=DB_PATH):
+def get_connection(db_path=None):
     """Crea una conexión SQLite con la extensión sqlite-vec cargada."""
+    if db_path is None:
+        db_path = get_db_path()
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.enable_load_extension(True)
@@ -41,7 +57,7 @@ def get_connection(db_path=DB_PATH):
     return conn
 
 
-def init_vector_tables(db_path=DB_PATH):
+def init_vector_tables(db_path=None):
     """Crea las tablas virtuales de vectores vec0 si no existen."""
     with get_connection(db_path) as conn:
         conn.execute(f"""
@@ -61,20 +77,16 @@ def get_embedding(text):
     """Obtiene el vector de 3072 dimensiones desde la API de Gemini."""
     if not GEMINI_KEY:
         return None
+    _ensure_warp_proxy()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{EMBEDDING_MODEL}:embedContent?key={GEMINI_KEY}"
     body = {
         'content': {'parts': [{'text': text[:2500]}]}
     }
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(body).encode('utf-8'),
-        headers={'Content-Type': 'application/json'},
-        method='POST'
-    )
     for attempt in range(3):
         try:
-            with urllib.request.urlopen(req, timeout=20) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
+            resp = requests.post(url, json=body, timeout=20)
+            if resp.status_code == 200:
+                data = resp.json()
                 return data.get('embedding', {}).get('values')
         except Exception:
             time.sleep(1 * (attempt + 1))
@@ -86,7 +98,7 @@ def serialize_vector(vector):
     return struct.pack(f'{len(vector)}f', *vector)
 
 
-def index_missing_embeddings(db_path=DB_PATH, batch_limit=None):
+def index_missing_embeddings(db_path=None, batch_limit=None):
     """Genera embeddings para todos los artículos que aún no estén vectorizados."""
     init_vector_tables(db_path)
 
@@ -128,7 +140,7 @@ def index_missing_embeddings(db_path=DB_PATH, batch_limit=None):
         return count
 
 
-def index_missing_podcasts(db_path=DB_PATH):
+def index_missing_podcasts(db_path=None):
     """Genera embeddings para episodios del podcast pendientes."""
     init_vector_tables(db_path)
 
@@ -162,7 +174,7 @@ def index_missing_podcasts(db_path=DB_PATH):
         return count
 
 
-def search_semantic(query_text, limit=10, source=None, db_path=DB_PATH):
+def search_semantic(query_text, limit=10, source=None, db_path=None):
     """Búsqueda conceptual por significado estético y emocional en sqlite-vec."""
     init_vector_tables(db_path)
     vec = get_embedding(query_text)
@@ -215,7 +227,7 @@ def search_semantic(query_text, limit=10, source=None, db_path=DB_PATH):
         return rows
 
 
-def find_visual_lineage(primary_article_id, limit=3, db_path=DB_PATH):
+def find_visual_lineage(primary_article_id, limit=3, db_path=None):
     """
     Encuentra las joyas históricas más afines conceptualmente para el Linaje Visual
     utilizando similitud de vectores en sqlite-vec.
@@ -280,7 +292,7 @@ def find_visual_lineage(primary_article_id, limit=3, db_path=DB_PATH):
         return filtered
 
 
-def search_hybrid(query_text, limit=10, db_path=DB_PATH):
+def search_hybrid(query_text, limit=10, db_path=None):
     """
     Búsqueda Híbrida: Combina Búsqueda Semántica Vectorial (sqlite-vec)
     con Búsqueda de Texto Completo FTS5 usando Reciprocal Rank Fusion (RRF).
@@ -333,7 +345,7 @@ def search_hybrid(query_text, limit=10, db_path=DB_PATH):
     return results
 
 
-def search_podcasts_semantic(query_text, limit=5, db_path=DB_PATH):
+def search_podcasts_semantic(query_text, limit=5, db_path=None):
     """Búsqueda semántica en episodios del podcast con sqlite-vec."""
     init_vector_tables(db_path)
     vec = get_embedding(query_text)

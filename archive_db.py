@@ -10,11 +10,15 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from data_paths import get_db_path
+
 DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_DB_PATH = os.path.join(DIR, 'archive.db')
+DEFAULT_DB_PATH = get_db_path()
 
 
-def get_connection(db_path=DEFAULT_DB_PATH):
+def get_connection(db_path=None):
+    if db_path is None:
+        db_path = get_db_path()
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode = WAL;")
@@ -22,7 +26,7 @@ def get_connection(db_path=DEFAULT_DB_PATH):
     return conn
 
 
-def init_db(db_path=DEFAULT_DB_PATH):
+def init_db(db_path=None):
     """Crea las tablas relacionales y virtuales FTS5 con triggers de sincronización."""
     with get_connection(db_path) as conn:
         cursor = conn.cursor()
@@ -196,7 +200,7 @@ def upsert_podcast(conn, item):
     return True
 
 
-def search_articles(query, limit=20, mode='hybrid', db_path=DEFAULT_DB_PATH):
+def search_articles(query, limit=20, mode='hybrid', db_path=None):
     """Búsqueda sobre artículos usando sqlite-vec (híbrido o semántico) con fallback FTS5."""
     try:
         import vector_search
@@ -241,7 +245,7 @@ def search_articles(query, limit=20, mode='hybrid', db_path=DEFAULT_DB_PATH):
             return []
 
 
-def search_podcasts(query, limit=10, db_path=DEFAULT_DB_PATH):
+def search_podcasts(query, limit=10, db_path=None):
     """Búsqueda sobre episodios del podcast usando sqlite-vec con fallback FTS5."""
     try:
         import vector_search
@@ -281,7 +285,7 @@ def search_podcasts(query, limit=10, db_path=DEFAULT_DB_PATH):
             return []
 
 
-def get_stats(db_path=DEFAULT_DB_PATH):
+def get_stats(db_path=None):
     """Estadísticas globales de la base de datos."""
     with get_connection(db_path) as conn:
         total_articles = conn.execute("SELECT COUNT(*) FROM articles;").fetchone()[0]
