@@ -18,3 +18,8 @@ tts_comparison/
 translations_cache.json
 test_*.py
 test_*.txt
+*.log
+cron_feeds.log
+cron.log
+tmp_audio/
+tmp_audio_render/
