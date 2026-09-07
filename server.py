@@ -431,8 +431,62 @@ def scrape_booooooom_article(url):
     now = time.time()
     if url in BOOM_ARTICLE_CACHE and now - BOOM_ARTICLE_CACHE[url]['time'] < 300:
         return BOOM_ARTICLE_CACHE[url]['data']
-    md = firecrawl_scrape(url, timeout=60, selector='.post-content')
-    if md and len(md.strip()) < 500:
+
+    # 1. Intentar extracción directa vía BeautifulSoup (rápida, limpia y con los feature paragraphs intactos)
+    try:
+        import urllib.request
+        from bs4 import BeautifulSoup
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
+        html = urllib.request.urlopen(req, timeout=15).read().decode('utf-8')
+        soup = BeautifulSoup(html, 'html.parser')
+
+        paragraphs = []
+        seen_texts = set()
+        promo_triggers = ['A Letter From the Founder', 'Tomorrow’s Talent', 'Secret Email Club', 'Related Articles', 'Submit your work']
+
+        for fp in soup.select('.custom-post__feature-paragraph, .single-post .entry-content, article .entry-content'):
+            for el in fp.find_all(['p', 'blockquote']):
+                txt = el.get_text(strip=True)
+                if not txt or len(txt) < 15 or txt in seen_texts:
+                    continue
+                if any(tr.lower() in txt.lower() for tr in promo_triggers):
+                    continue
+                seen_texts.add(txt)
+                paragraphs.append(f'<p>{el.decode_contents().strip()}</p>')
+
+        images = []
+        seen_imgs = set()
+        promo_img_patterns = ['boom-studio', 'TT5', 'secret-email', 'avatar', 'pixel', 'logo', 'banner']
+        for img in soup.select('.post-content img, .custom-post img, .single-post img'):
+            src = img.get('src') or img.get('data-src') or ''
+            if not src or any(p in src.lower() for p in promo_img_patterns) or src in seen_imgs:
+                continue
+            seen_imgs.add(src)
+            alt = img.get('alt', '')
+            images.append({'url': src, 'alt': alt})
+
+        credits = []
+        seen_names = set()
+        for a in soup.select('.post-content a, .custom-post a, .single-post a'):
+            href = a.get('href', '')
+            txt = a.get_text(strip=True)
+            if re.search(r"['’]s (?:Website|Portfolio|Site)| on (?:Instagram|Twitter|X|Facebook)", txt, re.I):
+                name = re.sub(r"['’]s (?:Website|Portfolio|Site)| on (?:Instagram|Twitter|X|Facebook)", '', txt, flags=re.I).strip()
+                if name and name.lower() not in seen_names:
+                    seen_names.add(name.lower())
+                    credits.append({'name': name, 'url': href, 'platform': boom_credit_platform(txt, href)})
+
+        content = '\n'.join(paragraphs)
+        if content and len(content.strip()) > 50:
+            data = {'status': 'ok', 'content': content, 'images': images, 'credits': credits}
+            BOOM_ARTICLE_CACHE[url] = {'data': data, 'time': now}
+            return data
+    except Exception as e_direct:
+        logger.warning(f"Extracción directa de Booooooom falló ({e_direct}), probando Firecrawl...")
+
+    # 2. Fallback a Firecrawl
+    md = firecrawl_scrape(url, timeout=60, selector='.custom-post, .single-post, .post-content')
+    if md and len(md.strip()) < 300:
         md = firecrawl_scrape(url, timeout=60)
     if not md:
         return None
@@ -449,7 +503,7 @@ def scrape_booooooom_article(url):
         r'Join our Secret Email Club',
         r'\*\*Related Articles\*\*',
         r'Twitter Widget Iframe',
-        r'^#{1,6}\s+',
+        r'^#{1,6}\s+Share',
     ):
         m = re.search(pat, md, re.MULTILINE)
         if m and m.start() < cut:
@@ -470,7 +524,7 @@ def scrape_booooooom_article(url):
     credit_pat = re.compile(r"(?:['’]s (?:Website|Portfolio|Site|Blog))|(?: on (?:Instagram|Twitter|Facebook|Flickr|Vimeo|YouTube|Bluesky|TikTok))$", re.I)
     for cm in re.finditer(r'^_?\[([^\]]+)\]\((https?://[^)]+)\)_?[ \t]*$', md, re.MULTILINE):
         raw_name = cm.group(1).strip().strip('_')
-        url = cm.group(2).strip()
+        url_cred = cm.group(2).strip()
         if not credit_pat.search(raw_name):
             continue
         name = re.sub(r"[’']s (?:Website|Portfolio|Site|Blog)$", '', raw_name, flags=re.I)
@@ -478,9 +532,8 @@ def scrape_booooooom_article(url):
         if not name or name.lower() in seen_names:
             continue
         seen_names.add(name.lower())
-        credits.append({'name': name, 'url': url, 'platform': boom_credit_platform(raw_name, url)})
+        credits.append({'name': name, 'url': url_cred, 'platform': boom_credit_platform(raw_name, url_cred)})
 
-    # Los créditos se muestran aparte en el frontend, fuera del contenido
     content_md = re.sub(r'^_?\[[^\]]+\]\((https?://[^)]+)\)_?[ \t]*\n?', '', md, flags=re.MULTILINE)
 
     data = {'status': 'ok', 'content': md_to_html(content_md), 'images': images, 'credits': credits}
