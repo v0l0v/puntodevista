@@ -1,21 +1,23 @@
 {
-  "status": "healthy",
-  "generated_at": "2026-09-06T19:48:30.058999+00:00",
-  "issues": [],
+  "status": "degraded",
+  "generated_at": "2026-09-07T05:03:03.710612+00:00",
+  "issues": [
+    "Circuit Breaker activo (187s restantes)"
+  ],
   "pipeline": {
-    "last_feeds_update": "2026-09-06T18:39:44.365122+00:00",
-    "warp_proxy_active": false,
+    "last_feeds_update": "2026-09-07T05:02:36.211160+00:00",
+    "warp_proxy_active": true,
     "circuit_breaker": {
-      "state": "CLOSED",
-      "reason": null,
-      "remaining_seconds": 0
+      "state": "OPEN",
+      "reason": "Cuota de Gemini API agotada (HTTP 429 en todos los modelos)",
+      "remaining_seconds": 187
     }
   },
   "feeds": {
-    "total_entries": 382,
+    "total_entries": 390,
     "sources_tracked": 10,
     "sources_breakdown": {
-      "odlp": 132,
+      "odlp": 140,
       "booooooom": 7,
       "colossal": 60,
       "shootitwithfilm": 30,
@@ -28,8 +30,8 @@
     }
   },
   "database": {
-    "articles_total": 1151,
-    "podcasts_total": 33,
+    "articles_total": 1153,
+    "podcasts_total": 34,
     "status": "ok"
   },
   "podcast": {
@@ -39,10 +41,10 @@
   },
   "system": {
     "disk": {
-      "total_gb": 232.6,
-      "used_gb": 190.9,
-      "free_gb": 29.8,
-      "free_percent": 12.8
+      "total_gb": 73.6,
+      "used_gb": 18.6,
+      "free_gb": 52.0,
+      "free_percent": 70.6
     }
   }
 }
