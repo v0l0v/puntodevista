@@ -17,14 +17,15 @@ from data_paths import get_data_path
 logger = logging.getLogger('pdv.translator')
 
 GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3.6-flash')
+_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
 
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
-    'gemini-3.6-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-flash-latest',
     'gemini-3.5-flash',
-    'gemini-3.7-flash',
-    'gemini-3.1-flash-lite-preview',
+    'gemini-3.6-flash',
+    'gemini-flash-lite-latest',
 ]
 # Eliminar duplicados preservando el orden
 GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
@@ -128,8 +129,11 @@ def call_gemini(prompt, max_retries=2):
                         if parts and 'text' in parts[0]:
                             return parts[0]['text'].strip()
                 elif resp.status_code == 429:
+                    if attempt < max_retries - 1:
+                        time.sleep(3.0 * (attempt + 1))
+                        continue
                     quota_exhausted_count += 1
-                    break  # No reintentar en bucle el mismo modelo si la cuota está agotada
+                    break
                 elif resp.status_code == 404:
                     break  # Modelo no soportado en esta versión de API
             except Exception:
