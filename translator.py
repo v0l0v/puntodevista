@@ -17,15 +17,16 @@ from data_paths import get_data_path
 logger = logging.getLogger('pdv.translator')
 
 GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
+_PREFERRED_MODEL = get_gemini_model('gemini-3-flash-preview')
 
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
+    'gemini-3-flash-preview',
+    'gemma-4-26b-a4b-it',
     'gemini-3.5-flash-lite',
     'gemini-flash-latest',
     'gemini-3.5-flash',
     'gemini-3.6-flash',
-    'gemini-flash-lite-latest',
 ]
 # Eliminar duplicados preservando el orden
 GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
