@@ -376,6 +376,19 @@ function selectEpisode(card) {
 function openPodcastResumen(e) {
   const body = document.getElementById('modal-body');
   if (!body) return;
+  let museumHtml = '';
+  if (e.museum_piece && (e.museum_piece.title || e.museum_piece.institution)) {
+    const mp = e.museum_piece;
+    museumHtml =
+      '<div class="modal-museum-card" style="margin-top:2rem;padding:1.25rem;background:rgba(255,255,255,0.04);border-left:3px solid #ff0100;border-radius:4px;">' +
+        '<div style="font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;color:#ff0100;font-weight:700;margin-bottom:0.4rem;">🏛️ Joya de Archivo · ' + esc(mp.institution || 'Museo / Archivo Histórico') + '</div>' +
+        '<div style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem;">' + esc(mp.title || 'Obra') + (mp.date ? ' <span style="font-weight:normal;opacity:0.65;">(' + esc(mp.date) + ')</span>' : '') + '</div>' +
+        '<div style="font-size:0.88rem;opacity:0.85;margin-bottom:0.35rem;">Fotógrafo/a: <strong>' + esc(mp.photographer || 'Autor histórico') + '</strong></div>' +
+        (mp.technique ? '<div style="font-size:0.8rem;opacity:0.65;margin-bottom:0.4rem;">Técnica / Soporte: ' + esc(mp.technique) + '</div>' : '') +
+        (mp.curatorial_notes ? '<div style="font-size:0.84rem;opacity:0.75;line-height:1.5;margin-top:0.5rem;font-style:italic;">"' + esc(mp.curatorial_notes) + '"</div>' : '') +
+        (mp.museum_url ? '<div style="margin-top:0.75rem;"><a href="' + esc(mp.museum_url) + '" target="_blank" rel="noopener" style="display:inline-block;font-size:0.8rem;color:#ff0100;text-decoration:none;border-bottom:1px dotted #ff0100;">Ver registro original en la colección del museo →</a></div>' : '') +
+      '</div>';
+  }
   body.innerHTML =
     '<div class="modal-tools">' +
     '<button class="modal-tool-btn" onclick="closeModal()">← Volver</button>' +
@@ -386,6 +399,7 @@ function openPodcastResumen(e) {
     '</div>' +
     '<div class="modal-article"><div class="modal-article-content">' +
     (e.description ? fmtDesc(e.description) : '<p style="opacity:0.4">Sin descripción</p>') +
+    museumHtml +
     '</div></div>';
   document.getElementById('modal').classList.remove('hide');
 }

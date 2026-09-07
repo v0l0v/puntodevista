@@ -37,6 +37,7 @@ PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = get_data_path('podcast_meta.json')
 DB_PATH = get_db_path()
 from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_config, ensure_warp_proxy
+from museum_archive import get_museum_treasure
 
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
@@ -598,8 +599,8 @@ def get_historical_counterpart(primary_article):
     return None, 'none'
 
 
-def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num):
-    """Construye el prompt editorial para Roberto en 4 Actos."""
+def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num, museum_piece=None):
+    """Construye el prompt editorial para Roberto, Beatriz y Nicolás en 4 Actos."""
     d = episode_date or date.today()
     fecha_completa = fmt_fecha_completa_es(d)
 
@@ -647,10 +648,33 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
 - Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:500]}
 """
 
+    museum_text = ""
+    inst_mention = historical.get('title') if historical else 'el archivo histórico'
+    if museum_piece:
+        inst = museum_piece.get('institution', 'Colección de Museo')
+        m_tit = museum_piece.get('title', 'Obra patrimonial')
+        m_aut = museum_piece.get('photographer', 'Autor histórico')
+        m_fecha = museum_piece.get('date', 'Fondo histórico')
+        m_tec = museum_piece.get('technique', '')
+        m_notas = museum_piece.get('curatorial_notes', '')
+
+        museum_text = f"""
+🏛️ JOYA DEL ARCHIVO / LINAJE DE MUSEO ({inst.upper()}):
+- Institución custodia: {inst}
+- Obra patrimonial: {m_tit} ({m_fecha})
+- Fotógrafo/a o artífice: {m_aut}
+- Técnica / Fondo: {m_tec or 'Fondo fotográfico patrimonial'}
+- Notas curatoriales del museo: {m_notas}
+
+⚠️ INSTRUCCIÓN EDITORIAL PARA BEATRIZ (LINAJE DE MUSEO):
+En el Acto 2, Beatriz enriquece su análisis conectando la mirada del proyecto contemporáneo de hoy con esta joya histórica custodiada en {inst}. Cita expresamente la institución ({inst}) y a {m_aut} con '{m_tit}', mostrando a la audiencia cómo esta inquietud o técnica visual ya latía en las colecciones de los grandes centros y museos del mundo.
+"""
+        inst_mention = f"{inst} con '{m_tit}' de {m_aut}"
+
     return f"""Eres el equipo de redacción y locución de 'Punto de vista', el podcast diario de cultura visual y fotografía.
 Equipo de locutores:
 - ROBERTO (Conductor principal): Cercano, dinámico, culto, con excelente ritmo periodístico. Abre el podcast, repasa las noticias del día, presenta a los compañeros y hace el cierre.
-- BEATRIZ (Especialista en Historia y Crítica): Lúcida, apasionada y analítica. Narra la noticia y proyecto central de la jornada y profundiza en el Linaje Visual conectando con el archivo histórico.
+- BEATRIZ (Especialista en Historia y Crítica): Lúcida, apasionada y analítica. Narra la noticia y proyecto central de la jornada y profundiza en el Linaje Visual conectando con el archivo histórico y las colecciones de museos internacionales.
 - NICOLÁS (Maestro de Taller y Práctica): Práctico, motivador, técnico y reflexivo. Presenta el reto creativo del día para salir a hacer fotos.
 
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
@@ -666,13 +690,15 @@ PROYECTO PROTAGONISTA DEL DÍA:
 
 {hist_text}
 
+{museum_text}
+
 Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plantilla obligatoria (sin añadir texto ni etiquetas antes de cada marcador):
 
 [Título sugerente, poético y periodístico en español en una sola línea, sin comillas ni prefijos]
 {TITLE_MARKER}
 [Resumen editorial conciso en 3 párrafos para el feed y redes sociales destacando:
 1. El panorama general de las noticias de hoy (Roberto).
-2. El análisis del proyecto protagonista y su conexión histórica (Beatriz).
+2. El análisis del proyecto protagonista y su linaje histórico con los fondos de museo (Beatriz).
 3. El reto creativo del día (Nicolás).]
 {LOCUTABLE_MARKER}
 [ROBERTO]
@@ -715,7 +741,7 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad crítica, ensayística y sensorial.
    - Duración ampliada: entre 4:00 y 5:00 minutos de locución (~550 a 680 palabras).
    - Analiza la mirada, la atmósfera, la composición, las decisiones del fotógrafo y el dilema estético.
-   - Conecta con el LINAJE VISUAL ({historical.get('title') if historical else 'el archivo histórico'}): "Porque ninguna mirada nace en el vacío...", explicando con detalle el diálogo entre ambas obras y autores.
+   - Conecta con el LINAJE VISUAL y la JOYA DE MUSEO ({inst_mention}): "Porque ninguna mirada nace en el vacío...", explicando con detalle el diálogo entre ambas miradas y citando expresamente la institución y la obra histórica.
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
@@ -1102,7 +1128,8 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     is_test = '--test' in sys.argv or os.environ.get('TEST_RUN') == '1'
-    clean_args = [a for a in sys.argv[1:] if a != '--test']
+    is_dry = '--dry-run' in sys.argv
+    clean_args = [a for a in sys.argv[1:] if a not in ('--test', '--dry-run')]
     today = date.fromisoformat(clean_args[0]) if clean_args else date.today()
     ep_num = get_episode_number(today)
     test_tag = " [MODO PRUEBA]" if is_test else ""
@@ -1130,8 +1157,34 @@ def main():
     if historical:
         print(f"  🧬 Linaje histórico ({lineage_mode}): [{historical.get('source', '').upper()}] {historical.get('title')}")
 
+    # Búsqueda de Linaje de Museo / Archivo Internacional
+    museum_piece = None
+    try:
+        keywords = []
+        if primary.get('photographer'):
+            keywords.append(primary.get('photographer'))
+        title_words = re.findall(r'\b[a-zA-ZáéíóúÁÉÍÓÚñÑ]{4,}\b', primary.get('title', ''))
+        keywords.extend(title_words[:3])
+        museum_piece = get_museum_treasure(keywords=keywords)
+        if museum_piece:
+            print(f"  🏛️ Joya de Museo / Archivo: [{museum_piece.get('institution')}] {museum_piece.get('title')} ({museum_piece.get('photographer')})")
+    except Exception as e:
+        print(f"  ⚠️ No se pudo obtener pieza de museo: {e}")
+
     # 3. Construir prompt y llamar a Gemini
-    prompt = build_editorial_podcast_prompt(articles, primary, historical, today, ep_num)
+    prompt = build_editorial_podcast_prompt(articles, primary, historical, today, ep_num, museum_piece=museum_piece)
+    if is_dry:
+        print("\n--- PROMPT PREVIEW (--dry-run) ---")
+        lines = prompt.splitlines()
+        for idx, l in enumerate(lines):
+            if any(k in l for k in ['🏛️', 'JOYA DEL ARCHIVO', 'LINAJE DE MUSEO', 'ACTO 2:', 'PROYECTO PROTAGONISTA']):
+                print(f"  {l}")
+                for sub in lines[idx+1:idx+8]:
+                    if sub.strip().startswith(('1.', '2.', '3.', '4.', 'Debes estructurar')):
+                        break
+                    print(f"    {sub}")
+        print("--- FIN PROMPT PREVIEW ---")
+        return
     print('  Enviando prompt editorial a Gemini...')
     summary = gemini_request(prompt)
 
@@ -1227,6 +1280,16 @@ def main():
                 'lineage_mode': lineage_mode,
                 'historical_source': historical.get('source', '') if historical else '',
                 'historical_title': historical.get('title', '') if historical else '',
+                'museum_piece': {
+                    'institution': museum_piece.get('institution', ''),
+                    'title': museum_piece.get('title', ''),
+                    'photographer': museum_piece.get('photographer', ''),
+                    'date': museum_piece.get('date', ''),
+                    'technique': museum_piece.get('technique', ''),
+                    'curatorial_notes': museum_piece.get('curatorial_notes', ''),
+                    'image_url': museum_piece.get('image_url', ''),
+                    'museum_url': museum_piece.get('museum_url', ''),
+                } if museum_piece else None,
                 'size': size,
                 'duration': duration,
             }

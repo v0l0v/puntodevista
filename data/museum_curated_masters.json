@@ -1,0 +1,102 @@
+[
+  {
+    "id": "niepce-le-gras-1826",
+    "institution": "Gernsheim Collection (Harry Ransom Center, Universidad de Texas en Austin)",
+    "title": "Punto de vista desde la ventana en Le Gras",
+    "photographer": "Nicéphore Niépce",
+    "date": "1826-1827",
+    "technique": "Heliografía sobre placa de peltre pulido sensibilizada con betún de Judea disuelto en aceite de lavanda",
+    "curatorial_notes": "Considerada la fotografía conservada más antigua de la historia del mundo. Niépce colocó una placa de peltre en una cámara oscura orientada hacia el patio de su finca familiar en Saint-Loup-de-Varennes. La exposición requirió al menos ocho horas de luz solar directa, motivo por el cual el sol parece iluminar ambos lados de los edificios simultáneamente. Helmut Gernsheim redescubrió la placa en 1952 olvidada en un baúl en Londres tras haber estado desaparecida durante más de medio siglo.",
+    "tags": ["orígenes", "invento", "química", "arquitectura", "luz", "memoria", "paisaje", "tiempo", "peltre", "niepce", "gernsheim"]
+  },
+  {
+    "id": "ccp-smith-minamata-1971",
+    "institution": "Center for Creative Photography (CCP, Universidad de Arizona, Tucson)",
+    "title": "Tomoko Uemura en su baño (Archivo y hojas de contacto)",
+    "photographer": "W. Eugene Smith",
+    "date": "1971-1972",
+    "technique": "Gelatin silver print (copia de época) y tiras de prueba de laboratorio con anotaciones manuscritas a lápiz de cera",
+    "curatorial_notes": "El archivo personal de Eugene Smith en Tucson conserva las hojas de contacto originales de su desgarrador ensayo sobre el envenenamiento por mercurio en Minamata, Japón. Los negativos revelan la paciencia infinita de Smith: antes de conseguir la emblemática composición de la madre bañando a su hija afectada, Smith pasó meses conviviendo con la familia sin tocar la cámara para ganarse su confianza y respeto mutuo. Las tiras de prueba conservan las instrucciones precisas de quemado y reserva que Smith aplicaba en el positivado para dotar a la escena de una cualidad pietista y casi renacentista.",
+    "tags": ["fotoperiodismo", "ensayo", "documental", "compromiso", "laboratorio", "familia", "cuidado", "retrato", "intimo", "smith", "tucson"]
+  },
+  {
+    "id": "niepce-museum-chevalier-1839",
+    "institution": "Musée Nicéphore-Niépce (Chalon-sur-Saône, Francia)",
+    "title": "Cámara oscura original de madera de nogal y primer diario de experimentos de Daguerre",
+    "photographer": "Vincent Chevalier y Nicéphore Niépce",
+    "date": "1828-1839",
+    "technique": "Cámara de cajón deslizante con prisma de inversión y diario manuscrito con fórmulas de fijado",
+    "curatorial_notes": "El museo de Chalon custodia una de las escasas cámaras de cajón primitivas construidas por el óptico parisino Vincent Chevalier para los ensayos de Niépce. Acompaña al objeto el cuaderno de notas donde se constatan las dudas iniciales sobre cómo detener la acción de la luz en las sales de plata antes de que la imagen se ennegreciera por completo. Es el testimonio tangible de que la fotografía nació como un problema físico y químico de fijación del tiempo antes de ser considerada una disciplina artística.",
+    "tags": ["camara", "tecnica", "patente", "laboratorio", "historia", "quimica", "optica", "francia", "museo"]
+  },
+  {
+    "id": "ccp-weston-nautilus-1927",
+    "institution": "Center for Creative Photography (CCP, Tucson)",
+    "title": "Nautilus (Negativo original y notas de exposición)",
+    "photographer": "Edward Weston",
+    "date": "1927",
+    "technique": "Copia por contacto a la gelatina de plata a partir de negativo de 8x10 pulgadas",
+    "curatorial_notes": "Los diarios de campo (Daybooks) conservados en el CCP de Tucson detallan cómo Weston pasó semanas encerrado en su estudio de Glendale buscando la iluminación precisa para la caracola de nautilus. La ficha técnica del archivo constata una exposición de más de cuatro horas y media a diafragma f/64 para conseguir una nitidez absoluta que despojara al objeto de su contexto natural y lo elevara a una forma escultórica pura, anticipando la fundación del influyente Grupo f/64.",
+    "tags": ["forma", "f64", "gran formato", "naturaleza", "estudio", "pureza", "luz", "weston", "tucson"]
+  },
+  {
+    "id": "mep-frank-the-americans-1955",
+    "institution": "Maison Européenne de la Photographie (MEP, París)",
+    "title": "Maqueta de trabajo de 'Les Américains' con hojas de contacto seleccionadas",
+    "photographer": "Robert Frank",
+    "date": "1955-1958",
+    "technique": "Hojas de contacto Leica de 35 mm con marcas de encuadre en lápiz graso rojo y tirajes de autor",
+    "curatorial_notes": "La MEP custodia una de las maquetas de trabajo fundamentales de la historia del fotolibro: el borrador de 'Les Américains', publicado inicialmente en París por Robert Delpire en 1958 antes de su edición en Estados Unidos. Las hojas de contacto muestran cómo Robert Frank disparaba desde la cadera con su Leica, sacrificando la nitidez académica y el horizonte recto en favor del ritmo poético, el desencanto y la soledad del automóvil y la carretera.",
+    "tags": ["calle", "leica", "35mm", "fotolibro", "viaje", "documental", "america", "ritmo", "frank", "mep", "paris"]
+  },
+  {
+    "id": "va-talbot-pencil-of-nature-1844",
+    "institution": "Victoria and Albert Museum (V&A, Londres)",
+    "title": "The Open Door (La puerta abierta), de 'The Pencil of Nature'",
+    "photographer": "William Henry Fox Talbot",
+    "date": "1844",
+    "technique": "Calotipo (dibujo fotogénico en papel salado sensibilizado con nitrato de plata)",
+    "curatorial_notes": "Fox Talbot incluyó esta imagen en la primera publicación comercial ilustrada enteramente con fotografías de la historia. En el texto que acompaña a la lámina en el V&A, Talbot reflexiona sobre cómo la cámara registra de forma democrática e imparcial tanto la escoba apoyada contra la pared como la arquitectura señorial. El autor la describió como una de las primeras obras donde la fotografía reclamaba su derecho a dialogar con la pintura holandesa del siglo XVII.",
+    "tags": ["calotipo", "origenes", "cotidiano", "luz", "puerta", "casa", "filosofia", "talbot", "va", "londres"]
+  },
+  {
+    "id": "met-evans-alabama-1936",
+    "institution": "The Metropolitan Museum of Art (The Met, Nueva York)",
+    "title": "Allie Mae Burroughs, esposa de un aparcero del condado de Hale, Alabama",
+    "photographer": "Walker Evans",
+    "date": "1936",
+    "technique": "Gelatin silver print (copia de época sobre papel fibroso)",
+    "curatorial_notes": "Evans realizó esta fotografía durante el encargo de la Farm Security Administration que daría pie al libro 'Elogiemos ahora a hombres famosos' junto al escritor James Agee. En los archivos de The Met se documenta la negativa tajante de Evans a dramatizar la miseria: situó a Allie Mae frontalmente contra la pared de madera sin pintar de su cabaña, empleando una cámara de placas de 8x10 con luz solar indirecta para devolverle una dignidad silenciosa, libre de sentimentalismo condescendiente.",
+    "tags": ["documental", "granja", "resistencia", "retrato", "dignidad", "fsa", "madera", "evans", "met", "nueva york"]
+  },
+  {
+    "id": "ccp-winogrand-contacts-1964",
+    "institution": "Center for Creative Photography (CCP, Tucson)",
+    "title": "Fondo Garry Winogrand: Los 250.000 negativos póstumos y hojas de contacto",
+    "photographer": "Garry Winogrand",
+    "date": "1960-1984",
+    "technique": "Negativos de triacetato de 35 mm y tirajes de contacto sin cortar",
+    "curatorial_notes": "A su muerte repentina en 1984, Winogrand dejó en su estudio más de 2.500 carretes de película expuesta sin revelar y más de 6.500 hojas de contacto sin mirar. El archivo del CCP en Tucson asumió la titánica tarea de procesar este testimonio colosal de la vida urbana norteamericana. Es el monumento más radical a la fotografía como pulsión ininterrumpida de observar: Winogrand fotografiaba para ver cómo se veían las cosas una vez fotografiadas.",
+    "tags": ["calle", "ritmo", "obsesion", "archivo", "negativos", "35mm", "espontaneidad", "winogrand", "tucson"]
+  },
+  {
+    "id": "pompidou-sudre-mordancage-1968",
+    "institution": "Centre Pompidou (Musée National d'Art Moderne, París)",
+    "title": "Paisaje de materia (Mordançage experimental sobre gelatina de plata)",
+    "photographer": "Jean-Pierre Sudre",
+    "date": "1968",
+    "technique": "Técnica de Mordançage con cloruro de cobre, ácido acético y peróxido de hidrógeno con virados múltiples",
+    "curatorial_notes": "La colección fotográfica del Pompidou en París conserva obras clave del alquimista Jean-Pierre Sudre. Mediante el Mordançage —proceso que él mismo perfeccionó a partir del grabado de finales del XIX—, la emulsión oscura de plata se hinchaba y se desprendía físicamente del papel, creando relieves, veladuras y colores metálicos nacidos de la oxidación del revelador. Sudre demostró en el laboratorio que la fotografía no solo copia la realidad, sino que es materia orgánica viva.",
+    "tags": ["alquimia", "laboratorio", "mordancage", "materia", "abstraccion", "quimica", "pompidou", "paris", "sudre"]
+  },
+  {
+    "id": "cincinnati-stieglitz-steerage-1907",
+    "institution": "Cincinnati Art Museum / Museum of Fine Arts Boston",
+    "title": "The Steerage (El entrepuente)",
+    "photographer": "Alfred Stieglitz",
+    "date": "1907 (tiraje en fotograbado de 1911)",
+    "technique": "Fotograbado en gran formato sobre papel japonés tissue",
+    "curatorial_notes": "Stieglitz relató en sus memorias cómo mientras navegaba hacia Europa en el vapor Kaiser Wilhelm II, abandonó la primera clase para asomarse a la cubierta inferior y vio una constelación de formas: el sombrero de paja blanco, la chimenea inclinada, la escalera colgante y rostros que regresaban a su tierra. Fue el momento exacto en que Stieglitz rompió con el pictorialismo vaporoso para abrazar la fotografía directa (Straight Photography), donde la composición geométrica pura revela la fractura social de su tiempo.",
+    "tags": ["straight photography", "pictorialismo", "geometria", "viaje", "barco", "sociedad", "stieglitz", "cincinnati", "boston"]
+  }
+]
