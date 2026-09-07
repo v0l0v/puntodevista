@@ -56,6 +56,9 @@ def repair_article_cache_file(filepath, limit=15, sleep_sec=1.5):
         if not art.get('translated') and art.get('content') and len(art.get('content')) > 40:
             items_to_translate.append((url, art))
 
+    # Priorizar artículos más recientes (al final de la inserción en el diccionario)
+    items_to_translate.reverse()
+
     if not items_to_translate and false_cleaned == 0:
         return 0, 0
 
@@ -135,12 +138,15 @@ def main():
     parser.add_argument('--limit-per-source', type=int, default=15, help="Límite de artículos por medio")
     parser.add_argument('--feeds-limit', type=int, default=40, help="Límite de entradas en feeds.json")
     parser.add_argument('--sleep', type=float, default=1.5, help="Pausa en segundos entre llamadas")
+    parser.add_argument('--source', type=str, default=None, help="Filtrar por medio específico (ej: odlp, 35mmc)")
     args = parser.parse_args()
 
     ensure_warp_proxy()
     print("=== Iniciando Saneamiento y Traducción Integral de Punto de Vista ===")
 
     article_files = sorted(glob.glob(get_data_path('*_articles.json')))
+    if args.source:
+        article_files = [f for f in article_files if args.source.lower() in os.path.basename(f).lower()]
     total_cleaned = 0
     total_translated = 0
 
@@ -149,7 +155,9 @@ def main():
         total_cleaned += c
         total_translated += t
 
-    feeds_tr = repair_feeds_json(limit=args.feeds_limit, sleep_sec=args.sleep)
+    feeds_tr = 0
+    if not args.source:
+        feeds_tr = repair_feeds_json(limit=args.feeds_limit, sleep_sec=args.sleep)
 
     print("\n=======================================================")
     print(f"🎉 SANEAMIENTO COMPLETADO:")

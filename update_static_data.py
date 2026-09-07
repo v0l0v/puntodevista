@@ -352,8 +352,27 @@ def update_article_cache(filename, items, scrape_fn):
     attempts = 0
     for item in items:
         url = item.get('link')
-        if not url or url in cache:
+        if not url:
             continue
+        if url in cache:
+            # Si ya está en caché pero aún no se ha traducido, traducirlo con prioridad alta
+            cached_data = cache[url]
+            if isinstance(cached_data, dict) and not cached_data.get('translated') and cached_data.get('content') and len(cached_data.get('content', '')) > 40:
+                try:
+                    from translator import translate_text, is_circuit_open
+                    if not is_circuit_open():
+                        translated_content = translate_text(cached_data['content'], is_html=True)
+                        if translated_content and len(translated_content) > 30 and translated_content.strip() != cached_data['content'].strip():
+                            cached_data['content_original'] = cached_data['content']
+                            cached_data['content'] = translated_content
+                            cached_data['translated'] = True
+                            new += 1
+                            print(f'    ↻ {url.split("/")[-1][:50]} (traducido ES retroactivo)')
+                            time.sleep(1.5)
+                except Exception as e_trans:
+                    print(f'    ⚠️ Error traduciendo artículo en caché {url}: {e_trans}')
+            continue
+
         if attempts:
             time.sleep(7)
         attempts += 1
@@ -361,8 +380,8 @@ def update_article_cache(filename, items, scrape_fn):
         if data and data.get('status') == 'ok':
             # Traducir contenido HTML al español para artículos nuevos
             try:
-                from translator import translate_text
-                if data.get('content') and not data.get('translated'):
+                from translator import translate_text, is_circuit_open
+                if data.get('content') and not data.get('translated') and not is_circuit_open():
                     translated_content = translate_text(data['content'], is_html=True)
                     if translated_content and len(translated_content) > 30 and translated_content.strip() != data['content'].strip():
                         data['content_original'] = data['content']
