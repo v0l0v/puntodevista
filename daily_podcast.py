@@ -17,7 +17,6 @@ import sqlite3
 import subprocess
 import sys
 import time
-import urllib.request
 from datetime import date, datetime
 from pathlib import Path
 
@@ -41,8 +40,18 @@ from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_con
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
 GEMINI_KEY = get_gemini_key()
-GEMINI_MODEL = get_gemini_model('gemini-3.1-flash-lite')
-GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}'
+_PREFERRED_MODEL = get_gemini_model('gemini-3-flash-preview')
+GEMINI_MODELS = [
+    _PREFERRED_MODEL,
+    'gemini-3-flash-preview',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-3.5-flash',
+    'gemini-flash-latest',
+    'gemini-3.6-flash',
+    'gemma-4-26b-a4b-it',
+]
+GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
 
 TTS_ENGINE = os.environ.get('TTS_ENGINE', 'kokoro')
 TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-AlvaroNeural')
@@ -58,8 +67,8 @@ VOICE_CAST = {
 KOKORO_ONNX = os.path.join(DIR, 'kokoro_models', 'kokoro-v1.0.onnx')
 KOKORO_VOICES = os.path.join(DIR, 'kokoro_models', 'voices-v1.0.bin')
 
-MAX_RETRIES = 5
-RETRY_DELAY = 15
+MAX_RETRIES = 3
+RETRY_DELAY = 10
 
 TITLE_MARKER = '---TITLE---'
 LOCUTABLE_MARKER = '---LOCUTABLE---'
@@ -111,6 +120,7 @@ def gemini_request(prompt):
     if not GEMINI_KEY:
         print("  ⚠️ No hay GEMINI_KEY configurada.")
         return None
+    ensure_warp_proxy()
     body = {
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
@@ -118,36 +128,34 @@ def gemini_request(prompt):
             'maxOutputTokens': 8192,
         }
     }
-    data = json.dumps(body).encode('utf-8')
-    req = urllib.request.Request(GEMINI_URL, data=data,
-                                 headers={'Content-Type': 'application/json'},
-                                 method='POST')
-    for attempt in range(MAX_RETRIES):
-        try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                result = json.loads(resp.read().decode('utf-8'))
-            text = result['candidates'][0]['content']['parts'][0]['text']
-            return text.strip()
-        except urllib.error.HTTPError as e:
-            err = e.read().decode()
-            retryable = (
-                e.code >= 500
-                or 'quota' in err.lower()
-                or 'RESOURCE_EXHAUSTED' in err
-                or 'UNAVAILABLE' in err
-            )
-            if retryable and attempt < MAX_RETRIES - 1:
-                wait = RETRY_DELAY * (attempt + 1)
-                reason = 'Cuota excedida' if ('quota' in err.lower() or 'RESOURCE_EXHAUSTED' in err) else f'Error {e.code}'
-                print(f'  {reason}, reintentando en {wait}s...')
-                time.sleep(wait)
-                continue
-            print(f'  Error API: {err[:300]}')
-            return None
-        except (urllib.error.URLError, json.JSONDecodeError, KeyError) as e:
-            print(f'  Error: {e}')
-            return None
-    print('  Se agotaron los reintentos.')
+    for model_name in GEMINI_MODELS:
+        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
+        for attempt in range(MAX_RETRIES):
+            try:
+                resp = requests.post(url, json=body, timeout=120)
+                if resp.status_code == 200:
+                    result = resp.json()
+                    candidates = result.get('candidates', [])
+                    if candidates and 'content' in candidates[0]:
+                        parts = candidates[0]['content'].get('parts', [])
+                        if parts and 'text' in parts[0]:
+                            print(f'  ✅ Respuesta recibida usando modelo {model_name}')
+                            return parts[0]['text'].strip()
+                elif resp.status_code == 429:
+                    wait = RETRY_DELAY * (attempt + 1)
+                    print(f'  Cuota excedida en {model_name}, reintentando en {wait}s...')
+                    time.sleep(wait)
+                    continue
+                elif resp.status_code == 404:
+                    print(f'  Modelo {model_name} no disponible (404), pasando al siguiente...')
+                    break
+                else:
+                    print(f'  HTTP {resp.status_code} en {model_name}: {resp.text[:200]}')
+                    break
+            except Exception as e:
+                print(f'  Error en petición a {model_name} (intento {attempt + 1}): {e}')
+                time.sleep(3)
+    print('  ❌ Se agotaron todos los modelos y reintentos.')
     return None
 
 
@@ -1100,7 +1108,7 @@ def main():
 
     if not articles:
         print(f'  ❌ No hay artículos para {today}')
-        return
+        sys.exit(1)
 
     # 2. Identificar protagonista y linaje histórico con los 4 baremos editoriales
     primary = select_primary_article(articles, today, META_PATH)
@@ -1118,7 +1126,7 @@ def main():
 
     if not summary:
         print('  ❌ No se obtuvo respuesta de Gemini.')
-        return
+        sys.exit(1)
 
     podcast_title, resumen, locutable = parse_summary(summary)
 
@@ -1139,7 +1147,7 @@ def main():
     clean_text_audio = clean_text(locutable)
     if not clean_text_audio:
         print('  ❌ No hay texto locutable para audio')
-        return
+        sys.exit(1)
 
     os.makedirs(PODCAST_DIR, exist_ok=True)
     audio_path = os.path.join(PODCAST_DIR, f'podcast-{today.isoformat()}.mp3')
@@ -1247,6 +1255,7 @@ def main():
             print('  ✅ Audio enviado a Telegram')
     else:
         print('  ❌ Error al generar audio')
+        sys.exit(1)
 
 
 if __name__ == '__main__':

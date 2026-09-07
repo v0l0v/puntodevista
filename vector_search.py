@@ -58,7 +58,7 @@ def get_embedding(text):
     """Obtiene el vector de 3072 dimensiones desde la API de Gemini."""
     if not GEMINI_KEY:
         return None
-    _ensure_warp_proxy()
+    ensure_warp_proxy()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{EMBEDDING_MODEL}:embedContent?key={GEMINI_KEY}"
     body = {
         'content': {'parts': [{'text': text[:2500]}]}

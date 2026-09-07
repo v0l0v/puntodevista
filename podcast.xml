@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 07 Sep 2026 05:36:01 +0000</lastBuildDate>
+<lastBuildDate>Mon, 07 Sep 2026 12:51:04 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1266,6 +1266,28 @@ Nicolás propone un reto práctico inspirado en la paciencia y la observación d
 Beatriz se sumerge en el archivo de Chris Killip y su profunda vinculación con el norte británico, conectando esta mirada con el proyecto Northern Folkrore. Un análisis sobre cómo el entorno moldea al fotógrafo y cómo la persistencia en un lugar acaba revelando verdades invisibles.
 
 Nicolás propone un reto práctico inspirado en la paciencia y la observación del territorio. Además, el niusleter de Fotonistas trae una invitación para quienes buscan el paraíso en el Pirineo, recordándonos que el aprendizaje fotográfico es también una experiencia de comunidad.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 35 · El eco de la tierra y el mapa de la memoria familiar</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-07.mp3</guid>
+    <pubDate>Mon, 07 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[En el episodio de hoy, lunes 7 de septiembre de 2026, recorremos una jornada marcada por la nostalgia y la reivindicación del archivo. Desde el emotivo adiós a Jean-François Leroy, director de Visa pour l’Image, hasta el regreso de joyas tecnológicas como la lente espía de Leica o los nuevos precios de Kodak; analizamos cómo la fotografía sigue siendo nuestra herramienta principal para documentar lo que desaparece.
+
+Beatriz nos sumerge en el proyecto protagonista de Taylor Galloway, quien durante una década ha retratado la resistencia de la granja de su familia en Virginia frente al avance de la industria. Conectamos esta mirada íntima con el linaje visual de Emmet Gowin, explorando cómo la devoción por el entorno cercano transforma lo cotidiano en un documento histórico y emocional de una potencia universal.
+
+Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano. Nos invita a dejar de lado los grandes paisajes épicos para buscar la trascendencia en los objetos y rincones de nuestro propio hogar o entorno inmediato; utilizando la luz y la composición para otorgar dignidad a lo que solemos pasar por alto en el día a día.]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-07.mp3" length="9884781" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-07.jpg"/>
+    <itunes:duration>6:51</itunes:duration>
+    <itunes:title>Episodio 35 · El eco de la tierra y el mapa de la memoria familiar</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[En el episodio de hoy, lunes 7 de septiembre de 2026, recorremos una jornada marcada por la nostalgia y la reivindicación del archivo. Desde el emotivo adiós a Jean-François Leroy, director de Visa pour l’Image, hasta el regreso de joyas tecnológicas como la lente espía de Leica o los nuevos precios de Kodak; analizamos cómo la fotografía sigue siendo nuestra herramienta principal para documentar lo que desaparece.
+
+Beatriz nos sumerge en el proyecto protagonista de Taylor Galloway, quien durante una década ha retratado la resistencia de la granja de su familia en Virginia frente al avance de la industria. Conectamos esta mirada íntima con el linaje visual de Emmet Gowin, explorando cómo la devoción por el entorno cercano transforma lo cotidiano en un documento histórico y emocional de una potencia universal.
+
+Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano. Nos invita a dejar de lado los grandes paisajes épicos para buscar la trascendencia en los objetos y rincones de nuestro propio hogar o entorno inmediato; utilizando la luz y la composición para otorgar dignidad a lo que solemos pasar por alto en el día a día.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>

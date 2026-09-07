@@ -1,9 +1,10 @@
 import os
 import shutil
 import sys
-import urllib.request
 from pathlib import Path
+import requests
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from config import ensure_warp_proxy
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 LOGO = os.path.join(DIR, 'assets', 'logos', 'logoFpdv.png')
@@ -34,12 +35,17 @@ def download_image(url, cache_dir):
     path = cache_dir / fname
     if not path.exists():
         try:
-            req = urllib.request.Request(url, headers={
+            ensure_warp_proxy()
+            headers = {
                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-            })
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            }
+            resp = requests.get(url, headers=headers, timeout=30)
+            if resp.status_code == 200:
                 with open(path, 'wb') as f:
-                    f.write(resp.read())
+                    f.write(resp.content)
+            else:
+                print(f'  Error {resp.status_code} descargando imagen')
+                return None
         except Exception as e:
             print(f'  Error descargando imagen: {e}')
             return None
