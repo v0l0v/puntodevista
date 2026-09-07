@@ -184,6 +184,11 @@ def translate_text(text, is_html=False):
 
     res = call_gemini(prompt)
     if res:
+        # Si el modelo volcó pensamientos internos (ej: "Role: ..."), extraer la última línea limpia
+        if 'Role:' in res or 'Constraints:' in res or 'Final Polish:' in res:
+            lines = [l.strip() for l in res.splitlines() if l.strip() and not l.strip().startswith(('*', '-', '#', 'Role:', 'Task:', 'Input:', 'Style:', 'Constraints:'))]
+            if lines:
+                res = lines[-1]
         clean_res = re.sub(r'^```html\s*', '', res, flags=re.IGNORECASE)
         clean_res = re.sub(r'\s*```$', '', clean_res).strip()
         clean_res = re.sub(r'^["«\']|["»\']$', '', clean_res).strip()
