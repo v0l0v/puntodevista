@@ -38,6 +38,7 @@ META_PATH = get_data_path('podcast_meta.json')
 DB_PATH = get_db_path()
 from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_config, ensure_warp_proxy
 from museum_archive import get_museum_treasure
+from photo_enricher import analyze_daily_facets, build_editorial_facet_prompts
 
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
@@ -599,10 +600,14 @@ def get_historical_counterpart(primary_article):
     return None, 'none'
 
 
-def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num, museum_piece=None):
+def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num, museum_piece=None, facet_prompts=None):
     """Construye el prompt editorial para Roberto, Beatriz y Nicolás en 4 Actos."""
     d = episode_date or date.today()
     fecha_completa = fmt_fecha_completa_es(d)
+
+    roberto_radar_block = (facet_prompts.get('roberto_radar') or '') if facet_prompts else ''
+    beatriz_book_block = (facet_prompts.get('beatriz_book') or '') if facet_prompts else ''
+    nicolas_lab_block = (facet_prompts.get('nicolas_lab') or '') if facet_prompts else ''
 
     # Agrupar titulares por medio / revista
     by_source = {}
@@ -734,6 +739,7 @@ ESTRUCTURA DE LOS 4 ACTOS:
      * SEPARA cada noticia de la siguiente insertando en una línea propia la etiqueta de cortinilla:
        ---RAFAGA---
      * La siguiente noticia debe comenzar de nuevo con la etiqueta [ROBERTO] en una línea nueva.
+{roberto_radar_block}
    - En la última noticia del bloque, Roberto concluye dando paso con complicidad y de forma directa a Beatriz (sin ráfaga entre ellos para mantener continuidad de antena): "...Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
 
 2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~4 A 5 MINUTOS)
@@ -741,11 +747,13 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad crítica, ensayística y sensorial.
    - Duración ampliada: entre 4:00 y 5:00 minutos de locución (~550 a 680 palabras).
    - Analiza la mirada, la atmósfera, la composición, las decisiones del fotógrafo y el dilema estético.
+{beatriz_book_block}
    - Conecta con el LINAJE VISUAL y la JOYA DE MUSEO ({inst_mention}): "Porque ninguna mirada nace en el vacío...", explicando con detalle el diálogo entre ambas miradas y citando expresamente la institución y la obra histórica.
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
    - [NICOLAS]: Entra inmediatamente recogiendo el testigo: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..." (~170 a 200 palabras).
+{nicolas_lab_block}
    - Nicolás detalla el RETO FOTOGRÁFICO DE HOY: instrucciones precisas de composición, luz o restricción técnica, y la pregunta que hacerse antes del disparo.
    ---PAUSA---
 
@@ -1171,15 +1179,28 @@ def main():
     except Exception as e:
         print(f"  ⚠️ No se pudo obtener pieza de museo: {e}")
 
+    # Búsqueda de facetas especiales (Fotolibro, Laboratorio/Química, Convocatorias/Becas)
+    facets = analyze_daily_facets(articles, primary=primary)
+    facet_prompts = build_editorial_facet_prompts(facets)
+    if facets.get('call'):
+        print(f"  🎯 Convocatoria / Beca detectada: [{facets['call'].get('award_or_grant')}] {facets['call'].get('title')}")
+    if facets.get('book'):
+        print(f"  📖 Fotolibro detectado: [{facets['book'].get('publisher')}] {facets['book'].get('title')}")
+    if facets.get('lab'):
+        print(f"  🧪 Laboratorio / Química detectada: {facets['lab'].get('matched_terms')} - {facets['lab'].get('title')}")
+
     # 3. Construir prompt y llamar a Gemini
-    prompt = build_editorial_podcast_prompt(articles, primary, historical, today, ep_num, museum_piece=museum_piece)
+    prompt = build_editorial_podcast_prompt(
+        articles, primary, historical, today, ep_num,
+        museum_piece=museum_piece, facet_prompts=facet_prompts
+    )
     if is_dry:
         print("\n--- PROMPT PREVIEW (--dry-run) ---")
         lines = prompt.splitlines()
         for idx, l in enumerate(lines):
-            if any(k in l for k in ['🏛️', 'JOYA DEL ARCHIVO', 'LINAJE DE MUSEO', 'ACTO 2:', 'PROYECTO PROTAGONISTA']):
+            if any(k in l for k in ['🏛️', 'JOYA DEL ARCHIVO', 'LINAJE DE MUSEO', 'ACTO 2:', 'PROYECTO PROTAGONISTA', '🎯 RADAR', '📖 ENFOQUE FOTOLIBRO', '🧪 RINCÓN DE LABORATORIO']):
                 print(f"  {l}")
-                for sub in lines[idx+1:idx+8]:
+                for sub in lines[idx+1:idx+9]:
                     if sub.strip().startswith(('1.', '2.', '3.', '4.', 'Debes estructurar')):
                         break
                     print(f"    {sub}")
@@ -1290,6 +1311,11 @@ def main():
                     'image_url': museum_piece.get('image_url', ''),
                     'museum_url': museum_piece.get('museum_url', ''),
                 } if museum_piece else None,
+                'facets': {
+                    'book': facets.get('book'),
+                    'lab': facets.get('lab'),
+                    'call': facets.get('call'),
+                },
                 'size': size,
                 'duration': duration,
             }
