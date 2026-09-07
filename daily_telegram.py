@@ -149,6 +149,9 @@ def generate_audio(text, out_path, episode_date=None):
     clean = re.sub(r'\bnewsletter\b', 'niusleter', clean, flags=re.IGNORECASE)
     clean = re.sub(r'\bcolossal\b', 'colosal', clean, flags=re.IGNORECASE)
 
+    # Eliminar pausas musicales entre Roberto -> Beatriz y Beatriz -> Nicolás para continuidad de antena
+    clean = re.sub(r'(?:---\s*PAUSA\s*---|\[\s*PAUSA\s*\])\s*(?=\[(?:BEATRIZ|NICOL[AÁ]S)\])', '\n', clean, flags=re.IGNORECASE)
+
     # Dividir el texto en bloques usando el marcador ---PAUSA--- o dobles saltos de línea
     raw_blocks = re.split(r'---PAUSA---|\[PAUSA\]', clean)
     blocks = [b.strip() for b in raw_blocks if b.strip()]

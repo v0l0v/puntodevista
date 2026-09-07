@@ -667,10 +667,11 @@ Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plan
 3. El reto creativo del día (Nicolás).]
 {LOCUTABLE_MARKER}
 [ROBERTO]
-[Inicio directo del guion coral con el saludo de Roberto. Cada intervención empieza con [ROBERTO], [BEATRIZ] o [NICOLAS], e incluye las pausas musicales ---PAUSA--- entre actos.]
+[Inicio directo del guion coral con el saludo de Roberto. Cada intervención empieza con [ROBERTO], [BEATRIZ] o [NICOLAS]. El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás es continuo e inmediato, sin música ni pausas intermedias. La única pausa musical (---PAUSA---) se sitúa antes del Acto 4 de cierre.]
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 - FORMATO DE DIÁLOGO: Cada cambio de voz DEBE empezar exactamente en una línea nueva con [ROBERTO], [BEATRIZ] o [NICOLAS].
+- TRANSICIONES CONTINUAS SIN MÚSICA: El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás debe ser orgánico y directo en antena (sin insertar ---PAUSA--- ni cortinillas musicales entre ellos). Roberto llama a Beatriz, Beatriz responde de inmediato; Beatriz llama a Nicolás, Nicolás responde de inmediato.
 - COLABORACIÓN Y TRANSICIONES: Los locutores deben interactuar con naturalidad, saludarse brevemente al darse paso y cerrar con fluidez radiofónica.
 - RIGOR FACTUAL: NUNCA INVENTES DATOS. Todo se basa estrictamente en el material provisto.
 - PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
@@ -693,18 +694,16 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - [ROBERTO]: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
    - Lanza una frase intrigante sobre el tema central que analizará luego Beatriz.
    - Recorrido editorial por las publicaciones de las últimas 24 horas dedicando unos 30-45 segundos a cada autor y medio.
-   - Al final del repaso, Roberto da paso con complicidad a Beatriz: "...Y para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
-   ---PAUSA---
+   - Al final del repaso, Roberto da paso con complicidad y de forma directa a Beatriz: "...Y para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
 
 2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~3 MINUTOS)
-   - [BEATRIZ]: Saluda a Roberto y a los oyentes: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
+   - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
    - Beatriz se adentra en el PROYECTO PROTAGONISTA. Analiza la mirada, la luz, la técnica y el dilema estético.
    - Beatriz conecta con el LINAJE VISUAL ({historical.get('title') if historical else 'el archivo histórico'}): "Porque ninguna mirada nace en el vacío...", explicando los ecos históricos y la evolución del medio.
-   - Al concluir, Beatriz y Roberto dan paso a Nicolás para el reto: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
-   ---PAUSA---
+   - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~2 MINUTOS)
-   - [NICOLAS]: Saluda con energía de taller: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..."
+   - [NICOLAS]: Entra inmediatamente recogiendo el testigo: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..."
    - Nicolás detalla el RETO FOTOGRÁFICO DE HOY: instrucciones precisas de composición, luz o restricción técnica, y la pregunta que hacerse antes del disparo.
    ---PAUSA---
 
@@ -846,6 +845,9 @@ def generate_audio(text, out_path, episode_date=None):
     clean = re.sub(r'\bcolossal\b', 'colosal', clean, flags=re.IGNORECASE)
     clean = re.sub(r'\bbooooooom\b', 'buum', clean, flags=re.IGNORECASE)
 
+    # Eliminar pausas musicales entre Roberto -> Beatriz y Beatriz -> Nicolás para continuidad de antena
+    clean = re.sub(r'(?:---\s*PAUSA\s*---|\[\s*PAUSA\s*\])\s*(?=\[(?:BEATRIZ|NICOL[AÁ]S)\])', '\n', clean, flags=re.IGNORECASE)
+
     raw_blocks = re.split(r'---PAUSA---|\[PAUSA\]', clean)
     blocks = [b.strip() for b in raw_blocks if b.strip()]
 
@@ -886,7 +888,7 @@ def generate_audio(text, out_path, episode_date=None):
             # Parsear los turnos de diálogo dentro del bloque: [ROBERTO], [BEATRIZ], [NICOLAS]
             dialogue_turns = []
             current_speaker = 'ROBERTO'
-            pattern = re.compile(r'\[(ROBERTO|BEATRIZ|NICOLAS)\]', re.IGNORECASE)
+            pattern = re.compile(r'\[(ROBERTO|BEATRIZ|NICOL[AÁ]S)\]', re.IGNORECASE)
             
             splits = pattern.split(b)
             if len(splits) == 1:
@@ -896,7 +898,8 @@ def generate_audio(text, out_path, episode_date=None):
                 # Si hay etiquetas de locutor en el bloque, descartamos splits[0]
                 # para asegurar que ningún preámbulo, metadato o resumen huérfano sea locutado.
                 for idx_s in range(1, len(splits), 2):
-                    speaker_tag = splits[idx_s].upper()
+                    speaker_raw = splits[idx_s].upper()
+                    speaker_tag = 'NICOLAS' if 'NICOL' in speaker_raw else speaker_raw
                     turn_text = splits[idx_s + 1].strip()
                     if turn_text:
                         dialogue_turns.append((speaker_tag, turn_text))
