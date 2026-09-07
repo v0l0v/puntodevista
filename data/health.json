@@ -1,36 +1,49 @@
 {
   "status": "degraded",
-  "generated_at": "2026-09-07T05:03:03.710612+00:00",
+  "generated_at": "2026-09-07T05:36:06.222225+00:00",
   "issues": [
-    "Circuit Breaker activo (187s restantes)"
+    "Circuit Breaker activo (237s restantes)"
   ],
   "pipeline": {
-    "last_feeds_update": "2026-09-07T05:02:36.211160+00:00",
+    "last_feeds_update": "2026-09-07T05:36:06.065478+00:00",
     "warp_proxy_active": true,
     "circuit_breaker": {
       "state": "OPEN",
       "reason": "Cuota de Gemini API agotada (HTTP 429 en todos los modelos)",
-      "remaining_seconds": 187
+      "remaining_seconds": 237
     }
   },
   "feeds": {
-    "total_entries": 390,
-    "sources_tracked": 10,
+    "total_entries": 1163,
+    "sources_tracked": 23,
     "sources_breakdown": {
-      "odlp": 140,
-      "booooooom": 7,
-      "colossal": 60,
-      "shootitwithfilm": 30,
-      "magnum": 30,
-      "lomography": 30,
-      "huck": 10,
-      "lensculture": 43,
-      "tpj": 30,
-      "swan": 10
+      "odlp": 166,
+      "35mmc": 126,
+      "blind": 39,
+      "1854": 13,
+      "c41": 147,
+      "magnum": 56,
+      "shootitwithfilm": 34,
+      "booooooom": 58,
+      "clavoardiendo": 33,
+      "kosmofoto": 61,
+      "lomography": 46,
+      "aperture": 31,
+      "lensculture": 46,
+      "huck": 14,
+      "tpj": 33,
+      "swan": 10,
+      "asx": 30,
+      "featureshoot": 31,
+      "colossal": 93,
+      "phroom": 20,
+      "casualphotophile": 6,
+      "emulsive": 40,
+      "aintbad": 30
     }
   },
   "database": {
-    "articles_total": 1153,
+    "articles_total": 1163,
     "podcasts_total": 34,
     "status": "ok"
   },
