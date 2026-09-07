@@ -24,10 +24,11 @@ import requests
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 # Asegurar TMPDIR en directorio con permisos de ejecucion para phonemizer / libespeak-ng
-if not os.environ.get('TMPDIR'):
-    user_tmp = os.path.join(DIR, 'tmp_audio')
-    os.makedirs(user_tmp, exist_ok=True)
-    os.environ['TMPDIR'] = user_tmp
+user_tmp = os.path.join(DIR, 'tmp_audio')
+os.makedirs(user_tmp, exist_ok=True)
+os.environ['TMPDIR'] = user_tmp
+import tempfile
+tempfile.tempdir = user_tmp
 
 from data_paths import get_data_path, get_db_path
 
@@ -698,20 +699,27 @@ REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 
 ESTRUCTURA DE LOS 4 ACTOS:
 
-1. ACTO 1: APERTURA & NOTICIAS DEL DÍA ([ROBERTO]) (~4 A 5 MINUTOS)
-   - [ROBERTO]: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
-   - Lanza una frase intrigante sobre el tema central que analizará luego Beatriz.
-   - Recorrido editorial por las publicaciones de las últimas 24 horas dedicando unos 30-45 segundos a cada autor y medio.
-   - Al final del repaso, Roberto da paso con complicidad y de forma directa a Beatriz: "...Y para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
+1. ACTO 1: APERTURA & REPASO A LA ACTUALIDAD ([ROBERTO])
+   - Apertura de Roberto: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
+   - Lanza una breve frase intrigante sobre el tema central que analizará luego Beatriz.
+   - RECORRIDO DE NOTICIAS: Selecciona entre 6 y 10 noticias destacadas de distintas fuentes del material de las últimas 24 horas.
+   - FORMATO PARA CADA NOTICIA:
+     * Roberto redacta un bloque de locución completo, sustancial y ameno de aproximadamente 50 a 55 segundos de duración (~115 a 130 palabras por noticia). No un titular de dos líneas: debe explicar el contexto, el autor o protagonistas, la técnica o proyecto, y por qué es relevante hoy en la cultura fotográfica.
+     * SEPARA cada noticia de la siguiente insertando en una línea propia la etiqueta de cortinilla:
+       ---RAFAGA---
+     * La siguiente noticia debe comenzar de nuevo con la etiqueta [ROBERTO] en una línea nueva.
+   - En la última noticia del bloque, Roberto concluye dando paso con complicidad y de forma directa a Beatriz (sin ráfaga entre ellos para mantener continuidad de antena): "...Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
 
-2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~3 MINUTOS)
+2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~4 A 5 MINUTOS)
    - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
-   - Beatriz se adentra en el PROYECTO PROTAGONISTA. Analiza la mirada, la luz, la técnica y el dilema estético.
-   - Beatriz conecta con el LINAJE VISUAL ({historical.get('title') if historical else 'el archivo histórico'}): "Porque ninguna mirada nace en el vacío...", explicando los ecos históricos y la evolución del medio.
+   - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad crítica, ensayística y sensorial.
+   - Duración ampliada: entre 4:00 y 5:00 minutos de locución (~550 a 680 palabras).
+   - Analiza la mirada, la atmósfera, la composición, las decisiones del fotógrafo y el dilema estético.
+   - Conecta con el LINAJE VISUAL ({historical.get('title') if historical else 'el archivo histórico'}): "Porque ninguna mirada nace en el vacío...", explicando con detalle el diálogo entre ambas obras y autores.
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
-3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~2 MINUTOS)
-   - [NICOLAS]: Entra inmediatamente recogiendo el testigo: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..."
+3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
+   - [NICOLAS]: Entra inmediatamente recogiendo el testigo: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..." (~170 a 200 palabras).
    - Nicolás detalla el RETO FOTOGRÁFICO DE HOY: instrucciones precisas de composición, luz o restricción técnica, y la pregunta que hacerse antes del disparo.
    ---PAUSA---
 
@@ -720,7 +728,7 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - [BEATRIZ]: Añade una última reflexión inspiradora invitando a salir a mirar el mundo.
    - [ROBERTO]: Cierra despidiendo el episodio: "Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!"
 
-DURACIÓN TOTAL ESTIMADA: ~1100 a 1450 palabras (~8 a 10 minutos de locución fluida)."""
+DURACIÓN TOTAL ESTIMADA: ~1600 a 2200 palabras (~13 a 17 minutos de emisión con ráfagas musicales de 6 segundos entre noticias)."""
 
 
 def parse_summary(summary):
@@ -827,7 +835,7 @@ def clean_text(t):
     # - Dos puntos y punto y coma -> espacio (no coma: evitar pausa artificial)
     t = re.sub(r'[:;]', ' ', t)
     # - Paréntesis, corchetes, llaves y comillas tipográficas -> eliminados (protegiendo tags de locutor y pausa)
-    valid_tags = ['[ROBERTO]', '[BEATRIZ]', '[NICOLAS]', '[PAUSA]', '---PAUSA---']
+    valid_tags = ['[ROBERTO]', '[BEATRIZ]', '[NICOLAS]', '[PAUSA]', '---PAUSA---', '[RAFAGA]', '---RAFAGA---']
     for idx, tag in enumerate(valid_tags):
         t = re.sub(re.escape(tag), f'__TAG_{idx}__', t, flags=re.IGNORECASE)
     t = re.sub(r'[(){}\[\]"«»""]', '', t)
@@ -853,10 +861,10 @@ def generate_audio(text, out_path, episode_date=None):
     clean = re.sub(r'\bcolossal\b', 'colosal', clean, flags=re.IGNORECASE)
     clean = re.sub(r'\bbooooooom\b', 'buum', clean, flags=re.IGNORECASE)
 
-    # Eliminar pausas musicales entre Roberto -> Beatriz y Beatriz -> Nicolás para continuidad de antena
-    clean = re.sub(r'(?:---\s*PAUSA\s*---|\[\s*PAUSA\s*\])\s*(?=\[(?:BEATRIZ|NICOL[AÁ]S)\])', '\n', clean, flags=re.IGNORECASE)
+    # Eliminar pausas o ráfagas intermedias entre Roberto -> Beatriz y Beatriz -> Nicolás para continuidad de antena
+    clean = re.sub(r'(?:---\s*(?:PAUSA|RAFAGA)\s*---|\[\s*(?:PAUSA|RAFAGA)\s*\])\s*(?=\[(?:BEATRIZ|NICOL[AÁ]S)\])', '\n', clean, flags=re.IGNORECASE)
 
-    raw_blocks = re.split(r'---PAUSA---|\[PAUSA\]', clean)
+    raw_blocks = re.split(r'---PAUSA---|\[PAUSA\]|---RAFAGA---|\[RAFAGA\]', clean)
     blocks = [b.strip() for b in raw_blocks if b.strip()]
 
     if not blocks:
@@ -1093,9 +1101,12 @@ def send_telegram_audio(audio_path, caption='', filename='podcast.mp3', cover_pa
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    today = date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else date.today()
+    is_test = '--test' in sys.argv or os.environ.get('TEST_RUN') == '1'
+    clean_args = [a for a in sys.argv[1:] if a != '--test']
+    today = date.fromisoformat(clean_args[0]) if clean_args else date.today()
     ep_num = get_episode_number(today)
-    print(f'[{ts}] daily_podcast (Roberto - 4 Actos) · {today} (Ep #{ep_num})')
+    test_tag = " [MODO PRUEBA]" if is_test else ""
+    print(f'[{ts}] daily_podcast (Roberto - 4 Actos){test_tag} · {today} (Ep #{ep_num})')
 
     # 1. Recuperar artículos de la fecha
     articles = get_articles_for_day(today.isoformat())
@@ -1131,14 +1142,16 @@ def main():
     podcast_title, resumen, locutable = parse_summary(summary)
 
     # 4. Guardar guiones para trazabilidad
-    guion_path = os.path.join(OUT_DIR, f'podcast-{today.isoformat()}.guion.txt')
+    guion_filename = f'podcast-{today.isoformat()}-test.guion.txt' if is_test else f'podcast-{today.isoformat()}.guion.txt'
+    guion_path = os.path.join(OUT_DIR, guion_filename)
     locutable_path = os.path.join(OUT_DIR, f'digest-{today.isoformat()}.locutable.txt')
     try:
-        header = f"# Podcast Diario · {today.isoformat()} (Ep #{ep_num})\n# Título: {podcast_title}\n# Enfoque: {lineage_mode}\n\n"
+        header = f"# Podcast Diario · {today.isoformat()} (Ep #{ep_num}){test_tag}\n# Título: {podcast_title}\n# Enfoque: {lineage_mode}\n\n"
         with open(guion_path, 'w', encoding='utf-8') as f:
             f.write(header + locutable)
-        with open(locutable_path, 'w', encoding='utf-8') as f:
-            f.write(header + locutable)
+        if not is_test:
+            with open(locutable_path, 'w', encoding='utf-8') as f:
+                f.write(header + locutable)
         print(f'  ✅ Guion guardado en: {guion_path}')
     except Exception as e:
         print(f'  ⚠️ Error guardando guion: {e}')
@@ -1150,7 +1163,8 @@ def main():
         sys.exit(1)
 
     os.makedirs(PODCAST_DIR, exist_ok=True)
-    audio_path = os.path.join(PODCAST_DIR, f'podcast-{today.isoformat()}.mp3')
+    audio_filename = f'podcast-{today.isoformat()}-test.mp3' if is_test else f'podcast-{today.isoformat()}.mp3'
+    audio_path = os.path.join(PODCAST_DIR, audio_filename)
 
     if generate_audio(clean_text_audio, audio_path, today):
         size = os.path.getsize(audio_path)
@@ -1191,68 +1205,77 @@ def main():
         if not day_image and images:
             day_image = random.choice(images)
 
-        # Actualizar metadata
-        meta = []
-        if os.path.exists(META_PATH):
-            try:
-                with open(META_PATH, encoding='utf-8') as f:
-                    meta = json.load(f)
-            except Exception:
-                meta = []
-        meta = [m for m in meta if m.get('date') != today.isoformat()]
-        entry = {
-            'date': today.isoformat(),
-            'description': resumen,
-            'image': day_image,
-            'images': images,
-            'podcast_title': podcast_title,
-            'primary_source': primary.get('source', ''),
-            'primary_title': primary.get('title', ''),
-            'monographic': is_monographic,
-            'lineage_mode': lineage_mode,
-            'historical_source': historical.get('source', '') if historical else '',
-            'historical_title': historical.get('title', '') if historical else '',
-            'size': size,
-            'duration': duration,
-        }
-        meta.append(entry)
-        with open(META_PATH, 'w', encoding='utf-8') as f:
-            json.dump(meta, f, ensure_ascii=False, indent=2)
-        print(f'  ✅ Meta del podcast actualizado ({len(meta)} episodios, {duration}s, monográfico={is_monographic})')
+        if not is_test:
+            # Actualizar metadata
+            meta = []
+            if os.path.exists(META_PATH):
+                try:
+                    with open(META_PATH, encoding='utf-8') as f:
+                        meta = json.load(f)
+                except Exception:
+                    meta = []
+            meta = [m for m in meta if m.get('date') != today.isoformat()]
+            entry = {
+                'date': today.isoformat(),
+                'description': resumen,
+                'image': day_image,
+                'images': images,
+                'podcast_title': podcast_title,
+                'primary_source': primary.get('source', ''),
+                'primary_title': primary.get('title', ''),
+                'monographic': is_monographic,
+                'lineage_mode': lineage_mode,
+                'historical_source': historical.get('source', '') if historical else '',
+                'historical_title': historical.get('title', '') if historical else '',
+                'size': size,
+                'duration': duration,
+            }
+            meta.append(entry)
+            with open(META_PATH, 'w', encoding='utf-8') as f:
+                json.dump(meta, f, ensure_ascii=False, indent=2)
+            print(f'  ✅ Meta del podcast actualizado ({len(meta)} episodios, {duration}s, monográfico={is_monographic})')
 
-        tag_title = clean_text(podcast_title) if podcast_title else f'Podcast {today.isoformat()}'
-        tag_audio(audio_path, tag_title)
+            tag_title = clean_text(podcast_title) if podcast_title else f'Podcast {today.isoformat()}'
+            tag_audio(audio_path, tag_title)
 
-        if day_image:
-            print('  Generando portada del episodio...')
-            try:
-                subprocess.run([
-                    sys.executable, os.path.join(DIR, 'make_podcast_cover.py'),
-                    today.isoformat(), day_image
-                ], check=True, capture_output=True, text=True, timeout=60)
-                print('  ✅ Portada generada')
-            except Exception as e:
-                print(f'  ⚠️ Error generando portada: {e}')
+            if day_image:
+                print('  Generando portada del episodio...')
+                try:
+                    subprocess.run([
+                        sys.executable, os.path.join(DIR, 'make_podcast_cover.py'),
+                        today.isoformat(), day_image
+                    ], check=True, capture_output=True, text=True, timeout=60)
+                    print('  ✅ Portada generada')
+                except Exception as e:
+                    print(f'  ⚠️ Error generando portada: {e}')
 
-        # Telegram
-        if os.environ.get('SKIP_TELEGRAM'):
-            print('  SKIP_TELEGRAM=1, omitiendo Telegram')
+            # Telegram
+            if os.environ.get('SKIP_TELEGRAM'):
+                print('  SKIP_TELEGRAM=1, omitiendo Telegram')
+            else:
+                caption = f'🎙️ {fmt_fecha_es(today)}\n{clean_text(podcast_title)}'
+                audio_filename_tg = f'Punto de vista - {today.isoformat()}.mp3'
+                cover_file = os.path.join(DIR, f'podcast-cover-{today.isoformat()}.jpg')
+                if not os.path.exists(cover_file):
+                    cover_file = os.path.join(DIR, 'assets', 'covers', f'podcast-cover-{today.isoformat()}.jpg')
+                send_telegram_audio(
+                    audio_path,
+                    caption=caption,
+                    filename=audio_filename_tg,
+                    cover_path=cover_file,
+                    title=clean_text(podcast_title),
+                    performer='Punto de vista',
+                    duration=duration
+                )
+                print('  ✅ Audio enviado a Telegram')
         else:
-            caption = f'🎙️ {fmt_fecha_es(today)}\n{clean_text(podcast_title)}'
-            audio_filename = f'Punto de vista - {today.isoformat()}.mp3'
-            cover_file = os.path.join(DIR, f'podcast-cover-{today.isoformat()}.jpg')
-            if not os.path.exists(cover_file):
-                cover_file = os.path.join(DIR, 'assets', 'covers', f'podcast-cover-{today.isoformat()}.jpg')
-            send_telegram_audio(
-                audio_path,
-                caption=caption,
-                filename=audio_filename,
-                cover_path=cover_file,
-                title=clean_text(podcast_title),
-                performer='Punto de vista',
-                duration=duration
-            )
-            print('  ✅ Audio enviado a Telegram')
+            tag_title = f'[PRUEBA] {clean_text(podcast_title)}'
+            tag_audio(audio_path, tag_title)
+            print(f'\n🎉 [MODO PRUEBA] Episodio de prueba generado exitosamente:')
+            print(f'  📁 Audio: {audio_path}')
+            print(f'  ⏱️ Duración total: {duration}s ({duration // 60} min {duration % 60} seg)')
+            print(f'  📝 Guion: {guion_path}')
+            print(f'  ℹ️ No se ha modificado podcast_meta.json ni podcast.xml, ni se ha enviado a Telegram.')
     else:
         print('  ❌ Error al generar audio')
         sys.exit(1)
