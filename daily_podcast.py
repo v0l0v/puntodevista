@@ -43,16 +43,16 @@ from photo_enricher import analyze_daily_facets, build_editorial_facet_prompts
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
 GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3-flash-preview')
+_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
-    'gemini-3-flash-preview',
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
     'gemini-3.5-flash',
-    'gemini-flash-latest',
     'gemini-3.6-flash',
     'gemma-4-26b-a4b-it',
+    'gemini-3-flash-preview',
+    'gemini-flash-latest',
 ]
 GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
 

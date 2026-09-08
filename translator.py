@@ -17,16 +17,17 @@ from data_paths import get_data_path
 logger = logging.getLogger('pdv.translator')
 
 GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3-flash-preview')
+_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
 
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
-    'gemini-3-flash-preview',
-    'gemma-4-26b-a4b-it',
     'gemini-3.5-flash-lite',
-    'gemini-flash-latest',
+    'gemini-3.1-flash-lite',
     'gemini-3.5-flash',
     'gemini-3.6-flash',
+    'gemma-4-26b-a4b-it',
+    'gemini-3-flash-preview',
+    'gemini-flash-latest',
 ]
 # Eliminar duplicados preservando el orden
 GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
@@ -185,12 +186,13 @@ def translate_text(text, is_html=False):
     res = call_gemini(prompt)
     if res:
         # Si el modelo volcó pensamientos internos (ej: "Role: ..."), extraer la última línea limpia
-        if 'Role:' in res or 'Constraints:' in res or 'Final Polish:' in res:
-            lines = [l.strip() for l in res.splitlines() if l.strip() and not l.strip().startswith(('*', '-', '#', 'Role:', 'Task:', 'Input:', 'Style:', 'Constraints:'))]
+        if not is_html and ('\n' in res or any(k in res for k in ['Role:', 'Constraints:', 'Final Polish:', 'Task:', 'Option'])):
+            lines = [l.strip() for l in res.splitlines() if l.strip() and not l.strip().startswith(('*', '-', '#', 'Role:', 'Task:', 'Input:', 'Style:', 'Constraints:', 'Option', 'Context:', 'Must be'))]
             if lines:
                 res = lines[-1]
-        clean_res = re.sub(r'^```html\s*', '', res, flags=re.IGNORECASE)
+        clean_res = re.sub(r'^```(?:html)?\s*', '', res, flags=re.IGNORECASE)
         clean_res = re.sub(r'\s*```$', '', clean_res).strip()
+        clean_res = re.sub(r'^Result:\s*', '', clean_res).strip()
         clean_res = re.sub(r'^["«\']|["»\']$', '', clean_res).strip()
         _CACHE[h] = clean_res
         save_cache()
