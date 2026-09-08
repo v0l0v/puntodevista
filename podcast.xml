@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 07 Sep 2026 12:51:04 +0000</lastBuildDate>
+<lastBuildDate>Tue, 08 Sep 2026 09:40:24 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1288,6 +1288,20 @@ Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano
 Beatriz nos sumerge en el proyecto protagonista de Taylor Galloway, quien durante una década ha retratado la resistencia de la granja de su familia en Virginia frente al avance de la industria. Conectamos esta mirada íntima con el linaje visual de Emmet Gowin, explorando cómo la devoción por el entorno cercano transforma lo cotidiano en un documento histórico y emocional de una potencia universal.
 
 Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano. Nos invita a dejar de lado los grandes paisajes épicos para buscar la trascendencia en los objetos y rincones de nuestro propio hogar o entorno inmediato; utilizando la luz y la composición para otorgar dignidad a lo que solemos pasar por alto en el día a día.]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 36 · Explorando los márgenes visuales y la memoria analógica en el paisaje contemporáneo</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-08.mp3</guid>
+    <pubDate>Tue, 08 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-08.mp3" length="14992336" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-08.jpg"/>
+    <itunes:duration>10:24</itunes:duration>
+    <itunes:title>Episodio 36 · Explorando los márgenes visuales y la memoria analógica en el paisaje contemporáneo</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
