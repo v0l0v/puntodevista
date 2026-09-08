@@ -115,13 +115,14 @@ def call_gemini(prompt, max_retries=2):
         }
     }
 
+    valid_models_tested = 0
     quota_exhausted_count = 0
 
     for model_name in GEMINI_MODELS:
         url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
         for attempt in range(max_retries):
             try:
-                resp = requests.post(url, json=body, timeout=25)
+                resp = requests.post(url, json=body, timeout=12)
                 if resp.status_code == 200:
                     close_circuit()
                     res_json = resp.json()
@@ -131,19 +132,18 @@ def call_gemini(prompt, max_retries=2):
                         if parts and 'text' in parts[0]:
                             return parts[0]['text'].strip()
                 elif resp.status_code == 429:
-                    if attempt < max_retries - 1:
-                        time.sleep(3.0 * (attempt + 1))
-                        continue
                     quota_exhausted_count += 1
                     break
                 elif resp.status_code == 404:
                     break  # Modelo no soportado en esta versión de API
+                else:
+                    valid_models_tested += 1
             except Exception:
-                time.sleep(0.5 * (attempt + 1))
+                pass
 
-    # Si todos los modelos consultados fallaron por límite de cuota (429), abrir Circuit Breaker
-    if quota_exhausted_count >= len(GEMINI_MODELS):
-        open_circuit("Cuota de Gemini API agotada (HTTP 429 en todos los modelos)")
+    # Si falló por límite de cuota (429), abrir Circuit Breaker para evitar bloqueos continuos
+    if quota_exhausted_count > 0:
+        open_circuit("Cuota de Gemini API agotada (HTTP 429 detectado)")
     else:
         logger.warning("Traducción no completada: todos los modelos de respaldo devolvieron error.")
 

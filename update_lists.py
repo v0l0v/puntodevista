@@ -6,182 +6,169 @@ import sys
 import time
 from datetime import date
 
-from update_static_data import (fetch_colossal, fetch_lomography, fetch_booooooom,
-                                fetch_tpj, fetch_swan, fetch_huck, load_previous_items,
-                                update_lomography_articles, update_booooooom_articles, update_swan_articles,
-                                fetch_lensculture, update_lensculture_articles,
-                                fetch_odlp, update_odlp_articles, fetch_magnum, update_magnum_articles,
-                                fetch_shootitwithfilm)
+from update_static_data import (
+    fetch_colossal, fetch_lomography, fetch_booooooom,
+    fetch_tpj, fetch_swan, fetch_huck, load_previous_items,
+    update_lomography_articles, update_booooooom_articles, update_swan_articles,
+    fetch_lensculture, update_lensculture_articles,
+    fetch_odlp, update_odlp_articles, fetch_magnum, update_magnum_articles,
+    fetch_shootitwithfilm, fetch_wp_api, fetch_rss, load_article_cache,
+    update_35mmc_articles, update_emulsive_articles, update_huck_articles,
+    update_phroom_articles, update_tpj_articles
+)
 
+from sources_config import get_active_sources
 from data_paths import get_data_path
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
+FETCH_MAP = {
+    'colossal': fetch_colossal,
+    'lomography': fetch_lomography,
+    'booooooom': fetch_booooooom,
+    'tpj': fetch_tpj,
+    'swan': fetch_swan,
+    'huck': fetch_huck,
+    'lensculture': fetch_lensculture,
+    'odlp': fetch_odlp,
+    'magnum': fetch_magnum,
+    'shootitwithfilm': fetch_shootitwithfilm,
+}
 
-def save_payload(filename, items, all_entries):
+def _inject_thumb(items, cache_file):
+    try:
+        cache = load_article_cache(cache_file)
+        for item in items:
+            data = cache.get(item.get('link'))
+            if isinstance(data, dict):
+                if data.get('thumbnail') and not item.get('thumbnail'):
+                    item['thumbnail'] = data['thumbnail']
+                if data.get('photographer') and not item.get('photographer'):
+                    item['photographer'] = data['photographer']
+    except Exception:
+        pass
+
+CACHE_UPDATERS = {
+    'lomography': lambda items: update_lomography_articles(items),
+    'booooooom': lambda items: update_booooooom_articles(items),
+    'swan': lambda items: (update_swan_articles(items), _inject_thumb(items, 'swan_articles.json')),
+    'lensculture': lambda items: (update_lensculture_articles(items[:10]), _inject_thumb(items, 'lensculture_articles.json')),
+    'odlp': lambda items: (update_odlp_articles(items[:10]), _inject_thumb(items, 'odlp_articles.json')),
+    'magnum': lambda items: (update_magnum_articles(items[:10]), _inject_thumb(items, 'magnum_articles.json')),
+    '35mmc': lambda items: (update_35mmc_articles(items[:10]), _inject_thumb(items, '35mmc_articles.json')),
+    'emulsive': lambda items: (update_emulsive_articles(items[:10]), _inject_thumb(items, 'emulsive_articles.json')),
+    'huck': lambda items: (update_huck_articles(items[:10]), _inject_thumb(items, 'huck_articles.json')),
+    'phroom': lambda items: (update_phroom_articles(items[:10]), _inject_thumb(items, 'phroom_articles.json')),
+    'tpj': lambda items: (update_tpj_articles(items[:10]), _inject_thumb(items, 'tpj_articles.json')),
+}
+
+
+def save_payload(filename, items, all_entries=None):
     payload = {'items': items, 'count': len(items), 'updated': date.today().isoformat()}
-    if filename == 'feeds.json':
-        payload = {'items': all_entries, 'count': len(all_entries), 'updated': date.today().isoformat()}
     dest_path = get_data_path(filename)
-    with open(dest_path, 'w') as f:
+    with open(dest_path, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False)
     print(f'  Guardado {filename} ({len(items)})')
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Actualiza las listas de feeds (JSON).')
+    parser = argparse.ArgumentParser(description='Actualiza las listas de feeds (JSON) para todas las fuentes activas.')
+    parser.add_argument('--keep-lomo', action='store_true',
+                        help='Reutiliza lomography.json sin scrapear la revista.')
     parser.add_argument('--fresh-lomography', action='store_true',
-                        help='Refresca la lista de Lomography (gratis vía Jina). '
-                             'Sin esta flag se conserva el último dato de Lomography.')
+                        help='Fuerza el refresco de Lomography.')
+    parser.add_argument('--push', action='store_true',
+                        help='Sube los cambios a GitHub al finalizar.')
     args = parser.parse_args()
 
     ts = date.today().isoformat()
-    print(f'[{ts}] Actualizando listas de feeds...')
+    print(f'[{ts}] Actualizando listas de feeds de todas las fuentes activas...')
 
-    print('  1. Colossal...')
-    colossal = fetch_colossal()
-    print(f'     {len(colossal)} artículos')
+    active_sources = get_active_sources()
+    source_items = {}
 
-    print('  2. Lomography...')
-    if args.fresh_lomography:
-        lomo = fetch_lomography()
-        if not lomo:
-            lomo = load_previous_items('lomography.json')
-        print(f'     {len(lomo)} artículos')
-    else:
-        lomo = load_previous_items('lomography.json')
-        print(f'     {len(lomo)} artículos (modo ahorro: sin refrescar Lomography)')
+    for i, src in enumerate(active_sources, 1):
+        s_id = src['id']
+        name = src['name']
+        print(f'  {i}. {name} ({s_id})...')
+        items = []
 
-    print('  3. Booooooom...')
-    boom = fetch_booooooom()
-    if not boom:
-        boom = load_previous_items('booooooom.json')
-    print(f'     {len(boom)} artículos')
+        try:
+            if s_id == 'lomography':
+                if args.keep_lomo:
+                    items = load_previous_items('lomography.json')
+                    print(f'     {len(items)} artículos (modo ahorro: sin refrescar Lomography)')
+                else:
+                    items = fetch_lomography()
+                    if not items:
+                        items = load_previous_items('lomography.json')
+                    print(f'     {len(items)} artículos')
+            elif s_id in FETCH_MAP:
+                items = FETCH_MAP[s_id]()
+                print(f'     {len(items)} artículos')
+            elif src.get('type') == 'wp-api' and src.get('wp_api'):
+                items = fetch_wp_api(src['wp_api'], s_id)
+            elif src.get('feeds'):
+                for feed_url in src['feeds']:
+                    items.extend(fetch_rss(feed_url, s_id, include_content=True, fetch_page_fallback=False))
+                print(f'     {len(items)} artículos (RSS)')
+        except Exception as e_fetch:
+            print(f'     ⚠️ Error obteniendo {s_id}: {e_fetch}')
 
-    print('  4. The Photographic Journal...')
-    tpj = fetch_tpj()
-    if not tpj:
-        tpj = load_previous_items('tpj.json')
-    print(f'     {len(tpj)} artículos')
+        if not items:
+            items = load_previous_items(f'{s_id}.json')
+            if items:
+                print(f'     (recuperados {len(items)} artículos previos de {s_id}.json)')
 
-    print('  5. Swann Galleries...')
-    swan = fetch_swan()
-    if not swan:
-        swan = load_previous_items('swan.json')
-    print(f'     {len(swan)} artículos')
+        source_items[s_id] = items
 
-    print('  6. Huck Magazine...')
-    huck = fetch_huck()
-    if not huck:
-        huck = load_previous_items('huck.json')
-    print(f'     {len(huck)} artículos')
+    print('  Actualizando cachés de artículos y miniaturas...')
+    for s_id, updater in CACHE_UPDATERS.items():
+        if s_id in source_items and source_items[s_id]:
+            try:
+                updater(source_items[s_id])
+            except Exception as e_cache:
+                print(f'     ⚠️ Error en cache de {s_id}: {e_cache}')
 
-    print('  6b. LensCulture...')
-    lensculture = fetch_lensculture()
-    if not lensculture:
-        lensculture = load_previous_items('lensculture.json')
-    print(f'     {len(lensculture)} artículos')
-
-    print('  6c. L\'Œil de la Photographie...')
-    odlp = fetch_odlp()
-    if not odlp:
-        odlp = load_previous_items('odlp.json')
-    print(f'     {len(odlp)} artículos')
-
-    print('  6d. Magnum Photos...')
-    magnum = fetch_magnum()
-    if not magnum:
-        magnum = load_previous_items('magnum.json')
-    print(f'     {len(magnum)} artículos')
-
-    print('  6e. Shoot It With Film...')
-    shootit = fetch_shootitwithfilm()
-    if not shootit:
-        shootit = load_previous_items('shootitwithfilm.json')
-    print(f'     {len(shootit)} artículos')
-
-    print('  6f. Actualizando cachés de artículos...')
-    if lomo:
-        update_lomography_articles(lomo)
-    if boom:
-        update_booooooom_articles(boom)
-    
-    # Load caches and inject thumbnails
-    from update_static_data import load_article_cache
-    
-    if swan:
-        update_swan_articles(swan)
-        swan_cache = load_article_cache('swan_articles.json')
-        for item in swan:
-            data = swan_cache.get(item.get('link'))
-            if isinstance(data, dict) and data.get('thumbnail'):
-                item['thumbnail'] = data['thumbnail']
-                
-    if lensculture:
-        update_lensculture_articles(lensculture[:10])
-        lens_cache = load_article_cache('lensculture_articles.json')
-        for item in lensculture:
-            data = lens_cache.get(item.get('link'))
-            if isinstance(data, dict) and data.get('thumbnail'):
-                item['thumbnail'] = data['thumbnail']
-                
-    if odlp:
-        update_odlp_articles(odlp[:10])
-        odlp_cache = load_article_cache('odlp_articles.json')
-        for item in odlp:
-            data = odlp_cache.get(item.get('link'))
-            if isinstance(data, dict) and data.get('thumbnail'):
-                item['thumbnail'] = data['thumbnail']
-
-    if magnum:
-        update_magnum_articles(magnum[:10])
-        magnum_cache = load_article_cache('magnum_articles.json')
-        for item in magnum:
-            data = magnum_cache.get(item.get('link'))
-            if isinstance(data, dict) and data.get('thumbnail'):
-                item['thumbnail'] = data['thumbnail']
-
-    print('  6g. Traducción automática de artículos al español...')
+    print('  Traducción automática de titulares y resúmenes al español...')
     try:
-        from translator import translate_article_entry
-        sources_to_translate = [
-            ('colossal', colossal),
-            ('lomography', lomo),
-            ('booooooom', boom),
-            ('tpj', tpj),
-            ('swan', swan),
-            ('huck', huck),
-            ('lensculture', lensculture),
-            ('odlp', odlp),
-            ('magnum', magnum),
-            ('shootitwithfilm', shootit),
-        ]
-        for src_name, src_items in sources_to_translate:
-            if src_items:
-                for it in src_items[:15]:
-                    translate_article_entry(it)
-        print('     ✅ Traducción completada con éxito')
+        from translator import translate_article_entry, is_circuit_open
+        if not is_circuit_open():
+            for s_id, items in source_items.items():
+                if items:
+                    untranslated = [it for it in items if not it.get('translated')]
+                    for it in untranslated[:3]:
+                        if is_circuit_open():
+                            break
+                        translate_article_entry(it)
+            print('     ✅ Traducción completada con éxito')
+        else:
+            print('     ⚡ Traducción omitida temporalmente (Circuit Breaker activo por cuota 429)')
     except Exception as e_trans:
         print(f'     ⚠️ Error en traducción automática: {e_trans}')
 
-    all_entries = sorted(colossal + lomo + boom + tpj + swan + huck + lensculture + odlp + magnum + shootit,
-                         key=lambda x: x.get('_parsedDate') or x.get('date') or '',
-                         reverse=True)
+    print('  Guardando JSONs individuales por fuente...')
+    all_entries = []
+    for s_id, items in source_items.items():
+        all_entries.extend(items)
+        save_payload(f'{s_id}.json', items)
 
-    save_payload('lomography.json', lomo, all_entries)
-    save_payload('booooooom.json', boom, all_entries)
-    save_payload('tpj.json', tpj, all_entries)
-    save_payload('swan.json', swan, all_entries)
-    save_payload('huck.json', huck, all_entries)
-    save_payload('lensculture.json', lensculture, all_entries)
-    save_payload('odlp.json', odlp, all_entries)
-    save_payload('magnum.json', magnum, all_entries)
-    save_payload('shootitwithfilm.json', shootit, all_entries)
-    save_payload('feeds.json', all_entries, all_entries)
+    print('  Sincronizando con archivo histórico y generando feeds.json consolidado...')
+    try:
+        from sync_archive import sync_source_json_files, export_full_feeds_json
+        from archive_db import get_connection
+        with get_connection() as conn:
+            sync_source_json_files(conn)
+            conn.commit()
+        export_full_feeds_json()
+    except Exception as e_sync:
+        print(f'  ⚠️ Error en sincronización de archivo histórico: {e_sync}')
+        all_entries.sort(key=lambda x: x.get('_parsedDate') or x.get('date') or '', reverse=True)
+        save_payload('feeds.json', all_entries)
 
-    should_push = '--push' in sys.argv or os.environ.get('PUSH_TO_GITHUB') == '1'
+    should_push = args.push or '--push' in sys.argv or os.environ.get('PUSH_TO_GITHUB') == '1'
     if should_push:
-        print('  7. Subiendo a GitHub...')
+        print('  Subiendo a GitHub...')
         try:
             subprocess.run(
                 ['git', 'add', 'data/'],
@@ -198,7 +185,6 @@ def main():
                 print(f'     ⚠️ Error commit: {res.stderr[:300]}')
                 return
             
-            # Reintentos con rebase para evitar colisiones en CI
             pushed = False
             for attempt in range(4):
                 pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
@@ -213,7 +199,7 @@ def main():
         except Exception as e:
             print(f'     ⚠️ Git error: {e}')
     else:
-        print('  7. Archivos de datos actualizados en data/ (respaldo GitHub centralizado a las 07:30).')
+        print('  Archivos de datos actualizados en data/.')
 
 
 if __name__ == '__main__':

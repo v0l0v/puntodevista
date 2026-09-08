@@ -50,9 +50,9 @@ git pull --rebase --autostash origin main || true
 echo ">> [2/6] Generando digest diario..."
 $PYTHON daily_digest.py
 
-# 8. Actualizar cachés estáticos
-echo ">> [3/6] Actualizando cachés de artículos..."
-$PYTHON update_static_data.py --keep-lomo || echo "⚠️ Advertencia en update_static_data (continuando)"
+# 8. Actualizar listas de feeds y cachés estáticos (todas las fuentes activas)
+echo ">> [3/6] Actualizando feeds y cachés de artículos..."
+$PYTHON update_lists.py || echo "⚠️ Advertencia en update_lists (continuando)"
 
 # 8b. Saneamiento y traducción continua del archivo
 echo ">> Saneando y traduciendo artículos pendientes del archivo..."
