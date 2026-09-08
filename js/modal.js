@@ -3,7 +3,7 @@
  */
 
 import { state } from './state.js';
-import { fmtDate } from './utils.js';
+import { fmtDate, fetchDataJson } from './utils.js';
 import { getSourceLabel } from './cards.js';
 import { playClickOpen, playPodcastInBar } from './audio.js';
 import { closeGallery } from './gallery.js';
@@ -592,7 +592,7 @@ export async function openModal(cardOrEntry, directSource) {
       if (!state.sourceJsonCache) state.sourceJsonCache = {};
       let items = state.sourceJsonCache[source];
       if (!items) {
-        const resp = await fetch(`${source}.json`);
+        const resp = await fetchDataJson(`${source}.json`);
         if (resp.ok) {
           const data = await resp.json();
           items = data.items || (Array.isArray(data) ? data : []);
@@ -630,10 +630,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('lomography_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('lomography_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -654,10 +656,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('booooooom_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('booooooom_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -678,10 +682,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('tpj_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('tpj_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -708,10 +714,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('lensculture_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('lensculture_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -732,10 +740,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('odlp_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('odlp_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -756,10 +766,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch('magnum_articles.json');
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson('magnum_articles.json');
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {
@@ -818,10 +830,12 @@ export async function openModal(cardOrEntry, directSource) {
     } catch {}
     if (!data) {
       try {
-        const resp = await fetch(`${source}_articles.json`);
-        const cache = await resp.json();
-        const cached = (cache.articles || cache)[entry.link];
-        if (cached && cached.status === 'ok') data = cached;
+        const resp = await fetchDataJson(`${source}_articles.json`);
+        if (resp.ok) {
+          const cache = await resp.json();
+          const cached = (cache.articles || cache)[entry.link];
+          if (cached && cached.status === 'ok') data = cached;
+        }
       } catch {}
     }
     if (data) {

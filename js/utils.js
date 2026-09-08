@@ -48,6 +48,17 @@ export async function fetchWithTimeout(url, ms) {
   }
 }
 
+/**
+ * Resuelve un archivo JSON priorizando el directorio canónico data/ con fallback transparente a raíz.
+ */
+export async function fetchDataJson(filename, options = { cache: 'no-store' }) {
+  try {
+    const resp = await fetch(`data/${filename}`, options);
+    if (resp.ok) return resp;
+  } catch {}
+  return fetch(filename, options);
+}
+
 // Window bindings
 window.esc = esc;
 window.splitItems = splitItems;
@@ -56,3 +67,5 @@ window.fmtDur = fmtDur;
 window.fmtDate = fmtDate;
 window.fmtDateLong = fmtDateLong;
 window.fetchWithTimeout = fetchWithTimeout;
+window.fetchDataJson = fetchDataJson;
+

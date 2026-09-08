@@ -2,14 +2,14 @@
  * js/health.js — Monitor Editorial del Archivo y Panel de Observabilidad Privado
  */
 
-import { esc } from './utils.js';
+import { esc, fetchDataJson } from './utils.js';
 import { SOURCE_LABELS } from './constants.js';
 
 let _cachedHealth = null;
 
 export async function fetchHealth() {
   try {
-    const resp = await fetch('health.json', { cache: 'no-store' });
+    const resp = await fetchDataJson('health.json');
     if (resp.ok) {
       _cachedHealth = await resp.json();
       updateHealthUI(_cachedHealth);

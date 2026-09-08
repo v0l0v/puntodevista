@@ -1,5 +1,6 @@
 import { SOURCES_KEY, MONTH_NAMES, PAGE_SIZE } from './constants.js';
 import { state } from './state.js';
+import { fetchDataJson } from './utils.js';
 
 export function isMobile() {
   return window.matchMedia('(max-width: 720px)').matches;
@@ -167,7 +168,8 @@ export function saveSources() {
 
 export async function loadSourcesConfig() {
   try {
-    const resp = await fetch('sources.json', { cache: 'no-store' });
+    const resp = await fetchDataJson('sources.json');
+    if (!resp.ok) return;
     const data = await resp.json();
     if (Array.isArray(data) && data.length) {
       state.allSources = data.filter(s => s.enabled !== false).map(s => s.id);

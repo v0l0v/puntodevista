@@ -44,7 +44,7 @@ jobs:
 
       - name: Commit y push del estado de Telegram
         run: |
-          git add telegram_sent.json
+          git add data/
           git commit -m "chore: telegram news state $(date +%Y-%m-%d)" || echo "nada que commitear"
           for i in 1 2 3 4 5; do
             git pull --rebase --autostash || true

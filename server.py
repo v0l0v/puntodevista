@@ -25,6 +25,7 @@ def strip_jina_header(md):
 
 
 from config import get_jina_key
+from data_paths import get_data_path
 
 
 def fetch_markdown(url, timeout=60, selector=None):
@@ -1174,7 +1175,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'booooooom.json')) as f:
+                with open(get_data_path('booooooom.json')) as f:
                     items = json.load(f).get('items', [])
                 data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
             except Exception as e:
@@ -1186,7 +1187,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'tpj.json')) as f:
+                with open(get_data_path('tpj.json')) as f:
                     items = json.load(f).get('items', [])
                 data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
             except Exception as e:
@@ -1198,7 +1199,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'huck.json')) as f:
+                with open(get_data_path('huck.json')) as f:
                     items = json.load(f).get('items', [])
                 data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
             except Exception as e:
@@ -1210,7 +1211,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'swan.json')) as f:
+                with open(get_data_path('swan.json')) as f:
                     items = json.load(f).get('items', [])
                 data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
             except Exception as e:
@@ -1222,7 +1223,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'sources.json')) as f:
+                with open(get_data_path('sources.json')) as f:
                     data = f.read()
             except Exception as e:
                 data = json.dumps({'status': 'error', 'message': str(e)})
@@ -1233,7 +1234,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             try:
-                with open(os.path.join(DIR, 'shootitwithfilm.json')) as f:
+                with open(get_data_path('shootitwithfilm.json')) as f:
                     items = json.load(f).get('items', [])
                 data = json.dumps({'status': 'ok', 'items': items, 'count': len(items)})
             except Exception as e:

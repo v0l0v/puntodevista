@@ -231,7 +231,8 @@
 
   async function fetchColossal() {
     try {
-      const resp = await fetch('feeds.json');
+      let resp = await fetch('data/feeds.json');
+      if (!resp.ok) resp = await fetch('feeds.json');
       const data = await resp.json();
       if (data && data.items) {
         return data.items.filter(e => e._source === 'colossal').map(normalizeEntry);
@@ -259,7 +260,8 @@
       if (data && data.status === 'ok' && data.items.length) return normalizeLomo(data.items);
     } catch {}
     try {
-      const resp = await fetch('lomography.json');
+      let resp = await fetch('data/lomography.json');
+      if (!resp.ok) resp = await fetch('lomography.json');
       const data = await resp.json();
       if (data && data.items) return normalizeLomo(data.items);
     } catch {}

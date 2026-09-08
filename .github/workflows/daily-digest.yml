@@ -53,7 +53,7 @@ jobs:
 
       - name: Commit y push de digests
         run: |
-          git add resumenes
+          git add resumenes data/
           git commit -m "chore: daily digest $(date +%Y-%m-%d)" || echo "nada que commitear"
           for i in 1 2 3 4 5; do
             git pull --rebase --autostash || true

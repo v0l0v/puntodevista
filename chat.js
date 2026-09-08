@@ -245,7 +245,8 @@
       if (window.__allEntries && window.__allEntries.length > 0) {
         archiveData = { articles: window.__allEntries, podcasts: window.__podcastEntries || [] };
       } else {
-        const resp = await fetch('feeds.json');
+        let resp = await fetch('data/feeds.json');
+        if (!resp.ok) resp = await fetch('feeds.json');
         if (resp.ok) {
           const d = await resp.json();
           archiveData = { articles: d.items || [], podcasts: [] };

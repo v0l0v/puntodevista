@@ -620,7 +620,8 @@ function renderEpisodeList(list) {
 (async () => {
   bindRadio(document.body);
   try {
-    const resp = await fetch('podcast_meta.json', { cache: 'no-store' });
+    let resp = await fetch('data/podcast_meta.json', { cache: 'no-store' });
+    if (!resp.ok) resp = await fetch('podcast_meta.json', { cache: 'no-store' });
     const meta = await resp.json();
     renderEpisodes(Array.isArray(meta) ? meta : []);
   } catch {

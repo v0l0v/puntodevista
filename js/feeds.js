@@ -20,7 +20,8 @@ import {
   fmtDesc,
   fmtDur,
   fmtDate,
-  fetchWithTimeout
+  fetchWithTimeout,
+  fetchDataJson
 } from './utils.js';
 
 import {
@@ -85,9 +86,11 @@ export async function fetchApiOrJson(apiPath, jsonFile, normalize) {
     if (data && data.status === 'ok' && data.items.length) return normalize(data.items);
   } catch {}
   try {
-    const resp = await fetch(jsonFile, { cache: 'no-store' });
-    const data = await resp.json();
-    if (data && data.items) return normalize(data.items);
+    const resp = await fetchDataJson(jsonFile);
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data && data.items) return normalize(data.items);
+    }
   } catch {}
   return [];
 }
@@ -210,7 +213,7 @@ export async function loadFeeds() {
   // 2. Carga ultra rápida del bundle consolidado feeds.json (~100 ms)
   let currentEntries = window.__rawEntries || [];
   try {
-    const resp = await fetch('feeds.json', { cache: 'no-store' });
+    const resp = await fetchDataJson('feeds.json');
     if (resp.ok) {
       const data = await resp.json();
       if (data && Array.isArray(data.items) && data.items.length) {
@@ -270,7 +273,8 @@ export async function refreshFeeds() {
 
 export async function fetchPodcastMeta() {
   try {
-    const resp = await fetch('podcast_meta.json', { cache: 'no-store' });
+    const resp = await fetchDataJson('podcast_meta.json');
+    if (!resp.ok) return;
     const data = await resp.json();
     if (!Array.isArray(data) || !data.length) return;
     const sorted = [...data].sort((a, b) => String(a.date).localeCompare(String(b.date)));
