@@ -37,14 +37,22 @@ FETCH_MAP = {
 
 def _inject_thumb(items, cache_file):
     try:
+        import re
         cache = load_article_cache(cache_file)
         for item in items:
             data = cache.get(item.get('link'))
             if isinstance(data, dict):
-                if data.get('thumbnail') and not item.get('thumbnail'):
+                cur_thumb = str(item.get('thumbnail') or '')
+                # Si no tiene thumbnail, o si el actual es un YouTube embed o Huck sin escalar
+                if data.get('thumbnail') and (not cur_thumb or 'youtube.com/embed/' in cur_thumb or 'w=4000' in cur_thumb):
                     item['thumbnail'] = data['thumbnail']
                 if data.get('photographer') and not item.get('photographer'):
                     item['photographer'] = data['photographer']
+            # Sanitizar miniaturas de YouTube en cualquier caso
+            if item.get('thumbnail') and 'youtube.com/embed/' in item['thumbnail']:
+                yt_m = re.search(r'youtube\.com/embed/([a-zA-Z0-9_-]+)', item['thumbnail'])
+                if yt_m:
+                    item['thumbnail'] = f'https://img.youtube.com/vi/{yt_m.group(1)}/hqdefault.jpg'
     except Exception:
         pass
 

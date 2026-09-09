@@ -747,6 +747,9 @@ def scrape_magnum_article(url):
         img_match = re.search(r'src=[\"\']([^\"\']+)[\"\']', b)
         if img_match:
             img_url = img_match.group(1)
+            yt_m = re.search(r'youtube\.com/embed/([a-zA-Z0-9_-]+)', img_url)
+            if yt_m:
+                img_url = f"https://img.youtube.com/vi/{yt_m.group(1)}/hqdefault.jpg"
             cap_match = re.search(r'class=[\"\']b-caption__text[\"\'][^>]*>(.*?)</div>', b, re.DOTALL)
             cred_match = re.search(r'class=[\"\']b-caption__credit[\"\'][^>]*>(.*?)</span>', b, re.DOTALL)
             caption = ''
@@ -763,6 +766,11 @@ def scrape_magnum_article(url):
         if img['url'] not in seen_urls:
             seen_urls.add(img['url'])
             unique_images.append(img)
+
+    if not unique_images:
+        og_m = re.search(r'property=[\"\']og:image[\"\']\s+content=[\"\']([^\"\']+)[\"\']', html_data)
+        if og_m:
+            unique_images.append({'url': og_m.group(1), 'alt': '', 'caption': ''})
 
     thumbnail = unique_images[0]['url'] if unique_images else ''
     data = {'status': 'ok', 'content': content, 'images': unique_images, 'credits': [], 'thumbnail': thumbnail}
@@ -943,14 +951,13 @@ def extract_html_article_payload(html_page, url, source_id=''):
             if lead_t:
                 content_html = f"<p><strong>{lead_t}</strong></p>\n" + content_html
 
-        # Extraer todas las fotos en alta resolución de CDN Huck
+        # Extraer todas las fotos del CDN Huck preservando las firmas HMAC intactas
         for im_h in re.finditer(r'<img[^>]+src=[\"\'](https://tco-london\.transforms\.svdcdn\.com/production/tco/images/[^\"\']+)[\"\']', html_page):
             raw_u = im_h.group(1).replace('&amp;', '&')
-            clean_u = re.sub(r'\?.*', '?w=1800&q=85&auto=format', raw_u)
-            if clean_u not in seen_imgs:
-                seen_imgs.add(clean_u)
+            if raw_u not in seen_imgs:
+                seen_imgs.add(raw_u)
                 alt_m = re.search(r'alt=[\"\']([^\"\']*)[\"\']', im_h.group(0))
-                images.append({'url': clean_u, 'alt': alt_m.group(1) if alt_m else '', 'caption': ''})
+                images.append({'url': raw_u, 'alt': alt_m.group(1) if alt_m else '', 'caption': ''})
 
     elif source_id == 'phroom' or 'phroom' in url:
         m = re.search(r'<div class=[\"\'][^\"\']*(?:entry-content|post-content)[^\"\']*[\"\']>(.*?)(?:<footer|<div class=[\"\']sharedaddy)', html_page, re.DOTALL)

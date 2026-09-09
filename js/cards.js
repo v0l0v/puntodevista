@@ -116,6 +116,13 @@ export function imgError(img) {
   if (!img.dataset.retried) {
     img.dataset.retried = '1';
     const src = img.src;
+    if (src && /youtube\.com\/embed\/([^"?&]+)/i.test(src)) {
+      const ytMatch = src.match(/youtube\.com\/embed\/([^"?&]+)/i);
+      if (ytMatch) {
+        img.src = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+        return;
+      }
+    }
     if (src && !src.includes('i0.wp.com') && (src.includes('kosmofoto.com') || src.includes('wp-content'))) {
       img.src = 'https://i0.wp.com/' + src.replace(/^https?:\/\//, '');
       return;

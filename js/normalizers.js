@@ -84,15 +84,22 @@ export function normalizeSwan(items) {
 }
 
 export function normalizeHuck(items) {
-  return items.map(i => ({
-    _source: 'huck',
-    _id: i.link || i._id,
-    _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
-    link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
-    thumbnail: i.thumbnail
-  }));
+  return items.map(i => {
+    let thumb = i.thumbnail;
+    if ((!thumb || thumb.includes('w=4000')) && i.content) {
+      const m = i.content.match(/<img[^>]+src=["'](https:\/\/tco-london\.transforms\.svdcdn\.com[^"']+)["']/i);
+      if (m) thumb = m[1].replace(/&amp;/g, '&');
+    }
+    return {
+      _source: 'huck',
+      _id: i.link || i._id,
+      _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
+      link: i.link,
+      title: i.title,
+      content: i.content || i.excerpt,
+      thumbnail: thumb
+    };
+  });
 }
 
 export function normalizeLensCulture(items) {
@@ -120,15 +127,22 @@ export function normalizeOdlp(items) {
 }
 
 export function normalizeMagnum(items) {
-  return items.map(i => ({
-    _source: 'magnum',
-    _id: i.link || i._id,
-    _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
-    link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
-    thumbnail: i.thumbnail
-  }));
+  return items.map(i => {
+    let thumb = i.thumbnail;
+    if (thumb && /youtube\.com\/embed\/([^"?&]+)/i.test(thumb)) {
+      const ytMatch = thumb.match(/youtube\.com\/embed\/([^"?&]+)/i);
+      if (ytMatch) thumb = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+    }
+    return {
+      _source: 'magnum',
+      _id: i.link || i._id,
+      _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
+      link: i.link,
+      title: i.title,
+      content: i.content || i.excerpt,
+      thumbnail: thumb
+    };
+  });
 }
 
 export function normalizeShootItWithFilm(items) {
@@ -145,6 +159,10 @@ export function normalizeShootItWithFilm(items) {
 
 export function extractImg(post) {
   let img = post.thumbnail;
+  if (img && (img.includes('w=4000') || !img) && post.content) {
+    const m = (post.content || '').match(/<img[^>]+src=["'](https:\/\/tco-london\.transforms\.svdcdn\.com[^"']+)["']/i);
+    if (m) img = m[1].replace(/&amp;/g, '&');
+  }
   if (!img) {
     const m = (post.content || '').match(/<img[^>]+src=["']([^"']+)["']/i);
     img = m ? m[1] : null;
@@ -153,6 +171,10 @@ export function extractImg(post) {
     const m = (post.content || '').match(/data-orig-file=["']([^"']+)["']/i) ||
               (post.content || '').match(/srcset=["']([^"'\s,]+)/i);
     img = m ? m[1] : null;
+  }
+  if (img && /youtube\.com\/embed\/([^"?&]+)/i.test(img)) {
+    const ytMatch = img.match(/youtube\.com\/embed\/([^"?&]+)/i);
+    if (ytMatch) img = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
   }
   if (img && img.includes('kosmofoto.com') && !img.includes('i0.wp.com')) {
     img = 'https://i0.wp.com/' + img.replace(/^https?:\/\//, '');

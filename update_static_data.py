@@ -184,22 +184,36 @@ def fetch_rss(url, source, include_content=False, fetch_page_fallback=True):
             seen.add(key)
 
             thumb = ''
-            # 1. Buscar en enclosure y media:content
-            for elem in item:
-                tag_l = elem.tag.lower()
-                if 'enclosure' in tag_l or 'media' in tag_l:
-                    u = elem.attrib.get('url') or elem.attrib.get('href')
-                    if u and any(ext in u.lower() for ext in ('.jpg', '.jpeg', '.png', '.webp', '.gif', 'image', 'wp-content')):
-                        thumb = u
+            # Para Huck, preferir imagen optimizada del content frente al enclosure sin escalar (que causa 504)
+            if (source == 'huck' or 'huckmag.com' in link) and content:
+                for tm_huck in re.finditer(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', content):
+                    u_h = tm_huck.group(1).replace('&amp;', '&')
+                    if 'facebook.com' not in u_h and 'google' not in u_h and 'tracking' not in u_h and 'avatar' not in u_h:
+                        thumb = u_h
                         break
+
+            # 1. Buscar en enclosure y media:content (si no se ha obtenido ya)
+            if not thumb:
+                for elem in item:
+                    tag_l = elem.tag.lower()
+                    if 'enclosure' in tag_l or 'media' in tag_l:
+                        u = elem.attrib.get('url') or elem.attrib.get('href')
+                        if u and any(ext in u.lower() for ext in ('.jpg', '.jpeg', '.png', '.webp', '.gif', 'image', 'wp-content')):
+                            thumb = u
+                            break
             
             # 2. Buscar en contenido HTML
             if not thumb and content:
                 for tm in re.finditer(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', content):
-                    url_img = tm.group(1)
+                    url_img = tm.group(1).replace('&amp;', '&')
                     if 'facebook.com' not in url_img and 'google' not in url_img and 'tracking' not in url_img and 'avatar' not in url_img:
                         thumb = url_img
                         break
+
+            if thumb and 'youtube.com/embed/' in thumb:
+                yt_m = re.search(r'youtube\.com/embed/([a-zA-Z0-9_-]+)', thumb)
+                if yt_m:
+                    thumb = f'https://img.youtube.com/vi/{yt_m.group(1)}/hqdefault.jpg'
 
             # 3. Fallback a página web con og:image
             if not thumb and link and fetch_page_fallback:
