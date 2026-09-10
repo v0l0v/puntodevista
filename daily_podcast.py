@@ -1330,7 +1330,8 @@ def main():
                     'museum_url': museum_piece.get('museum_url', ''),
                 } if museum_piece else None,
                 'facets': {
-                    'book': facets.get('book'),
+                    'book': facets.get('primary_book') or (facets.get('other_books')[0] if facets.get('other_books') else None),
+                    'other_books': facets.get('other_books', []),
                     'lab': facets.get('lab'),
                     'call': facets.get('call'),
                 },
