@@ -14,6 +14,7 @@ import zipfile
 from bs4 import BeautifulSoup
 
 from data_paths import get_data_path
+from photo_glossary import apply_photo_glossary
 
 logger = logging.getLogger('pdv.translator')
 
@@ -107,6 +108,7 @@ def _translate_plain_segment(text):
         tokens = _SP_MODEL.encode_as_pieces(s)
         results = _CT2_TRANSLATOR.translate_batch([tokens])
         translated = _SP_MODEL.decode_pieces(results[0].hypotheses[0])
+        translated = apply_photo_glossary(translated)
         # Respetar espacios iniciales o finales del segmento original
         prefix = ' ' if text.startswith(' ') else ''
         suffix = ' ' if text.endswith(' ') else ''
@@ -131,7 +133,7 @@ def translate_text(text, is_html=False):
         val = _CACHE[h]
         # Evitar artefactos residuales de versiones anteriores con Gemini
         if not val.startswith("Aquí tienes") and not val.startswith("La traducción") and not "1." in val:
-            return val
+            return apply_photo_glossary(val)
 
     if is_html:
         try:
@@ -155,6 +157,7 @@ def translate_text(text, is_html=False):
         translated_res = _translate_plain_segment(text_str)
 
     if translated_res and translated_res.strip() != text_str.strip():
+        translated_res = apply_photo_glossary(translated_res)
         _CACHE[h] = translated_res
         save_cache()
         return translated_res
