@@ -39,6 +39,7 @@ DB_PATH = get_db_path()
 from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_config, ensure_warp_proxy
 from museum_archive import get_museum_treasure
 from photo_enricher import analyze_daily_facets, build_editorial_facet_prompts
+from phonetic_adapter import adapt_text_phonetics
 
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
@@ -716,12 +717,12 @@ REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
 - RIGOR FACTUAL: NUNCA INVENTES DATOS. Todo se basa estrictamente en el material provisto.
 - PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
   * Oraciones continuas separadas por puntos y comas.
-  * PROHIBIDO usar guiones largos (—), dos puntos (:), puntos suspensivos (...) o paréntesis (...).
-- FONÉTICA:
+- FONÉTICA Y NOMBRES EN INGLÉS (ESTRICTO):
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
   * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
   * Escribe "la revista Buum" (para Booooooom).
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
+  * NOMBRES Y TÉRMINOS ANGLOSAJONES EN EL LOCUTABLE: En el texto de los locutores ([ROBERTO], [BEATRIZ], [NICOLAS]), si aparece un nombre propio, apellido o término en inglés cuya pronunciación en español sea engañosa o difícil para el sintetizador de voz (por ejemplo: McCurry, Klein, Tyler, Cheryl, White, Aperture, Straight), escribe directamente su adaptación fonética amigable en castellano (ejemplos: "Macari", "Clain", "Táiler", "Chéril", "Uait", "Ápercher", "Streit"). En el título y en el resumen de tres párrafos del inicio mantén siempre la grafía real y oficial para el lector y la hemeroteca.
 - DIRECTRIZ COMUNITARIA Y CORREOS (ANA DE FOTONISTAS / FOTOLETER):
   * Si en las publicaciones o correos del día hay contenido de Fotonistas o de Ana:
     Menciónalo explícitamente en el repaso de Roberto o al inicio del bloque de Nicolás: "en el niusleter de Fotonistas, Ana nos deja una reflexión imperdible...".
@@ -974,11 +975,12 @@ def generate_audio(text, out_path, episode_date=None):
             for t_idx, (speaker, turn_txt) in enumerate(dialogue_turns):
                 t_wav = os.path.join(tmp_dir, f'b_{i}_t_{t_idx}.wav')
                 voice_id = VOICE_CAST.get(speaker, 'em_alex')
+                turn_spoken = adapt_text_phonetics(clean_text(turn_txt))
                 synthesized = False
 
                 if kokoro_instance:
                     try:
-                        samples, sr = kokoro_instance.create(turn_txt, voice=voice_id, speed=1.0, lang="es")
+                        samples, sr = kokoro_instance.create(turn_spoken, voice=voice_id, speed=1.0, lang="es")
                         sf.write(t_wav, samples, sr)
                         t_wav_44k = os.path.join(tmp_dir, f'b_{i}_t_{t_idx}_44k.wav')
                         subprocess.run(['ffmpeg', '-y', '-i', t_wav, '-ar', '44100', '-ac', '2', t_wav_44k], check=True, capture_output=True, timeout=60)
@@ -994,7 +996,7 @@ def generate_audio(text, out_path, episode_date=None):
                         'edge-tts',
                         '--voice', fallback_voice,
                         f'--rate={TTS_RATE}',
-                        '--text', turn_txt,
+                        '--text', turn_spoken,
                         '--write-media', raw_mp3
                     ], check=True, capture_output=True, text=True, timeout=120)
                     subprocess.run([
