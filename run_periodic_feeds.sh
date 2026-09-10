@@ -12,11 +12,10 @@ if ! flock -n 201; then
   exit 0
 fi
 
-# Si el runner diario está activo, no interferir
+# Si el runner diario está activo, no interferir (comprobar en subshell sin retener fd 200 en shell padre)
 LOCK_DAILY="$DIR/.daily_runner.lock"
 if [ -f "$LOCK_DAILY" ]; then
-  exec 200<"$LOCK_DAILY"
-  if ! flock -n 200; then
+  if ! (exec 200<"$LOCK_DAILY" && flock -n 200); then
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] ℹ️ Proceso diario en curso. Omitiendo feeds periódicos para evitar interferencias."
     exit 0
   fi

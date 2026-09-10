@@ -14,6 +14,7 @@ venv/
 tmp_tts_test/
 tmp_exec/
 kokoro_models/
+translate_models/
 tts_comparison/
 translations_cache.json
 test_*.py

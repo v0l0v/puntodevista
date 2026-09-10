@@ -1,84 +1,76 @@
 #!/usr/bin/env python3
 """
-Módulo de traducción inteligente de artículos para Punto de Vista usando Gemini API.
-Incorpora Circuit Breaker para protección contra rate-limits (HTTP 429) y degradación elegante.
+Módulo de traducción neuronal 100% LOCAL para Punto de Vista.
+Utiliza CTranslate2 + SentencePiece con modelos offline (sin llamadas a Gemini ni cuotas API).
+Preserva intactas las etiquetas HTML (<img>, <a>, atributos, etc.) mediante BeautifulSoup.
 """
 import os
 import json
 import re
-import time
 import hashlib
-import requests
 import logging
+import urllib.request
+import zipfile
+from bs4 import BeautifulSoup
 
-from config import get_gemini_key, get_gemini_model, ensure_warp_proxy
 from data_paths import get_data_path
 
 logger = logging.getLogger('pdv.translator')
 
-GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
-
-GEMINI_MODELS = [
-    _PREFERRED_MODEL,
-    'gemini-3.5-flash-lite',
-    'gemini-3.1-flash-lite',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
-    'gemma-4-26b-a4b-it',
-    'gemini-3-flash-preview',
-    'gemini-flash-latest',
-]
-# Eliminar duplicados preservando el orden
-GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
-
+DIR = os.path.dirname(os.path.abspath(__file__))
+MODELS_DIR = os.path.join(DIR, 'translate_models', 'en_es', 'en_es')
 CACHE_FILE = get_data_path('translations_cache.json')
-CIRCUIT_FILE = get_data_path('.gemini_circuit.json')
 _CACHE = {}
 
-# ─── Circuit Breaker ─────────────────────────────────────────────────────────
-CIRCUIT_COOLDOWN_SECONDS = 300  # 5 minutos de pausa tras agotarse la cuota
+_SP_MODEL = None
+_CT2_TRANSLATOR = None
+
 
 def is_circuit_open():
-    """Verifica si el Circuit Breaker está abierto (bloqueando llamadas a Gemini)."""
-    if not os.path.exists(CIRCUIT_FILE):
-        return False
-    try:
-        with open(CIRCUIT_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        until = data.get('blocked_until', 0)
-        remaining = until - time.time()
-        if remaining > 0:
-            return True
-        # El cooldown expiró, intentar recuperar
-        return False
-    except Exception:
-        return False
+    """Para compatibilidad con el resto del código: siempre False (motor 100% local sin cuotas)."""
+    return False
 
-def open_circuit(reason="Quota 429 exceeded"):
-    """Abre el circuito e impide peticiones durante el tiempo de cooldown."""
-    blocked_until = time.time() + CIRCUIT_COOLDOWN_SECONDS
-    try:
-        with open(CIRCUIT_FILE, 'w', encoding='utf-8') as f:
-            json.dump({
-                'state': 'OPEN',
-                'reason': reason,
-                'blocked_until': blocked_until,
-                'timestamp': time.time()
-            }, f, indent=2)
-        print(f"⚡ Circuit Breaker ACTIVADO: {reason}. Omitiendo traducciones durante {CIRCUIT_COOLDOWN_SECONDS // 60} min para evitar bloqueos.")
-    except Exception as e:
-        logger.warning(f"Error escribiendo estado de Circuit Breaker: {e}")
 
-def close_circuit():
-    """Cierra el circuito tras una llamada exitosa."""
-    if os.path.exists(CIRCUIT_FILE):
+def _ensure_local_model():
+    """Descarga y descomprime el modelo CTranslate2 en_es si aún no existe."""
+    global _SP_MODEL, _CT2_TRANSLATOR
+    if _CT2_TRANSLATOR is not None and _SP_MODEL is not None:
+        return True
+
+    sp_path = os.path.join(MODELS_DIR, 'sentencepiece.model')
+    model_dir = os.path.join(MODELS_DIR, 'model')
+
+    if not os.path.exists(sp_path) or not os.path.exists(model_dir):
+        os.makedirs(os.path.dirname(MODELS_DIR), exist_ok=True)
+        zip_dest = os.path.join(DIR, 'translate_models', 'en_es.zip')
+        model_url = 'https://argos-net.com/v1/translate-en_es-1_0.argosmodel'
+        print(f"📦 Descargando modelo de traducción local desde {model_url}...")
         try:
-            os.remove(CIRCUIT_FILE)
-        except Exception:
-            pass
+            req = urllib.request.Request(model_url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=60) as resp, open(zip_dest, 'wb') as out_f:
+                out_f.write(resp.read())
+            with zipfile.ZipFile(zip_dest, 'r') as zf:
+                zf.extractall(os.path.join(DIR, 'translate_models', 'en_es'))
+            if os.path.exists(zip_dest):
+                os.remove(zip_dest)
+            print("✅ Modelo de traducción local listo.")
+        except Exception as e:
+            logger.error(f"Error descargando modelo de traducción local: {e}")
+            return False
 
-# ─── Caché de Traducciones ───────────────────────────────────────────────────
+    try:
+        import ctranslate2
+        import sentencepiece as spm
+
+        _SP_MODEL = spm.SentencePieceProcessor()
+        _SP_MODEL.load(sp_path)
+        _CT2_TRANSLATOR = ctranslate2.Translator(model_dir, device='cpu', intra_threads=2)
+        return True
+    except Exception as e:
+        logger.error(f"Error cargando motor CTranslate2: {e}")
+        return False
+
+
 def load_cache():
     global _CACHE
     if os.path.exists(CACHE_FILE):
@@ -89,6 +81,7 @@ def load_cache():
             _CACHE = {}
     return _CACHE
 
+
 def save_cache():
     try:
         with open(CACHE_FILE, 'w', encoding='utf-8') as f:
@@ -96,108 +89,78 @@ def save_cache():
     except Exception as e:
         logger.warning(f"Error guardando caché de traducción: {e}")
 
-def call_gemini(prompt, max_retries=2):
-    """
-    Invoca la API de Gemini con rotación de modelos y protección Circuit Breaker.
-    """
-    if not GEMINI_KEY:
-        return None
-
-    if is_circuit_open():
-        return None
-
-    ensure_warp_proxy()
-    body = {
-        'contents': [{'parts': [{'text': prompt}]}],
-        'generationConfig': {
-            'temperature': 0.1,
-            'maxOutputTokens': 8192,
-        }
-    }
-
-    valid_models_tested = 0
-    quota_exhausted_count = 0
-
-    for model_name in GEMINI_MODELS:
-        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
-        for attempt in range(max_retries):
-            try:
-                resp = requests.post(url, json=body, timeout=12)
-                if resp.status_code == 200:
-                    close_circuit()
-                    res_json = resp.json()
-                    candidates = res_json.get('candidates', [])
-                    if candidates and 'content' in candidates[0]:
-                        parts = candidates[0]['content'].get('parts', [])
-                        if parts and 'text' in parts[0]:
-                            return parts[0]['text'].strip()
-                elif resp.status_code == 429:
-                    quota_exhausted_count += 1
-                    break
-                elif resp.status_code == 404:
-                    break  # Modelo no soportado en esta versión de API
-                else:
-                    valid_models_tested += 1
-            except Exception:
-                pass
-
-    # Si falló por límite de cuota (429), abrir Circuit Breaker para evitar bloqueos continuos
-    if quota_exhausted_count > 0:
-        open_circuit("Cuota de Gemini API agotada (HTTP 429 detectado)")
-    else:
-        logger.warning("Traducción no completada: todos los modelos de respaldo devolvieron error.")
-
-    return None
 
 def _hash_key(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
+
+def _translate_plain_segment(text):
+    """Traduce un segmento de texto plano usando CTranslate2."""
+    if not text or not text.strip() or len(text.strip()) < 2:
+        return text
+
+    if not _ensure_local_model():
+        return text
+
+    s = text.strip()
+    try:
+        tokens = _SP_MODEL.encode_as_pieces(s)
+        results = _CT2_TRANSLATOR.translate_batch([tokens])
+        translated = _SP_MODEL.decode_pieces(results[0].hypotheses[0])
+        # Respetar espacios iniciales o finales del segmento original
+        prefix = ' ' if text.startswith(' ') else ''
+        suffix = ' ' if text.endswith(' ') else ''
+        return prefix + translated + suffix
+    except Exception as e:
+        logger.warning(f"Error en inferencia de traducción: {e}")
+        return text
+
+
 def translate_text(text, is_html=False):
+    """
+    Traduce texto o contenido HTML al español usando el motor neuronal local.
+    Conserva URLs, etiquetas HTML y atributos sin alteración.
+    """
     if not text or not str(text).strip():
         return text
+
     text_str = str(text).strip()
     load_cache()
     h = _hash_key(text_str)
     if h in _CACHE and _CACHE[h]:
         val = _CACHE[h]
+        # Evitar artefactos residuales de versiones anteriores con Gemini
         if not val.startswith("Aquí tienes") and not val.startswith("La traducción") and not "1." in val:
             return val
 
     if is_html:
-        prompt = (
-            "Eres un traductor y editor literario especializado en fotografía y artes visuales.\n"
-            "Traduce el siguiente contenido HTML al español de forma natural, culta y fluida.\n"
-            "REGLAS OBLIGATORIAS:\n"
-            "1. Conserva exactamente todas las etiquetas HTML (<img>, <a>, <figure>, <figcaption>, <p>, <div>, <span>, <h2>, <h3>, <ul>, <li>, clases y atributos).\n"
-            "2. No alteres ninguna URL de imágenes (src), enlaces (href) ni identificadores.\n"
-            "3. Traduce todos los textos descriptivos, pies de foto, citas y párrafos con máxima fidelidad y naturalidad editorial al español.\n"
-            "4. Devuelve ÚNICAMENTE el HTML traducido, sin bloques de código ```html ni texto introductorio.\n\n"
-            f"{text_str[:12000]}"
-        )
+        try:
+            soup = BeautifulSoup(text_str, 'html.parser')
+            target_tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'figcaption', 'blockquote', 'strong', 'em', 'span']
+            for tag in soup.find_all(target_tags):
+                if tag.string:
+                    orig_s = tag.string
+                    if orig_s and len(orig_s.strip()) > 1:
+                        tag.string.replace_with(_translate_plain_segment(orig_s))
+                else:
+                    for child in list(tag.children):
+                        if child.name is None and str(child).strip():
+                            child.replace_with(_translate_plain_segment(str(child)))
+            translated_res = str(soup)
+        except Exception as e_html:
+            logger.warning(f"Fallo en parseo HTML para traducción: {e_html}")
+            translated_res = _translate_plain_segment(text_str)
     else:
-        prompt = (
-            "Eres un editor fotográfico profesional. Traduce el siguiente titular o resumen al español de forma directa, elegante y natural.\n"
-            "REGLAS CRÍTICAS:\n"
-            "- Devuelve EXCLUSIVAMENTE el texto traducido.\n"
-            "- No incluyas explicaciones, notas, alternativas ni comillas adicionales.\n\n"
-            f"{text_str}"
-        )
+        # Texto plano (titulares, descripciones cortas)
+        translated_res = _translate_plain_segment(text_str)
 
-    res = call_gemini(prompt)
-    if res:
-        # Si el modelo volcó pensamientos internos (ej: "Role: ..."), extraer la última línea limpia
-        if not is_html and ('\n' in res or any(k in res for k in ['Role:', 'Constraints:', 'Final Polish:', 'Task:', 'Option'])):
-            lines = [l.strip() for l in res.splitlines() if l.strip() and not l.strip().startswith(('*', '-', '#', 'Role:', 'Task:', 'Input:', 'Style:', 'Constraints:', 'Option', 'Context:', 'Must be'))]
-            if lines:
-                res = lines[-1]
-        clean_res = re.sub(r'^```(?:html)?\s*', '', res, flags=re.IGNORECASE)
-        clean_res = re.sub(r'\s*```$', '', clean_res).strip()
-        clean_res = re.sub(r'^Result:\s*', '', clean_res).strip()
-        clean_res = re.sub(r'^["«\']|["»\']$', '', clean_res).strip()
-        _CACHE[h] = clean_res
+    if translated_res and translated_res.strip() != text_str.strip():
+        _CACHE[h] = translated_res
         save_cache()
-        return clean_res
+        return translated_res
+
     return text
+
 
 def translate_article_entry(entry):
     """
