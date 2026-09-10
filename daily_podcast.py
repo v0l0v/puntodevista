@@ -680,7 +680,7 @@ En el Acto 2, Beatriz enriquece su análisis conectando la mirada del proyecto c
 Equipo de locutores:
 - ROBERTO (Conductor principal): Cercano, dinámico, culto, con excelente ritmo periodístico. Abre el podcast, repasa las noticias del día, presenta a los compañeros y hace el cierre.
 - BEATRIZ (Especialista en Historia, Crítica y Cultura Visual): Lúcida, apasionada, ensayística pero extraordinariamente cercana, cálida y pedagógica. No habla para teóricos ni académicos de museo, sino para personas que aman hacer fotos y quieren educar su mirada, entender por qué una imagen funciona e inspirarse para sus propias tomas. Traduce las decisiones visuales complejas a lecciones fotográficas y emocionales tangibles, sin pedantería.
-- NICOLÁS (Maestro de Taller y Práctica): Práctico, motivador, técnico y reflexivo. Presenta el reto creativo del día para salir a hacer fotos.
+- NICOLÁS (Maestro de Taller y Disparador Creativo): Práctico, motivador, cómplice y con un punto gamberro y apasionado. Es quien baja toda la teoría al asfalto para sacudir al oyente y empujarlo a salir a fotografiar hoy mismo con retos estimulantes, frescos y atrevidos.
 
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
 
@@ -755,9 +755,22 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
-   - [NICOLAS]: Entra inmediatamente recogiendo el testigo: "¡Gracias, compañeros! Qué gran análisis... Y ahora os toca a vosotros cargar cámaras..." (~170 a 200 palabras).
-{nicolas_lab_block}
-   - Nicolás detalla el RETO FOTOGRÁFICO DE HOY: instrucciones precisas de composición, luz o restricción técnica, y la pregunta que hacerse antes del disparo.
+   - [NICOLAS]: Entra inmediatamente recogiendo el testigo con energía, frescura y complicidad en antena (~170 a 200 palabras).
+     * VARIEDAD DE ENTRADA: Varía su saludo según su carácter espontáneo y entusiasta (evita empezar siempre con "¡Gracias compañeros! Qué gran análisis..."). Ejemplos: "¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir...", "¡Qué delicia de viaje, Beatriz! Pero aquí no nos quedamos en la teoría...", "¡Tomo el testigo con la cámara al hombro! Dejemos las pantallas y vamos al lío...", etc.
+   - INSPIRACIÓN EN LAS HISTORIAS DEL DÍA:
+     * Nicolás conecta el reto de hoy directamente con el estilo, la técnica, el dilema o la actitud de alguno de los fotógrafos o noticias comentadas hoy por Roberto o Beatriz (la audacia callejera y cercanía de Frank Horvat, la geometría de Stieglitz, la complicidad humana de Lecomte, el humor ácido de Parr o Goldberger, la energía de Klein, o la atmósfera del proyecto protagonista).
+   - EL RETO FOTOGRÁFICO DE HOY (ANTIRREPETICIÓN Y RETOS ATREVIDOS):
+     * PROHIBIDO repetir siempre "buscar texturas en paredes desgastadas o sombras en el suelo".
+     * Diseña un reto práctico con una restricción creativa clara y motivante.
+     * Alterna periódicamente con retos atrevidos, descarados o gamberros de fotografía activa:
+       - El reto de la proximidad física (obligarse a entrar a un metro de distancia del sujeto).
+       - Disparar desde la cintura sin mirar por el visor (cazar el ritmo espontáneo de la calle).
+       - La caza del absurdo cotidiano o la ironía visual (yuxtaponer carteles, reflejos o gestos involuntarios).
+       - El destello a pleno sol (usar el flash en la calle para congelar contrastes agresivos).
+       - La regla de los 5 segundos (llegar a una esquina y disparar antes de 5 segundos confiando en el primer instinto).
+       - El retrato espontáneo (pedir un retrato rápido a un desconocido con una sonrisa y una sola pregunta).
+   - LA PREGUNTA PREVIA AL DISPARO:
+     * Cierra el reto con una pregunta detonante que el fotógrafo debe hacerse antes de apretar el obturador.
    ---PAUSA---
 
 4. ACTO 4: CIERRE Y DESPEDIDA ([ROBERTO] & [BEATRIZ]) (~45 SEGUNDOS)

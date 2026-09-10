@@ -225,17 +225,8 @@ Por ejemplo: "Y antes de irnos al taller con Nicolás, quiero abrir un momento l
 Presenta estas publicaciones de manera entusiasta e inspiradora para personas que hacen fotos: ¿qué lecciones de ritmo, edición, selección de imágenes o coherencia temática podemos aprender de estos fotolibros para aplicarlas a nuestros propios proyectos?
 """
 
-    if facets.get('lab'):
-        l = facets['lab']
-        terms_str = ", ".join(l.get('matched_terms', []))
-        prompts['nicolas_lab'] = f"""
-🧪 RINCÓN DE LABORATORIO Y ALQUIMIA (TALLER PRÁCTICO):
-Hoy contamos con una referencia analógica y química:
-- Noticia/Técnica: '{l.get('title')}'
-- Términos/Procesos detectados: {terms_str}
-👉 DIRECTRIZ PARA NICOLÁS (ACTO 3):
-Al presentar el taller y el reto práctico del día, Nicolás abre su intervención compartiendo un apunte cómplice para los amantes del laboratorio, el grano o el proceso analógico (rescatando el truco de diafragmado, emulsión o exposición a las sombras), antes de lanzar el reto a toda la audiencia.
-"""
+    # La píldora artificial de laboratorio para Nicolás queda desactivada por directriz editorial
+    prompts['nicolas_lab'] = ''
 
     return prompts
 
