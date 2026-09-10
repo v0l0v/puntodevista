@@ -125,27 +125,41 @@ def analyze_daily_facets(articles, primary=None):
     """
     Analiza todos los artículos del día y el proyecto principal para extraer las 3 facetas:
     - Roberto: Radar de Convocatorias (si existe).
-    - Beatriz: Enfoque Fotolibro (si el proyecto o noticia destacada es un libro).
+    - Beatriz:
+      * is_primary_book: True si el proyecto principal es en sí mismo un fotolibro.
+      * primary_book: metadatos del libro protagonista (si aplica).
+      * other_books: lista de fotolibros y novedades editoriales detectadas en las noticias secundarias.
     - Nicolás: Rincón de Laboratorio y Alquimia (si hay química/analógico).
     """
     facets = {
-        'book': None,
+        'is_primary_book': False,
+        'primary_book': None,
+        'other_books': [],
         'lab': None,
         'call': None
     }
 
-    # 1. Comprobar primero el protagonista para libro
+    # 1. Comprobar primero si el PROYECTO PRINCIPAL es un fotolibro real
     if primary:
-        book_info = detect_photobook(primary)
-        if book_info:
-            facets['book'] = book_info
+        p_book = detect_photobook(primary)
+        if p_book:
+            facets['is_primary_book'] = True
+            facets['primary_book'] = p_book
 
-    # 2. Recorrer todos los artículos del día
+    primary_id = primary.get('id') if primary else None
+    primary_title = (primary.get('title') or '').strip().lower() if primary else ''
+
+    # 2. Recorrer el resto de artículos del día para novedades de fotolibros, laboratorio y convocatorias
     for art in articles:
-        if not facets['book']:
+        art_title = (art.get('title') or '').strip().lower()
+        is_same_as_primary = (primary_id and art.get('id') == primary_id) or (primary_title and art_title == primary_title)
+
+        if not is_same_as_primary:
             b = detect_photobook(art)
-            if b:
-                facets['book'] = b
+            if b and len(facets['other_books']) < 3:
+                # Evitar títulos repetidos
+                if not any(ob.get('title') == b.get('title') for ob in facets['other_books']):
+                    facets['other_books'].append(b)
 
         if not facets['lab']:
             l = detect_lab_chemistry(art)
@@ -181,15 +195,34 @@ Entre las noticias del día se encuentra una oportunidad para creadores:
 En su repaso de actualidad, Roberto debe incluir un apunte claro de servicio público mencionando esta oportunidad para quienes tengan un proyecto documental o de autor que presentar.
 """
 
-    if facets.get('book'):
-        b = facets['book']
+    if facets.get('is_primary_book') and facets.get('primary_book'):
+        b = facets['primary_book']
         prompts['beatriz_book'] = f"""
-📖 ENFOQUE FOTOLIBRO COMO OBJETO ESCULTÓRICO:
-El proyecto o publicación destacada tiene formato de fotolibro:
-- Título: '{b.get('title')}'
+📖 EL PROYECTO PRINCIPAL DE HOY ES UN FOTOLIBRO:
+La obra protagonista tiene formato físico de fotolibro:
+- Título de la publicación: '{b.get('title')}'
 - Editorial / Publicación: {b.get('publisher')}
-👉 DIRECTRIZ PARA BEATRIZ (ACTO 2):
-Beatriz debe dedicar un momento a reflexionar sobre el fotolibro como soporte: la cadencia de la secuencia, el diálogo entre páginas opuestas (dípticos), el peso del papel y por qué esta obra está concebida para ser sostenida en las manos y no consumida fugazmente en pantallas.
+👉 DIRECTRIZ EDITORIAL PARA BEATRIZ (ACTO 2):
+Como la obra principal está concebida en formato de libro, reflexiona sobre cómo la secuenciación de páginas, el diálogo en dípticos y la elección de materiales potencian la narrativa visual del autor, invitando a la audiencia a comprender el libro como la culminación de un proyecto fotográfico.
+"""
+    elif facets.get('other_books'):
+        books_list = facets['other_books']
+        books_desc = []
+        for bk in books_list:
+            autor_str = f" de {bk.get('photographer')}" if bk.get('photographer') else ""
+            books_desc.append(f"  • '{bk.get('title')}'{autor_str} (editado por {bk.get('publisher')}, vía {bk.get('source', '').upper()})")
+        books_text = "\n".join(books_desc)
+
+        prompts['beatriz_book'] = f"""
+📚 EL RADAR DE FOTOLIBROS DE BEATRIZ (NOVEDADES EDITORIALES DEL DÍA):
+El proyecto principal NO es un fotolibro (es una serie, exposición o ensayo visual), por lo que NO debes forzar la metáfora del libro sobre él.
+Sin embargo, hoy han visto la luz estas interesantes novedades editoriales en la actualidad:
+{books_text}
+
+👉 DIRECTRIZ EDITORIAL PARA BEATRIZ (BLOQUE ESPECIAL AL FINAL DEL ACTO 2):
+Tras haber analizado el proyecto protagonista y su linaje con la joya de museo, Beatriz abre una ventana motivante y fresca de recomendación editorial (~45 a 55 segundos) antes de dar paso a Nicolás:
+Por ejemplo: "Y antes de irnos al taller con Nicolás, quiero abrir un momento la estantería de fotolibros, porque hoy tenemos novedades editoriales que merece la pena seguir de cerca..."
+Presenta estas publicaciones de manera entusiasta e inspiradora para personas que hacen fotos: ¿qué lecciones de ritmo, edición, selección de imágenes o coherencia temática podemos aprender de estos fotolibros para aplicarlas a nuestros propios proyectos?
 """
 
     if facets.get('lab'):

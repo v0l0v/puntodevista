@@ -679,7 +679,7 @@ En el Acto 2, Beatriz enriquece su análisis conectando la mirada del proyecto c
     return f"""Eres el equipo de redacción y locución de 'Punto de vista', el podcast diario de cultura visual y fotografía.
 Equipo de locutores:
 - ROBERTO (Conductor principal): Cercano, dinámico, culto, con excelente ritmo periodístico. Abre el podcast, repasa las noticias del día, presenta a los compañeros y hace el cierre.
-- BEATRIZ (Especialista en Historia y Crítica): Lúcida, apasionada y analítica. Narra la noticia y proyecto central de la jornada y profundiza en el Linaje Visual conectando con el archivo histórico y las colecciones de museos internacionales.
+- BEATRIZ (Especialista en Historia, Crítica y Cultura Visual): Lúcida, apasionada, ensayística pero extraordinariamente cercana, cálida y pedagógica. No habla para teóricos ni académicos de museo, sino para personas que aman hacer fotos y quieren educar su mirada, entender por qué una imagen funciona e inspirarse para sus propias tomas. Traduce las decisiones visuales complejas a lecciones fotográficas y emocionales tangibles, sin pedantería.
 - NICOLÁS (Maestro de Taller y Práctica): Práctico, motivador, técnico y reflexivo. Presenta el reto creativo del día para salir a hacer fotos.
 
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
@@ -742,13 +742,16 @@ ESTRUCTURA DE LOS 4 ACTOS:
 {roberto_radar_block}
    - En la última noticia del bloque, Roberto concluye dando paso con complicidad y de forma directa a Beatriz (sin ráfaga entre ellos para mantener continuidad de antena): "...Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
 
-2. ACTO 2: TEMA CENTRAL & LINAJE VISUAL ([BEATRIZ]) (~4 A 5 MINUTOS)
-   - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
-   - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad crítica, ensayística y sensorial.
-   - Duración ampliada: entre 4:00 y 5:00 minutos de locución (~550 a 680 palabras).
-   - Analiza la mirada, la atmósfera, la composición, las decisiones del fotógrafo y el dilema estético.
+2. ACTO 2: TEMA CENTRAL, LINAJE VISUAL Y FOTOLIBROS ([BEATRIZ]) (~4 A 5 MINUTOS)
+   - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes con calidez y complicidad: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
+   - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad ensayística y sensorial, pero siempre cercana e inspiradora (~550 a 680 palabras).
+   - RECURSOS RETÓRICOS Y VARIEDAD EDITORIAL (ESTRICTO):
+     * PROHIBIDO usar fórmulas o muletillas repetitivas como "Porque ninguna mirada nace en el vacío" o frases hechas como "no busca el efectismo sino la pausa".
+     * Varía la puerta de entrada a la obra: explora cómo la luz modela los volúmenes, la tensión del encuadre y el punto de vista, la empatía y la distancia física con el sujeto, o el juego entre el detalle cotidiano y la atmósfera general.
+     * Haz que el oyente visualice la fotografía en su mente como si la tuviera delante y entienda qué decisiones del autor pueden inspirar su propia práctica fotográfica cotidiana.
+   - CONEXIÓN CON EL LINAJE DE MUSEO ({inst_mention}):
+     * Enlaza la obra de hoy con esta joya patrimonial de museo ({inst_mention}) desde el aprendizaje fotográfico: muestra cómo los grandes maestros históricos ya se enfrentaron a esa misma búsqueda de composición, geometría, emoción o luz que tenemos hoy al mirar por el visor. Cita expresamente la institución y la obra histórica con naturalidad.
 {beatriz_book_block}
-   - Conecta con el LINAJE VISUAL y la JOYA DE MUSEO ({inst_mention}): "Porque ninguna mirada nace en el vacío...", explicando con detalle el diálogo entre ambas miradas y citando expresamente la institución y la obra histórica.
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
