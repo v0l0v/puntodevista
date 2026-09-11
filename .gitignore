@@ -3,6 +3,7 @@ __pycache__/
 .firecrawl/
 resumenes/digest-*.txt
 resumenes/podcast-*.mp3
+resumenes/*-test.*
 podcast/
 config.json
 .cover_cache/
