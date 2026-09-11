@@ -711,7 +711,7 @@ Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plan
 [Inicio directo del guion coral con el saludo de Roberto. Cada intervención empieza con [ROBERTO], [BEATRIZ] o [NICOLAS]. El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás es continuo e inmediato, sin música ni pausas intermedias. La única pausa musical (---PAUSA---) se sitúa antes del Acto 4 de cierre.]
 
 REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
-- FORMATO DE DIÁLOGO: Cada cambio de voz DEBE empezar exactamente en una línea nueva con [ROBERTO], [BEATRIZ] o [NICOLAS].
+- FORMATO DE DIÁLOGO (CRÍTICO): Cada cambio de voz DEBE empezar exactamente en una línea nueva con la etiqueta de locutor entre corchetes: [ROBERTO], [BEATRIZ] o [NICOLAS]. ESTÁ TERMINANTEMENTE PROHIBIDO usar guiones para los nombres de locutores (NUNCA escribas ---BEATRIZ--- ni ---NICOLAS---; los triples guiones están reservados única y exclusivamente para los efectos sonoros ---RAFAGA--- y ---PAUSA---).
 - TRANSICIONES CONTINUAS SIN MÚSICA: El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás debe ser orgánico y directo en antena (sin insertar ---PAUSA--- ni cortinillas musicales entre ellos). Roberto llama a Beatriz, Beatriz responde de inmediato; Beatriz llama a Nicolás, Nicolás responde de inmediato.
 - COLABORACIÓN Y TRANSICIONES: Los locutores deben interactuar con naturalidad, saludarse brevemente al darse paso y cerrar con fluidez radiofónica.
 - RIGOR FACTUAL: NUNCA INVENTES DATOS. Todo se basa estrictamente en el material provisto.
@@ -744,6 +744,7 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - En la última noticia del bloque, Roberto concluye dando paso con complicidad y de forma directa a Beatriz (sin ráfaga entre ellos para mantener continuidad de antena): "...Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
 
 2. ACTO 2: TEMA CENTRAL, LINAJE VISUAL Y FOTOLIBROS ([BEATRIZ]) (~4 A 5 MINUTOS)
+   - Comienza obligatoriamente en línea nueva con la etiqueta exacta [BEATRIZ] (prohibido ---BEATRIZ---).
    - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes con calidez y complicidad: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
    - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad ensayística y sensorial, pero siempre cercana e inspiradora (~550 a 680 palabras).
    - RECURSOS RETÓRICOS Y VARIEDAD EDITORIAL (ESTRICTO):
@@ -756,8 +757,9 @@ ESTRUCTURA DE LOS 4 ACTOS:
    - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
 
 3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
+   - Comienza obligatoriamente en línea nueva con la etiqueta exacta [NICOLAS] (prohibido ---NICOLAS---).
    - [NICOLAS]: Entra inmediatamente recogiendo el testigo con energía, frescura y complicidad en antena (~170 a 200 palabras).
-     * VARIEDAD DE ENTRADA: Varía su saludo según su carácter espontáneo y entusiasta (evita empezar siempre con "¡Gracias compañeros! Qué gran análisis..."). Ejemplos: "¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir...", "¡Qué delicia de viaje, Beatriz! Pero aquí no nos quedamos en la teoría...", "¡Tomo el testigo con la cámara al hombro! Dejemos las pantallas y vamos al lío...", etc.
+   - VARIEDAD DE ENTRADA: Varía su saludo según su carácter espontáneo y entusiasta (evita empezar siempre con "¡Gracias compañeros! Qué gran análisis..."). Ejemplos: "¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir...", "¡Qué delicia de viaje, Beatriz! Pero aquí no nos quedamos en la teoría...", "¡Tomo el testigo con la cámara al hombro! Dejemos las pantallas y vamos al lío...", etc.
    - INSPIRACIÓN EN LAS HISTORIAS DEL DÍA:
      * Nicolás conecta el reto de hoy directamente con el estilo, la técnica, el dilema o la actitud de alguno de los fotógrafos o noticias comentadas hoy por Roberto o Beatriz (la audacia callejera y cercanía de Frank Horvat, la geometría de Stieglitz, la complicidad humana de Lecomte, el humor ácido de Parr o Goldberger, la energía de Klein, o la atmósfera del proyecto protagonista).
    - EL RETO FOTOGRÁFICO DE HOY (ANTIRREPETICIÓN Y RETOS ATREVIDOS):
@@ -782,6 +784,34 @@ ESTRUCTURA DE LOS 4 ACTOS:
 DURACIÓN TOTAL ESTIMADA: ~1600 a 2200 palabras (~13 a 17 minutos de emisión con ráfagas musicales de 6 segundos entre noticias)."""
 
 
+def normalize_speaker_tags(text):
+    """Normaliza de forma exhaustiva cualquier variación en el marcado de locutores
+    (por ejemplo: ---BEATRIZ---, **[BEATRIZ]**, BEATRIZ:, [NICOLÁS], etc.)
+    al estándar canónico de emisión: [ROBERTO], [BEATRIZ], [NICOLAS]."""
+    if not text:
+        return text
+
+    def _sub_speaker(m):
+        raw = m.group('speaker').upper()
+        speaker = 'NICOLAS' if 'NICOL' in raw else raw
+        rest = m.group('rest').strip() if 'rest' in m.groupdict() and m.group('rest') else ''
+        if rest:
+            return f'\n[{speaker}]\n{rest}'
+        return f'\n[{speaker}]\n'
+
+    # 1. Etiquetas con guiones: ---BEATRIZ--- o ---NICOLAS--- o ---ROBERTO---
+    text = re.sub(r'(?mi)^[ \t]*---+\s*(?P<speaker>ROBERTO|BEATRIZ|NICOL[AÁ]S|CLARA)\s*---+[ \t]*(?P<rest>.*)$', _sub_speaker, text)
+    # 2. Etiquetas con corchetes (con o sin markdown/dos puntos): **[BEATRIZ]**, [BEATRIZ]:, etc.
+    text = re.sub(r'(?mi)^[ \t]*(?:\*{1,2}|_{1,2})?\[\s*(?P<speaker>ROBERTO|BEATRIZ|NICOL[AÁ]S|CLARA)\s*\](?:\*{1,2}|_{1,2}|:)?[ \t]*(?P<rest>.*)$', _sub_speaker, text)
+    # 3. Etiquetas con dos puntos al inicio de línea: BEATRIZ:, **BEATRIZ:**
+    text = re.sub(r'(?mi)^[ \t]*(?:\*{1,2}|_{1,2})?(?P<speaker>ROBERTO|BEATRIZ|NICOL[AÁ]S|CLARA)(?:\*{1,2}|_{1,2})?:[ \t]*(?P<rest>.*)$', _sub_speaker, text)
+    # 4. Nombre solo en una línea: BEATRIZ
+    text = re.sub(r'(?mi)^[ \t]*(?:\*{1,2}|_{1,2})?(?P<speaker>ROBERTO|BEATRIZ|NICOL[AÁ]S|CLARA)(?:\*{1,2}|_{1,2})?[ \t]*$', _sub_speaker, text)
+
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
+
 def parse_summary(summary):
     podcast_title = ''
     resumen = ''
@@ -803,6 +833,8 @@ def parse_summary(summary):
     else:
         resumen = remaining.strip()
 
+    locutable = normalize_speaker_tags(locutable)
+
     # Si locutable todavía contiene texto huérfano antes del primer locutor [ROBERTO|BEATRIZ|NICOLAS|CLARA]
     speaker_match = re.search(r'\[(ROBERTO|BEATRIZ|NICOLAS|CLARA)\]', locutable, re.IGNORECASE)
     if speaker_match:
@@ -812,6 +844,8 @@ def parse_summary(summary):
             if not resumen or resumen == podcast_title:
                 resumen = preamble
             locutable = locutable[speaker_match.start():].strip()
+
+    locutable = normalize_speaker_tags(locutable)
 
     if not podcast_title and resumen:
         for ln in resumen.split('\n'):
@@ -855,6 +889,7 @@ def get_day_music(target_date=None):
 
 
 def clean_text(t):
+    t = normalize_speaker_tags(t)
     # 1. Eliminar emojis y símbolos decorativos
     t = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
                r'\U0001F1E0-\U0001F1FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F'
@@ -906,7 +941,7 @@ def generate_audio(text, out_path, episode_date=None):
     tmp_dir = os.path.join(DIR, 'tmp_audio')
     os.makedirs(tmp_dir, exist_ok=True)
 
-    clean = text
+    clean = normalize_speaker_tags(text)
     clean = re.sub(r'\bnewsletters\b', 'niusleters', clean, flags=re.IGNORECASE)
     clean = re.sub(r'\bnewsletter\b', 'niusleter', clean, flags=re.IGNORECASE)
     clean = re.sub(r'\bcolossal\b', 'colosal', clean, flags=re.IGNORECASE)
