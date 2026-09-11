@@ -868,6 +868,41 @@ def parse_summary(summary):
     return podcast_title, resumen, locutable
 
 
+def validate_podcast_script(locutable, expected_speakers=None):
+    """Quality Gate: Valida que el guion contenga intervenciones sustanciales
+    de todos los locutores obligatorios antes de proceder a la síntesis de voz.
+    Retorna (is_valid: bool, errors: list[str], turns_by_speaker: dict[str, list[str]])."""
+    if expected_speakers is None:
+        expected_speakers = {'ROBERTO', 'BEATRIZ', 'NICOLAS'}
+
+    clean = normalize_speaker_tags(locutable)
+    pattern = re.compile(r'\[(ROBERTO|BEATRIZ|NICOL[AÁ]S)\]', re.IGNORECASE)
+    splits = pattern.split(clean)
+
+    turns_by_speaker = {}
+    if len(splits) > 1:
+        for idx_s in range(1, len(splits), 2):
+            speaker_raw = splits[idx_s].upper()
+            speaker_tag = 'NICOLAS' if 'NICOL' in speaker_raw else speaker_raw
+            turn_text = splits[idx_s + 1].strip()
+            if turn_text:
+                turns_by_speaker.setdefault(speaker_tag, []).append(turn_text)
+
+    errors = []
+    detected_speakers = set(turns_by_speaker.keys())
+    missing_speakers = expected_speakers - detected_speakers
+    if missing_speakers:
+        errors.append(f"Faltan intervenciones obligatorias para: {', '.join(sorted(missing_speakers))}")
+
+    for spk in detected_speakers:
+        total_len = sum(len(t) for t in turns_by_speaker[spk])
+        if total_len < 50:
+            errors.append(f"La intervención de {spk} es sospechosamente breve ({total_len} caracteres).")
+
+    is_valid = len(errors) == 0
+    return is_valid, errors, turns_by_speaker
+
+
 def get_day_music(target_date=None):
     d = target_date or date.today()
     weekday = d.weekday()  # 0=Lunes, 6=Domingo
@@ -1259,14 +1294,49 @@ def main():
                     print(f"    {sub}")
         print("--- FIN PROMPT PREVIEW ---")
         return
-    print('  Enviando prompt editorial a Gemini...')
-    summary = gemini_request(prompt)
+    max_attempts = 2
+    summary = None
+    podcast_title, resumen, locutable = '', '', ''
+    validation_errors = []
 
-    if not summary:
-        print('  ❌ No se obtuvo respuesta de Gemini.')
-        sys.exit(1)
+    for attempt in range(1, max_attempts + 1):
+        if attempt == 1:
+            print('  Enviando prompt editorial a Gemini...')
+            summary = gemini_request(prompt)
+        else:
+            print(f'  🔄 Reintento {attempt}/{max_attempts}: Re-solicitando guion a Gemini con corrección de reparto coral...')
+            correction_note = (
+                f"\n\n⚠️ CORRECCIÓN OBLIGATORIA DE FORMATO Y REPARTO (EL INTENTO ANTERIOR FUE RECHAZADO):\n"
+                f"La respuesta previa fue RECHAZADA por el Quality Gate del sistema debido a los siguientes fallos:\n"
+                + "\n".join(f"  * {err}" for err in validation_errors) +
+                "\n\nINSTRUCCIONES ESTRICTAS PARA ESTE REINTENTO:\n"
+                "- En el bloque locutable DEBEN intervenir obligatoriamente los tres locutores: [ROBERTO], [BEATRIZ] y [NICOLAS].\n"
+                "- Cada intervención debe comenzar estrictamente en línea nueva con su etiqueta entre corchetes: [ROBERTO], [BEATRIZ] o [NICOLAS].\n"
+                "- ESTÁ TERMINANTEMENTE PROHIBIDO usar guiones como ---BEATRIZ--- o ---NICOLAS--- (los guiones triples solo se usan en ---RAFAGA--- y ---PAUSA---).\n"
+                "- Asegúrate de incluir el texto completo de Beatriz (Acto 2) y de Nicolás (Acto 3) con sus respectivas etiquetas."
+            )
+            summary = gemini_request(prompt + correction_note)
 
-    podcast_title, resumen, locutable = parse_summary(summary)
+        if not summary:
+            print('  ❌ No se obtuvo respuesta de Gemini.')
+            if attempt == max_attempts:
+                sys.exit(1)
+            continue
+
+        podcast_title, resumen, locutable = parse_summary(summary)
+        is_valid, validation_errors, speaker_turns = validate_podcast_script(locutable)
+
+        if is_valid:
+            spk_info = ", ".join(f"{k} ({len(v)} turnos, {sum(len(t) for t in v)} caracteres)" for k, v in sorted(speaker_turns.items()))
+            print(f'  ✅ Quality Gate de reparto coral superado: {spk_info}')
+            break
+        else:
+            print(f'  ⚠️ Quality Gate falló en intento {attempt}/{max_attempts}:')
+            for err in validation_errors:
+                print(f'     - {err}')
+            if attempt == max_attempts:
+                print('  ❌ ERROR FATAL: El guion no cumple con los requisitos del reparto coral tras agotar los reintentos.')
+                sys.exit(1)
 
     # 4. Guardar guiones para trazabilidad
     guion_filename = f'podcast-{today.isoformat()}-test.guion.txt' if is_test else f'podcast-{today.isoformat()}.guion.txt'

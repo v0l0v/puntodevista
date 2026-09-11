@@ -18,8 +18,8 @@ kokoro_models/
 translate_models/
 tts_comparison/
 translations_cache.json
-test_*.py
-test_*.txt
+/test_*.py
+/test_*.txt
 *.log
 cron_feeds.log
 cron.log
