@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Thu, 10 Sep 2026 08:12:36 +0000</lastBuildDate>
+<lastBuildDate>Fri, 11 Sep 2026 07:26:37 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1316,6 +1316,20 @@ Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano
     <itunes:title>Episodio 37 · El tejido de la memoria contemporánea y su eco en los grandes museos del mundo</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 38 · Paisaje sonoro y silencios entre miradas</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-11.mp3</guid>
+    <pubDate>Fri, 11 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[En el episodio de hoy abordamos la intersección entre la música y la fotografía documental en el nuevo capítulo de Dysnomia Live presentado por Alexandre Dupeyron y el compositor Thomas Julienne en Pioneer Works. Además, nos adentramos en el profundo análisis del proyecto protagonista de la mano de Beatriz, conectando la mirada contemporánea con el linaje histórico de Alfred Stieglitz y los fondos del Cincinnati Art Museum y el Museum of Fine Arts Boston. Cerramos la jornada con un taller práctico guiado por Nicolás, quien propone un reto creativo inspirado en la experimentación analógica y el formato medio de las cámaras de carrete.]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-11.mp3" length="16519265" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-11.jpg"/>
+    <itunes:duration>11:28</itunes:duration>
+    <itunes:title>Episodio 38 · Paisaje sonoro y silencios entre miradas</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[En el episodio de hoy abordamos la intersección entre la música y la fotografía documental en el nuevo capítulo de Dysnomia Live presentado por Alexandre Dupeyron y el compositor Thomas Julienne en Pioneer Works. Además, nos adentramos en el profundo análisis del proyecto protagonista de la mano de Beatriz, conectando la mirada contemporánea con el linaje histórico de Alfred Stieglitz y los fondos del Cincinnati Art Museum y el Museum of Fine Arts Boston. Cerramos la jornada con un taller práctico guiado por Nicolás, quien propone un reto creativo inspirado en la experimentación analógica y el formato medio de las cámaras de carrete.]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>

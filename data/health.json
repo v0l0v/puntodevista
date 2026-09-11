@@ -1,9 +1,9 @@
 {
   "status": "healthy",
-  "generated_at": "2026-09-10T08:13:21.455899+00:00",
+  "generated_at": "2026-09-11T07:26:50.665526+00:00",
   "issues": [],
   "pipeline": {
-    "last_feeds_update": "2026-09-10T08:13:21.311313+00:00",
+    "last_feeds_update": "2026-09-11T07:26:50.528576+00:00",
     "warp_proxy_active": true,
     "circuit_breaker": {
       "state": "CLOSED",
@@ -12,15 +12,16 @@
     }
   },
   "feeds": {
-    "total_entries": 1235,
+    "total_entries": 1252,
     "sources_tracked": 23,
     "sources_breakdown": {
-      "odlp": 194,
-      "blind": 46,
-      "35mmc": 132,
+      "odlp": 204,
+      "blind": 48,
+      "aperture": 32,
+      "35mmc": 134,
+      "lomography": 60,
       "c41": 151,
       "clavoardiendo": 34,
-      "lomography": 58,
       "shootitwithfilm": 35,
       "phroom": 23,
       "tpj": 34,
@@ -31,7 +32,6 @@
       "asx": 31,
       "1854": 13,
       "kosmofoto": 61,
-      "aperture": 31,
       "swan": 10,
       "featureshoot": 31,
       "colossal": 96,
@@ -41,21 +41,21 @@
     }
   },
   "database": {
-    "articles_total": 1235,
-    "podcasts_total": 37,
+    "articles_total": 1252,
+    "podcasts_total": 38,
     "status": "ok"
   },
   "podcast": {
-    "total_episodes": 37,
-    "latest_date": "2026-09-10",
+    "total_episodes": 38,
+    "latest_date": "2026-09-11",
     "status": "ok"
   },
   "system": {
     "disk": {
       "total_gb": 73.6,
-      "used_gb": 19.1,
-      "free_gb": 51.5,
-      "free_percent": 69.9
+      "used_gb": 19.2,
+      "free_gb": 51.4,
+      "free_percent": 69.8
     }
   }
 }
