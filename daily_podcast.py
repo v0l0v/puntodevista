@@ -48,6 +48,7 @@ _PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
 GEMINI_MODELS = [
     _PREFERRED_MODEL,
     'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
     'gemini-3.1-flash-lite',
     'gemini-3.5-flash',
     'gemini-3.6-flash',
@@ -153,11 +154,39 @@ def gemini_request(prompt):
                 elif resp.status_code == 404:
                     print(f'  Modelo {model_name} no disponible (404), pasando al siguiente...')
                     break
+                elif resp.status_code == 400 and 'User location is not supported' in resp.text:
+                    print(f'  ⚠️ Error de localización (400) en {model_name}. Probando intento alternativo sin proxy...')
+                    try:
+                        resp_alt = requests.post(url, json=body, timeout=120, proxies={'http': None, 'https': None})
+                        if resp_alt.status_code == 200:
+                            result = resp_alt.json()
+                            candidates = result.get('candidates', [])
+                            if candidates and 'content' in candidates[0]:
+                                parts = candidates[0]['content'].get('parts', [])
+                                if parts and 'text' in parts[0]:
+                                    print(f'  ✅ Respuesta recibida usando modelo {model_name} (directo)')
+                                    return parts[0]['text'].strip()
+                    except Exception:
+                        pass
+                    break
                 else:
                     print(f'  HTTP {resp.status_code} en {model_name}: {resp.text[:200]}')
                     break
             except Exception as e:
                 print(f'  Error en petición a {model_name} (intento {attempt + 1}): {e}')
+                # Si falló la conexión por proxy, intentar directo
+                try:
+                    resp_alt = requests.post(url, json=body, timeout=60, proxies={'http': None, 'https': None})
+                    if resp_alt.status_code == 200:
+                        result = resp_alt.json()
+                        candidates = result.get('candidates', [])
+                        if candidates and 'content' in candidates[0]:
+                            parts = candidates[0]['content'].get('parts', [])
+                            if parts and 'text' in parts[0]:
+                                print(f'  ✅ Respuesta recibida usando modelo {model_name} (recuperación directa)')
+                                return parts[0]['text'].strip()
+                except Exception:
+                    pass
                 time.sleep(3)
     print('  ❌ Se agotaron todos los modelos y reintentos.')
     return None

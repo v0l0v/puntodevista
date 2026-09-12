@@ -22,9 +22,17 @@ def send_alert(message):
     }
     try:
         resp = requests.post(url, json=payload, timeout=15)
+        if resp.status_code == 200:
+            return True
+        print(f"Alerta via proxy reportó HTTP {resp.status_code}. Intentando conexión directa...")
+    except Exception as e:
+        print(f"Error enviando alerta con proxy: {e}. Intentando conexión directa...")
+
+    try:
+        resp = requests.post(url, json=payload, timeout=15, proxies={'http': None, 'https': None})
         return resp.status_code == 200
     except Exception as e:
-        print(f"Error enviando alerta: {e}")
+        print(f"Error enviando alerta directa: {e}")
         return False
 
 if __name__ == '__main__':

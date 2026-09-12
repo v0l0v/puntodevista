@@ -37,9 +37,25 @@ echo "=========================================================="
 echo "=== [$FECHA_LOG] Arrancando ciclo diario Punto de Vista ==="
 echo "=========================================================="
 
-# 5. Enrutamiento SOCKS5 a través de WARP si está activo en el VPS
-if ss -tulpn 2>/dev/null | grep -q ':40000 '; then
+# 5. Enrutamiento SOCKS5 a través de WARP con auto-recuperación y verificación activa
+if command -v warp-cli >/dev/null 2>&1; then
+  if ! curl -s -m 5 -x socks5h://127.0.0.1:40000 https://cloudflare.com/cdn-cgi/trace >/dev/null 2>&1; then
+    echo "⚠️ WARP no responde a través de :40000. Refrescando túnel WARP..."
+    warp-cli --accept-tos disconnect 2>/dev/null || true
+    sleep 2
+    warp-cli --accept-tos connect 2>/dev/null || true
+    sleep 2
+  fi
+fi
+
+if curl -s -m 4 -x socks5h://127.0.0.1:40000 https://cloudflare.com/cdn-cgi/trace >/dev/null 2>&1; then
   export HTTPS_PROXY="socks5h://127.0.0.1:40000"
+  export HTTP_PROXY="socks5h://127.0.0.1:40000"
+  echo "✅ Proxy WARP activo y verificado en 127.0.0.1:40000"
+else
+  echo "ℹ️ WARP no disponible o no responde; usando conexión directa."
+  unset HTTPS_PROXY
+  unset HTTP_PROXY
 fi
 
 # 6. Sincronización previa del repositorio
