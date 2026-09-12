@@ -153,7 +153,7 @@ def llm_request(prompt, system_instruction=None):
                 base_url=base_url,
                 api_key=api_key,
                 http_client=http_client,
-                timeout=600.0
+                timeout=900.0
             )
 
             resp = client.chat.completions.create(
