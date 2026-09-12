@@ -36,27 +36,14 @@ OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = get_data_path('podcast_meta.json')
 DB_PATH = get_db_path()
-from config import get_telegram_creds, get_gemini_key, get_gemini_model, get_config, ensure_warp_proxy
+from config import get_telegram_creds, get_llm_config, ensure_warp_proxy
 from museum_archive import get_museum_treasure
 from photo_enricher import analyze_daily_facets, build_editorial_facet_prompts
 from phonetic_adapter import adapt_text_phonetics
 
 ensure_warp_proxy()
 TG_TOKEN, TG_CHAT_ID = get_telegram_creds()
-GEMINI_KEY = get_gemini_key()
-_PREFERRED_MODEL = get_gemini_model('gemini-3.5-flash-lite')
-GEMINI_MODELS = [
-    _PREFERRED_MODEL,
-    'gemini-3.5-flash-lite',
-    'gemini-flash-lite-latest',
-    'gemini-3.1-flash-lite',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
-    'gemma-4-26b-a4b-it',
-    'gemini-3-flash-preview',
-    'gemini-flash-latest',
-]
-GEMINI_MODELS = list(dict.fromkeys([m for m in GEMINI_MODELS if m]))
+LLM_BASE_URL, LLM_API_KEY, LLM_MODEL = get_llm_config()
 
 TTS_ENGINE = os.environ.get('TTS_ENGINE', 'kokoro')
 TTS_VOICE = os.environ.get('TTS_VOICE', 'es-ES-AlvaroNeural')
@@ -121,75 +108,67 @@ def find_latest_podcast(target_date=None):
     return files[0] if files else None
 
 
-def gemini_request(prompt):
-    if not GEMINI_KEY:
-        print("  ⚠️ No hay GEMINI_KEY configurada.")
-        return None
-    ensure_warp_proxy()
-    body = {
-        'contents': [{'parts': [{'text': prompt}]}],
-        'generationConfig': {
-            'temperature': 0.7,
-            'maxOutputTokens': 8192,
-        }
-    }
-    for model_name in GEMINI_MODELS:
-        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_KEY}'
-        for attempt in range(MAX_RETRIES):
-            try:
-                resp = requests.post(url, json=body, timeout=120)
-                if resp.status_code == 200:
-                    result = resp.json()
-                    candidates = result.get('candidates', [])
-                    if candidates and 'content' in candidates[0]:
-                        parts = candidates[0]['content'].get('parts', [])
-                        if parts and 'text' in parts[0]:
-                            print(f'  ✅ Respuesta recibida usando modelo {model_name}')
-                            return parts[0]['text'].strip()
-                elif resp.status_code == 429:
-                    wait = RETRY_DELAY * (attempt + 1)
-                    print(f'  Cuota excedida en {model_name}, reintentando en {wait}s...')
-                    time.sleep(wait)
-                    continue
-                elif resp.status_code == 404:
-                    print(f'  Modelo {model_name} no disponible (404), pasando al siguiente...')
-                    break
-                elif resp.status_code == 400 and 'User location is not supported' in resp.text:
-                    print(f'  ⚠️ Error de localización (400) en {model_name}. Probando intento alternativo sin proxy...')
-                    try:
-                        resp_alt = requests.post(url, json=body, timeout=120, proxies={'http': None, 'https': None})
-                        if resp_alt.status_code == 200:
-                            result = resp_alt.json()
-                            candidates = result.get('candidates', [])
-                            if candidates and 'content' in candidates[0]:
-                                parts = candidates[0]['content'].get('parts', [])
-                                if parts and 'text' in parts[0]:
-                                    print(f'  ✅ Respuesta recibida usando modelo {model_name} (directo)')
-                                    return parts[0]['text'].strip()
-                    except Exception:
-                        pass
-                    break
-                else:
-                    print(f'  HTTP {resp.status_code} en {model_name}: {resp.text[:200]}')
-                    break
-            except Exception as e:
-                print(f'  Error en petición a {model_name} (intento {attempt + 1}): {e}')
-                # Si falló la conexión por proxy, intentar directo
-                try:
-                    resp_alt = requests.post(url, json=body, timeout=60, proxies={'http': None, 'https': None})
-                    if resp_alt.status_code == 200:
-                        result = resp_alt.json()
-                        candidates = result.get('candidates', [])
-                        if candidates and 'content' in candidates[0]:
-                            parts = candidates[0]['content'].get('parts', [])
-                            if parts and 'text' in parts[0]:
-                                print(f'  ✅ Respuesta recibida usando modelo {model_name} (recuperación directa)')
-                                return parts[0]['text'].strip()
-                except Exception:
-                    pass
-                time.sleep(3)
-    print('  ❌ Se agotaron todos los modelos y reintentos.')
+def llm_request(prompt, system_instruction=None):
+    """
+    Realiza una petición de chat completion a un proveedor compatible con OpenAI
+    (llama-server local, OpenRouter, Groq, DeepSeek u OpenAI directo).
+    Garantiza estricto seguimiento de formato separando reglas en system prompt.
+    """
+    base_url, api_key, model_name = get_llm_config()
+    print(f"  🤖 Solicitando guion al LLM ({model_name}) en {base_url}...")
+
+    is_local = '127.0.0.1' in base_url or 'localhost' in base_url
+    system_content = system_instruction or (
+        "Eres el guionista y productor ejecutivo de 'Punto de Vista', el podcast diario de alta cultura fotográfica.\n"
+        "Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo los marcadores obligatorios:\n"
+        f"[Título del episodio en una sola línea]\n{TITLE_MARKER}\n"
+        f"[Resumen conciso en 3 párrafos]\n{LOCUTABLE_MARKER}\n"
+        "[Guion para locutar con los tres locutores: [ROBERTO], [BEATRIZ] y [NICOLAS]]\n\n"
+        "REGLAS CRÍTICAS DE DIÁLOGO:\n"
+        "1. Cada intervención locutable debe comenzar estrictamente en línea nueva con su etiqueta canónica: [ROBERTO], [BEATRIZ] o [NICOLAS].\n"
+        "2. PROHIBIDO usar markdown en las etiquetas de los locutores (nunca escribas **[BEATRIZ]**: ni _[BEATRIZ]_ ni BEATRIZ:).\n"
+        "3. PROHIBIDO usar triples guiones en los nombres de locutores (nunca escribas ---BEATRIZ--- ni ---NICOLAS---).\n"
+        "4. Los triples guiones se reservan exclusivamente para ---TITLE---, ---LOCUTABLE---, ---RAFAGA--- y ---PAUSA---.\n"
+        "5. Los tres personajes deben intervenir obligatoriamente con textos sustanciales y estilo radiofónico natural y fluido."
+    )
+
+    messages = [
+        {"role": "system", "content": system_content},
+        {"role": "user", "content": prompt}
+    ]
+
+    import httpx
+    from openai import OpenAI
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            http_client = httpx.Client(proxies=None) if is_local else None
+            client = OpenAI(
+                base_url=base_url,
+                api_key=api_key,
+                http_client=http_client,
+                timeout=600.0
+            )
+
+            resp = client.chat.completions.create(
+                model=model_name,
+                messages=messages,
+                temperature=0.6,
+                max_tokens=4096
+            )
+            content = resp.choices[0].message.content
+            if content and content.strip():
+                print(f"  ✅ Respuesta recibida exitosamente de {model_name}")
+                return content.strip()
+        except Exception as e:
+            print(f"  Error en petición a {model_name} (intento {attempt + 1}/{MAX_RETRIES}): {e}")
+            time.sleep(RETRY_DELAY)
+
+    print("  ❌ Se agotaron todos los reintentos con el proveedor LLM.")
     return None
+
+# Alias para compatibilidad
+gemini_request = llm_request
 
 
 def parse_digest_markdown(filepath):
@@ -1306,7 +1285,7 @@ def main():
     if facets.get('lab'):
         print(f"  🧪 Laboratorio / Química detectada: {facets['lab'].get('matched_terms')} - {facets['lab'].get('title')}")
 
-    # 3. Construir prompt y llamar a Gemini
+    # 3. Construir prompt y llamar al LLM (llama-server local / OpenAI-compatible)
     prompt = build_editorial_podcast_prompt(
         articles, primary, historical, today, ep_num,
         museum_piece=museum_piece, facet_prompts=facet_prompts
@@ -1330,10 +1309,10 @@ def main():
 
     for attempt in range(1, max_attempts + 1):
         if attempt == 1:
-            print('  Enviando prompt editorial a Gemini...')
-            summary = gemini_request(prompt)
+            print('  Enviando prompt editorial al LLM...')
+            summary = llm_request(prompt)
         else:
-            print(f'  🔄 Reintento {attempt}/{max_attempts}: Re-solicitando guion a Gemini con corrección de reparto coral...')
+            print(f'  🔄 Reintento {attempt}/{max_attempts}: Re-solicitando guion al LLM con corrección de reparto coral...')
             correction_note = (
                 f"\n\n⚠️ CORRECCIÓN OBLIGATORIA DE FORMATO Y REPARTO (EL INTENTO ANTERIOR FUE RECHAZADO):\n"
                 f"La respuesta previa fue RECHAZADA por el Quality Gate del sistema debido a los siguientes fallos:\n"
@@ -1344,10 +1323,10 @@ def main():
                 "- ESTÁ TERMINANTEMENTE PROHIBIDO usar guiones como ---BEATRIZ--- o ---NICOLAS--- (los guiones triples solo se usan en ---RAFAGA--- y ---PAUSA---).\n"
                 "- Asegúrate de incluir el texto completo de Beatriz (Acto 2) y de Nicolás (Acto 3) con sus respectivas etiquetas."
             )
-            summary = gemini_request(prompt + correction_note)
+            summary = llm_request(prompt + correction_note)
 
         if not summary:
-            print('  ❌ No se obtuvo respuesta de Gemini.')
+            print('  ❌ No se obtuvo respuesta del proveedor LLM.')
             if attempt == max_attempts:
                 sys.exit(1)
             continue

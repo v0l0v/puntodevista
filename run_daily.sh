@@ -74,6 +74,15 @@ $PYTHON update_lists.py || echo "⚠️ Advertencia en update_lists (continuando
 echo ">> Saneando y traduciendo artículos pendientes del archivo..."
 $PYTHON scripts/repair_all_translations.py --limit-per-source 8 --feeds-limit 20 || echo "⚠️ Advertencia en repair_all_translations (continuando)"
 
+# 8c. Asegurar disponibilidad del motor LLM local (llama-server / Qwen 2.5 7B)
+if systemctl is-active --quiet puntodevista-llm 2>/dev/null; then
+  echo ">> [LLM] Motor local puntodevista-llm activo en :8090"
+elif [ -f "$DIR/llama/llama-b10907/llama-server" ] && ! curl -s http://127.0.0.1:8090/v1/models >/dev/null 2>&1; then
+  echo ">> [LLM] Iniciando motor local llama-server en segundo plano (:8090)..."
+  nohup "$DIR/llama/llama-b10907/llama-server" -m "$DIR/llama/models/Qwen2.5-7B-Instruct-Q4_K_M.gguf" -c 10240 -t 4 --host 127.0.0.1 --port 8090 --alias qwen2.5-7b-instruct > "$DIR/llama/server.log" 2>&1 &
+  sleep 4
+fi
+
 # 9. Generar Podcast con Kokoro TTS y publicar en Telegram
 echo ">> [4/6] Generando podcast y publicando en Telegram..."
 $PYTHON daily_podcast.py

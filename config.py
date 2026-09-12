@@ -13,6 +13,12 @@ logger = logging.getLogger('pdv.config')
 DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(DIR, 'config.json')
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(DIR, '.env'))
+except ImportError:
+    pass
+
 _CONFIG = {}
 
 def load_config():
@@ -36,7 +42,7 @@ CONFIG = _CONFIG
 def get_config(key, default=None):
     """
     Obtiene un valor de configuración con prioridad:
-    1. Variable de entorno
+    1. Variable de entorno (.env o sistema)
     2. config.json
     3. Valor por defecto
     """
@@ -45,12 +51,28 @@ def get_config(key, default=None):
         return val
     return _CONFIG.get(key, default)
 
+def get_openai_base_url(default='http://127.0.0.1:8090/v1'):
+    """Retorna la URL base del proveedor LLM compatible con OpenAI."""
+    return get_config('OPENAI_BASE_URL', default)
+
+def get_openai_api_key(default='local-no-key'):
+    """Retorna la API key para el proveedor LLM."""
+    return get_config('OPENAI_API_KEY', default)
+
+def get_llm_model(default='qwen2.5-7b-instruct'):
+    """Retorna el nombre del modelo LLM configurado."""
+    return get_config('MODEL_NAME') or get_config('LLM_MODEL', default)
+
+def get_llm_config():
+    """Retorna tupla (base_url, api_key, model_name)."""
+    return get_openai_base_url(), get_openai_api_key(), get_llm_model()
+
 def get_gemini_key():
-    """Retorna la clave de API de Gemini."""
+    """Retorna la clave de API de Gemini (legacy)."""
     return get_config('GEMINI_KEY') or get_config('GEMINI_API_KEY')
 
 def get_gemini_model(default='gemini-flash-latest'):
-    """Retorna el modelo preferido de Gemini."""
+    """Retorna el modelo preferido de Gemini (legacy)."""
     return get_config('GEMINI_MODEL', default)
 
 def get_telegram_creds():
