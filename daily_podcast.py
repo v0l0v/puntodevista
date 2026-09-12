@@ -137,16 +137,13 @@ def llm_request(prompt, system_instruction=None):
         {"role": "user", "content": prompt}
     ]
 
-    import httpx
     from openai import OpenAI
 
     for attempt in range(MAX_RETRIES):
         try:
-            http_client = httpx.Client(proxies=None) if is_local else None
             client = OpenAI(
                 base_url=base_url,
                 api_key=api_key,
-                http_client=http_client,
                 timeout=600.0
             )
 
