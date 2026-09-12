@@ -32,4 +32,6 @@ sentencepiece>=0.2.0
 
 # --- Motor LLM OpenAI-compatible (Local llama-server / OpenRouter / Groq) ---
 openai>=1.0.0
+httpx>=0.27.0
+socksio>=1.0.0
 python-dotenv>=1.0.0
