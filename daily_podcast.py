@@ -117,7 +117,7 @@ def llm_request(prompt, system_instruction=None):
     base_url, api_key, model_name = get_llm_config()
     print(f"  🤖 Solicitando guion al LLM ({model_name}) en {base_url}...")
 
-    is_local = '127.0.0.1' in base_url or 'localhost' in base_url
+    is_direct = any(x in base_url for x in ['127.0.0.1', 'localhost', '100.', '192.168.', '10.'])
     system_content = system_instruction or (
         "Eres el guionista y productor ejecutivo de 'Punto de Vista', el podcast diario de alta cultura fotográfica.\n"
         "Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo los marcadores obligatorios:\n"
@@ -148,7 +148,7 @@ def llm_request(prompt, system_instruction=None):
 
     for attempt in range(MAX_RETRIES):
         try:
-            http_client = httpx_mod.Client(trust_env=False) if (is_local and httpx_mod) else None
+            http_client = httpx_mod.Client(trust_env=False) if (is_direct and httpx_mod) else None
             client = OpenAI(
                 base_url=base_url,
                 api_key=api_key,
