@@ -36,3 +36,5 @@ tmp_audio_render/
 *.pid
 .DS_Store
 .*_circuit.json
+llama/
+.env
