@@ -635,10 +635,10 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
     headlines_by_source_text = []
     for src, items in by_source.items():
         headlines_by_source_text.append(f"📰 MEDIO: {src}")
-        for item in items[:6]:
+        for item in items[:3]:
             autor = item.get('photographer') or 'Autor'
             tit = item.get('title', 'Sin título')
-            sumario = (item.get('summary') or item.get('full_text', ''))[:450].replace('\n', ' ')
+            sumario = (item.get('summary') or item.get('full_text', ''))[:220].replace('\n', ' ')
             headlines_by_source_text.append(f"  • {tit} (por {autor}): {sumario}")
         headlines_by_source_text.append("")
 
