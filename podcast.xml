@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sat, 12 Sep 2026 17:01:06 +0000</lastBuildDate>
+<lastBuildDate>Sun, 13 Sep 2026 07:39:38 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1344,6 +1344,48 @@ Finalmente, Nicolás nos propone un reto creativo titulado El mapa de lo cercano
     <itunes:title>Episodio 39 · El latido invisible de las torres perdidas: memoria y fotografía contemporánea en el Nueva York de 2001</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 40 · [El Amor a la Mesa: Una Relectura del Cotidiano]</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-13.mp3</guid>
+    <pubDate>Sun, 13 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es domingo, 13 de septiembre de 2026 y este es el episodio 40. Hoy nos adentraremos en un tema que nos habla de la cotidianidad, la memoria y la conexión con nuestro entorno. En este episodio, profundizaremos en una obra que nos invita a ver la comida como más que un acto diario, sino como un reflejo de nuestras vidas. ¿Te imaginas lo que podemos extraer de una simple cena? Porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!
+
+[BEATRIZ]
+¡Hola Roberto! Muchas gracias y muy buenas a todos. Hoy nos adentramos en un tema que nos habla de la cotidianidad, la memoria y la conexión con nuestro entorno. En el proyecto protagonista de hoy, encontramos a un fotógrafo que nos invita a relecturar la mesa: "Una materia de sabor: lo que queda después de comer". Este proyecto nos invita a ver la comida no solo como un acto diario, sino como un reflejo de nuestras vidas, de nuestro trabajo, de nuestra supervivencia, de nuestros recuerdos y de nuestro sentido de pertenencia. Pero no es solo eso: también nos invita a ver la comida como un espacio de interacción humana, un lugar donde la intimidad y la empatía se dan cita. Este trabajo es un llamado a reflexionar sobre lo que comemos, cómo lo comemos y quién lo prepara. Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola Roberto!
+
+[ROBERTO]
+Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!
+
+[NICOLÁS]
+¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir. Pero aquí no nos quedamos en la teoría... Hoy te desafío a que busques en tu entorno la mesa como un espacio de interacción humana. ¿Cómo capturas esa intimidad y empatía? ¿Cómo reflejas la atmósfera de esa cena? No te conformes con la simple cena, busca la interacción, la risa, la emoción, el calor humano. ¡Que tu cámara no sea una testaferro de una comida, sino un testigo de la vida que se vive alrededor de la mesa! ¿Qué te preguntas antes de apretar el obturador?
+
+---
+
+[ROBERTO]
+Fantástico reto el de Nicolás para hoy. Añado una última reflexión inspiradora invitando a salir a mirar el mundo. Nicolás nos ha desafiado a buscar la interacción humana en la mesa, pero también en la calle. Hoy, ¿qué nos enseñan las mesas de la vida cotidiana? ¿Cómo reflejan nuestras relaciones, nuestros recuerdos y nuestra propia identidad? Nos vemos mañana con más inspiración. ¡Buenas fotos!]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-13.mp3" length="3283400" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-13.jpg"/>
+    <itunes:duration>2:16</itunes:duration>
+    <itunes:title>Episodio 40 · [El Amor a la Mesa: Una Relectura del Cotidiano]</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es domingo, 13 de septiembre de 2026 y este es el episodio 40. Hoy nos adentraremos en un tema que nos habla de la cotidianidad, la memoria y la conexión con nuestro entorno. En este episodio, profundizaremos en una obra que nos invita a ver la comida como más que un acto diario, sino como un reflejo de nuestras vidas. ¿Te imaginas lo que podemos extraer de una simple cena? Porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!
+
+[BEATRIZ]
+¡Hola Roberto! Muchas gracias y muy buenas a todos. Hoy nos adentramos en un tema que nos habla de la cotidianidad, la memoria y la conexión con nuestro entorno. En el proyecto protagonista de hoy, encontramos a un fotógrafo que nos invita a relecturar la mesa: "Una materia de sabor: lo que queda después de comer". Este proyecto nos invita a ver la comida no solo como un acto diario, sino como un reflejo de nuestras vidas, de nuestro trabajo, de nuestra supervivencia, de nuestros recuerdos y de nuestro sentido de pertenencia. Pero no es solo eso: también nos invita a ver la comida como un espacio de interacción humana, un lugar donde la intimidad y la empatía se dan cita. Este trabajo es un llamado a reflexionar sobre lo que comemos, cómo lo comemos y quién lo prepara. Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola Roberto!
+
+[ROBERTO]
+Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!
+
+[NICOLÁS]
+¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir. Pero aquí no nos quedamos en la teoría... Hoy te desafío a que busques en tu entorno la mesa como un espacio de interacción humana. ¿Cómo capturas esa intimidad y empatía? ¿Cómo reflejas la atmósfera de esa cena? No te conformes con la simple cena, busca la interacción, la risa, la emoción, el calor humano. ¡Que tu cámara no sea una testaferro de una comida, sino un testigo de la vida que se vive alrededor de la mesa! ¿Qué te preguntas antes de apretar el obturador?
+
+---
+
+[ROBERTO]
+Fantástico reto el de Nicolás para hoy. Añado una última reflexión inspiradora invitando a salir a mirar el mundo. Nicolás nos ha desafiado a buscar la interacción humana en la mesa, pero también en la calle. Hoy, ¿qué nos enseñan las mesas de la vida cotidiana? ¿Cómo reflejan nuestras relaciones, nuestros recuerdos y nuestra propia identidad? Nos vemos mañana con más inspiración. ¡Buenas fotos!]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
