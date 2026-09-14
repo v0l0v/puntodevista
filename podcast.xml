@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Sun, 13 Sep 2026 07:39:38 +0000</lastBuildDate>
+<lastBuildDate>Mon, 14 Sep 2026 07:43:04 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1386,6 +1386,20 @@ Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicol
 
 [ROBERTO]
 Fantástico reto el de Nicolás para hoy. Añado una última reflexión inspiradora invitando a salir a mirar el mundo. Nicolás nos ha desafiado a buscar la interacción humana en la mesa, pero también en la calle. Hoy, ¿qué nos enseñan las mesas de la vida cotidiana? ¿Cómo reflejan nuestras relaciones, nuestros recuerdos y nuestra propia identidad? Nos vemos mañana con más inspiración. ¡Buenas fotos!]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 41 · [La noche del 14 de septiembre de 2026, en una ciudad iluminada por la aurora boreal, Punto de Vista se adentra en el corazón de la fotografía contemporánea.]</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-14.mp3</guid>
+    <pubDate>Mon, 14 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA["El Espíritu de la Celebración: Conexiones con la Historia"]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-14.mp3" length="5949549" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-14.jpg"/>
+    <itunes:duration>4:07</itunes:duration>
+    <itunes:title>Episodio 41 · [La noche del 14 de septiembre de 2026, en una ciudad iluminada por la aurora boreal, Punto de Vista se adentra en el corazón de la fotografía contemporánea.]</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA["El Espíritu de la Celebración: Conexiones con la Historia"]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
