@@ -775,8 +775,17 @@ footer {
 @media (max-width: 600px) {
   /* Header */
   .header-inner {
-    padding: 0 1rem;
-    height: 56px;
+    padding: 0.5rem 1rem;
+    min-height: 56px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .search-input {
+    width: 100px;
+  }
+  .search-input:focus {
+    width: 130px;
   }
   .logo-text { font-size: 1.15rem; }
 
