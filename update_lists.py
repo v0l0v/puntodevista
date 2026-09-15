@@ -176,7 +176,7 @@ def main():
 
     should_push = args.push or '--push' in sys.argv or os.environ.get('PUSH_TO_GITHUB') == '1'
     if should_push:
-        print('  Subiendo a GitHub...')
+        print('\033[1;35m  🚀 [GIT PUSH AUTO] Subiendo cambios a GitHub...\033[0m')
         try:
             subprocess.run(
                 ['git', 'add', 'data/'],
@@ -187,10 +187,10 @@ def main():
                 capture_output=True, text=True, cwd=DIR
             )
             if 'nothing to commit' in res.stdout:
-                print('     Sin cambios')
+                print('\033[1;33m     ℹ️ [GIT PUSH AUTO] Sin cambios que subir\033[0m')
                 return
             if res.returncode != 0 and 'nothing to commit' not in (res.stdout + res.stderr):
-                print(f'     ⚠️ Error commit: {res.stderr[:300]}')
+                print(f'\033[1;31m     ⚠️ [GIT PUSH AUTO] Error commit: {res.stderr[:300]}\033[0m')
                 return
             
             pushed = False
@@ -198,14 +198,14 @@ def main():
                 pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
                 push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
                 if push.returncode == 0:
-                    print('     ✅ Push a GitHub OK')
+                    print('\033[1;32m     ✅ [GIT PUSH AUTO] Push a GitHub completado con éxito\033[0m')
                     pushed = True
                     break
                 time.sleep(3 * (attempt + 1))
             if not pushed:
-                print(f'     ⚠️ Push fallido tras reintentos')
+                print(f'\033[1;31m     ⚠️ [GIT PUSH AUTO] Push fallido tras reintentos\033[0m')
         except Exception as e:
-            print(f'     ⚠️ Git error: {e}')
+            print(f'\033[1;31m     ⚠️ [GIT PUSH AUTO] Git error: {e}\033[0m')
     else:
         print('  Archivos de datos actualizados en data/.')
 
