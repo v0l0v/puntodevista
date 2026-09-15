@@ -43,9 +43,19 @@ def init_db(db_path=None):
             summary TEXT,
             full_text TEXT,
             image_url TEXT,
+            title_es TEXT,
+            summary_es TEXT,
+            full_text_es TEXT,
             created_at TEXT DEFAULT (datetime('now'))
         );
         """)
+
+        # Migraciones dinámicas por si la tabla ya existía
+        for col_name in ['title_es', 'summary_es', 'full_text_es']:
+            try:
+                cursor.execute(f"ALTER TABLE articles ADD COLUMN {col_name} TEXT;")
+            except sqlite3.OperationalError:
+                pass
 
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_articles_source ON articles(source);")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_articles_date ON articles(published_date);")
@@ -59,6 +69,9 @@ def init_db(db_path=None):
             source,
             summary,
             full_text,
+            title_es,
+            summary_es,
+            full_text_es,
             content='articles',
             content_rowid='id'
         );
@@ -67,24 +80,24 @@ def init_db(db_path=None):
         # Triggers de sincronización FTS5 para artículos
         cursor.execute("""
         CREATE TRIGGER IF NOT EXISTS articles_ai AFTER INSERT ON articles BEGIN
-            INSERT INTO articles_fts(rowid, title, photographer, source, summary, full_text)
-            VALUES (new.id, new.title, new.photographer, new.source, new.summary, new.full_text);
+            INSERT INTO articles_fts(rowid, title, photographer, source, summary, full_text, title_es, summary_es, full_text_es)
+            VALUES (new.id, new.title, new.photographer, new.source, new.summary, new.full_text, new.title_es, new.summary_es, new.full_text_es);
         END;
         """)
 
         cursor.execute("""
         CREATE TRIGGER IF NOT EXISTS articles_ad AFTER DELETE ON articles BEGIN
-            INSERT INTO articles_fts(articles_fts, rowid, title, photographer, source, summary, full_text)
-            VALUES ('delete', old.id, old.title, old.photographer, old.source, old.summary, old.full_text);
+            INSERT INTO articles_fts(articles_fts, rowid, title, photographer, source, summary, full_text, title_es, summary_es, full_text_es)
+            VALUES ('delete', old.id, old.title, old.photographer, old.source, old.summary, old.full_text, old.title_es, old.summary_es, old.full_text_es);
         END;
         """)
 
         cursor.execute("""
         CREATE TRIGGER IF NOT EXISTS articles_au AFTER UPDATE ON articles BEGIN
-            INSERT INTO articles_fts(articles_fts, rowid, title, photographer, source, summary, full_text)
-            VALUES ('delete', old.id, old.title, old.photographer, old.source, old.summary, old.full_text);
-            INSERT INTO articles_fts(rowid, title, photographer, source, summary, full_text)
-            VALUES (new.id, new.title, new.photographer, new.source, new.summary, new.full_text);
+            INSERT INTO articles_fts(articles_fts, rowid, title, photographer, source, summary, full_text, title_es, summary_es, full_text_es)
+            VALUES ('delete', old.id, old.title, old.photographer, old.source, old.summary, old.full_text, old.title_es, old.summary_es, old.full_text_es);
+            INSERT INTO articles_fts(rowid, title, photographer, source, summary, full_text, title_es, summary_es, full_text_es)
+            VALUES (new.id, new.title, new.photographer, new.source, new.summary, new.full_text, new.title_es, new.summary_es, new.full_text_es);
         END;
         """)
 
@@ -156,9 +169,13 @@ def upsert_article(conn, item):
     full_text = (item.get('full_text') or item.get('content') or summary).strip()
     image_url = (item.get('image_url') or item.get('image') or item.get('thumbnail') or '').strip()
 
+    title_es = (item.get('title_es') or '').strip() or None
+    summary_es = (item.get('summary_es') or '').strip() or None
+    full_text_es = (item.get('full_text_es') or item.get('content_es') or '').strip() or None
+
     sql = """
-    INSERT INTO articles (url, source, title, photographer, published_date, summary, full_text, image_url)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO articles (url, source, title, photographer, published_date, summary, full_text, image_url, title_es, summary_es, full_text_es)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(url) DO UPDATE SET
         source = excluded.source,
         title = excluded.title,
@@ -166,9 +183,12 @@ def upsert_article(conn, item):
         published_date = COALESCE(NULLIF(excluded.published_date, ''), articles.published_date),
         summary = COALESCE(NULLIF(excluded.summary, ''), articles.summary),
         full_text = COALESCE(NULLIF(excluded.full_text, ''), articles.full_text),
-        image_url = COALESCE(NULLIF(excluded.image_url, ''), articles.image_url);
+        image_url = COALESCE(NULLIF(excluded.image_url, ''), articles.image_url),
+        title_es = COALESCE(excluded.title_es, articles.title_es),
+        summary_es = COALESCE(excluded.summary_es, articles.summary_es),
+        full_text_es = COALESCE(excluded.full_text_es, articles.full_text_es);
     """
-    conn.execute(sql, (url, source, title, photographer, published_date, summary, full_text, image_url))
+    conn.execute(sql, (url, source, title, photographer, published_date, summary, full_text, image_url, title_es, summary_es, full_text_es))
     return True
 
 

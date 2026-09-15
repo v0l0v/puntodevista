@@ -89,6 +89,60 @@ header {
   text-transform: uppercase;
 }
 
+.search-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-input {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  min-height: var(--touch-min);
+  padding: 0 1.6rem 0 0.8rem;
+  font-family: inherit;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  width: 140px;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.14);
+  width: 190px;
+}
+
+.search-input::placeholder {
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.55rem;
+}
+
+.search-clear {
+  position: absolute;
+  right: 0.3rem;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear:hover {
+  color: #fff;
+}
+
 /* ── Focus visible global (WCAG 2.4.7) ────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--accent);

@@ -377,8 +377,7 @@ def update_article_cache(filename, items, scrape_fn):
                     if not is_circuit_open():
                         translated_content = translate_text(cached_data['content'], is_html=True)
                         if translated_content and len(translated_content) > 30 and translated_content.strip() != cached_data['content'].strip():
-                            cached_data['content_original'] = cached_data['content']
-                            cached_data['content'] = translated_content
+                            cached_data['content_es'] = translated_content
                             cached_data['translated'] = True
                             new += 1
                             print(f'    ↻ {url.split("/")[-1][:50]} (traducido ES retroactivo)')
@@ -392,14 +391,13 @@ def update_article_cache(filename, items, scrape_fn):
         attempts += 1
         data = scrape_fn(url)
         if data and data.get('status') == 'ok':
-            # Traducir contenido HTML al español para artículos nuevos
+            # Traducir contenido HTML al español para artículos nuevos (guardar en content_es)
             try:
                 from translator import translate_text, is_circuit_open
                 if data.get('content') and not data.get('translated') and not is_circuit_open():
                     translated_content = translate_text(data['content'], is_html=True)
                     if translated_content and len(translated_content) > 30 and translated_content.strip() != data['content'].strip():
-                        data['content_original'] = data['content']
-                        data['content'] = translated_content
+                        data['content_es'] = translated_content
                         data['translated'] = True
             except Exception as e_trans:
                 print(f'    ⚠️ Error traduciendo artículo {url}: {e_trans}')

@@ -161,6 +161,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // ── Buscador ───────────────────────────────────────────────────────
+  const searchInput = document.getElementById('search-input');
+  const searchClearBtn = document.getElementById('search-clear-btn');
+  if (searchInput) {
+    searchInput.addEventListener('input', (evt) => {
+      state.searchQuery = evt.target.value;
+      if (searchClearBtn) {
+        searchClearBtn.classList.toggle('hide', !evt.target.value);
+      }
+      applyFilter();
+    });
+  }
+  if (searchClearBtn && searchInput) {
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      state.searchQuery = '';
+      searchClearBtn.classList.add('hide');
+      applyFilter();
+      searchInput.focus();
+    });
+  }
+
   // Backdrop del modal
   const backdrop = document.getElementById('modal-backdrop');
   if (backdrop) {

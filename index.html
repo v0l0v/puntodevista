@@ -37,6 +37,10 @@
   <div class="header-inner">
     <a class="logo" href="index.html" style="text-decoration:none;color:inherit"><span class="logo-text">Punto de vista</span></a>
     <div class="header-controls" role="toolbar" aria-label="Controles de filtro">
+      <div class="search-box">
+        <input type="search" id="search-input" class="search-input" placeholder="buscar..." aria-label="Buscar en el archivo" autocomplete="off">
+        <button type="button" id="search-clear-btn" class="search-clear hide" aria-label="Limpiar búsqueda">✕</button>
+      </div>
       <a id="podcast-filter-btn" class="sources-btn podcast-btn" href="episodios.html" aria-label="Ir a los episodios del podcast">podcast</a>
       <button id="date-btn" class="sources-btn active" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="date-panel" aria-label="Filtrar por fecha">
         fecha: <span id="date-btn-label">este mes</span> ⌄

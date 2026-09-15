@@ -1479,6 +1479,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     os.chdir(DIR)
+    try:
+        print("🔄 Comprobando y sincronizando últimos cambios desde GitHub/VPS...")
+        res = subprocess.run(['git', 'pull', '--autostash', '--rebase'], capture_output=True, text=True, cwd=DIR, timeout=15)
+        if res.returncode == 0:
+            print("✅ Repositorio sincronizado con GitHub OK")
+        else:
+            print(f"ℹ️ Git pull: {res.stdout.strip() or res.stderr.strip()}")
+    except Exception as e_pull:
+        print(f"⚠️ Aviso en sincronización inicial: {e_pull}")
+
     server = http.server.HTTPServer(('0.0.0.0', PORT), Handler)
     print(f'Server on http://localhost:{PORT}')
     server.serve_forever()

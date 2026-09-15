@@ -15,7 +15,7 @@ export function isSearchMatch(e, q) {
   if (!q) return true;
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const photo = e.photographer || (e.photographers ? e.photographers.join(' ') : '');
-  const text = `${e.title || ''} ${photo} ${e.summary || ''} ${e.excerpt || ''} ${e.content || ''} ${e._source || ''}`.toLowerCase();
+  const text = `${e.title || ''} ${e.title_es || ''} ${photo} ${e.summary || ''} ${e.summary_es || ''} ${e.excerpt || ''} ${e.content || ''} ${e.content_es || ''} ${e._source || ''}`.toLowerCase();
   return terms.every(t => text.includes(t));
 }
 

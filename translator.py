@@ -167,7 +167,9 @@ def translate_text(text, is_html=False):
 
 def translate_article_entry(entry):
     """
-    Traduce una entrada de artículo si no ha sido traducida previamente.
+    Traduce una entrada de artículo si no ha sido traducida previamente,
+    almacenando el resultado en campos auxiliares (title_es, content_es)
+    para preservar SIEMPRE el título y contenido en su idioma original.
     """
     if not entry or entry.get('translated'):
         return entry
@@ -177,14 +179,14 @@ def translate_article_entry(entry):
     if title:
         tr_title = translate_text(title, is_html=False)
         if tr_title and tr_title.strip() != title.strip():
-            entry['title'] = tr_title
+            entry['title_es'] = tr_title
             translated_any = True
 
     content = entry.get('content')
     if content and len(content) > 40:
         tr_content = translate_text(content, is_html=True)
         if tr_content and tr_content.strip() != content.strip():
-            entry['content'] = tr_content
+            entry['content_es'] = tr_content
             translated_any = True
 
     if translated_any:

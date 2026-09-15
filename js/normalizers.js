@@ -9,8 +9,10 @@ export function normalizeGenericSource(sourceId) {
       _id: i.link || i._id || `${sourceId}-${i.title}`,
       _parsedDate: (i.date || i._parsedDate || i.pubDate) ? new Date(i.date || i._parsedDate || i.pubDate) : null,
       link: i.link,
-      title: i.title,
-      content: i.content || i.excerpt || i.description || '',
+      title: i.title_es || i.title,
+      title_original: i.title,
+      content: i.content_es || i.content || i.excerpt || i.description || '',
+      content_original: i.content,
       thumbnail: i.thumbnail || ''
     }));
   };
@@ -29,7 +31,7 @@ export function enrichContent(live, fallback) {
     const f = byLink.get(i.link);
     if (!f) return i;
     const merged = { ...i };
-    if ((f.content || '').length > (i.content || '').length) merged.content = f.content;
+    if ((f.content || '').length > (i.content || '').length) merged.content = f.content_es || f.content;
     if (!merged.thumbnail && f.thumbnail) merged.thumbnail = f.thumbnail;
     return merged;
   });
@@ -41,8 +43,10 @@ export function normalizeLomo(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -53,8 +57,10 @@ export function normalizeBoom(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -65,8 +71,10 @@ export function normalizeTpj(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -77,8 +85,10 @@ export function normalizeSwan(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -95,8 +105,10 @@ export function normalizeHuck(items) {
       _id: i.link || i._id,
       _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
       link: i.link,
-      title: i.title,
-      content: i.content || i.excerpt,
+      title: i.title_es || i.title,
+      title_original: i.title,
+      content: i.content_es || i.content || i.excerpt,
+      content_original: i.content,
       thumbnail: thumb
     };
   });
@@ -108,8 +120,10 @@ export function normalizeLensCulture(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -120,8 +134,10 @@ export function normalizeOdlp(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
@@ -138,8 +154,10 @@ export function normalizeMagnum(items) {
       _id: i.link || i._id,
       _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
       link: i.link,
-      title: i.title,
-      content: i.content || i.excerpt,
+      title: i.title_es || i.title,
+      title_original: i.title,
+      content: i.content_es || i.content || i.excerpt,
+      content_original: i.content,
       thumbnail: thumb
     };
   });
@@ -151,8 +169,10 @@ export function normalizeShootItWithFilm(items) {
     _id: i.link || i._id,
     _parsedDate: (i.date || i._parsedDate) ? new Date(i.date || i._parsedDate) : null,
     link: i.link,
-    title: i.title,
-    content: i.content || i.excerpt,
+    title: i.title_es || i.title,
+    title_original: i.title,
+    content: i.content_es || i.content || i.excerpt,
+    content_original: i.content,
     thumbnail: i.thumbnail
   }));
 }
