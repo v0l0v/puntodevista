@@ -649,6 +649,15 @@ SOURCE_NORMALIZATION = {
     'fotonistas': 'Fotonistas / Fotoleter'
 }
 
+
+def is_newsletter_item(item):
+    """Detecta si un artículo corresponde a un newsletter o correo recibido."""
+    src = (item.get('source') or '').lower()
+    tit = (item.get('title') or '').lower()
+    txt = (item.get('full_text') or item.get('summary') or '').lower()
+    return ('newsletter' in src or 'email' in src or 'fotonistas' in src or 'fotoleter' in src or
+            'fotonistas' in tit or 'fotonistas' in txt[:350])
+
 def normalize_source_name(raw_source):
     if not raw_source:
         return 'Otras publicaciones'
@@ -696,21 +705,30 @@ def extract_challenge_text(locutable):
     return last_block[-450:].strip()
 
 def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num, museum_piece=None, facet_prompts=None):
-    """Construye el prompt editorial para ROBERTO: Resumen de noticias de las últimas 24h
-    agrupadas por medio (tiempo proporcional) con ráfagas intermedias de 6s, gancho inicial de 3 proyectos
-    y cierre con reto fotográfico inédito (antirrepetición estricta)."""
+    """Construye el prompt editorial para ROBERTO:
+    - Apertura con gancho de 3 proyectos destacados.
+    - Noticias agrupadas por medio: 30 a 45 segundos dedicados a CADA noticia.
+    - Ráfaga musical de 6 segundos entre medio y medio.
+    - Niusleters recibidos SIEMPRE en la última posición (referencia explícita a Fotonistas).
+    - Ráfaga musical de 6 segundos tras el niusleter.
+    - Cierre y Reto Fotográfico Inédito (antirrepetición estricta con registro histórico)."""
     d = episode_date or date.today()
     fecha_completa = fmt_fecha_completa_es(d)
 
-    # 1. Normalizar y agrupar artículos por medio
-    by_source = {}
+    # 1. Separar medios editoriales tradicionales de los niusleters recibidos
+    editorial_by_source = {}
+    newsletter_items = []
+
     for a in articles:
-        src_norm = normalize_source_name(a.get('source'))
-        by_source.setdefault(src_norm, []).append(a)
+        if is_newsletter_item(a):
+            newsletter_items.append(a)
+        else:
+            src_norm = normalize_source_name(a.get('source'))
+            editorial_by_source.setdefault(src_norm, []).append(a)
 
     # 2. Seleccionar 3 proyectos de 3 medios distintos para la expectación inicial
     teaser_candidates = []
-    for src_name, items in by_source.items():
+    for src_name, items in editorial_by_source.items():
         chosen = next((it for it in items if it.get('photographer') and len(it.get('title', '')) > 10), items[0] if items else None)
         if chosen:
             teaser_candidates.append(chosen)
@@ -724,26 +742,37 @@ def build_editorial_podcast_prompt(articles, primary, historical, episode_date, 
         teaser_lines.append(f"  {idx}. En {src}: '{tit}' de {aut}")
     teaser_block = "\n".join(teaser_lines)
 
-    # 3. Formatear medios agrupados con indicación estricta de tiempo proporcional
+    # 3. Formatear medios agrupados con instrucción estricta de 30/45s por noticia
     sources_text = []
-    for src_name, items in sorted(by_source.items(), key=lambda x: len(x[1]), reverse=True):
+    for src_name, items in sorted(editorial_by_source.items(), key=lambda x: len(x[1]), reverse=True):
         count = len(items)
-        if count <= 2:
-            time_rule = f"MENOS TIEMPO ({count} noticia{'s' if count>1 else ''}) -> Resumen ágil, directo y conciso (~45-65 palabras)."
-        else:
-            time_rule = f"MÁS TIEMPO ({count} noticias) -> Mayor desarrollo, contexto de las obras, técnica y reflexión (~130-190 palabras)."
-
-        sources_text.append(f"📰 MEDIO: {src_name.upper()} [{time_rule}]")
-        for it in items[:5]:
+        sources_text.append(f"📰 MEDIO EDITORIAL: {src_name.upper()} ({count} noticia{'s' if count>1 else ''})")
+        sources_text.append(f"  [PAUTA ESTRICTA: Roberto debe dedicar aproximadamente 30 a 45 segundos a CADA UNA de las {count} noticias de este medio (~70-100 palabras por noticia). Si tiene una noticia, le dedica 30-45s; si tiene varias (como en ODLP u otras), le dedica 30-45s a cada una de ellas de forma sustancial]")
+        for it in items[:6]:  # hasta 6 noticias por medio
             tit = it.get('title', 'Sin título')
             aut = it.get('photographer') or 'Autor/a'
-            sumario = (it.get('summary') or it.get('full_text', ''))[:320].replace('\n', ' ')
+            sumario = (it.get('summary') or it.get('full_text', ''))[:350].replace('\n', ' ')
             sources_text.append(f"  • {tit} (por {aut}): {sumario}")
         sources_text.append("")
 
     sources_block = "\n".join(sources_text)
 
-    # 4. Histórico de retos pasados para antirrepetición
+    # 4. Formatear el bloque de niusleters recibidos (siempre al final de las noticias)
+    newsletters_text = []
+    if newsletter_items:
+        newsletters_text.append("📬 SECCIÓN DE NIUSLETERS RECIBIDOS (ÚLTIMA POSICIÓN DE NOTICIAS):")
+        newsletters_text.append("  [PAUTA ESTRICTA: Roberto revisa el buzón de correo. Debe hacer referencia explícita a 'Fotonistas' (Ana de Fotonistas) o al nombre del niusleter recibido. Le dedica 30 a 45 segundos (~70-95 palabras) comentando la reflexión o idea de la carta sin spoilers, con intriga para invitar a suscribirse. Tras este bloque va una ráfaga musical hacia el cierre y reto]")
+        for nl in newsletter_items[:2]:
+            tit = nl.get('title', 'Correo de la comunidad')
+            sumario = (nl.get('summary') or nl.get('full_text', ''))[:450].replace('\n', ' ')
+            newsletters_text.append(f"  • Remitente: Fotonistas (Ana) - Título/Asunto: '{tit}' -> {sumario}")
+    else:
+        newsletters_text.append("📬 SECCIÓN DE NIUSLETERS RECIBIDOS:")
+        newsletters_text.append("  (Hoy no se han recibido correos ni niusleters en el buzón; pasar directamente al Cierre y Reto)")
+
+    newsletters_block = "\n".join(newsletters_text)
+
+    # 5. Histórico de retos pasados para antirrepetición
     past_retos = load_historical_challenges()
     retos_negros = []
     for r in past_retos[-20:]:
@@ -758,6 +787,8 @@ Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
 MATERIAL DE LAS ÚLTIMAS 24 HORAS AGRUPADO POR MEDIO:
 {sources_block}
 
+{newsletters_block}
+
 TRES PROYECTOS SELECCIONADOS PARA EL GANCHO DE EXPECTACIÓN INICIAL:
 {teaser_block}
 
@@ -766,19 +797,18 @@ HISTÓRICO DE RETOS PASADOS (LISTA NEGRA - PROHIBIDO REPETIR O PARAFRASEAR):
 
 DIRECTRICES GENERALES DE ESTILO Y LOCUCIÓN:
 - LOCUTOR ÚNICO: Todo el podcast lo presenta y locuta exclusivamente [ROBERTO]. No introduzcas a ningún otro locutor.
-- SEPARADORES MUSICALES (6 SEGUNDOS DE SINTONÍA): Entre bloque y bloque debes insertar estrictamente en una línea independiente la etiqueta:
+- DURACIÓN POR NOTICIA: A CADA NOTICIA que menciones debes dedicarle aproximadamente 30 a 45 segundos (~70 a 100 palabras por noticia). Aunque un medio (como ODLP) tenga muchas noticias, le dedicas 30/45 segundos a cada una de ellas con buen ritmo y desarrollo.
+- SEPARADORES MUSICALES (6 SEGUNDOS DE SINTONÍA): Entre medio y medio debes insertar estrictamente en una línea independiente la etiqueta:
 ---RAFAGA---
 Esto inserta una ráfaga musical de 6 segundos entre los medios para dar dinamismo a la emisión.
+- POSICIÓN DE LOS NIUSLETERS: La sección de niusleters recibidos va SIEMPRE en la última posición del recorrido de actualidad, justo después de todos los medios editoriales y antes del cierre. En ella debes hacer siempre referencia explícita a 'Fotonistas' (Ana de Fotonistas) o al nombre del niusleter recibido.
+- TRAS EL NIUSLETER: Inserta una etiqueta ---RAFAGA--- (6 segundos de música) y da paso a la fase final de Cierre y Reto.
 - FONÉTICA Y ADAPTACIÓN EN EL LOCUTABLE:
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
   * Escribe "el Magazine online Colosal" (para Colossal).
   * Escribe "la revista Buum" (para Booooooom).
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
   * Si un nombre propio en inglés es difícil o engañoso para la síntesis de voz, adapta su fonética amigable en castellano (ej: "Macari", "Clain", "Ápercher", "Táiler").
-  * Si hay contenido de Fotonistas o Ana, menciónalo como el "niusleter de Fotonistas" o su "fotoleter" con intriga y sin spoilers.
-- REGLA PROPORCIONAL DE TIEMPO POR MEDIO:
-  * En los medios que tienen pocas noticias (1 o 2 noticias), sé conciso, ágil y ve directo al grano.
-  * En los medios que tienen más noticias acumuladas, dedica más tiempo, profundiza en el contexto de las obras y los fotógrafos.
 
 ESTRUCTURA OBLIGATORIA DEL GUION:
 
@@ -790,21 +820,26 @@ Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plan
 {LOCUTABLE_MARKER}
 [ROBERTO]
 ¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es {fecha_completa} y este es el episodio #{ep_num}...
-[Roberto crea levemente expectación nombrando de manera introductoria y atractiva los 3 proyectos destacados seleccionados, invitando a quedarse a escuchar el recorrido completo. Cierra la apertura con una frase enérgica hacia la música.]
+[Roberto saluda y crea levemente expectación nombrando de manera introductoria y atractiva los 3 proyectos destacados seleccionados, invitando a quedarse a escuchar el recorrido completo. Cierra la apertura con una frase enérgica hacia la música.]
 
 ---RAFAGA---
 
 [ROBERTO]
-[Roberto aborda el primer medio editorial. Aplica la regla de tiempo: si tiene 1-2 noticias es ágil; si tiene más noticias, amplía el desarrollo.]
+[Roberto aborda el primer medio editorial. Dedica 30 a 45 segundos a CADA noticia que trata en este medio.]
 
 ---RAFAGA---
 
 [ROBERTO]
-[Roberto pasa al segundo medio editorial...]
+[Roberto pasa al segundo medio editorial, dedicando 30 a 45 segundos a cada noticia...]
 
 ---RAFAGA---
 
-[Continuar con un bloque [ROBERTO] y separador ---RAFAGA--- para cada medio presente en el material]
+[Continuar con un bloque [ROBERTO] y separador ---RAFAGA--- para cada medio presente]
+
+---RAFAGA---
+
+[ROBERTO]
+[SECCIÓN DE NIUSLETERS (ÚLTIMA POSICIÓN DE NOTICIAS): Roberto abre el buzón de niusleters recibidos. Hace referencia explícita a Fotonistas (o al nombre del niusleter recibido). Comenta la idea durante 30 a 45 segundos sin spoilers para abrir el apetito.]
 
 ---RAFAGA---
 
