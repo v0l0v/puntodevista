@@ -12,6 +12,38 @@ if ! flock -n 200; then
   exit 0
 fi
 
+# Funciones de ciclo de vida del motor LLM (bajo demanda para ahorrar RAM)
+start_llm() {
+  local code
+  code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/v1/models 2>/dev/null || true)
+  if [ "$code" = "200" ]; then
+    echo ">> [LLM] Motor local ya activo y listo en :8090"
+    return 0
+  fi
+
+  echo ">> [LLM] Iniciando motor local (puntodevista-llm)..."
+  sudo systemctl start puntodevista-llm
+  echo ">> [LLM] Esperando a que el modelo cargue en memoria..."
+  for i in $(seq 1 45); do
+    code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/v1/models 2>/dev/null || true)
+    if [ "$code" = "200" ]; then
+      echo ">> [LLM] ✅ llama-server listo en :8090 (${i}s)"
+      return 0
+    fi
+    sleep 1
+  done
+  echo "⚠️ [LLM] Tiempo de espera agotado esperando a llama-server"
+}
+
+stop_llm() {
+  if systemctl is-active --quiet puntodevista-llm 2>/dev/null; then
+    echo ">> [LLM] Deteniendo puntodevista-llm para liberar ~4.2 GB de RAM..."
+    sudo systemctl stop puntodevista-llm || true
+    echo ">> [LLM] ✅ Memoria RAM liberada correctamente."
+  fi
+  pkill -f "llama-server.*qwen2.5-7b-instruct" 2>/dev/null || true
+}
+
 # 2. Selección de entorno de ejecución Python
 if [ -f "$DIR/venv/bin/python3" ]; then
   PYTHON="$DIR/venv/bin/python3"
@@ -23,14 +55,16 @@ fi
 export TMPDIR="$DIR/tmp_audio"
 mkdir -p "$TMPDIR"
 
-# 4. Función de notificación en caso de error
+# 4. Función de notificación en caso de error y limpieza
 on_error() {
   local exit_code=$?
   local line_no=$1
   echo "❌ Error en línea $line_no (código de salida: $exit_code)"
+  stop_llm
   $PYTHON send_alert.py "Falló la ejecución diaria de PDV en la línea $line_no (código: $exit_code)" || true
 }
 trap 'on_error $LINENO' ERR
+trap stop_llm EXIT
 
 FECHA_LOG=$(date '+%Y-%m-%d %H:%M:%S')
 echo "=========================================================="
@@ -74,18 +108,15 @@ $PYTHON update_lists.py || echo "⚠️ Advertencia en update_lists (continuando
 echo ">> Saneando y traduciendo artículos pendientes del archivo..."
 $PYTHON scripts/repair_all_translations.py --limit-per-source 8 --feeds-limit 20 || echo "⚠️ Advertencia en repair_all_translations (continuando)"
 
-# 8c. Asegurar disponibilidad del motor LLM local (llama-server / Qwen 2.5 7B)
-if systemctl is-active --quiet puntodevista-llm 2>/dev/null; then
-  echo ">> [LLM] Motor local puntodevista-llm activo en :8090"
-elif [ -f "$DIR/llama/llama-b10907/llama-server" ] && ! curl -s http://127.0.0.1:8090/v1/models >/dev/null 2>&1; then
-  echo ">> [LLM] Iniciando motor local llama-server en segundo plano (:8090)..."
-  nohup "$DIR/llama/llama-b10907/llama-server" -m "$DIR/llama/models/Qwen2.5-7B-Instruct-Q4_K_M.gguf" -c 10240 -t 4 --host 127.0.0.1 --port 8090 --alias qwen2.5-7b-instruct > "$DIR/llama/server.log" 2>&1 &
-  sleep 4
-fi
+# 8c. Iniciar motor LLM local bajo demanda (Qwen 2.5 7B)
+start_llm
 
 # 9. Generar Podcast con Kokoro TTS y publicar en Telegram
 echo ">> [4/6] Generando podcast y publicando en Telegram..."
 $PYTHON daily_podcast.py
+
+# Liberar inmediatamente el modelo LLM tras la generación para devolver ~4.2 GB de RAM al sistema
+stop_llm
 
 # 10. Regenerar Feed RSS del Podcast
 echo ">> [5/6] Actualizando feed RSS (podcast.xml)..."

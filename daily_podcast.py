@@ -35,6 +35,7 @@ from data_paths import get_data_path, get_db_path
 OUT_DIR = os.path.join(DIR, 'resumenes')
 PODCAST_DIR = os.path.join(DIR, 'podcast')
 META_PATH = get_data_path('podcast_meta.json')
+RETOS_PATH = get_data_path('retos_historicos.json')
 DB_PATH = get_db_path()
 from config import get_telegram_creds, get_llm_config, ensure_warp_proxy
 from museum_archive import get_museum_treasure
@@ -51,9 +52,7 @@ TTS_RATE = os.environ.get('TTS_RATE', '-3%')
 
 # Trío de locutores de Punto de Vista
 VOICE_CAST = {
-    'ROBERTO': 'em_alex',    # Conductor principal y noticias
-    'BEATRIZ': 'ef_dora',    # Análisis central y linaje histórico
-    'NICOLAS': 'em_santa',   # Reto práctico y taller creativo
+    'ROBERTO': 'em_alex',    # Conductor único de Punto de Vista (noticias y reto)
 }
 
 KOKORO_ONNX = os.path.join(DIR, 'kokoro_models', 'kokoro-v1.0.onnx')
@@ -615,188 +614,210 @@ def get_historical_counterpart(primary_article):
     return None, 'none'
 
 
+
+SOURCE_NORMALIZATION = {
+    'odlp': "L'Œil de la Photographie",
+    "l'œil de la photographie": "L'Œil de la Photographie",
+    "loeil": "L'Œil de la Photographie",
+    '1854': 'British Journal of Photography (1854)',
+    'british journal of photography (1854)': 'British Journal of Photography (1854)',
+    'blind': 'Blind Magazine',
+    'blind magazine': 'Blind Magazine',
+    'lomography': 'Lomography Magazine',
+    'lomography magazine': 'Lomography Magazine',
+    'clavoardiendo': 'Clavoardiendo Magazine',
+    'clavoardiendo magazine': 'Clavoardiendo Magazine',
+    'booooooom': 'Booooooom',
+    '35mmc': '35mmc',
+    "ain't-bad": "Ain't-Bad",
+    'aintbad': "Ain't-Bad",
+    'shootitwithfilm': 'Shoot It With Film',
+    'shoot it with film': 'Shoot It With Film',
+    'emulsive': 'EMULSIVE',
+    'aperture': 'Aperture',
+    'magnum': 'Magnum Photos',
+    'magnum photos': 'Magnum Photos',
+    'asx': 'American Suburb X (ASX)',
+    'casualphotophile': 'Casual Photophile',
+    'phroom': 'Phroom Magazine',
+    'c41': 'C41 Magazine',
+    'featureshoot': 'Feature Shoot',
+    'lensculture': 'LensCulture',
+    'tpj': 'The Photographic Journal',
+    'the photographic journal': 'The Photographic Journal',
+    'colossal': 'Colossal',
+    'fotonistas': 'Fotonistas / Fotoleter'
+}
+
+def normalize_source_name(raw_source):
+    if not raw_source:
+        return 'Otras publicaciones'
+    clean = raw_source.strip().lower()
+    return SOURCE_NORMALIZATION.get(clean, raw_source.strip())
+
+def load_historical_challenges():
+    """Carga la lista histórica de retos fotográficos propuestos para evitar repeticiones."""
+    if os.path.exists(RETOS_PATH):
+        try:
+            with open(RETOS_PATH, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"⚠️ Error cargando {RETOS_PATH}: {e}")
+    return []
+
+def save_historical_challenge(date_str, ep_num, challenge_text):
+    """Guarda el nuevo reto propuesto en el archivo histórico persistente."""
+    if not challenge_text:
+        return
+    retos = load_historical_challenges()
+    retos = [r for r in retos if r.get('date') != date_str]
+    retos.append({
+        'date': date_str,
+        'episode': ep_num,
+        'theme': challenge_text[:120].replace('\n', ' ').strip(),
+        'challenge': challenge_text.strip()
+    })
+    try:
+        with open(RETOS_PATH, 'w', encoding='utf-8') as f:
+            json.dump(retos, f, ensure_ascii=False, indent=2)
+        print(f"  ✅ Reto registrado en {RETOS_PATH} (total acumulado: {len(retos)} retos)")
+    except Exception as e:
+        print(f"  ⚠️ Error guardando reto en {RETOS_PATH}: {e}")
+
+def extract_challenge_text(locutable):
+    """Extrae el reto propuesto por Roberto en el bloque de cierre."""
+    blocks = re.split(r'---RAFAGA---|\[RAFAGA\]|---PAUSA---|\[PAUSA\]', locutable)
+    if not blocks:
+        return ""
+    last_block = blocks[-1]
+    match = re.search(r'(?:reto|desaf[íi]o)[^\n.]*?[.:]\s*([^\n]+(?:\n[^\n]+){1,3})', last_block, re.IGNORECASE)
+    if match:
+        return match.group(0).strip()
+    return last_block[-450:].strip()
+
 def build_editorial_podcast_prompt(articles, primary, historical, episode_date, ep_num, museum_piece=None, facet_prompts=None):
-    """Construye el prompt editorial para Roberto, Beatriz y Nicolás en 4 Actos."""
+    """Construye el prompt editorial para ROBERTO: Resumen de noticias de las últimas 24h
+    agrupadas por medio (tiempo proporcional) con ráfagas intermedias de 6s, gancho inicial de 3 proyectos
+    y cierre con reto fotográfico inédito (antirrepetición estricta)."""
     d = episode_date or date.today()
     fecha_completa = fmt_fecha_completa_es(d)
 
-    roberto_radar_block = (facet_prompts.get('roberto_radar') or '') if facet_prompts else ''
-    beatriz_book_block = (facet_prompts.get('beatriz_book') or '') if facet_prompts else ''
-    nicolas_lab_block = (facet_prompts.get('nicolas_lab') or '') if facet_prompts else ''
-
-    # Agrupar titulares por medio / revista
+    # 1. Normalizar y agrupar artículos por medio
     by_source = {}
     for a in articles:
-        src = a.get('source', 'Otras fuentes').upper()
-        if src not in by_source:
-            by_source[src] = []
-        by_source[src].append(a)
+        src_norm = normalize_source_name(a.get('source'))
+        by_source.setdefault(src_norm, []).append(a)
 
-    headlines_by_source_text = []
-    for src, items in by_source.items():
-        headlines_by_source_text.append(f"📰 MEDIO: {src}")
-        for item in items[:3]:
-            autor = item.get('photographer') or 'Autor'
-            tit = item.get('title', 'Sin título')
-            sumario = (item.get('summary') or item.get('full_text', ''))[:220].replace('\n', ' ')
-            headlines_by_source_text.append(f"  • {tit} (por {autor}): {sumario}")
-        headlines_by_source_text.append("")
+    # 2. Seleccionar 3 proyectos de 3 medios distintos para la expectación inicial
+    teaser_candidates = []
+    for src_name, items in by_source.items():
+        chosen = next((it for it in items if it.get('photographer') and len(it.get('title', '')) > 10), items[0] if items else None)
+        if chosen:
+            teaser_candidates.append(chosen)
+    teaser_projects = teaser_candidates[:3]
 
-    headlines_block = "\n".join(headlines_by_source_text)
+    teaser_lines = []
+    for idx, p in enumerate(teaser_projects, 1):
+        aut = p.get('photographer') or 'Autor/a'
+        tit = p.get('title', 'Sin título')
+        src = normalize_source_name(p.get('source'))
+        teaser_lines.append(f"  {idx}. En {src}: '{tit}' de {aut}")
+    teaser_block = "\n".join(teaser_lines)
 
-    hist_text = ""
-    if historical:
-        mode = historical.get('lineage_mode', 'conceptual_vector')
-        author = historical.get('author_name') or historical.get('photographer') or primary.get('photographer') or 'el mismo autor'
-        if mode == 'monografico_cruzado':
-            hist_header = f"🌟 ENFOQUE MONOGRÁFICO ESPECIAL (MISMO AUTOR EN OTRA REVISTA: {author.upper()}):"
-            hist_directive = f"⚠️ INSTRUCCIÓN EDITORIAL: Hoy es un episodio MONOGRÁFICO sobre {author}. En el Acto 2 no compares con otro fotógrafo, sino que analiza la trayectoria y evolución de {author} contrastando su obra de hoy ({primary.get('title')}) con su otra obra ({historical.get('title')}) publicada en {historical.get('source', '').upper()}."
-        elif mode == 'monografico_mismo_medio':
-            hist_header = f"🌟 ENFOQUE MONOGRÁFICO ESPECIAL (EVOLUCIÓN AUTORAL DE {author.upper()}):"
-            hist_directive = f"⚠️ INSTRUCCIÓN EDITORIAL: Hoy es un episodio MONOGRÁFICO sobre {author}. En el Acto 2 profundiza en la evolución de su mirada comparando el proyecto de hoy con su trabajo anterior ({historical.get('title')})."
+    # 3. Formatear medios agrupados con indicación estricta de tiempo proporcional
+    sources_text = []
+    for src_name, items in sorted(by_source.items(), key=lambda x: len(x[1]), reverse=True):
+        count = len(items)
+        if count <= 2:
+            time_rule = f"MENOS TIEMPO ({count} noticia{'s' if count>1 else ''}) -> Resumen ágil, directo y conciso (~45-65 palabras)."
         else:
-            hist_header = "PROYECTO HISTÓRICO DEL ARCHIVO (LINAJE VISUAL EN ARCHIVE.DB):"
-            hist_directive = "En el Acto 2 conecta la obra de hoy con esta referencia histórica, explicando el diálogo estético y conceptual entre ambas miradas."
+            time_rule = f"MÁS TIEMPO ({count} noticias) -> Mayor desarrollo, contexto de las obras, técnica y reflexión (~130-190 palabras)."
 
-        hist_text = f"""
-{hist_header}
-{hist_directive}
-- Título de referencia: {historical.get('title')}
-- Medio/Revista de referencia: {historical.get('source', '').upper()}
-- Autor/a: {historical.get('photographer') or author}
-- Fecha original: {historical.get('published_date', 'Archivo')}
-- Resumen/Esencia: {(historical.get('summary') or historical.get('full_text', ''))[:500]}
-"""
+        sources_text.append(f"📰 MEDIO: {src_name.upper()} [{time_rule}]")
+        for it in items[:5]:
+            tit = it.get('title', 'Sin título')
+            aut = it.get('photographer') or 'Autor/a'
+            sumario = (it.get('summary') or it.get('full_text', ''))[:320].replace('\n', ' ')
+            sources_text.append(f"  • {tit} (por {aut}): {sumario}")
+        sources_text.append("")
 
-    museum_text = ""
-    inst_mention = historical.get('title') if historical else 'el archivo histórico'
-    if museum_piece:
-        inst = museum_piece.get('institution', 'Colección de Museo')
-        m_tit = museum_piece.get('title', 'Obra patrimonial')
-        m_aut = museum_piece.get('photographer', 'Autor histórico')
-        m_fecha = museum_piece.get('date', 'Fondo histórico')
-        m_tec = museum_piece.get('technique', '')
-        m_notas = museum_piece.get('curatorial_notes', '')
+    sources_block = "\n".join(sources_text)
 
-        museum_text = f"""
-🏛️ JOYA DEL ARCHIVO / LINAJE DE MUSEO ({inst.upper()}):
-- Institución custodia: {inst}
-- Obra patrimonial: {m_tit} ({m_fecha})
-- Fotógrafo/a o artífice: {m_aut}
-- Técnica / Fondo: {m_tec or 'Fondo fotográfico patrimonial'}
-- Notas curatoriales del museo: {m_notas}
+    # 4. Histórico de retos pasados para antirrepetición
+    past_retos = load_historical_challenges()
+    retos_negros = []
+    for r in past_retos[-20:]:
+        retos_negros.append(f"  ❌ [{r.get('date')}] {r.get('theme', '')}: {r.get('challenge', '')[:90]}...")
+    retos_negros_block = "\n".join(retos_negros) if retos_negros else "  (Ninguno registrado todavía)"
 
-⚠️ INSTRUCCIÓN EDITORIAL PARA BEATRIZ (LINAJE DE MUSEO):
-En el Acto 2, Beatriz enriquece su análisis conectando la mirada del proyecto contemporáneo de hoy con esta joya histórica custodiada en {inst}. Cita expresamente la institución ({inst}) y a {m_aut} con '{m_tit}', mostrando a la audiencia cómo esta inquietud o técnica visual ya latía en las colecciones de los grandes centros y museos del mundo.
-"""
-        inst_mention = f"{inst} con '{m_tit}' de {m_aut}"
-
-    return f"""Eres el equipo de redacción y locución de 'Punto de vista', el podcast diario de cultura visual y fotografía.
-Equipo de locutores:
-- ROBERTO (Conductor principal): Cercano, dinámico, culto, con excelente ritmo periodístico. Abre el podcast, repasa las noticias del día, presenta a los compañeros y hace el cierre.
-- BEATRIZ (Especialista en Historia, Crítica y Cultura Visual): Lúcida, apasionada, ensayística pero extraordinariamente cercana, cálida y pedagógica. No habla para teóricos ni académicos de museo, sino para personas que aman hacer fotos y quieren educar su mirada, entender por qué una imagen funciona e inspirarse para sus propias tomas. Traduce las decisiones visuales complejas a lecciones fotográficas y emocionales tangibles, sin pedantería.
-- NICOLÁS (Maestro de Taller y Disparador Creativo): Práctico, motivador, cómplice y con un punto gamberro y apasionado. Es quien baja toda la teoría al asfalto para sacudir al oyente y empujarlo a salir a fotografiar hoy mismo con retos estimulantes, frescos y atrevidos.
+    return f"""Eres ROBERTO, el único conductor y locutor del podcast 'Punto de vista', el espacio diario de actualidad, cultura fotográfica y mirada de autor.
+Tu tono es cercano, dinámico, culto, con excelente ritmo periodístico y pasión por la fotografía.
 
 Fecha de hoy: {fecha_completa} (Episodio #{ep_num}).
 
-MATERIAL DE LAS ÚLTIMAS 24 HORAS:
-{headlines_block}
+MATERIAL DE LAS ÚLTIMAS 24 HORAS AGRUPADO POR MEDIO:
+{sources_block}
 
-PROYECTO PROTAGONISTA DEL DÍA:
-- Título: {primary.get('title')}
-- Medio: {primary.get('source', '').upper()}
-- Autor: {primary.get('photographer') or 'Autor/a reseñado/a'}
-- Resumen/Texto completo: {(primary.get('summary') or primary.get('full_text', ''))[:1500]}
+TRES PROYECTOS SELECCIONADOS PARA EL GANCHO DE EXPECTACIÓN INICIAL:
+{teaser_block}
 
-{hist_text}
+HISTÓRICO DE RETOS PASADOS (LISTA NEGRA - PROHIBIDO REPETIR O PARAFRASEAR):
+{retos_negros_block}
 
-{museum_text}
-
-Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plantilla obligatoria (sin añadir texto ni etiquetas antes de cada marcador):
-
-[Título sugerente, poético y periodístico en español en una sola línea, sin comillas ni prefijos]
-{TITLE_MARKER}
-[Resumen editorial conciso en 3 párrafos para el feed y redes sociales destacando:
-1. El panorama general de las noticias de hoy (Roberto).
-2. El análisis del proyecto protagonista y su linaje histórico con los fondos de museo (Beatriz).
-3. El reto creativo del día (Nicolás).]
-{LOCUTABLE_MARKER}
-[ROBERTO]
-[Inicio directo del guion coral con el saludo de Roberto. Cada intervención empieza con [ROBERTO], [BEATRIZ] o [NICOLAS]. El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás es continuo e inmediato, sin música ni pausas intermedias. La única pausa musical (---PAUSA---) se sitúa antes del Acto 4 de cierre.]
-
-REGLAS EDITORIALES Y DE LOCUCIÓN (ESTRICTAS):
-- FORMATO DE DIÁLOGO (CRÍTICO): Cada cambio de voz DEBE empezar exactamente en una línea nueva con la etiqueta de locutor entre corchetes: [ROBERTO], [BEATRIZ] o [NICOLAS]. ESTÁ TERMINANTEMENTE PROHIBIDO usar guiones para los nombres de locutores (NUNCA escribas ---BEATRIZ--- ni ---NICOLAS---; los triples guiones están reservados única y exclusivamente para los efectos sonoros ---RAFAGA--- y ---PAUSA---).
-- TRANSICIONES CONTINUAS SIN MÚSICA: El paso entre Roberto y Beatriz, y entre Beatriz y Nicolás debe ser orgánico y directo en antena (sin insertar ---PAUSA--- ni cortinillas musicales entre ellos). Roberto llama a Beatriz, Beatriz responde de inmediato; Beatriz llama a Nicolás, Nicolás responde de inmediato.
-- COLABORACIÓN Y TRANSICIONES: Los locutores deben interactuar con naturalidad, saludarse brevemente al darse paso y cerrar con fluidez radiofónica.
-- RIGOR FACTUAL: NUNCA INVENTES DATOS. Todo se basa estrictamente en el material provisto.
-- PUNTUACIÓN Y FLUIDEZ RADIOFÓNICA:
-  * Oraciones continuas separadas por puntos y comas.
-- FONÉTICA Y NOMBRES EN INGLÉS (ESTRICTO):
+DIRECTRICES GENERALES DE ESTILO Y LOCUCIÓN:
+- LOCUTOR ÚNICO: Todo el podcast lo presenta y locuta exclusivamente [ROBERTO]. No introduzcas a ningún otro locutor.
+- SEPARADORES MUSICALES (6 SEGUNDOS DE SINTONÍA): Entre bloque y bloque debes insertar estrictamente en una línea independiente la etiqueta:
+---RAFAGA---
+Esto inserta una ráfaga musical de 6 segundos entre los medios para dar dinamismo a la emisión.
+- FONÉTICA Y ADAPTACIÓN EN EL LOCUTABLE:
   * Escribe "niusleter" o "niusleters" (nunca newsletter).
-  * Escribe "el Magazine de arte online Colosal" (nunca Colossal).
+  * Escribe "el Magazine online Colosal" (para Colossal).
   * Escribe "la revista Buum" (para Booooooom).
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
-  * NOMBRES Y TÉRMINOS ANGLOSAJONES EN EL LOCUTABLE: En el texto de los locutores ([ROBERTO], [BEATRIZ], [NICOLAS]), si aparece un nombre propio, apellido o término en inglés cuya pronunciación en español sea engañosa o difícil para el sintetizador de voz (por ejemplo: McCurry, Klein, Tyler, Cheryl, White, Aperture, Straight), escribe directamente su adaptación fonética amigable en castellano (ejemplos: "Macari", "Clain", "Táiler", "Chéril", "Uait", "Ápercher", "Streit"). En el título y en el resumen de tres párrafos del inicio mantén siempre la grafía real y oficial para el lector y la hemeroteca.
-- DIRECTRIZ COMUNITARIA Y CORREOS (ANA DE FOTONISTAS / FOTOLETER):
-  * Si en las publicaciones o correos del día hay contenido de Fotonistas o de Ana:
-    Menciónalo explícitamente en el repaso de Roberto o al inicio del bloque de Nicolás: "en el niusleter de Fotonistas, Ana nos deja una reflexión imperdible...".
-    REGLA DE CERO SPOILERS: NO desveles el contenido ni destripes la carta. Solo presenta la idea o pregunta sugerente para crear intriga y expectación, invitando a la audiencia a suscribirse a su fotoleter.
-- TRADUCCIÓN: Títulos de series/obras → traduce al español. Nombres propios → mantén original.
+  * Si un nombre propio en inglés es difícil o engañoso para la síntesis de voz, adapta su fonética amigable en castellano (ej: "Macari", "Clain", "Ápercher", "Táiler").
+  * Si hay contenido de Fotonistas o Ana, menciónalo como el "niusleter de Fotonistas" o su "fotoleter" con intriga y sin spoilers.
+- REGLA PROPORCIONAL DE TIEMPO POR MEDIO:
+  * En los medios que tienen pocas noticias (1 o 2 noticias), sé conciso, ágil y ve directo al grano.
+  * En los medios que tienen más noticias acumuladas, dedica más tiempo, profundiza en el contexto de las obras y los fotógrafos.
 
-ESTRUCTURA DE LOS 4 ACTOS:
+ESTRUCTURA OBLIGATORIA DEL GUION:
 
-1. ACTO 1: APERTURA & REPASO A LA ACTUALIDAD ([ROBERTO])
-   - Apertura de Roberto: "¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de inspiración fotográfica. Hoy es {fecha_completa} y este es el episodio {ep_num}..."
-   - Lanza una breve frase intrigante sobre el tema central que analizará luego Beatriz.
-   - RECORRIDO DE NOTICIAS: Selecciona entre 6 y 10 noticias destacadas de distintas fuentes del material de las últimas 24 horas.
-   - FORMATO PARA CADA NOTICIA:
-     * Roberto redacta un bloque de locución completo, sustancial y ameno de aproximadamente 50 a 55 segundos de duración (~115 a 130 palabras por noticia). No un titular de dos líneas: debe explicar el contexto, el autor o protagonistas, la técnica o proyecto, y por qué es relevante hoy en la cultura fotográfica.
-     * SEPARA cada noticia de la siguiente insertando en una línea propia la etiqueta de cortinilla:
-       ---RAFAGA---
-     * La siguiente noticia debe comenzar de nuevo con la etiqueta [ROBERTO] en una línea nueva.
-{roberto_radar_block}
-   - En la última noticia del bloque, Roberto concluye dando paso con complicidad y de forma directa a Beatriz (sin ráfaga entre ellos para mantener continuidad de antena): "...Y precisamente de esa conexión entre el tiempo, la memoria y la tierra vamos a hablar ahora; porque para profundizar en el gran proyecto de hoy y su diálogo con la historia, os dejo con Beatriz. ¡Hola, Beatriz!"
+Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plantilla:
 
-2. ACTO 2: TEMA CENTRAL, LINAJE VISUAL Y FOTOLIBROS ([BEATRIZ]) (~4 A 5 MINUTOS)
-   - Comienza obligatoriamente en línea nueva con la etiqueta exacta [BEATRIZ] (prohibido ---BEATRIZ---).
-   - [BEATRIZ]: Responde inmediatamente a Roberto y a los oyentes con calidez y complicidad: "¡Hola Roberto! Muchas gracias y muy buenas a todos..."
-   - Beatriz se adentra en el PROYECTO PROTAGONISTA del día con profundidad ensayística y sensorial, pero siempre cercana e inspiradora (~550 a 680 palabras).
-   - RECURSOS RETÓRICOS Y VARIEDAD EDITORIAL (ESTRICTO):
-     * PROHIBIDO usar fórmulas o muletillas repetitivas como "Porque ninguna mirada nace en el vacío" o frases hechas como "no busca el efectismo sino la pausa".
-     * Varía la puerta de entrada a la obra: explora cómo la luz modela los volúmenes, la tensión del encuadre y el punto de vista, la empatía y la distancia física con el sujeto, o el juego entre el detalle cotidiano y la atmósfera general.
-     * Haz que el oyente visualice la fotografía en su mente como si la tuviera delante y entienda qué decisiones del autor pueden inspirar su propia práctica fotográfica cotidiana.
-   - CONEXIÓN CON EL LINAJE DE MUSEO ({inst_mention}):
-     * Enlaza la obra de hoy con esta joya patrimonial de museo ({inst_mention}) desde el aprendizaje fotográfico: muestra cómo los grandes maestros históricos ya se enfrentaron a esa misma búsqueda de composición, geometría, emoción o luz que tenemos hoy al mirar por el visor. Cita expresamente la institución y la obra histórica con naturalidad.
-{beatriz_book_block}
-   - Al concluir, Beatriz da paso directo y enérgico a Nicolás para el reto práctico: "Y ahora, ¿cómo llevamos toda esta reflexión a la práctica en la calle? Nicolás ya tiene preparado el taller del día. ¡Adelante, Nicolás!"
+[Título sugerente, periodístico y atractivo del episodio en una sola línea, sin comillas]
+{TITLE_MARKER}
+[Resumen editorial conciso en 2 o 3 párrafos para la web, feed RSS y Telegram destacando el panorama de noticias de hoy y el reto fotográfico propuesto]
+{LOCUTABLE_MARKER}
+[ROBERTO]
+¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es {fecha_completa} y este es el episodio #{ep_num}...
+[Roberto crea levemente expectación nombrando de manera introductoria y atractiva los 3 proyectos destacados seleccionados, invitando a quedarse a escuchar el recorrido completo. Cierra la apertura con una frase enérgica hacia la música.]
 
-3. ACTO 3: DISPARADOR CREATIVO (EL RETO DEL DÍA) ([NICOLAS]) (~1:15 A 1:30 MINUTOS)
-   - Comienza obligatoriamente en línea nueva con la etiqueta exacta [NICOLAS] (prohibido ---NICOLAS---).
-   - [NICOLAS]: Entra inmediatamente recogiendo el testigo con energía, frescura y complicidad en antena (~170 a 200 palabras).
-   - VARIEDAD DE ENTRADA: Varía su saludo según su carácter espontáneo y entusiasta (evita empezar siempre con "¡Gracias compañeros! Qué gran análisis..."). Ejemplos: "¡Oído cocina, Beatriz! Menudo festín visual nos acabas de servir...", "¡Qué delicia de viaje, Beatriz! Pero aquí no nos quedamos en la teoría...", "¡Tomo el testigo con la cámara al hombro! Dejemos las pantallas y vamos al lío...", etc.
-   - INSPIRACIÓN EN LAS HISTORIAS DEL DÍA:
-     * Nicolás conecta el reto de hoy directamente con el estilo, la técnica, el dilema o la actitud de alguno de los fotógrafos o noticias comentadas hoy por Roberto o Beatriz (la audacia callejera y cercanía de Frank Horvat, la geometría de Stieglitz, la complicidad humana de Lecomte, el humor ácido de Parr o Goldberger, la energía de Klein, o la atmósfera del proyecto protagonista).
-   - EL RETO FOTOGRÁFICO DE HOY (ANTIRREPETICIÓN Y RETOS ATREVIDOS):
-     * PROHIBIDO repetir siempre "buscar texturas en paredes desgastadas o sombras en el suelo".
-     * Diseña un reto práctico con una restricción creativa clara y motivante.
-     * Alterna periódicamente con retos atrevidos, descarados o gamberros de fotografía activa:
-       - El reto de la proximidad física (obligarse a entrar a un metro de distancia del sujeto).
-       - Disparar desde la cintura sin mirar por el visor (cazar el ritmo espontáneo de la calle).
-       - La caza del absurdo cotidiano o la ironía visual (yuxtaponer carteles, reflejos o gestos involuntarios).
-       - El destello a pleno sol (usar el flash en la calle para congelar contrastes agresivos).
-       - La regla de los 5 segundos (llegar a una esquina y disparar antes de 5 segundos confiando en el primer instinto).
-       - El retrato espontáneo (pedir un retrato rápido a un desconocido con una sonrisa y una sola pregunta).
-   - LA PREGUNTA PREVIA AL DISPARO:
-     * Cierra el reto con una pregunta detonante que el fotógrafo debe hacerse antes de apretar el obturador.
-   ---PAUSA---
+---RAFAGA---
 
-4. ACTO 4: CIERRE Y DESPEDIDA ([ROBERTO] & [BEATRIZ]) (~45 SEGUNDOS)
-   - [ROBERTO]: "Fantástico reto el de Nicolás para hoy."
-   - [BEATRIZ]: Añade una última reflexión inspiradora invitando a salir a mirar el mundo.
-   - [ROBERTO]: Cierra despidiendo el episodio: "Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!"
+[ROBERTO]
+[Roberto aborda el primer medio editorial. Aplica la regla de tiempo: si tiene 1-2 noticias es ágil; si tiene más noticias, amplía el desarrollo.]
 
-DURACIÓN TOTAL ESTIMADA: ~1600 a 2200 palabras (~13 a 17 minutos de emisión con ráfagas musicales de 6 segundos entre noticias)."""
+---RAFAGA---
 
+[ROBERTO]
+[Roberto pasa al segundo medio editorial...]
+
+---RAFAGA---
+
+[Continuar con un bloque [ROBERTO] y separador ---RAFAGA--- para cada medio presente en el material]
+
+---RAFAGA---
+
+[ROBERTO]
+Y hasta aquí nuestro recorrido por las noticias y las páginas que hoy marcan el pulso de la fotografía...
+[Roberto se despide cordialmente hasta el día de mañana]
+[Roberto propone el RETO FOTOGRÁFICO DEL DÍA:
+ - Extrae la idea de las noticias tratadas hoy o de su amplio conocimiento fotográfico.
+ - OBLIGATORIO: El reto debe ser COMPLETAMENTE INÉDITO. No repitas ninguno de los temas de la lista negra de días anteriores.
+ - Plantea una restricción creativa tangible y motivadora para salir a disparar hoy.
+ - Formula una pregunta detonante antes de presionar el obturador: "Antes de disparar, pregúntate..."]
+Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!
+"""
 
 def normalize_speaker_tags(text):
     """Normaliza de forma exhaustiva cualquier variación en el marcado de locutores
@@ -883,39 +904,30 @@ def parse_summary(summary):
 
 
 def validate_podcast_script(locutable, expected_speakers=None):
-    """Quality Gate: Valida que el guion contenga intervenciones sustanciales
-    de todos los locutores obligatorios antes de proceder a la síntesis de voz.
-    Retorna (is_valid: bool, errors: list[str], turns_by_speaker: dict[str, list[str]])."""
-    if expected_speakers is None:
-        expected_speakers = {'ROBERTO', 'BEATRIZ', 'NICOLAS'}
-
+    """Quality Gate: Valida que el guion contenga las intervenciones de Roberto,
+    las ráfagas de separación entre medios y la propuesta del reto fotográfico."""
     clean = normalize_speaker_tags(locutable)
-    pattern = re.compile(r'\[(ROBERTO|BEATRIZ|NICOL[AÁ]S)\]', re.IGNORECASE)
-    splits = pattern.split(clean)
-
-    turns_by_speaker = {}
-    if len(splits) > 1:
-        for idx_s in range(1, len(splits), 2):
-            speaker_raw = splits[idx_s].upper()
-            speaker_tag = 'NICOLAS' if 'NICOL' in speaker_raw else speaker_raw
-            turn_text = splits[idx_s + 1].strip()
-            if turn_text:
-                turns_by_speaker.setdefault(speaker_tag, []).append(turn_text)
+    pattern = re.compile(r'\[ROBERTO\]', re.IGNORECASE)
+    turns = [t.strip() for t in pattern.split(clean) if t.strip()]
 
     errors = []
-    detected_speakers = set(turns_by_speaker.keys())
-    missing_speakers = expected_speakers - detected_speakers
-    if missing_speakers:
-        errors.append(f"Faltan intervenciones obligatorias para: {', '.join(sorted(missing_speakers))}")
+    if not turns:
+        errors.append("No se encontró ninguna intervención del locutor [ROBERTO].")
 
-    for spk in detected_speakers:
-        total_len = sum(len(t) for t in turns_by_speaker[spk])
-        if total_len < 50:
-            errors.append(f"La intervención de {spk} es sospechosamente breve ({total_len} caracteres).")
+    rafagas = re.findall(r'---RAFAGA---|\[RAFAGA\]', clean)
+    if len(rafagas) < 2:
+        errors.append(f"Se requieren separadores ---RAFAGA--- entre medios (detectados: {len(rafagas)}).")
+
+    has_reto = bool(re.search(r'\b(?:reto|desaf[íi]o|taller)\b', clean, re.IGNORECASE))
+    if not has_reto:
+        errors.append("El bloque final debe incluir la propuesta del reto fotográfico del día.")
+
+    total_len = sum(len(t) for t in turns)
+    if total_len < 900:
+        errors.append(f"El texto locutable es demasiado corto ({total_len} caracteres).")
 
     is_valid = len(errors) == 0
-    return is_valid, errors, turns_by_speaker
-
+    return is_valid, errors, {'ROBERTO': turns}
 
 def get_day_music(target_date=None):
     d = target_date or date.today()
@@ -1320,14 +1332,15 @@ def main():
         else:
             print(f'  🔄 Reintento {attempt}/{max_attempts}: Re-solicitando guion al LLM con corrección de reparto coral...')
             correction_note = (
-                f"\n\n⚠️ CORRECCIÓN OBLIGATORIA DE FORMATO Y REPARTO (EL INTENTO ANTERIOR FUE RECHAZADO):\n"
-                f"La respuesta previa fue RECHAZADA por el Quality Gate del sistema debido a los siguientes fallos:\n"
+                f"\n\n⚠️ CORRECCIÓN OBLIGATORIA DE FORMATO (EL INTENTO ANTERIOR FUE RECHAZADO):\n"
+                f"La respuesta previa fue rechazada por los siguientes fallos:\n"
                 + "\n".join(f"  * {err}" for err in validation_errors) +
-                "\n\nINSTRUCCIONES ESTRICTAS PARA ESTE REINTENTO:\n"
-                "- En el bloque locutable DEBEN intervenir obligatoriamente los tres locutores: [ROBERTO], [BEATRIZ] y [NICOLAS].\n"
-                "- Cada intervención debe comenzar estrictamente en línea nueva con su etiqueta entre corchetes: [ROBERTO], [BEATRIZ] o [NICOLAS].\n"
-                "- ESTÁ TERMINANTEMENTE PROHIBIDO usar guiones como ---BEATRIZ--- o ---NICOLAS--- (los guiones triples solo se usan en ---RAFAGA--- y ---PAUSA---).\n"
-                "- Asegúrate de incluir el texto completo de Beatriz (Acto 2) y de Nicolás (Acto 3) con sus respectivas etiquetas."
+                "\n\nINSTRUCCIONES ESTRICTAS:\n"
+                "- Todo el texto locutable debe ser narrado exclusivamente por [ROBERTO].\n"
+                "- Cada intervención debe comenzar estrictamente con la etiqueta [ROBERTO] en una línea nueva.\n"
+                "- Separa cada medio editorial con una línea independiente que contenga: ---RAFAGA---\n"
+                "- Al principio debes incluir el gancho de 3 proyectos destacados creando expectación.\n"
+                "- Al final debes proponer un reto fotográfico inédito (sin repetir la lista negra) y la pregunta detonante antes de disparar."
             )
             summary = llm_request(prompt + correction_note)
 
@@ -1342,7 +1355,7 @@ def main():
 
         if is_valid:
             spk_info = ", ".join(f"{k} ({len(v)} turnos, {sum(len(t) for t in v)} caracteres)" for k, v in sorted(speaker_turns.items()))
-            print(f'  ✅ Quality Gate de reparto coral superado: {spk_info}')
+            print(f'  ✅ Quality Gate de locución superado: {spk_info}')
             break
         else:
             print(f'  ⚠️ Quality Gate falló en intento {attempt}/{max_attempts}:')
@@ -1366,6 +1379,10 @@ def main():
         print(f'  ✅ Guion guardado en: {guion_path}')
     except Exception as e:
         print(f'  ⚠️ Error guardando guion: {e}')
+
+    challenge_snippet = extract_challenge_text(locutable)
+    if not is_test:
+        save_historical_challenge(today.isoformat(), ep_num, challenge_snippet)
 
     # 5. Generar audio
     clean_text_audio = clean_text(locutable)
