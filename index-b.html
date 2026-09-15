@@ -137,6 +137,12 @@
   <div class="header-inner">
       <span class="logo" onclick="toggleFullscreen()" style="cursor:pointer"><img src="pdv.png" alt="Punto de vista" class="logo-img"><span class="logo-text">Punto de vista</span></span>
     <div class="header-controls">
+      <div class="search-container">
+        <div id="search-input-wrapper">
+          <input type="search" id="search-input" placeholder="Buscar…" aria-label="Buscar en el archivo" autocomplete="off">
+          <button id="search-clear" type="button" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+      </div>
       <span id="count-colossal" class="pill">Colossal 0</span>
       <span id="count-lomography" class="pill">Lomography 0</span>
       <span id="count-booooooom" class="pill">Booooooom 0</span>
