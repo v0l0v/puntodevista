@@ -163,12 +163,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── Buscador ───────────────────────────────────────────────────────
   const searchInput = document.getElementById('search-input');
-  const searchClearBtn = document.getElementById('search-clear-btn');
+  const searchClearBtn = document.getElementById('search-clear');
   if (searchInput) {
     searchInput.addEventListener('input', (evt) => {
       state.searchQuery = evt.target.value;
       if (searchClearBtn) {
-        searchClearBtn.classList.toggle('hide', !evt.target.value);
+        searchClearBtn.classList.toggle('visible', !!evt.target.value);
       }
       applyFilter();
     });
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     searchClearBtn.addEventListener('click', () => {
       searchInput.value = '';
       state.searchQuery = '';
-      searchClearBtn.classList.add('hide');
+      searchClearBtn.classList.remove('visible');
       applyFilter();
       searchInput.focus();
     });
