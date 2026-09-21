@@ -66,6 +66,23 @@ on_error() {
 trap 'on_error $LINENO' ERR
 trap stop_llm EXIT
 
+# Función de sincronización Git segura para entornos desatendidos
+safe_git_pull() {
+  local context="${1:-sincronización}"
+  if [ -d "$DIR/.git/rebase-merge" ] || [ -d "$DIR/.git/rebase-apply" ]; then
+    echo "⚠️ Rebase previo incompleto detectado. Abortando..."
+    git rebase --abort 2>/dev/null || true
+  fi
+
+  if ! git pull --rebase --autostash origin main; then
+    echo "🚨 Conflicto o fallo en git pull ($context). Abortando rebase para no bloquear el repo..."
+    git rebase --abort 2>/dev/null || true
+    $PYTHON send_alert.py "Conflicto de Git en VPS ($context). Se abortó el rebase automáticamente para evitar bloqueo." || true
+    return 1
+  fi
+  return 0
+}
+
 FECHA_LOG=$(date '+%Y-%m-%d %H:%M:%S')
 echo "=========================================================="
 echo "=== [$FECHA_LOG] Arrancando ciclo diario Punto de Vista ==="
@@ -94,7 +111,7 @@ fi
 
 # 6. Sincronización previa del repositorio
 echo ">> [1/6] Sincronizando estado con GitHub..."
-git pull --rebase --autostash origin main || true
+safe_git_pull "inicio proceso diario" || echo "⚠️ Continuando proceso diario tras advertencia en pull inicial..."
 
 # 7. Generar Digest Diario
 echo ">> [2/6] Generando digest diario..."
@@ -134,10 +151,21 @@ $PYTHON health_check.py || echo "⚠️ Advertencia en health_check (continuando
 echo ">> Sincronizando respaldo con GitHub..."
 git add resumenes/ data/ podcast.xml assets/covers/ 2>/dev/null || true
 git commit -m "chore(auto): daily update $(date +%F)" || echo "Nada nuevo que commitear"
+pushed=false
 for i in 1 2 3; do
-  git pull --rebase --autostash origin main 2>/dev/null || true
-  git push origin main 2>/dev/null && echo "✅ Respaldo sincronizado con GitHub" && break || sleep 5
+  if safe_git_pull "previo a git push (intento $i)"; then
+    if git push origin main 2>/dev/null; then
+      echo "✅ Respaldo sincronizado con GitHub"
+      pushed=true
+      break
+    fi
+  fi
+  sleep 5
 done
+if [ "$pushed" = false ]; then
+  echo "⚠️ Respaldo diario no pudo subirse a GitHub tras 3 intentos"
+  $PYTHON send_alert.py "No se pudo sincronizar el respaldo diario de Punto de Vista con GitHub tras 3 intentos." || true
+fi
 
 FECHA_FIN=$(date '+%Y-%m-%d %H:%M:%S')
 echo "=========================================================="

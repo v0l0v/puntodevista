@@ -11,6 +11,19 @@ REMOTE=$(git rev-parse origin/main)
 
 if [ "$LOCAL" != "$REMOTE" ]; then
     echo "[$(date -Iseconds)] 🔄 Nuevos commits en GitHub. Sincronizando VPS..."
-    git pull --autostash --rebase origin main
+    if [ -d "$DIR/.git/rebase-merge" ] || [ -d "$DIR/.git/rebase-apply" ]; then
+        echo "[$(date -Iseconds)] ⚠️ Rebase previo incompleto detectado. Abortando..."
+        git rebase --abort 2>/dev/null || true
+    fi
+
+    if ! git pull --autostash --rebase origin main; then
+        echo "[$(date -Iseconds)] 🚨 Conflicto en git pull. Abortando rebase inmediatamente..."
+        git rebase --abort 2>/dev/null || true
+        PYTHON="$DIR/venv/bin/python3"
+        [ ! -f "$PYTHON" ] && PYTHON="python3"
+        $PYTHON "$DIR/send_alert.py" "Conflicto en vps_auto_pull.sh en el VPS. Se abortó el rebase automáticamente para evitar bloqueo." 2>/dev/null || true
+        exit 1
+    fi
     echo "[$(date -Iseconds)] ✅ VPS actualizado."
 fi
+

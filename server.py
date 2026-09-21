@@ -1481,10 +1481,13 @@ if __name__ == '__main__':
     os.chdir(DIR)
     try:
         print("\033[1;36m🔄 [GIT PULL AUTO] Comprobando y sincronizando últimos cambios desde GitHub/VPS...\033[0m")
+        if os.path.exists(os.path.join(DIR, '.git', 'rebase-merge')) or os.path.exists(os.path.join(DIR, '.git', 'rebase-apply')):
+            subprocess.run(['git', 'rebase', '--abort'], capture_output=True, cwd=DIR)
         res = subprocess.run(['git', 'pull', '--autostash', '--rebase'], capture_output=True, text=True, cwd=DIR, timeout=15)
         if res.returncode == 0:
             print("\033[1;32m✅ [GIT PULL AUTO] Repositorio sincronizado con GitHub OK\033[0m")
         else:
+            subprocess.run(['git', 'rebase', '--abort'], capture_output=True, cwd=DIR)
             print(f"\033[1;33mℹ️ [GIT PULL AUTO] {res.stdout.strip() or res.stderr.strip()}\033[0m")
     except Exception as e_pull:
         print(f"\033[1;31m⚠️ [GIT PULL AUTO] Aviso en sincronización inicial: {e_pull}\033[0m")

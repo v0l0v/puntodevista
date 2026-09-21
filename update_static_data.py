@@ -752,7 +752,14 @@ def main():
             return
         pushed = False
         for attempt in range(4):
+            if os.path.exists(os.path.join(DIR, '.git', 'rebase-merge')) or os.path.exists(os.path.join(DIR, '.git', 'rebase-apply')):
+                subprocess.run(['git', 'rebase', '--abort'], capture_output=True, cwd=DIR)
             pull = subprocess.run(['git', 'pull', '--rebase', '--autostash'], capture_output=True, text=True, cwd=DIR)
+            if pull.returncode != 0:
+                subprocess.run(['git', 'rebase', '--abort'], capture_output=True, cwd=DIR)
+                print('     ⚠️ Pull fallido, rebase abortado para evitar bloqueo')
+                time.sleep(3 * (attempt + 1))
+                continue
             push = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=DIR)
             if push.returncode == 0:
                 print('     ✅ Push a GitHub OK')
