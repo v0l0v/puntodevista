@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Tue, 15 Sep 2026 07:46:28 +0000</lastBuildDate>
+<lastBuildDate>Wed, 23 Sep 2026 07:32:34 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1512,6 +1512,20 @@ Y antes de irnos al taller con Nicolás, quiero dejaros con una reflexión final
 Fantástico reto el de Nicolás para hoy. Aprender a acercarse y confiar en la propia percepción es una lección valiosa. Y ahora, quiero dejaros con un pensamiento final: ¿cómo podemos aplicar esta lección en nuestra propia práctica fotográfica?
 
 Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 43 · [Terminando con las microscópicas maravillas y las instantáneas únicas]</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-23.mp3</guid>
+    <pubDate>Wed, 23 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[¡Bucle de microscopios y instantáneas únicas!]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-23.mp3" length="3864600" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-23.jpg"/>
+    <itunes:duration>2:40</itunes:duration>
+    <itunes:title>Episodio 43 · [Terminando con las microscópicas maravillas y las instantáneas únicas]</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[¡Bucle de microscopios y instantáneas únicas!]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
