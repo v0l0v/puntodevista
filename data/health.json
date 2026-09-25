@@ -1,9 +1,9 @@
 {
   "status": "healthy",
-  "generated_at": "2026-09-23T07:33:29.639938+00:00",
+  "generated_at": "2026-09-25T07:38:05.123320+00:00",
   "issues": [],
   "pipeline": {
-    "last_feeds_update": "2026-09-23T07:33:29.414539+00:00",
+    "last_feeds_update": "2026-09-25T07:38:04.959498+00:00",
     "warp_proxy_active": true,
     "circuit_breaker": {
       "state": "CLOSED",
@@ -12,26 +12,26 @@
     }
   },
   "feeds": {
-    "total_entries": 1422,
+    "total_entries": 1456,
     "sources_tracked": 23,
     "sources_breakdown": {
-      "odlp": 267,
-      "c41": 159,
-      "lomography": 78,
+      "odlp": 284,
+      "35mmc": 156,
+      "c41": 162,
+      "lomography": 81,
+      "blind": 69,
+      "huck": 21,
+      "magnum": 61,
+      "shootitwithfilm": 39,
+      "asx": 32,
       "lensculture": 50,
-      "35mmc": 153,
-      "blind": 66,
       "booooooom": 64,
       "1854": 18,
-      "huck": 20,
       "clavoardiendo": 42,
       "tpj": 36,
-      "magnum": 60,
-      "shootitwithfilm": 38,
+      "phroom": 24,
       "aperture": 37,
       "featureshoot": 32,
-      "phroom": 23,
-      "asx": 31,
       "kosmofoto": 61,
       "swan": 10,
       "colossal": 101,
@@ -41,21 +41,21 @@
     }
   },
   "database": {
-    "articles_total": 1422,
-    "podcasts_total": 43,
+    "articles_total": 1456,
+    "podcasts_total": 44,
     "status": "ok"
   },
   "podcast": {
-    "total_episodes": 43,
-    "latest_date": "2026-09-23",
+    "total_episodes": 44,
+    "latest_date": "2026-09-25",
     "status": "ok"
   },
   "system": {
     "disk": {
       "total_gb": 73.6,
-      "used_gb": 30.4,
-      "free_gb": 40.2,
-      "free_percent": 54.6
+      "used_gb": 30.5,
+      "free_gb": 40.1,
+      "free_percent": 54.5
     }
   }
 }
