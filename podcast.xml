@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Mon, 28 Sep 2026 07:36:57 +0000</lastBuildDate>
+<lastBuildDate>Tue, 29 Sep 2026 07:50:52 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1674,6 +1674,20 @@ Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!]]></itune
     <itunes:title>Episodio 46 · [Título sugerente, periodístico y atractivo del episodio en una sola línea, sin comillas]</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[El panorama fotográfico de hoy y un reto inédito]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 47 · Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-29.mp3</guid>
+    <pubDate>Tue, 29 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-29.mp3" length="5298256" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-29.jpg"/>
+    <itunes:duration>3:40</itunes:duration>
+    <itunes:title>Episodio 47 · Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
