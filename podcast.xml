@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Tue, 29 Sep 2026 07:50:52 +0000</lastBuildDate>
+<lastBuildDate>Wed, 30 Sep 2026 07:41:23 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1688,6 +1688,28 @@ Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!]]></itune
     <itunes:title>Episodio 47 · Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía</itunes:title>
     <itunes:author>Punto de vista</itunes:author>
     <itunes:summary><![CDATA[Punto de Vista: Martes 29 de septiembre 2026 - Nuevos Horizontes en la Fotografía]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 48 · [Refrigerio Fotográfico: Nuevas Oportunidades y Perspectivas en la Fotografía Contemporánea]</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-09-30.mp3</guid>
+    <pubDate>Wed, 30 Sep 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es miércoles, 30 de septiembre de 2026 y este es el episodio #48. Hoy te traemos una ronda de novedades y oportunidades en el mundo de la fotografía, desde premios y convocatorias hasta exposiciones y proyectos fascinantes. Así que ¡preparad los reflectores, porque hoy es el día!
+
+[Roberto aborda el primer medio editorial. Dedica 30 a 45 segundos a CADA noticia que trata en este medio.]
+
+---RAFAGA---]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-09-30.mp3" length="6059736" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-09-30.jpg"/>
+    <itunes:duration>4:12</itunes:duration>
+    <itunes:title>Episodio 48 · [Refrigerio Fotográfico: Nuevas Oportunidades y Perspectivas en la Fotografía Contemporánea]</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es miércoles, 30 de septiembre de 2026 y este es el episodio #48. Hoy te traemos una ronda de novedades y oportunidades en el mundo de la fotografía, desde premios y convocatorias hasta exposiciones y proyectos fascinantes. Así que ¡preparad los reflectores, porque hoy es el día!
+
+[Roberto aborda el primer medio editorial. Dedica 30 a 45 segundos a CADA noticia que trata en este medio.]
+
+---RAFAGA---]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
