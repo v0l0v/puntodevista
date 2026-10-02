@@ -6,7 +6,7 @@
 <atom:link href="https://puntodevista.click/podcast.xml" rel="self" type="application/rss+xml"/>
 <description>Resumen diario en audio de inspiración fotográfica: Colossal, Lomography Magazine, Booooooom, The Photographic Journal, Swann Galleries y Huck Magazine.</description>
 <language>es</language>
-<lastBuildDate>Thu, 01 Oct 2026 07:39:37 +0000</lastBuildDate>
+<lastBuildDate>Fri, 02 Oct 2026 07:40:44 +0000</lastBuildDate>
 <image><url>https://puntodevista.click/podcast-cover.jpg</url><title>Punto de vista — podcast diario</title><link>https://puntodevista.click/</link></image>
 <itunes:image href="https://puntodevista.click/podcast-cover.jpg"/>
 <itunes:author>Punto de vista</itunes:author>
@@ -1782,6 +1782,20 @@ En el buzón de niusleters recibidos, Fotonistas (Ana) nos cuenta la historia de
 
 [ROBERTO]
 Y hasta aquí nuestro recorrido por las noticias y las páginas que hoy marcan el pulso de la fotografía. Nos vemos mañana para seguir explorando los límites de la creatividad fotográfica. Hoy te propongo un reto fotográfico inédito: extrae la idea de las noticias tratadas hoy o de tu amplio conocimiento fotográfico. Antes de disparar, pregúntate: "¿Cómo podrías reinterpretar la memoria en una imagen?" Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!]]></itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Episodio 50 · Punto de Vista #50: Nuevos Horizontes en la Fotografía</title>
+    <link>https://puntodevista.click/</link>
+    <guid isPermaLink="true">https://puntodevista.click/podcast/podcast-2026-10-02.mp3</guid>
+    <pubDate>Fri, 02 Oct 2026 05:00:00 +0000</pubDate>
+    <description><![CDATA[Punto de Vista #50: Nuevos Horizontes en la Fotografía]]></description>
+    <enclosure url="https://puntodevista.click/podcast/podcast-2026-10-02.mp3" length="5645537" type="audio/mpeg"/>
+    <itunes:image href="https://puntodevista.click/podcast/podcast-cover-2026-10-02.jpg"/>
+    <itunes:duration>3:55</itunes:duration>
+    <itunes:title>Episodio 50 · Punto de Vista #50: Nuevos Horizontes en la Fotografía</itunes:title>
+    <itunes:author>Punto de vista</itunes:author>
+    <itunes:summary><![CDATA[Punto de Vista #50: Nuevos Horizontes en la Fotografía]]></itunes:summary>
     <itunes:explicit>false</itunes:explicit>
   </item>
 </channel>
