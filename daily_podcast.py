@@ -107,34 +107,63 @@ def find_latest_podcast(target_date=None):
     return files[0] if files else None
 
 
-def llm_request(prompt, system_instruction=None):
+from config import get_gemini_key, get_gemini_model
+
+def gemini_api_request(prompt, system_instruction=None):
     """
-    Realiza una petición de chat completion a un proveedor compatible con OpenAI
-    (llama-server local, OpenRouter, Groq, DeepSeek u OpenAI directo).
-    Garantiza estricto seguimiento de formato separando reglas en system prompt.
+    Realiza la petición directamente a la API de Google Gemini (gemini-flash-latest).
+    Utiliza requests y respeta el proxy WARP configurado.
+    """
+    key = get_gemini_key()
+    if not key:
+        return None
+
+    model = get_gemini_model('gemini-flash-latest')
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+
+    body = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.7,
+            "maxOutputTokens": 4096
+        }
+    }
+    if system_instruction:
+        body["systemInstruction"] = {
+            "parts": [{"text": system_instruction}]
+        }
+
+    try:
+        import requests
+        resp = requests.post(url, json=body, timeout=60)
+        if resp.status_code == 200:
+            data = resp.json()
+            candidates = data.get('candidates', [])
+            if candidates and 'content' in candidates[0]:
+                parts = candidates[0]['content'].get('parts', [])
+                if parts and 'text' in parts[0]:
+                    print(f"  ✅ Guion generado exitosamente con Google Gemini ({model})")
+                    return parts[0]['text'].strip()
+        else:
+            print(f"  ⚠️ Google Gemini API respondió con código {resp.status_code}: {resp.text[:200]}")
+    except Exception as e:
+        print(f"  ⚠️ Error conectando con Google Gemini: {e}")
+
+    return None
+
+
+def openai_compatible_request(prompt, system_instruction=None):
+    """
+    Petición de respaldo al proveedor OpenAI compatible (llama-server local, OpenRouter, Groq).
     """
     base_url, api_key, model_name = get_llm_config()
-    print(f"  🤖 Solicitando guion al LLM ({model_name}) en {base_url}...")
+    print(f"  🤖 Solicitando guion al LLM de respaldo ({model_name}) en {base_url}...")
 
     is_direct = any(x in base_url for x in ['127.0.0.1', 'localhost', '100.', '192.168.', '10.'])
-    system_content = system_instruction or (
-        "Eres el guionista y productor ejecutivo de 'Punto de Vista', el podcast diario de alta cultura fotográfica.\n"
-        "Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo los marcadores obligatorios:\n"
-        f"[Título del episodio en una sola línea]\n{TITLE_MARKER}\n"
-        f"[Resumen conciso en 3 párrafos]\n{LOCUTABLE_MARKER}\n"
-        "[Guion para locutar con los tres locutores: [ROBERTO], [BEATRIZ] y [NICOLAS]]\n\n"
-        "REGLAS CRÍTICAS DE DIÁLOGO:\n"
-        "1. Cada intervención locutable debe comenzar estrictamente en línea nueva con su etiqueta canónica: [ROBERTO], [BEATRIZ] o [NICOLAS].\n"
-        "2. PROHIBIDO usar markdown en las etiquetas de los locutores (nunca escribas **[BEATRIZ]**: ni _[BEATRIZ]_ ni BEATRIZ:).\n"
-        "3. PROHIBIDO usar triples guiones en los nombres de locutores (nunca escribas ---BEATRIZ--- ni ---NICOLAS---).\n"
-        "4. Los triples guiones se reservan exclusivamente para ---TITLE---, ---LOCUTABLE---, ---RAFAGA--- y ---PAUSA---.\n"
-        "5. Los tres personajes deben intervenir obligatoriamente con textos sustanciales y estilo radiofónico natural y fluido."
-    )
-
-    messages = [
-        {"role": "system", "content": system_content},
-        {"role": "user", "content": prompt}
-    ]
+    messages = []
+    if system_instruction:
+        messages.append({"role": "system", "content": system_instruction})
+    messages.append({"role": "user", "content": prompt})
 
     from openai import OpenAI
     try:
@@ -169,8 +198,38 @@ def llm_request(prompt, system_instruction=None):
             print(f"  Error en petición a {model_name} (intento {attempt + 1}/{MAX_RETRIES}): {e}")
             time.sleep(RETRY_DELAY)
 
-    print("  ❌ Se agotaron todos los reintentos con el proveedor LLM.")
+    print("  ❌ Se agotaron todos los reintentos con el proveedor LLM de respaldo.")
     return None
+
+
+def llm_request(prompt, system_instruction=None):
+    """
+    Estrategia de doble motor:
+    1. Intenta primero Google Gemini (alta capacidad narrativa, vocabulario fotográfico y cero coste).
+    2. Si Google falla o no está disponible, cae de forma transparente al motor local (Qwen 2.5 / llama-server).
+    """
+    sys_content = system_instruction or (
+        "Eres el guionista y director del podcast diario 'Punto de Vista', el espacio de cultura fotográfica de referencia.\n"
+        "Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo los marcadores obligatorios:\n"
+        f"[Título sugerente del episodio en una sola línea]\n{TITLE_MARKER}\n"
+        f"[Resumen conciso en 2 o 3 párrafos]\n{LOCUTABLE_MARKER}\n"
+        "[Texto locutable íntegro con el locutor [ROBERTO] y separadores musicales ---RAFAGA---]\n\n"
+        "REGLAS CRÍTICAS:\n"
+        "1. Locución exclusiva a cargo de [ROBERTO]. Cada intervención debe empezar con la etiqueta [ROBERTO] en su propia línea.\n"
+        "2. NUNCA copies instrucciones entre corchetes dentro del diálogo. Todo lo que escribas bajo [ROBERTO] es texto real para ser leído ante el micrófono.\n"
+        "3. Usa un tono de radio profesional, natural, cálido, culto pero accesible y muy apasionado por la fotografía."
+    )
+
+    # 1. Intentar primero con Google Gemini
+    print("  🌐 [Motor Primario] Intentando generación con Google Gemini...")
+    content = gemini_api_request(prompt, system_instruction=sys_content)
+    if content:
+        return content
+
+    # 2. Respaldo al LLM local (llama-server / Qwen)
+    print("  🛡️ [Motor Respaldo] Google Gemini no disponible o con error. Pasando al LLM local...")
+    return openai_compatible_request(prompt, system_instruction=sys_content)
+
 
 # Alias para compatibilidad
 gemini_request = llm_request
@@ -810,48 +869,38 @@ Esto inserta una ráfaga musical de 6 segundos entre los medios para dar dinamis
   * Escribe "el Ojo de la Fotografía, el O-D-L-P" (para ODLP).
   * Si un nombre propio en inglés es difícil o engañoso para la síntesis de voz, adapta su fonética amigable en castellano (ej: "Macari", "Clain", "Ápercher", "Táiler").
 
-ESTRUCTURA OBLIGATORIA DEL GUION:
+ESTRUCTURA OBLIGATORIA DEL FORMATO:
+Debes responder exactamente con los marcadores canónicos:
 
-Debes estructurar tu respuesta EXACTAMENTE en TRES SECCIONES siguiendo esta plantilla:
-
-[Título sugerente, periodístico y atractivo del episodio en una sola línea, sin comillas]
+Un título sugerente y periodístico para el episodio en una sola línea (sin comillas)
 {TITLE_MARKER}
-[Resumen editorial conciso en 2 o 3 párrafos para la web, feed RSS y Telegram destacando el panorama de noticias de hoy y el reto fotográfico propuesto]
+Un resumen editorial en 2 o 3 párrafos para la web, feed RSS y Telegram destacando el panorama de noticias de hoy y el reto fotográfico propuesto.
 {LOCUTABLE_MARKER}
 [ROBERTO]
-¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es {fecha_completa} y este es el episodio #{ep_num}...
-[Roberto saluda y crea levemente expectación nombrando de manera introductoria y atractiva los 3 proyectos destacados seleccionados, invitando a quedarse a escuchar el recorrido completo. Cierra la apertura con una frase enérgica hacia la música.]
+¡Hola, muy buenas! Bienvenidos a Punto de vista, tu dosis diaria de actualidad y cultura fotográfica. Hoy es {fecha_completa} y este es el episodio #{ep_num}... (Aquí Roberto saluda con energía, presenta los 3 temas destacados para enganchar a la audiencia y da paso a la música).
 
 ---RAFAGA---
 
 [ROBERTO]
-[Roberto aborda el primer medio editorial. Dedica 30 a 45 segundos a CADA noticia que trata en este medio.]
+(Aquí Roberto aborda el primer medio editorial con ritmo, detalles visuales y profundidad para cada noticia de ese medio).
 
 ---RAFAGA---
 
 [ROBERTO]
-[Roberto pasa al segundo medio editorial, dedicando 30 a 45 segundos a cada noticia...]
-
----RAFAGA---
-
-[Continuar con un bloque [ROBERTO] y separador ---RAFAGA--- para cada medio presente]
+(Roberto continúa con el siguiente medio editorial, y así sucesivamente con cada medio separado por ---RAFAGA---).
 
 ---RAFAGA---
 
 [ROBERTO]
-[SECCIÓN DE NIUSLETERS (ÚLTIMA POSICIÓN DE NOTICIAS): Roberto abre el buzón de niusleters recibidos. Hace referencia explícita a Fotonistas (o al nombre del niusleter recibido). Comenta la idea durante 30 a 45 segundos sin spoilers para abrir el apetito.]
+(SECCIÓN DE NIUSLETERS RECIBIDOS: Roberto revisa el buzón de la comunidad, mencionando expresamente a Fotonistas o al remitente recibido con intriga).
 
 ---RAFAGA---
 
 [ROBERTO]
-Y hasta aquí nuestro recorrido por las noticias y las páginas que hoy marcan el pulso de la fotografía...
-[Roberto se despide cordialmente hasta el día de mañana]
-[Roberto propone el RETO FOTOGRÁFICO DEL DÍA:
- - Extrae la idea de las noticias tratadas hoy o de su amplio conocimiento fotográfico.
- - OBLIGATORIO: El reto debe ser COMPLETAMENTE INÉDITO. No repitas ninguno de los temas de la lista negra de días anteriores.
- - Plantea una restricción creativa tangible y motivadora para salir a disparar hoy.
- - Formula una pregunta detonante antes de presionar el obturador: "Antes de disparar, pregúntate..."]
-Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!
+Y hasta aquí nuestro recorrido por las páginas que hoy marcan el pulso de la fotografía. Pero no os marchéis sin el reto fotográfico de hoy... (Roberto propone un ejercicio práctico, tangible e inédito con la cámara, sin repetir la lista negra, y cierra con: 'Antes de disparar, pregúntate...'. Despedida con: 'Cargad baterías o carretes, y nos escuchamos mañana. ¡Buenas fotos!').
+
+ADVERTENCIA CRÍTICA:
+Todo el texto bajo [ROBERTO] debe ser texto final listo para locutar en voz alta. NUNCA escribas notas entre paréntesis o corchetes explicándome lo que vas a hacer. Redáctalo directamente con voz propia, cadencia y entusiasmo por la fotografía.
 """
 
 def normalize_speaker_tags(text):
