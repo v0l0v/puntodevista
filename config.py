@@ -15,9 +15,12 @@ CONFIG_PATH = os.path.join(DIR, 'config.json')
 
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(DIR, '.env'))
-except ImportError:
-    pass
+    env_file = os.path.join(DIR, '.env')
+    if os.path.exists(env_file):
+        load_dotenv(env_file)
+except Exception as e:
+    logger.warning(f"No se pudo cargar {os.path.join(DIR, '.env')}: {e}")
+
 
 _CONFIG = {}
 
