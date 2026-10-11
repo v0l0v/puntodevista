@@ -21,28 +21,32 @@ start_llm() {
     return 0
   fi
 
-  echo ">> [LLM] Iniciando motor local (puntodevista-llm)..."
-  sudo systemctl start puntodevista-llm
-  echo ">> [LLM] Esperando a que el modelo cargue en memoria..."
-  for i in $(seq 1 45); do
-    code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/v1/models 2>/dev/null || true)
-    if [ "$code" = "200" ]; then
-      echo ">> [LLM] ✅ llama-server listo en :8090 (${i}s)"
-      return 0
-    fi
-    sleep 1
-  done
-  echo "⚠️ [LLM] Tiempo de espera agotado esperando a llama-server"
+  echo ">> [LLM] Intentando iniciar motor local de respaldo (puntodevista-llm)..."
+  if sudo -n systemctl start puntodevista-llm 2>/dev/null; then
+    echo ">> [LLM] Esperando a que el modelo cargue en memoria..."
+    for i in $(seq 1 45); do
+      code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/v1/models 2>/dev/null || true)
+      if [ "$code" = "200" ]; then
+        echo ">> [LLM] ✅ llama-server listo en :8090 (${i}s)"
+        return 0
+      fi
+      sleep 1
+    done
+    echo "⚠️ [LLM] Tiempo de espera agotado esperando a llama-server"
+  else
+    echo "ℹ️ [LLM] Motor local no iniciado (no sudo requerido o motor primario es API cloud)"
+  fi
 }
 
 stop_llm() {
-  if systemctl is-active --quiet puntodevista-llm 2>/dev/null; then
+  if sudo -n systemctl is-active --quiet puntodevista-llm 2>/dev/null; then
     echo ">> [LLM] Deteniendo puntodevista-llm para liberar ~4.2 GB de RAM..."
-    sudo systemctl stop puntodevista-llm || true
+    sudo -n systemctl stop puntodevista-llm 2>/dev/null || true
     echo ">> [LLM] ✅ Memoria RAM liberada correctamente."
   fi
   pkill -f "llama-server.*qwen2.5-7b-instruct" 2>/dev/null || true
 }
+
 
 # 2. Selección de entorno de ejecución Python
 if [ -f "$DIR/venv/bin/python3" ]; then
