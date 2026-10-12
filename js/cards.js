@@ -21,6 +21,7 @@ export function renderCard(e) {
   const sourceLabel = isPodcast ? 'Podcast · Punto de vista' : getSourceLabel(e._source);
   const linkHref = isPodcast ? '#' : e.link;
   const cardId = String(e._id || e.link || `${e._source}-${e.title}`);
+  const displayTitle = e.title_es || e.title;
   return `<div class="card" data-color="?" data-id="${encodeURIComponent(cardId)}" data-source="${e._source}" onclick="openModal(this)">
     <div class="card-inner">
       <div class="card-skeleton"></div>
@@ -29,7 +30,7 @@ export function renderCard(e) {
     </div>
     <div class="card-info">
       <div class="card-source">${sourceLabel}</div>
-      <div class="card-title"><a href="${linkHref}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${e.title}</a></div>
+      <div class="card-title"><a href="${linkHref}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${displayTitle}</a></div>
       <div class="card-meta">
         <span class="card-date">${e._parsedDate ? fmtDate(e._parsedDate) : ''}</span>
       </div>

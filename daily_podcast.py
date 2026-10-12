@@ -1467,6 +1467,33 @@ def main():
     challenge_snippet = extract_challenge_text(locutable)
     if not is_test:
         save_historical_challenge(today.isoformat(), ep_num, challenge_snippet)
+        # Inyectar el resumen del podcast a los artículos del día en archive.db
+        if resumen and os.path.exists(DB_PATH):
+            try:
+                conn_art = sqlite3.connect(DB_PATH)
+                c_art = conn_art.cursor()
+                for a in articles:
+                    art_id = a.get('id')
+                    art_url = a.get('url') or a.get('link')
+                    if art_id:
+                        c_art.execute("""
+                            UPDATE articles
+                            SET summary_es = COALESCE(summary_es, ?),
+                                full_text_es = COALESCE(full_text_es, ?)
+                            WHERE id = ? AND (summary_es IS NULL OR summary_es = '')
+                        """, (resumen, resumen, art_id))
+                    elif art_url:
+                        c_art.execute("""
+                            UPDATE articles
+                            SET summary_es = COALESCE(summary_es, ?),
+                                full_text_es = COALESCE(full_text_es, ?)
+                            WHERE url = ? AND (summary_es IS NULL OR summary_es = '')
+                        """, (resumen, resumen, art_url))
+                conn_art.commit()
+                conn_art.close()
+                print('  ✅ Resumen del podcast vinculado a los artículos de la jornada en archive.db')
+            except Exception as e_art:
+                print(f'  ⚠️ Error asociando resumen de podcast a artículos: {e_art}')
 
     # 5. Generar audio
     clean_text_audio = clean_text(locutable)

@@ -2,7 +2,7 @@
  * Visualizador de galería de imágenes y control de pantalla completa
  */
 
-export function openGallery() {
+export function openGallery(startIndex = 0) {
   const body = document.getElementById('modal-body');
   if (!body) return;
   const article = body.querySelector('.modal-article');
@@ -26,7 +26,8 @@ export function openGallery() {
   const gallery = document.createElement('div');
   gallery.className = 'modal-gallery';
 
-  window.__galleryState = { currentIdx: 0, images };
+  const initialIdx = (typeof startIndex === 'number' && startIndex >= 0 && startIndex < images.length) ? startIndex : 0;
+  window.__galleryState = { currentIdx: initialIdx, images };
 
   const updateGallery = () => {
     const s = window.__galleryState;

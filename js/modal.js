@@ -193,8 +193,79 @@ export function extractSocialLinks(html) {
   return links;
 }
 
+export function getModalTitleHTML(entry, sourceLabel) {
+  const titleEs = entry.title_es || '';
+  const titleOrig = entry.title_original || entry.title || '';
+  const hasDistinctEs = titleEs && titleEs.trim().toLowerCase() !== titleOrig.trim().toLowerCase();
+  const mainTitle = hasDistinctEs ? titleEs : titleOrig;
+  const subOrig = hasDistinctEs ? `<div class="modal-orig-title">Original: “${titleOrig}”</div>` : '';
+
+  return `
+    <div class="modal-title-group">
+      <h2 class="modal-title">${mainTitle}</h2>
+      ${subOrig}
+      <div class="modal-meta">
+        <span class="modal-source">${sourceLabel || getSourceLabel(entry._source || entry.source)}</span>
+        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
+      </div>
+    </div>
+  `;
+}
+
+export function getModalSummaryHTML(entry, data) {
+  const summary = entry.podcast_summary || entry.summary_es || entry.summary || (data && (data.summary_es || data.summary)) || '';
+  if (!summary || !summary.trim()) return '';
+
+  const cleanSum = String(summary).trim()
+    .replace(/^([#\s*]+)/, '')
+    .replace(/\n\s*\n/g, '</p><p>');
+
+  return `
+    <div class="modal-summary-box">
+      <div class="modal-summary-header">
+        <span class="modal-summary-badge"></span>
+        <span>Resumen en español · Punto de vista</span>
+      </div>
+      <div class="modal-summary-text">
+        <p>${cleanSum}</p>
+      </div>
+    </div>
+  `;
+}
+
+export function getModalGalleryHTML(images) {
+  if (!images || !images.length) return '';
+  const cards = images.map((img, idx) => {
+    const url = typeof img === 'string' ? img : (img.url || img.src || '');
+    const caption = typeof img === 'object' ? (img.caption || img.alt || '') : '';
+    if (!url) return '';
+    return `
+      <div class="modal-gallery-card" onclick="openGallery(${idx})">
+        <div class="modal-gallery-img-wrap">
+          <img class="modal-gallery-img" src="${url}" alt="${caption}" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        ${caption ? `<div class="modal-gallery-caption">${caption}</div>` : ''}
+      </div>
+    `;
+  }).filter(Boolean).join('');
+
+  if (!cards) return '';
+
+  return `
+    <div class="modal-gallery-section">
+      <div class="modal-gallery-title">
+        <span>Galería fotográfica (${images.length} fotos)</span>
+        <button class="modal-tool-btn" onclick="openGallery(0)" style="font-size:0.7rem;padding:0.25rem 0.6rem">Ver pase completo →</button>
+      </div>
+      <div class="modal-gallery-grid">
+        ${cards}
+      </div>
+    </div>
+  `;
+}
+
 export function renderLomoArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const cleanContent = (data.content || '')
     .replace(/!Image\s*\d+/g, '')
     .replace(/©\s*toms\.portra\s*\|.*$/gm, '')
@@ -204,61 +275,59 @@ export function renderLomoArticle(body, entry, data) {
   const lomoLinks = data.content ? extractSocialLinks(data.content) : [];
   const linksHTML = lomoLinks.length ? '<div class="modal-links">' + lomoLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
   const galleryCaption = '© toms.portra | Camera: Lomo MC-A | Film: LomoChrome Color \'92 Sun-kissed ISO 400 | Model: lynjunei';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Lomography Magazine</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Lomography Magazine')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${cleanContent}</div>
       ${creditsHTML}
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || galleryCaption })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || galleryCaption })));
 }
 
 export function renderLensCultureArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const socialLinks = data.content ? extractSocialLinks(data.content) : [];
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">LensCulture</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'LensCulture')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${data.content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderOdlpArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const rawContent = data.content || '';
   const socialLinks = rawContent ? extractSocialLinks(rawContent) : [];
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
@@ -270,86 +339,83 @@ export function renderOdlpArticle(body, entry, data) {
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">L'Œil de la Photographie</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, "L'Œil de la Photographie")}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${cleanContent}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderMagnumArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const socialLinks = data.content ? extractSocialLinks(data.content) : [];
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Magnum Photos</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Magnum Photos')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${data.content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderBoomArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const creditLinks = (data.credits || []).filter(c => !isShareLink(c.url)).map(c => ({ platform: c.platform || 'web', text: c.name, url: c.url }));
   const socialLinks = data.content ? extractSocialLinks(data.content) : [];
   const boomLinks = [...creditLinks, ...socialLinks];
   const linksHTML = boomLinks.length ? '<div class="modal-links">' + boomLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Booooooom</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Booooooom')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${data.content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderTpjArticle(body, entry, data) {
@@ -357,183 +423,179 @@ export function renderTpjArticle(body, entry, data) {
   const images = (data && data.images && data.images.length) ? data.images : extractImages(content);
   const socialLinks = (data && data.credits && data.credits.length) ? data.credits.map(c => ({ url: c.url, text: c.name, platform: 'instagram' })) : extractSocialLinks(content);
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + (l.platform || 'link') + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">The Photographic Journal</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'The Photographic Journal')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderSwanArticle(body, entry, data) {
-  const images = data.images || [];
+  const images = (data && data.images && data.images.length) ? data.images : (entry.images || []);
   const thumb = data.thumbnail || entry.thumbnail;
   const thumbHTML = (!images.length && thumb) ? `<div class="modal-article" style="padding-bottom:0"><img src="${thumb}" alt="" class="modal-swan-thumb" loading="lazy"></div>` : '';
   const socialLinks = data.content ? extractSocialLinks(data.content) : [];
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
     ${thumbHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Swann Galleries</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Swann Galleries')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${data.content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.alt || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderHuckArticle(body, entry) {
   const content = cleanContent(entry.content || '');
-  const images = extractImages(content);
+  const images = (entry.images && entry.images.length) ? entry.images : extractImages(content);
   const socialLinks = extractSocialLinks(content);
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, null);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Huck Magazine</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Huck Magazine')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderShootItWithFilmArticle(body, entry) {
   const content = cleanContent(entry.content || '');
-  const images = extractImages(content);
+  const images = (entry.images && entry.images.length) ? entry.images : extractImages(content);
   const socialLinks = extractSocialLinks(content);
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, null);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">Shoot It With Film</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, 'Shoot It With Film')}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderGenericArticle(body, entry) {
   const content = cleanContent(entry.content || entry.excerpt || '');
-  const images = extractImages(content);
+  let images = (entry.images && entry.images.length) ? entry.images : extractImages(content);
   if (!images.length && entry.thumbnail) {
-    images.push({ url: entry.thumbnail, caption: '' });
+    images = [{ url: entry.thumbnail, caption: '' }];
   }
   const socialLinks = extractSocialLinks(content);
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
-  const sourceName = getSourceLabel(entry._source);
+  const sourceName = getSourceLabel(entry._source || entry.source);
+  const summaryHTML = getModalSummaryHTML(entry, null);
+  const galleryHTML = getModalGalleryHTML(images);
+
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">${sourceName}</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, sourceName)}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${content || '<p>Contenido completo disponible en el sitio web original.</p>'}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export function renderCachedArticle(body, entry, data, sourceLabel) {
   const content = cleanContent(data.content || entry.content || entry.excerpt || '');
-  const images = (data.images && data.images.length) ? data.images : extractImages(content);
+  let images = (data.images && data.images.length) ? data.images : extractImages(content);
+  if (!images.length && (entry.images && entry.images.length)) {
+    images = entry.images;
+  }
   if (!images.length && (data.thumbnail || entry.thumbnail)) {
-    images.push({ url: data.thumbnail || entry.thumbnail, alt: '' });
+    images = [{ url: data.thumbnail || entry.thumbnail, caption: '' }];
   }
   const socialLinks = extractSocialLinks(content);
   const linksHTML = socialLinks.length ? '<div class="modal-links">' + socialLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+  const summaryHTML = getModalSummaryHTML(entry, data);
+  const galleryHTML = getModalGalleryHTML(images);
 
   body.innerHTML = `
     <div class="modal-tools">
-      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+      ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
       <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
       <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
     </div>
     ${linksHTML}
-    <div class="modal-title-group">
-      <h2 class="modal-title">${entry.title}</h2>
-      <div class="modal-meta">
-        <span class="modal-source">${sourceLabel || getSourceLabel(entry._source)}</span>
-        ${entry._parsedDate ? '<span class="modal-sep">·</span><span class="modal-date">' + fmtDate(entry._parsedDate) + '</span>' : ''}
-      </div>
-    </div>
+    ${getModalTitleHTML(entry, sourceLabel || getSourceLabel(entry._source || entry.source))}
+    ${summaryHTML}
     <div class="modal-article">
       <div class="modal-article-content">${content}</div>
+      ${galleryHTML}
       <div class="modal-footer" style="padding-top:2rem">
         <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
       </div>
     </div>
   `;
-  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.alt || i.caption || '' })));
+  body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
 }
 
 export async function openModal(cardOrEntry, directSource) {
@@ -606,6 +668,18 @@ export async function openModal(cardOrEntry, directSource) {
           (i.title && i.title.trim().toLowerCase() === (entry.title || '').trim().toLowerCase())
         );
         if (found) {
+          if (found.title_es && !entry.title_es) {
+            entry.title_es = found.title_es;
+          }
+          if (found.podcast_summary && !entry.podcast_summary) {
+            entry.podcast_summary = found.podcast_summary;
+          }
+          if (found.summary_es && !entry.summary_es) {
+            entry.summary_es = found.summary_es;
+          }
+          if (found.summary && !entry.summary) {
+            entry.summary = found.summary;
+          }
           if (found.content && (!entry.content || found.content.length > entry.content.length)) {
             entry.content = found.content;
           }
@@ -785,37 +859,34 @@ export async function openModal(cardOrEntry, directSource) {
   // Colossal
   if (source === 'colossal') {
     if (entry.content) {
-      const images = extractImages(entry.content);
+      const images = (entry.images && entry.images.length) ? entry.images : extractImages(entry.content);
       const cleaned = cleanContent(entry.content);
       const photographers = extractColossalPhotographers(entry.content);
       const photoHTML = photographers.length ? '<div class="modal-photographers"><span class="photographer-label">Fotógrafos</span>' + photographers.map(p => '<a href="' + p.url + '" target="_blank" rel="noopener" class="photographer-link">' + p.name + '</a>').join(', ') + '</div>' : '';
       const colossalLinks = extractSocialLinks(entry.content);
       const linksHTML = colossalLinks.length ? '<div class="modal-links">' + colossalLinks.map(l => '<a href="' + l.url + '" target="_blank" rel="noopener" class="modal-link-tag link-' + l.platform + '">' + l.text + '</a>').join('') + '</div>' : '';
+      const summaryHTML = getModalSummaryHTML(entry, null);
+      const galleryHTML = getModalGalleryHTML(images);
       
       body.innerHTML = `
         <div class="modal-tools">
-          ${images.length ? `<button class="modal-tool-btn" onclick="openGallery()">Galería (${images.length})</button>` : ''}
+          ${images.length ? `<button class="modal-tool-btn" onclick="openGallery(0)">Galería (${images.length})</button>` : ''}
           <button class="modal-tool-btn" onclick="toggleFullscreen()">Pantalla completa</button>
           <button class="modal-tool-btn" onclick="closeModal()" style="margin-left:auto">← Volver</button>
         </div>
         ${photoHTML}
         ${linksHTML}
-        <div class="modal-title-group">
-          <h2 class="modal-title">${entry.title}</h2>
-          <div class="modal-meta">
-            <span class="modal-source">Colossal · Fotografía</span>
-            <span class="modal-sep">·</span>
-            <span class="modal-date">${entry._parsedDate ? fmtDate(entry._parsedDate) : ''}</span>
-          </div>
-        </div>
+        ${getModalTitleHTML(entry, 'Colossal · Fotografía')}
+        ${summaryHTML}
         <div class="modal-article">
           <div class="modal-article-content">${cleaned}</div>
+          ${galleryHTML}
           <div class="modal-footer" style="padding-top:2rem">
             <a href="${entry.link}" target="_blank" rel="noopener" class="modal-link-tag">Ver original →</a>
           </div>
         </div>
       `;
-      body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url, caption: i.caption || '' })));
+      body.dataset.lomoImages = JSON.stringify(images.map(i => ({ url: i.url || i, caption: i.caption || i.alt || '' })));
       return;
     }
   }

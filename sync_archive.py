@@ -163,11 +163,13 @@ def main():
 
 
 def export_full_feeds_json():
-    """Exporta todos los artículos consolidados de archive.db a feeds.json incluyendo sus etiquetas."""
+    """Exporta todos los artículos consolidados de archive.db a feeds.json incluyendo sus etiquetas y traducciones en español."""
     with get_connection() as conn:
         rows = conn.execute("""
-            SELECT id, url as link, source as _source, title, photographer,
-                   published_date as date, summary as excerpt, summary as content,
+            SELECT id, url as link, source as _source, title, title_es, photographer,
+                   published_date as date, summary as excerpt,
+                   COALESCE(summary_es, summary) as summary_es,
+                   summary as content,
                    image_url as image, image_url as thumbnail, tags
             FROM articles
             ORDER BY published_date DESC, id DESC
