@@ -1002,7 +1002,7 @@ def validate_podcast_script(locutable, expected_speakers=None):
     if len(rafagas) < 2:
         errors.append(f"Se requieren separadores ---RAFAGA--- entre medios (detectados: {len(rafagas)}).")
 
-    has_reto = bool(re.search(r'\b(?:reto|desaf[íi]o|taller)\b', clean, re.IGNORECASE))
+    has_reto = bool(re.search(r'\b(?:reto|desaf[íi]o|taller|ejercicio|misi[óo]n|disparo|disparar)\b', clean, re.IGNORECASE))
     if not has_reto:
         errors.append("El bloque final debe incluir la propuesta del reto fotográfico del día.")
 
